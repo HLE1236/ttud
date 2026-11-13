@@ -1,0 +1,32 @@
+{
+  "id": "hs-longest-path-tree",
+  "title": "[HUSTack] Đường đi dài nhất trên cây (Tree Diameter)",
+  "track": "final",
+  "topic": "graph-bfs-dfs",
+  "difficulty": "Trung bình",
+  "exam_tags": [
+    "HUSTack 2025.2 (P.05.11.01)",
+    "HUSTack: Chưa làm"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho cây có trọng số dương `T = (V, E)` gồm `N` đỉnh (`1..N`) và `N - 1` cạnh. Hãy tìm đường kính của cây (độ dài đường đi đơn có tổng trọng số lớn nhất giữa hai đỉnh bất kỳ trên cây).",
+  "input_spec": "- Dòng 1: `N` (`1 <= N <= 10^5`).\n- `N - 1` dòng tiếp theo: `u, v, w` là cạnh nối `(u, v)` có trọng số dương `w`.",
+  "output_spec": "Độ dài đường đi dài nhất trên cây.",
+  "samples": [
+    {
+      "input": "6\n1 3 3\n1 6 2\n2 6 5\n4 5 2\n4 6 1",
+      "output": "10"
+    }
+  ],
+  "theory_chapter": "chap6",
+  "mindset": "Thuật toán **2 lần BFS/DFS tìm Đường kính cây (`O(N)`)**:\n1. Bắt đầu từ đỉnh `1`, chạy BFS tìm đỉnh `A` xa đỉnh `1` nhất (tổng trọng số lớn nhất).\n2. Bắt đầu từ đỉnh `A`, chạy BFS lần 2 tìm đỉnh `B` xa `A` nhất. Khoảng cách `A -> B` chắc chắn là đường kính của cây!",
+  "hints": [
+    "Dùng BFS lặp thay vì DFS đệ quy để không bị tràn stack nếu cây là một dây xích `10^5` đỉnh.",
+    "Cẩn thận tổng trọng số có thể lớn hơn `2^31 - 1` -> dùng `long long`."
+  ],
+  "complexity": "O(N)",
+  "test_count": 10
+}

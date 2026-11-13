@@ -1,0 +1,34 @@
+{
+  "title": "Tìm ký tự trên chuỗi Fibonacci",
+  "track": "midterm",
+  "exam_tags": [
+    "GK 20242 (Kíp 2)"
+  ],
+  "topic": "greedy-2ptr",
+  "theory_chapter": "chap4a",
+  "difficulty": "Trung bình",
+  "day": 6,
+  "time_limit_ms": 1000,
+  "tc_source": "Official Zip (GK 20242)",
+  "statement": "Với hai chuỗi cơ sở `S1`, `S2`, chuỗi Fibonacci được định nghĩa:\n- `FibStr(1) = S1`\n- `FibStr(2) = S2`\n- `FibStr(n) = FibStr(n-1) + FibStr(n-2)` với `n > 2` (`+` là phép nối chuỗi).\n\nCho trước `S1`, `S2` và số nguyên không âm `k` (`k < 10^18`). Hãy xác định ký tự ở vị trí `k` (đánh chỉ số từ `0`) của chuỗi `FibStr(n)` khi `n` đủ lớn.",
+  "input_spec": "- Dòng 1: chuỗi `S1` (độ dài `<= 100`).\n- Dòng 2: chuỗi `S2` (độ dài `<= 100`).\n- Dòng 3: số nguyên `k` (`0 <= k < 10^18`).",
+  "output_spec": "Một ký tự duy nhất nằm ở vị trí `k`.",
+  "samples": [
+    {
+      "input": "abc\nxyzt\n20",
+      "output": "z",
+      "explanation": "FibStr(6) = 'xyztabcxyzt...' có ký tự ở vị trí 20 là 'z'."
+    }
+  ],
+  "mindset": "Vì `k` tới `10^18` nên KHÔNG THỂ nối chuỗi thật (tràn RAM ngay lập tức).\nTa dùng **Chia để trị (hay Giảm để trị)**:\n- Chỉ cần lưu **độ dài** `len[n]` của `FibStr(n)`: `len[1] = |S1|`, `len[2] = |S2|`, `len[i] = len[i-1] + len[i-2]` cho tới khi `len[n] > k` (chỉ mất ~90 bước vì Fibonacci tăng theo hàm mũ!).\n- Vì `FibStr(n) = FibStr(n-1) + FibStr(n-2)`: nếu `k < len[n-1]`, ký tự nằm trong nửa trái `FibStr(n-1)`! Ngược lại nó nằm trong nửa phải `FibStr(n-2)` tại vị trí mới `k - len[n-1]`.\n- Lặp đến khi `n == 1` (tra `S1[k]`) hoặc `n == 2` (tra `S2[k]`).",
+  "hints": [
+    "Tính mảng `len[1..n]` bằng `long long` cho đến khi `len[n] > k`.",
+    "Nếu `k < len[n-1]` thì giảm `n = n - 1`; ngược lại `k -= len[n-1]` và `n = n - 2`.",
+    "Khi `n <= 2` thì lấy trực tiếp `S1[k]` hoặc `S2[k]`."
+  ],
+  "complexity": "Time: O(log k) | Space: O(log k)",
+  "starter_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    \n    return 0;\n}",
+  "reference_cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    string s1, s2;\n    long long k;\n    cin >> s1 >> s2 >> k;\n    vector<long long> len(100);\n    len[1] = s1.size();\n    len[2] = s2.size();\n    int n = 2;\n    while (len[n] <= k) {\n        n++;\n        len[n] = len[n - 1] + len[n - 2];\n    }\n    while (n > 2) {\n        if (k < len[n - 1]) {\n            n = n - 1;\n        } else {\n            k -= len[n - 1];\n            n = n - 2;\n        }\n    }\n    if (n == 1) cout << s1[k] << \"\\n\";\n    else cout << s2[k] << \"\\n\";\n    return 0;\n}",
+  "id": "gk-fib-string",
+  "test_count": 11
+}

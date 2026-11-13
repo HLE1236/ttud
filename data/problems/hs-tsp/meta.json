@@ -1,0 +1,34 @@
+{
+  "id": "hs-tsp",
+  "title": "[HUSTack] Người du lịch (TSP - n <= 20)",
+  "track": "midterm",
+  "topic": "backtracking",
+  "difficulty": "Nâng cao",
+  "exam_tags": [
+    "HUSTack 2025.2 (P.04.09.01)",
+    "HUSTack: Chưa làm"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Có `n` thành phố `1..n` (`n <= 20`) và ma trận chi phí `c[i][j]`. Xuất phát tại thành phố `1`, đi thăm mỗi thành phố `2..n` đúng một lần rồi quay về `1`. Tìm tổng chi phí hành trình nhỏ nhất.",
+  "input_spec": "- Dòng 1: `n` (`1 <= n <= 20`).\n- `n` dòng tiếp: ma trận chi phí `c`.",
+  "output_spec": "Chi phí hành trình ngắn nhất.",
+  "samples": [
+    {
+      "input": "4\n0 1 1 9\n1 0 9 3\n1 9 0 2\n9 3 2 0",
+      "output": "7"
+    }
+  ],
+  "theory_chapter": "chap3",
+  "mindset": "Chú ý giới hạn **`n <= 20`**! Nếu dùng Quay lui `O((n-1)!)` sẽ bị TLE khi `n = 18..20`!\nĐây là bài chuẩn dùng **Held-Karp Bitmask DP**: `dp[mask][u]` = chi phí nhỏ nhất đi qua tập đỉnh `mask` (chứa bit `0` là thành phố 1) và đang đứng ở `u`. Với `n = 20`, dùng mảng phẳng hoặc quay lui tốt? Wait: `2^19 * 19 ~ 10^7` trạng thái x 10 bước chuyển = ~`10^8` ops (~0.15s trong C++ `-O2`!). Hoặc Branch & Bound `min_out` hiệu quả!",
+  "hints": [
+    "Nếu cố định xuất phát từ thành phố `1` (chỉ số 0), ta chỉ cần bitmask cho `n - 1` đỉnh còn lại (`1..n-1`) -> giảm nửa bộ nhớ & thời gian!"
+  ],
+  "complexity": {
+    "time": "O(n^2 * 2^(n-1))",
+    "space": "O(n * 2^(n-1))"
+  },
+  "test_count": 10
+}

@@ -1,0 +1,33 @@
+{
+  "id": "hs-count-spanning-trees-k",
+  "title": "[HUSTack] Đếm cây khung có tổng trọng số <= K",
+  "track": "midterm",
+  "topic": "backtracking",
+  "difficulty": "Trung bình",
+  "exam_tags": [
+    "HUSTack 2025.2 (CountSpanningTree-K)",
+    "HUSTack: Chưa làm"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho đồ thị vô hướng có trọng số `G = (V, E)` gồm `n` đỉnh và `m` cạnh (`1 <= n, m <= 20`). Hãy đếm số **cây khung (spanning tree)** khác nhau của `G` sao cho tổng trọng số các cạnh trong cây khung không vượt quá `K`.",
+  "input_spec": "- Dòng 1: `n, m, K` (`1 <= n, m <= 20`, `1 <= K <= 100`).\n- `m` dòng tiếp theo: `u, v, w` (`1 <= w <= 100`).",
+  "output_spec": "Số lượng cây khung thỏa điều kiện.",
+  "samples": [
+    {
+      "input": "4 4 7\n1 2 1\n1 3 2\n2 4 4\n3 4 3",
+      "output": "2"
+    }
+  ],
+  "theory_chapter": "chap2",
+  "mindset": "Vì `n, m <= 20` rất nhỏ, ta dùng **Quay lui chọn `n - 1` cạnh từ `m` cạnh** (như bài toán đếm cây khung cơ bản), kết hợp:\n1. **Sắp xếp các cạnh tăng dần theo trọng số `w`** trước khi quay lui! Nhờ vậy ta biết được cận dưới tổng trọng số của `(n - 1 - picked)` cạnh nhỏ nhất còn lại để cắt nhánh sớm nếu `cur_w + min_rem_w > K`!\n2. Khi thử chọn cạnh thứ `idx` (`u, v`): dùng DSU hoàn tác (hoặc truyền mảng cha nhỏ `parent[21]`) — chỉ được phép chọn cạnh `(u, v)` nếu `find(u) != find(v)` (không tạo chu trình!).",
+  "hints": [
+    "Cắt nhánh 1: `if (cur_w > K) return;` (tốt hơn nữa: cộng `n - 1 - taken` cạnh nhẹ nhất ngay tiếp theo `idx`, nếu vượt `K` thì dừng!).",
+    "Cắt nhánh 2: nếu `m - idx < (n - 1) - taken` (không đủ cạnh còn lại để đủ `n - 1` cạnh) thì dừng.",
+    "Khi `taken == n - 1` (và mọi cạnh thêm vào đều không tạo chu trình + `cur_w <= K`), chắc chắn thu được 1 cây khung hợp lệ!"
+  ],
+  "complexity": "Quay lui + Cắt nhánh theo trọng số (m <= 20)",
+  "test_count": 10
+}

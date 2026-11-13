@@ -1,0 +1,33 @@
+{
+  "id": "hs-dfs-lex",
+  "title": "[HUSTack] Duyệt DFS theo thứ tự từ điển (DFS Lexicographic)",
+  "track": "final",
+  "topic": "graph-bfs-dfs",
+  "difficulty": "Cơ bản",
+  "exam_tags": [
+    "HUSTack 2025.2 (DFS_LEX)",
+    "HUSTack: Đã AC"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho đồ thị vô hướng `G = (V, E)` gồm `n` đỉnh (`1..n`) và `m` cạnh. Thực hiện duyệt theo chiều sâu (DFS) sao cho tại mỗi đỉnh, các đỉnh kề được xét theo thứ tự **chỉ số tăng dần**, và duyệt qua tất cả thành phần liên thông theo thứ tự đỉnh gốc tăng dần `1..n`. In ra thứ tự các đỉnh được thăm.",
+  "input_spec": "- Dòng 1: `n, m` (`1 <= n <= 10^5`, `0 <= m <= 2*10^5`).\n- `m` dòng tiếp theo: `u, v` là một cạnh vô hướng.",
+  "output_spec": "Dãy các đỉnh theo thứ tự được thăm.",
+  "samples": [
+    {
+      "input": "6 7\n2 4\n1 3\n3 4\n5 6\n1 2\n3 5\n2 3",
+      "output": "1 2 3 4 5 6"
+    }
+  ],
+  "theory_chapter": "chap6",
+  "mindset": "Sắp xếp danh sách kề `adj[u]` tăng dần rồi chạy DFS qua `u = 1..n`. Lưu ý: nếu `n = 10^5`, đồ thị dạng đường thẳng dài `10^5` có thể gây **tràn ngăn xếp (Stack Overflow)** trên Windows với DFS đệ quy -> ta có thể cài DFS không đệ quy bằng `stack` (duyệt iterator) hoặc viết DFS cẩn thận.",
+  "hints": [
+    "Sort từng `adj[u]` tăng dần.",
+    "Dùng mảng `ptr[u]` kết hợp `stack<int>` để mô phỏng DFS đệ quy y hệt theo thứ tự từ điển mà không bao giờ lo tràn stack với `n = 10^5`.",
+    "In `u` ngay lần đầu `vis[u]` chuyển sang `1`."
+  ],
+  "complexity": "O(n + m log m)",
+  "test_count": 10
+}

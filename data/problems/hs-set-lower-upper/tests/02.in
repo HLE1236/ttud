@@ -1,0 +1,23 @@
+10
+5 16 34 33 35 19 23 7 38 49
+min_greater_equal 29
+insert 9
+min_greater_equal 28
+remove 1
+remove 2
+min_greater 26
+insert 10
+insert 43
+insert 4
+remove 20
+insert 22
+min_greater_equal 37
+min_greater_equal 44
+min_greater 12
+min_greater_equal 10
+remove 38
+insert 38
+remove 7
+min_greater 32
+remove 1
+#

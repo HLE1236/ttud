@@ -1,0 +1,34 @@
+{
+  "id": "ck-d-increasing-subseq",
+  "title": "Dãy con D-tăng dài nhất (D-increasing Subsequence)",
+  "track": "final",
+  "topic": "dp-lis-lcs",
+  "difficulty": "Trung bình",
+  "exam_tags": [
+    "Cuối kỳ 2024.1 Kíp 1 (Bài 4)"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho dãy `S` gồm `n` số nguyên dương `a[1], a[2], ..., a[n]` và một số nguyên dương `D`.\nMột dãy con `x[1], x[2], ..., x[m]` (lấy bằng cách bỏ bớt một số phần tử và giữ nguyên thứ tự) được gọi là **D-tăng** nếu `x[i] + D <= x[i + 1]` với mọi `1 <= i < m`.\nHãy tìm độ dài lớn nhất của một dãy con D-tăng của `S`.",
+  "input_spec": "- Dòng 1: Hai số nguyên dương `n` và `D` (`1 <= n <= 10000`, `1 <= D <= 1000`).\n- Dòng 2: `n` số nguyên `a[1..n]` (`1 <= a[i] <= 10^6`).",
+  "output_spec": "Một số nguyên duy nhất là độ dài dãy con D-tăng dài nhất.",
+  "samples": [
+    {
+      "input": "6 2\n3 2 4 5 7 6",
+      "output": "3"
+    }
+  ],
+  "theory_chapter": "chap4b",
+  "mindset": "Biến thể trực tiếp của bài toán **Dãy con tăng dài nhất (LIS)**! Thay vì điều kiện `a[j] < a[i]`, ta chỉ đổi thành `a[j] + D <= a[i]`!\n- Với `n <= 10000`, quy hoạch động `O(n^2)`: `dp[i] = max(dp[j] + 1)` với mọi `j < i` mà `a[j] + D <= a[i]`. (`10^8 / 2` vòng lặp trong C++ chạy ~`0.05s`!).\n- Thậm chí dùng Fenwick Tree (BIT) hoặc Segment Tree trên miền giá trị `1..10^6` để tối ưu thành `O(n log(maxA))` hiệu quả!",
+  "hints": [
+    "Nếu dùng `O(n^2)`: `dp[i] = 1`, duyệt `j` từ `0` đến `i - 1`, nếu `a[j] + D <= a[i]` thì `dp[i] = max(dp[i], dp[j] + 1)`.",
+    "Nếu dùng Fenwick Tree (`bit[1..1000000]` lưu max độ dài kết thúc tại giá trị `<= v`): với `x = a[i]`, ta truy vấn `max` trên `[1 .. max(0, x - D)]`, cộng 1 rồi cập nhật vào `x`!"
+  ],
+  "complexity": {
+    "time": "O(n log M) hoặc O(n^2)",
+    "space": "O(M) hoặc O(n)"
+  },
+  "test_count": 10
+}

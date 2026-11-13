@@ -1,0 +1,35 @@
+{
+  "title": "Đếm dãy con k-phần tử có tổng bằng m",
+  "track": "midterm",
+  "exam_tags": [
+    "GK 20221 (Kíp 1)",
+    "GK 20241 (biến thể >=, <=)"
+  ],
+  "topic": "hash-prefix",
+  "theory_chapter": "chap2",
+  "difficulty": "Cơ bản",
+  "day": 2,
+  "time_limit_ms": 1000,
+  "tc_source": "Official Zip (GK 20221) + 6 generated",
+  "statement": "Cho dãy số nguyên `a[1], a[2], ..., a[n]`. Một dãy con `k`-phần tử liên tiếp có trọng số là tổng của `k` phần tử đứng cạnh nhau đó.\n\nCho hai số nguyên dương `k` và `m`. Tính số lượng `Q` các dãy con `k`-phần tử liên tiếp có tổng **đúng bằng `m`**.",
+  "input_spec": "- Dòng 1: ba số nguyên dương `n, k, m` (`1 <= n <= 10^5, 1 <= k <= n`).\n- Dòng 2: `n` số nguyên `a[1]..a[n]` (`1 <= a[i] <= 10000`).",
+  "output_spec": "Giá trị `Q` tìm được.",
+  "samples": [
+    {
+      "input": "6 3 9\n3 2 4 3 2 1",
+      "output": "3",
+      "explanation": "3 đoạn dài 3 tổng bằng 9: (3,2,4), (2,4,3), (4,3,2)."
+    }
+  ],
+  "mindset": "Cách ngây thơ dùng 2 vòng `for` có độ phức tạp `O(n*k)` → với `n = 10^5, k = 50000` sẽ bị **TLE**!\nDùng **Cửa sổ trượt (Sliding Window)**:\n- Tính tổng `k` số đầu tiên: `win = a[0] + ... + a[k-1]`.\n- Khi dịch khung sang phải 1 ô (tới `i`), tổng mới chỉ là: `win = win + a[i] - a[i - k]`! Mất đúng `O(1)` mỗi bước → toàn bài chỉ `O(n)`.",
+  "hints": [
+    "Tính tổng cửa sổ đầu tiên gồm `k` phần tử đầu.",
+    "Duyệt `i` từ `k` đến `n-1`: cập nhật `win += a[i] - a[i-k]`.",
+    "Mỗi vị trí nếu `win == m` thì tăng `ans++`."
+  ],
+  "complexity": "Time: O(n) | Space: O(n)",
+  "starter_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    \n    return 0;\n}",
+  "reference_cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    int n, k;\n    long long m;\n    cin >> n >> k >> m;\n    vector<long long> a(n);\n    for (int i = 0; i < n; i++) cin >> a[i];\n    long long win = 0, ans = 0;\n    for (int i = 0; i < k; i++) win += a[i];\n    if (win == m) ans++;\n    for (int i = k; i < n; i++) {\n        win += a[i] - a[i - k];\n        if (win == m) ans++;\n    }\n    cout << ans << \"\\n\";\n    return 0;\n}",
+  "id": "gk-k-subseq-weight",
+  "test_count": 10
+}

@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TTUD IT3170 — Hệ thống Ôn tập &amp; Chấm bài C++</title>
+  <link rel="stylesheet" href="vendor/codemirror.min.css" />
+  <link rel="stylesheet" href="vendor/dracula.min.css" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand" id="brand-home" title="Về trang Lộ trình" role="button" tabindex="0">
+      <span class="brand-logo" aria-hidden="true">IT</span>
+      <div>
+        <div class="brand-title">TTUD · IT3170</div>
+        <div class="brand-sub">Giữa kỳ &amp; Cuối kỳ (2021–2025 · HUSTack 2025.2)</div>
+      </div>
+    </div>
+
+    <nav class="nav-tabs" aria-label="Điều hướng chính">
+      <button class="nav-tab active" data-view="roadmap">
+        <svg class="ui-ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 3.5h12M2 8h8M2 12.5h10"/><circle cx="13" cy="8" r="1.5"/></svg>
+        Lộ trình 16 ngày
+      </button>
+      <button class="nav-tab" data-view="theory">
+        <svg class="ui-ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 2.5h8.5A1.5 1.5 0 0 1 13 4v9.5l-4.5-2-4.5 2V4A1.5 1.5 0 0 1 3 2.5z"/></svg>
+        Lý thuyết &amp; Phương pháp
+      </button>
+      <button class="nav-tab" data-view="problems">
+        <svg class="ui-ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2.5 3.5h11M2.5 8h11M2.5 12.5h7"/></svg>
+        Ngân hàng đề <span class="pill-count" id="nav-total-count">0</span>
+      </button>
+      <button class="nav-tab" data-view="arena">
+        <svg class="ui-ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5.5 4.5 2 8l3.5 3.5M10.5 4.5 14 8l-3.5 3.5M9 3l-2 10"/></svg>
+        Phòng Code
+      </button>
+    </nav>
+
+    <div class="topbar-right">
+      <div class="stat-mini" title="Số bài đã đạt AC trên tổng số bài trong kho">
+        <span class="stat-mini-label">Hoàn thành</span>
+        <strong id="top-ac-progress">0/0</strong>
+      </div>
+      <div class="countdown-badge" id="countdown-badge">Mốc 29/11</div>
+      <button class="icon-btn" id="theme-toggle" title="Chuyển giao diện Sáng / Tối" aria-label="Chuyển giao diện Sáng hoặc Tối"></button>
+    </div>
+  </header>
+
+  <main class="main-container">
+    <!-- VIEW 1: ROADMAP -->
+    <section id="view-roadmap" class="view active">
+      <div class="hero-grid">
+        <div class="surface hero-card">
+          <div class="hero-head">
+            <div class="hero-title-wrap">
+              <div class="eyebrow">Kế hoạch ôn tập 13/11 – 28/11</div>
+              <h1>Lộ trình Thuật toán Ứng dụng (Giữa kỳ &amp; Cuối kỳ)</h1>
+              <p class="muted prose-lead">Cấu trúc 2 giai đoạn: <strong>Giữa kỳ (Ngày 1–7)</strong> hệ thống hóa mảng đếm, Prefix Sum, Tham lam, Quay lui và DP cơ bản; <strong>Cuối kỳ (Ngày 8–16)</strong> tập trung DP đa chiều, Đồ thị (BFS/DFS, Dijkstra, Kruskal, Tarjan) và Luồng mạng.</p>
+            </div>
+            <div class="track-pills" id="roadmap-track-filter" role="group" aria-label="Lọc giai đoạn lộ trình">
+              <button class="filter-pill active" data-track="all">Tất cả 16 ngày</button>
+              <button class="filter-pill" data-track="midterm">Phần 1: Giữa kỳ (1–7)</button>
+              <button class="filter-pill" data-track="final">Phần 2: Cuối kỳ (8–16)</button>
+            </div>
+          </div>
+          <div class="progress-summary-grid" id="roadmap-summary"></div>
+        </div>
+      </div>
+      <div class="roadmap-list" id="roadmap-days"></div>
+    </section>
+
+    <!-- VIEW 2: THEORY & METHODOLOGY -->
+    <section id="view-theory" class="view">
+      <div class="theory-layout">
+        <aside class="theory-sidebar surface">
+          <h3>Mục lục tài liệu</h3>
+          <div class="theory-nav-list" id="theory-nav-list">
+            <button class="theory-nav-item active" data-chapter="mindset">Phương pháp 4 bước</button>
+            <button class="theory-nav-item" data-chapter="cheatsheet">Đối chiếu giới hạn N</button>
+          </div>
+          <div class="theory-sidebar-divider">Bài giảng học phần (Slide HUST)</div>
+          <div class="theory-nav-list" id="theory-chapters-nav"></div>
+        </aside>
+        <article class="theory-content surface" id="theory-content"></article>
+      </div>
+    </section>
+
+    <!-- VIEW 3: PROBLEM BANK -->
+    <section id="view-problems" class="view">
+      <div class="surface filter-bar">
+        <div class="filter-row">
+          <input type="search" id="search-input" class="input-search" aria-label="Tìm kiếm bài toán" placeholder="Tìm theo tên bài, mã định danh hoặc nguồn đề (vd: 2024, Dijkstra, HUSTack)..." />
+          <select id="filter-track" class="select-input" aria-label="Lọc theo kỳ thi">
+            <option value="all">Tất cả học phần (GK + CK)</option>
+            <option value="midterm">Giữa kỳ (GK)</option>
+            <option value="final">Cuối kỳ (CK)</option>
+          </select>
+          <select id="filter-topic" class="select-input" aria-label="Lọc theo chuyên đề">
+            <option value="all">Tất cả chuyên đề</option>
+          </select>
+          <select id="filter-year" class="select-input" aria-label="Lọc theo nguồn và năm thi">
+            <option value="all">Tất cả nguồn / năm thi</option>
+            <option value="HUSTack 2025.2">HUSTack 2025.2 (76 bài / 77 đề)</option>
+            <option value="HUSTack: Chưa làm">HUSTack: Chưa làm</option>
+            <option value="HUSTack: Đã AC">HUSTack: Đã AC</option>
+            <option value="2025">Năm 2025</option>
+            <option value="2024">Năm 2024</option>
+            <option value="2023">Năm 2023</option>
+            <option value="2022">Năm 2022</option>
+            <option value="2021">Năm 2021</option>
+          </select>
+          <select id="filter-status" class="select-input" aria-label="Lọc theo trạng thái">
+            <option value="all">Tất cả trạng thái</option>
+            <option value="unsolved">Chưa AC</option>
+            <option value="solved">Đã AC</option>
+          </select>
+        </div>
+        <div class="topic-stats-strip" id="topic-stats-strip"></div>
+      </div>
+      <div class="surface problem-table-wrap">
+        <table class="problem-table">
+          <thead>
+            <tr>
+              <th style="width: 68px;">Trạng thái</th>
+              <th>Bài toán &amp; Ràng buộc</th>
+              <th>Học phần / Chuyên đề</th>
+              <th>Nguồn / Năm thi</th>
+              <th>Mức độ</th>
+              <th>Bộ test</th>
+              <th style="width: 108px; text-align: right;">Thao tác</th>
+            </tr>
+          </thead>
+          <tbody id="problems-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- VIEW 4: CODING ARENA -->
+    <section id="view-arena" class="view">
+      <div class="arena-grid">
+        <!-- LEFT PANE -->
+        <div class="arena-left surface">
+          <div class="arena-problem-header">
+            <div class="arena-header-top">
+              <button class="btn btn-sm btn-ghost" id="btn-back-list">← Ngân hàng đề</button>
+              <div class="arena-badges" id="arena-badges"></div>
+            </div>
+            <h2 id="arena-title">Chọn một bài toán để bắt đầu</h2>
+            <div class="arena-exam-tags" id="arena-exam-tags"></div>
+            <div class="arena-meta-links">
+              <button class="btn-link" id="btn-open-theory">Xem lý thuyết chương liên quan →</button>
+              <span class="muted mono-meta" id="arena-tl"></span>
+            </div>
+          </div>
+
+          <div class="sub-tabs" id="left-subtabs">
+            <button class="sub-tab active" data-ltab="statement">Đề bài</button>
+            <button class="sub-tab" data-ltab="mindset">Phân tích &amp; Gợi ý</button>
+            <button class="sub-tab" data-ltab="notes">Ghi chú</button>
+            <button class="sub-tab" data-ltab="history">Lịch sử (<span id="hist-count">0</span>)</button>
+            <button class="sub-tab" data-ltab="tests">Bộ Test (<span id="test-count">0</span>)</button>
+          </div>
+
+          <div class="arena-left-body" id="arena-left-body">
+            <!-- Statement Tab -->
+            <div class="ltab-pane active" id="ltab-statement">
+              <div class="section-block">
+                <h4>Phát biểu bài toán</h4>
+                <div class="prose" id="prob-statement"></div>
+              </div>
+              <div class="section-block">
+                <h4>Dữ liệu vào (Input)</h4>
+                <div class="prose" id="prob-input"></div>
+              </div>
+              <div class="section-block">
+                <h4>Dữ liệu ra (Output)</h4>
+                <div class="prose" id="prob-output"></div>
+              </div>
+              <div class="section-block">
+                <h4>Ví dụ kiểm thử</h4>
+                <div id="prob-samples"></div>
+              </div>
+            </div>
+
+            <!-- Mindset & Hints Tab -->
+            <div class="ltab-pane" id="ltab-mindset">
+              <div class="callout callout-tip">
+                <h4>Phân tích thuật toán</h4>
+                <div class="prose" id="prob-mindset"></div>
+              </div>
+              <div class="section-block">
+                <h4>Gợi ý từng bước</h4>
+                <div id="prob-hints"></div>
+              </div>
+              <div class="callout callout-info" id="prob-complexity-box">
+                <h4>Độ phức tạp mục tiêu</h4>
+                <div id="prob-complexity"></div>
+              </div>
+              <div class="section-block">
+                <div class="ref-code-header">
+                  <h4>Lời giải C++17 tham khảo</h4>
+                  <div class="ref-actions">
+                    <button class="btn btn-sm btn-ghost" id="btn-toggle-ref">Hiện mã nguồn</button>
+                    <button class="btn btn-sm btn-ghost hidden" id="btn-load-ref">Nạp vào Editor</button>
+                  </div>
+                </div>
+                <pre class="code-box hidden" id="prob-ref-code"></pre>
+              </div>
+            </div>
+
+            <!-- Notes Tab -->
+            <div class="ltab-pane" id="ltab-notes">
+              <p class="muted small-prose">Ghi chú riêng cho bài toán này (tự động lưu cục bộ vào SQLite khi dừng nhập):</p>
+              <textarea id="note-textarea" class="note-textarea" aria-label="Ghi chú cá nhân" placeholder="Ghi nhận bất biến, trường hợp biên hoặc công thức truy hồi..."></textarea>
+              <div class="note-status" id="note-status">Sẵn sàng</div>
+            </div>
+
+            <!-- History Tab -->
+            <div class="ltab-pane" id="ltab-history">
+              <div id="history-list"></div>
+            </div>
+
+            <!-- Tests Directory Tab -->
+            <div class="ltab-pane" id="ltab-tests">
+              <div class="callout callout-info">
+                <strong>Thư mục bộ test cục bộ</strong>
+                <div class="path-box" id="tests-dir-path"></div>
+                <p class="muted small">Các tệp <code>.in</code> / <code>.out</code> và kịch bản sinh <code>gen.py</code> được lưu trực tiếp trong thư mục trên.</p>
+              </div>
+              <div class="test-list-chips" id="test-preview-list"></div>
+              <div id="test-preview-box" class="hidden">
+                <h4 id="test-preview-title"></h4>
+                <div class="io-grid">
+                  <div>
+                    <div class="io-label">Input (.in)</div>
+                    <pre class="io-pre" id="test-preview-in"></pre>
+                  </div>
+                  <div>
+                    <div class="io-label">Expected Output (.out)</div>
+                    <pre class="io-pre" id="test-preview-out"></pre>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT PANE -->
+        <div class="arena-right surface">
+          <div class="editor-toolbar">
+            <div class="toolbar-group">
+              <span class="lang-badge">C++17 · g++ -O2</span>
+              <button class="btn btn-sm btn-ghost" id="btn-template" title="Khôi phục khung C++ chuẩn">Template</button>
+              <label class="btn btn-sm btn-ghost file-upload-btn" title="Tải lên tệp .cpp từ máy">
+                Mở .cpp
+                <input type="file" id="cpp-file-input" accept=".cpp,.cc,.cxx,.txt" hidden />
+              </label>
+              <span class="draft-indicator" id="draft-status">Đã lưu</span>
+            </div>
+            <div class="toolbar-group">
+              <button class="btn btn-sm btn-ghost" id="btn-font-dec" title="Giảm cỡ chữ">A-</button>
+              <button class="btn btn-sm btn-ghost" id="btn-font-inc" title="Tăng cỡ chữ">A+</button>
+              <button class="btn btn-sm btn-secondary" id="btn-run-sample" title="Phím tắt: Ctrl + Enter">Chạy thử <kbd>Ctrl+↵</kbd></button>
+              <button class="btn btn-sm btn-primary" id="btn-submit" title="Phím tắt: Ctrl + Shift + Enter">Nộp bài <kbd>Ctrl+⇧+↵</kbd></button>
+            </div>
+          </div>
+
+          <div class="editor-wrapper" id="editor-dropzone">
+            <textarea id="code-editor"></textarea>
+            <div class="drop-overlay hidden" id="drop-overlay">Thả tệp <code>.cpp</code> để nạp vào trình soạn thảo</div>
+          </div>
+
+          <div class="judge-panel">
+            <div class="sub-tabs judge-tabs">
+              <button class="sub-tab active" data-rtab="sample">Kiểm thử Input tùy chọn</button>
+              <button class="sub-tab" data-rtab="verdict">Kết quả chấm bài <span id="verdict-pill-badge"></span></button>
+            </div>
+
+            <div class="judge-body">
+              <!-- Run Sample Tab -->
+              <div class="rtab-pane active" id="rtab-sample">
+                <div class="sample-runner-grid">
+                  <div>
+                    <div class="io-label-row">
+                      <span class="io-label">Input (stdin)</span>
+                      <button class="btn-link small" id="btn-copy-sample1">Nạp Ví dụ #1</button>
+                    </div>
+                    <textarea id="custom-input" class="io-textarea" aria-label="Dữ liệu đầu vào thử nghiệm" placeholder="Nhập dữ liệu kiểm thử..."></textarea>
+                  </div>
+                  <div>
+                    <div class="io-label-row">
+                      <span class="io-label">Kết quả thực thi (stdout)</span>
+                      <span class="muted small mono-meta" id="sample-run-meta"></span>
+                    </div>
+                    <pre id="sample-output" class="io-pre sample-out-pre">Nhấn "Chạy thử" (Ctrl+Enter) để biên dịch và thực thi với Input bên trái.</pre>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Submit Verdict Tab -->
+              <div class="rtab-pane" id="rtab-verdict">
+                <div id="verdict-container">
+                  <div class="muted center-empty">Chưa có lượt nộp trong phiên hiện tại. Nhấn <strong>Nộp bài</strong> để chấm toàn bộ bộ test.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="vendor/codemirror.min.js"></script>
+  <script src="vendor/clike.min.js"></script>
+  <script src="vendor/matchbrackets.min.js"></script>
+  <script src="vendor/closebrackets.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+{
+  "title": "Phân công giảng dạy cân bằng tín chỉ (BCA)",
+  "track": "midterm",
+  "exam_tags": [
+    "GK 20241",
+    "Codeforces"
+  ],
+  "topic": "backtracking",
+  "theory_chapter": "chap3",
+  "difficulty": "Nâng cao",
+  "day": 5,
+  "time_limit_ms": 2000,
+  "tc_source": "Official Zip (GK 20241)",
+  "statement": "Khoa có `m` giảng viên (`1..m`) và `n` môn học (`1..n`). Mỗi môn học `i` có số tín chỉ `crd(i)`. Mỗi giảng viên có danh sách các môn có thể dạy. Ngoài ra có `K` cặp môn xung đột thời khóa biểu không thể giao cho cùng một giảng viên.\n\nTải giảng dạy của một giảng viên là **tổng số tín chỉ** các môn được giao cho người đó. Hãy phân công tất cả `n` môn học hợp lệ sao cho **tải lớn nhất trong các giảng viên là nhỏ nhất**. Nếu không có phương án, in `-1`.",
+  "input_spec": "- Dòng 1: `m` và `n` (`1 <= m <= 10, 1 <= n <= 30`).\n- `m` dòng tiếp theo: dòng `i+1` gồm số `k` và `k` mã môn giảng viên `i` có thể dạy.\n- Dòng `m+2`: `n` số nguyên `crd(1)..crd(n)`.\n- Dòng `m+3`: số nguyên `K`.\n- `K` dòng tiếp theo: mỗi dòng hai số `u, v` là cặp môn xung đột.",
+  "output_spec": "Tải tối đa nhỏ nhất tìm được (hoặc `-1` nếu vô nghiệm).",
+  "samples": [
+    {
+      "input": "4 12\n5 1 3 5 10 12\n5 9 3 4 8 12\n6 1 2 3 4 9 7\n7 1 2 3 5 6 10 11\n2 3 3 2 1 2 3 2 2 2 3 1\n25\n1 2\n1 3\n1 5\n2 4\n2 5\n2 6\n3 5\n3 7\n3 10\n4 6\n4 9\n5 6\n5 7\n5 8\n6 8\n6 9\n7 8\n7 10\n7 11\n8 9\n8 11\n8 12\n9 12\n10 11\n11 12",
+      "output": "8",
+      "explanation": "Tải lớn nhất tối ưu giữa 4 giảng viên là 8 tín chỉ."
+    }
+  ],
+  "mindset": "Đây là bài **Nhánh và cận kinh điển** của môn TTUD:\n- Biến quyết định `x[k]`: giảng viên được giao dạy môn `k` (`k = 1..n`).\n- Với mỗi môn `k`, ta chỉ thử những giảng viên `v` nằm trong `D[k]` (danh sách giảng viên có thể dạy môn `k`) và không dạy môn `i < k` nào xung đột với `k`.\n- **Cắt tỉa Nhánh cận hiệu quả**: Ngay khi thử gán môn `k` cho giảng viên `v`, nếu `load[v] >= best` (đã bằng hoặc vượt kỷ lục tốt nhất từng tìm được) thì **dừng ngay không đi tiếp nhánh này**!",
+  "hints": [
+    "Lưu `D[c]` là danh sách các giảng viên có thể dạy môn `c`.",
+    "Trong `Try(k)`: duyệt từng giảng viên `v` trong `D[k]`, kiểm tra `conflict[i][k]` với các môn `i < k` đang gán cho `v`.",
+    "Cắt tỉa: chỉ gọi `Try(k+1)` khi `load[v] < best`!"
+  ],
+  "complexity": "Time: Nhánh cận có cắt tỉa | Space: O(n^2)",
+  "starter_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    \n    return 0;\n}",
+  "reference_cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint m, n;\nvector<int> D[35];\nint credits[35], load[15], x[35];\nbool conflict[35][35];\nint best = 1e9;\n\nbool check(int v, int k) {\n    for (int i = 1; i < k; i++) {\n        if (conflict[i][k] && x[i] == v) return false;\n    }\n    return true;\n}\n\nvoid Try(int k) {\n    for (int v : D[k]) {\n        if (check(v, k)) {\n            x[k] = v;\n            load[v] += credits[k];\n            if (load[v] < best) {\n                if (k == n) {\n                    int mx = 0;\n                    for (int i = 1; i <= m; i++) mx = max(mx, load[i]);\n                    best = min(best, mx);\n                } else {\n                    Try(k + 1);\n                }\n            }\n            load[v] -= credits[k];\n        }\n    }\n}\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    cin >> m >> n;\n    for (int i = 1; i <= m; i++) {\n        int k; cin >> k;\n        while (k--) {\n            int c; cin >> c;\n            D[c].push_back(i);\n        }\n    }\n    for (int i = 1; i <= n; i++) cin >> credits[i];\n    int K; cin >> K;\n    while (K--) {\n        int u, v; cin >> u >> v;\n        conflict[u][v] = conflict[v][u] = true;\n    }\n    Try(1);\n    cout << (best == 1e9 ? -1 : best) << \"\\n\";\n    return 0;\n}",
+  "id": "gk-bca-credit",
+  "test_count": 8
+}

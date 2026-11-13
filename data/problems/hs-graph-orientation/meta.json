@@ -1,0 +1,37 @@
+{
+  "id": "hs-graph-orientation",
+  "title": "[HUSTack] Định hướng cạnh thành đồ thị liên thông mạnh (Robbins' Theorem)",
+  "track": "final",
+  "topic": "graph-special",
+  "difficulty": "Khó",
+  "exam_tags": [
+    "HUSTack 2025.2 (GraphOrientation)",
+    "HUSTack: Chưa làm"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": true,
+  "statement": "Cho đồ thị vô hướng `G = (V, E)` gồm `n` đỉnh (`1..n`) và `m` cạnh. Hãy tìm cách định hướng cho mỗi cạnh (biến `(u, v)` thành cung có hướng `u -> v` hoặc `v -> u`) sao cho đồ thị có hướng thu được **liên thông mạnh**. Nếu không tồn tại cách định hướng, in `-1`.",
+  "input_spec": "- Dòng 1: `n, m` (`1 <= n <= 10^4`, `1 <= m <= 10^5`).\n- `m` dòng tiếp theo: `u, v` là hai đầu mút cạnh thứ `i`.",
+  "output_spec": "- Nếu không định hướng được: in `-1`.\n- Ngược lại:\n  + Dòng 1: in `m`.\n  + `m` dòng tiếp theo: mỗi dòng 2 số `u, v` biểu diễn cung có hướng `u -> v`.",
+  "samples": [
+    {
+      "input": "6 8\n1 2\n1 3\n1 4\n2 4\n3 4\n4 5\n4 6\n5 6",
+      "output": "8\n1 2\n2 4\n4 1\n4 3\n3 1\n4 5\n5 6\n6 4"
+    },
+    {
+      "input": "9 12\n1 2\n1 3\n1 4\n2 4\n3 4\n4 5\n5 6\n5 7\n5 8\n6 8\n7 8\n8 9",
+      "output": "-1"
+    }
+  ],
+  "theory_chapter": "chap6",
+  "mindset": "**Định lý Robbins (1939)**: Một đồ thị vô hướng định hướng được thành đồ thị có hướng liên thông mạnh KHI VÀ CHỈ KHI nó **liên thông** và **không chứa cạnh cầu**!\nKhi điều kiện thỏa, cách định hướng đơn giản gọn chỉ qua **1 lần DFS**:\n- **Cạnh cây DFS** (`u -> v` đi xuống con chưa thăm): định hướng đi XUỐNG (`u -> v`).\n- **Cạnh ngược (Back edge)** (`u -> v` nối tới tổ tiên `v` có `tin[v] < tin[u]`): định hướng đi LÊN (`u -> v`).",
+  "hints": [
+    "Dùng Tarjan tìm cầu như bình thường (`low[v] > tin[u]`), nếu thấy BẤT KỲ cạnh cầu nào hoặc số đỉnh thăm được `< n` -> in `-1` ngay.",
+    "Đánh số `edge_id` cho mỗi cạnh vô hướng; khi xử lý cạnh `eid` trong DFS, đánh dấu đã định hướng `dir_u[eid], dir_v[eid]` ngay để mỗi cạnh chỉ bị định hướng đúng 1 lần!",
+    "Chú ý dùng DFS không đệ quy hoặc đảm bảo `n <= 10^4` đủ an toàn stack."
+  ],
+  "complexity": "O(n + m)",
+  "test_count": 10
+}

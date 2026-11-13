@@ -1,0 +1,33 @@
+{
+  "id": "hs-nurse",
+  "title": "[HUSTack] Lập lịch trực y tá (Nurse)",
+  "track": "midterm",
+  "topic": "dp-midterm",
+  "difficulty": "Trung bình",
+  "exam_tags": [
+    "HUSTack 2025.2 (P.04.08.02)",
+    "HUSTack: Đã AC"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Giám đốc bệnh viện muốn lập lịch làm việc cho một y tá trong `N` ngày liên tiếp (`1..N`). Ngày làm việc ký hiệu `1`, ngày nghỉ ký hiệu `0`. Để đảm bảo sức khỏe và công việc:\n- Mỗi đợt làm việc liên tiếp phải có độ dài từ `K_1` đến `K_2` ngày (`K_1 <= len <= K_2`).\n- Giữa hai đợt làm việc liên tiếp luôn có **đúng 1 ngày nghỉ** (không bao giờ nghỉ 2 ngày liên tiếp, nhưng có thể bắt đầu bằng 1 ngày nghỉ ở đầu kỳ hoặc kết thúc bằng 1 ngày nghỉ ở cuối kỳ).\n\nHãy đếm số lịch trực hợp lệ theo modulo `10^9 + 7`.",
+  "input_spec": "Một dòng chứa 3 số nguyên dương `N, K_1, K_2` (`2 <= N <= 1000`, `1 <= K_1 < K_2 <= 400`).",
+  "output_spec": "Số lượng lịch trực hợp lệ chia dư cho `10^9 + 7`.",
+  "samples": [
+    {
+      "input": "6 2 3",
+      "output": "4"
+    }
+  ],
+  "theory_chapter": "chap4",
+  "mindset": "Chia trạng thái tại ngày `i` dựa theo hành động **kết thúc đúng ở ngày `i`**:\n- `dp0[i]`: số cách lập lịch `1..i` mà ngày `i` là ngày nghỉ (`0`).\n- `dp1[i]`: số cách lập lịch `1..i` mà ngày `i` kết thúc một đợt làm việc (`1`).\nDo không có hai số `0` cạnh nhau, trước một ngày `0` bắt buộc là kết thúc một đợt làm việc (`dp0[i] = dp1[i-1]`). Và để kết thúc một đợt làm việc độ dài `k in [K1, K2]` tại ngày `i`, ngày `i - k` phải là ngày nghỉ `0` (hoặc `i - k == 0`).",
+  "hints": [
+    "Khởi tạo `dp0[0] = 1, dp1[0] = 1` (biểu diễn trạng thái trước ngày 1 cho phép bắt đầu bằng `0` hoặc một đợt `1`).",
+    "Với `i = 1..N`: `dp0[i] = dp1[i - 1]`.",
+    "`dp1[i] = sum(dp0[i - k])` với mọi `k` từ `K1` tới `K2` sao cho `i - k >= 0`. Kết quả là `(dp0[N] + dp1[N]) % MOD`."
+  ],
+  "complexity": "O(N * (K2 - K1)) thời gian, O(N) bộ nhớ",
+  "test_count": 10
+}

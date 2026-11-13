@@ -1,0 +1,34 @@
+{
+  "id": "ck-daily-transactions-2d",
+  "title": "Tổng giao dịch theo ngày và khoảng khách hàng (Prefix Sum 2D/1D)",
+  "track": "final",
+  "topic": "hash-prefix",
+  "difficulty": "Trung bình",
+  "exam_tags": [
+    "Cuối kỳ 2024.2 (Bài 2)"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Một công ty lưu `n` giao dịch dạng bộ ba `(d, c, a)`, trong đó `d` là ngày (`1 <= d <= 10000`), `c` là mã khách hàng (`1 <= c <= 100`), và `a` là giá trị giao dịch (`1 <= a <= 10^6`).\nCần xử lý `m` truy vấn, mỗi truy vấn gồm `(d, c1, c2)` yêu cầu tính **tổng giá trị giao dịch** trong ngày `d` của nhóm khách hàng có mã từ `c1` đến `c2` (`1 <= c1 <= c2 <= 100`).",
+  "input_spec": "- Dòng 1: Số nguyên `n` (`1 <= n <= 10^6`).\n- `n` dòng tiếp theo: mỗi dòng gồm 3 số nguyên `d, c, a`.\n- Dòng tiếp theo: Số nguyên `m` (`1 <= m <= 10^6`).\n- `m` dòng tiếp theo: mỗi dòng gồm 3 số nguyên `d, c1, c2`.",
+  "output_spec": "Gồm `m` dòng, mỗi dòng ghi kết quả của truy vấn tương ứng.",
+  "samples": [
+    {
+      "input": "3\n1 1 100\n1 2 200\n2 1 300\n2\n1 1 2\n2 1 1",
+      "output": "300\n300"
+    }
+  ],
+  "theory_chapter": "chap2",
+  "mindset": "Nhận xét cực đắt giá từ giới hạn: số ngày `d <= 10000` và số khách hàng `c <= 100` -> Bảng kích thước `10001 x 101` chỉ có ~`10^6` ô (chiếm đúng ~8 MB RAM)! Ta chỉ cần cộng dồn trực tiếp `val[d][c] += a`, sau đó với mỗi ngày `d` xây dựng mảng cộng dồn 1 chiều theo cột `c`: `pref[d][c] = pref[d][c-1] + val[d][c]`. Mỗi truy vấn trả lời trong `O(1)`: `pref[d][c2] - pref[d][c1 - 1]`!",
+  "hints": [
+    "Với `n, m <= 10^6`, bắt buộc dùng `ios::sync_with_stdio(false); cin.tie(nullptr);` và in `'\\n'` thay cho `endl`.",
+    "Cẩn thận khi truy vấn hỏi một ngày `d` không có giao dịch nào — nếu khai báo mảng tĩnh `long long pref[10005][105]` khởi tạo `0`, kết quả tự động bằng `0`."
+  ],
+  "complexity": {
+    "time": "O(n + 10^4 * 100 + m)",
+    "space": "O(10^4 * 100)"
+  },
+  "test_count": 10
+}

@@ -1,0 +1,42 @@
+{
+  "id": "ck-stock-k-transactions",
+  "title": "Đầu tư chứng khoán tối đa K lần giao dịch (Stock K)",
+  "track": "final",
+  "topic": "dp-knapsack-stock",
+  "difficulty": "Nâng cao",
+  "exam_tags": [
+    "Cuối kỳ 2024.1 Kíp 2 & 3 (Bài 4)"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho giá cổ phiếu trong `n` ngày liên tiếp là `p[1], p[2], ..., p[n]`. Bạn được thực hiện **tối đa `k` giao dịch** (mỗi giao dịch gồm 1 lần mua và sau đó 1 lần bán; không được nắm giữ nhiều cổ phiếu cùng lúc, phải bán cổ phiếu cũ trước khi mua lại).\nHãy tìm **lợi nhuận lớn nhất** có thể đạt được.",
+  "input_spec": "- Dòng 1: Hai số nguyên `n` và `k` (`1 <= n <= 10^5`, `0 <= k <= 1000`).\n- Dòng 2: `n` số nguyên `p[1..n]` (`0 <= p[i] <= 10^9`).",
+  "output_spec": "Một số nguyên duy nhất là lợi nhuận tối đa có thể đạt được.",
+  "samples": [
+    {
+      "input": "6 2\n10 22 5 75 65 80",
+      "output": "87"
+    },
+    {
+      "input": "8 3\n12 14 17 10 14 13 12 15",
+      "output": "12"
+    },
+    {
+      "input": "5 1\n90 80 70 60 50",
+      "output": "0"
+    }
+  ],
+  "theory_chapter": "chap4b",
+  "mindset": "Hai bẫy kinh điển khiến bài `n = 10^5, k = 1000` bị TLE/MLE nếu không để ý:\n1. **Nếu `2 * k >= n`**: Một giao dịch cần ít nhất 2 ngày (1 mua, 1 bán), nên nếu `k >= n / 2` thì thực tế bạn được giao dịch **không giới hạn số lần**! Khi đó chỉ cần cộng mọi `max(0, p[i] - p[i-1])` trong `O(n)`!\n2. **Ngược lại (`k < n / 2`)**: Số phép tính `n * k` tối đa chỉ ~`5 * 10^7` (nhưng `k <= 1000` thì `10^5 * 1000` hơi sát, tối ưu bằng mảng 1 chiều hoặc `best_buy`!).\nGọi `cash[t]` = tiền tối đa khi không giữ cổ phiếu sau tối đa `t` giao dịch; `hold[t]` = tiền tối đa khi đang giữ 1 cổ phiếu trong giao dịch thứ `t`:\n- `cash[t] = max(cash[t], hold[t] + p[i])`\n- `hold[t] = max(hold[t], cash[t - 1] - p[i])`",
+  "hints": [
+    "Chú ý tràn số `int`! `p[i] <= 10^9` và `k` giao dịch -> bắt buộc dùng `long long` (`-4e18` cho âm rất).",
+    "Cập nhật `t` tăng dần hoặc lưu trạng thái ngày trước? Thực chất ngay trong ngày `i`, mua rồi bán cùng ngày lợi nhuận là `0`, nên cập nhật `for t = 1..k: hold[t] = max(hold[t], cash[t-1] - price); cash[t] = max(cash[t], hold[t] + price);` vừa chuẩn vừa tiết kiệm bộ nhớ `O(k)`!"
+  ],
+  "complexity": {
+    "time": "O(min(n * k, n))",
+    "space": "O(k)"
+  },
+  "test_count": 10
+}

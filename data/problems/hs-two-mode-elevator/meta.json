@@ -1,0 +1,37 @@
+{
+  "id": "hs-two-mode-elevator",
+  "title": "[HUSTack] Thang máy hai chế độ (Two-Mode Elevator)",
+  "track": "final",
+  "topic": "graph-bfs-dfs",
+  "difficulty": "Cơ bản",
+  "exam_tags": [
+    "HUSTack 2025.2 (TwoModeElevator)",
+    "HUSTack: Chưa làm"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Một tòa nhà có `n` tầng đánh số `1, 2, ..., n`. Có một thang máy đặc biệt chỉ có 2 nút bấm:\n- **UP**: đi từ tầng `i` lên tầng `i + a` (nếu `i + a <= n`).\n- **DOWN**: đi từ tầng `i` xuống tầng `i - b` (nếu `i - b >= 1`).\n\nXuất phát từ tầng `X`, hãy tìm **số lần bấm nút ít nhất** để đi tới tầng `Y` (hoặc in `-1` nếu không thể tới được).",
+  "input_spec": "Một dòng gồm 5 số nguyên dương `n, a, b, X, Y` (`1 <= n, a, b, X, Y <= 100000`).",
+  "output_spec": "Số lần bấm ít nhất, hoặc `-1` nếu vô nghiệm.",
+  "samples": [
+    {
+      "input": "10 2 1 1 10",
+      "output": "6"
+    },
+    {
+      "input": "10 2 2 1 10",
+      "output": "-1"
+    }
+  ],
+  "theory_chapter": "chap6",
+  "mindset": "Mô hình hóa mỗi tầng `1..n` là **một đỉnh của đồ thị**, mỗi nút bấm UP (`u -> u + a`) và DOWN (`u -> u - b`) là **một cung có hướng chi phí 1 bước**. Tìm đường đi ngắn nhất từ `X` tới `Y` bằng **BFS chuẩn `O(n)`**!",
+  "hints": [
+    "Khởi tạo mảng `dist(n + 1, -1)` với `dist[X] = 0`.",
+    "Cẩn thận điều kiện biên hợp lệ: `1 <= nxt && nxt <= n` — không được đi ra ngoài `[1..n]`!",
+    "Nếu `X == Y` đáp án là `0`; nếu hàng đợi rỗng mà chưa gặp `Y` thì in `-1`."
+  ],
+  "complexity": "O(n)",
+  "test_count": 10
+}

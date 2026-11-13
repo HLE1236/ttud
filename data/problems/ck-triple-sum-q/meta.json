@@ -1,0 +1,35 @@
+{
+  "id": "ck-triple-sum-q",
+  "title": "Đếm bộ 3 có tổng bằng Q (3-SUM Two Pointers)",
+  "track": "final",
+  "topic": "greedy-2ptr",
+  "difficulty": "Trung bình",
+  "exam_tags": [
+    "Cuối kỳ 2023.1 Kíp 5 (Bài 1)",
+    "Cuối kỳ 2023.1 Kíp 1 (Bài 1)"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho dãy gồm `n` số nguyên dương đôi một khác nhau `a[1], a[2], ..., a[n]` và một số nguyên dương `Q`.\nHãy đếm số bộ ba chỉ số phân biệt `(i, j, k)` với `1 <= i < j < k <= n` sao cho `a[i] + a[j] + a[k] = Q`.\nIn kết quả chia lấy dư cho `10^9 + 7`.",
+  "input_spec": "- Dòng 1: Hai số nguyên `n` và `Q` (`3 <= n <= 5000`, `1 <= Q <= 10^6`).\n- Dòng 2: `n` số nguyên dương đôi một khác nhau `a[1..n]` (`1 <= a[i] <= 10^6`).",
+  "output_spec": "Một số nguyên là số bộ 3 thỏa mãn modulo `10^9 + 7`.",
+  "samples": [
+    {
+      "input": "6 10\n2 1 6 7 4 5",
+      "output": "2"
+    }
+  ],
+  "theory_chapter": "chap5",
+  "mindset": "Nếu dùng 3 vòng `for` `O(n^3)` với `n = 5000` -> `1.25 * 10^11` phép tính -> TLE chắc chắn!\nCách tối ưu xuống `O(n^2)`:\n1. **Sắp xếp mảng `a` tăng dần** (vì bài toán đếm tập hợp 3 chỉ số không phụ thuộc thứ tự ban đầu).\n2. **Cố định phần tử nhỏ nhất `a[i]`** (`i` từ `0` đến `n - 3`), bài toán trở thành đếm số cặp `(l, r)` trong `[i+1 .. n-1]` có `a[l] + a[r] == Q - a[i]`!\n3. Dùng **Hai con trỏ (Two Pointers)** `l = i + 1, r = n - 1`: nếu tổng `< target` thì `l++`, `> target` thì `r--`, nếu `== target` thì đếm được 1 cặp (vì các số đôi một khác nhau!) rồi `l++, r--`!",
+  "hints": [
+    "Chú ý: nếu `a[i] * 3 > Q`, có thể `break` sớm vòng `i`.",
+    "Vì các phần tử đôi một phân biệt nên khi `a[l] + a[r] == target`, không có giá trị trùng ở cạnh nên chỉ cần tăng `ans` lên 1 rồi `l++; r--;`."
+  ],
+  "complexity": {
+    "time": "O(n^2)",
+    "space": "O(n)"
+  },
+  "test_count": 10
+}

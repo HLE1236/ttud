@@ -1,0 +1,358 @@
+{
+  "title": "Lộ trình ôn tập TTUD IT3170 — 16 Ngày (13/11 – 28/11)",
+  "target_date": "2026-11-29",
+  "days": [
+    {
+      "day": 1,
+      "date": "2026-11-13",
+      "track": "midterm",
+      "title": "Ngày 1: Chuẩn hóa I/O nhanh & Mảng đếm cơ bản",
+      "goal": "Nắm vững I/O tốc độ cao trong C++17, xử lý tràn số 64-bit và kỹ thuật đếm tần suất bằng mảng đánh dấu / `unordered_map`.",
+      "theory_chapters": [
+        "chap1"
+      ],
+      "problems": [
+        "gk-count-gt-c",
+        "gk-count-group",
+        "gk-count-positive",
+        "gk-equal-pairs"
+      ],
+      "extra_hustack": [
+        "hs-add-two-integers",
+        "hs-queue-sim",
+        "hs-stack-sim",
+        "hs-sort-int",
+        "hs-word-freq-text"
+      ]
+    },
+    {
+      "day": 2,
+      "date": "2026-11-14",
+      "track": "midterm",
+      "title": "Ngày 2: Priority Queue & Mảng cộng dồn 1D (Prefix Sum)",
+      "goal": "Vận dụng hàng đợi ưu tiên cho tập động và tiền xử lý tổng tích lũy `S[R] - S[L-1]` cho các truy vấn đoạn.",
+      "theory_chapters": [
+        "chap1",
+        "chap2"
+      ],
+      "problems": [
+        "gk-insert-delete-max",
+        "gk-max-positive-subarray",
+        "gk-range-sum-queries",
+        "gk-resource-allocation"
+      ],
+      "extra_hustack": [
+        "hs-sim-priority-queue",
+        "hs-set-lower-upper",
+        "hs-upper-bound-seq",
+        "hs-sim-prefix-sum-1d",
+        "hs-sim-prefix-sum-2d"
+      ]
+    },
+    {
+      "day": 3,
+      "date": "2026-11-15",
+      "track": "midterm",
+      "title": "Ngày 3: Cửa sổ trượt & Biến thể tổng đoạn đồng dư",
+      "goal": "Áp dụng Sliding Window cố định/biến đổi và điều kiện đồng dư tổng tiền tố để giải các bài đoạn con `O(n)`.",
+      "theory_chapters": [
+        "chap2"
+      ],
+      "problems": [
+        "gk-k-subseq-weight",
+        "gk-k-subseq-bounded",
+        "gk-even-subarrays",
+        "gk-stock-increasing"
+      ],
+      "extra_hustack": [
+        "hs-sum-pair-equal-m",
+        "hs-longest-bounded-maxseq",
+        "hs-rmq",
+        "hs-segment-tree-sim",
+        "hs-analyze-order-raised"
+      ]
+    },
+    {
+      "day": 4,
+      "date": "2026-11-16",
+      "track": "midterm",
+      "title": "Ngày 4: Tham lam (Greedy) & Chia để trị (Divide & Conquer)",
+      "goal": "Thực hành chứng minh lựa chọn tham lam kết hợp Sắp xếp/Min-Heap và phân rã bài toán bằng chia để trị.",
+      "theory_chapters": [
+        "chap4a"
+      ],
+      "problems": [
+        "gk-robot-merge",
+        "gk-meeting-rooms",
+        "gk-fib-string",
+        "gk-jump-game"
+      ],
+      "extra_hustack": [
+        "hs-disjoint-segment",
+        "hs-parallel-job-execution",
+        "hs-job-selection-planning",
+        "hs-inversion",
+        "hs-max-distance-subseq",
+        "hs-expmod",
+        "hs-closest-pair"
+      ]
+    },
+    {
+      "day": 5,
+      "date": "2026-11-17",
+      "track": "midterm",
+      "title": "Ngày 5: Quay lui cơ bản — Sinh tập con, Tổ hợp & Phân hoạch",
+      "goal": "Cài đặt khung đệ quy `Try(k)` trên không gian `n <= 20..25` kèm khôi phục trạng thái và cắt nhánh cơ bản.",
+      "theory_chapters": [
+        "chap3"
+      ],
+      "problems": [
+        "gk-subset-sum-ab",
+        "gk-k-comb-sum-m",
+        "gk-insert-plus-minus",
+        "gk-partition-2-groups"
+      ],
+      "extra_hustack": [
+        "hs-binary-seq-gen",
+        "hs-binary-no-11",
+        "hs-binary-no-substr",
+        "hs-binary-contains-111",
+        "hs-max-common-subset",
+        "hs-material-cut"
+      ]
+    },
+    {
+      "day": 6,
+      "date": "2026-11-18",
+      "track": "midterm",
+      "title": "Ngày 6: Nhánh cận (Branch & Bound) tối ưu tổ hợp",
+      "goal": "Thiết kế cận dưới chặt cho bài toán Phân công, Lịch học, Chia 3 nhóm và CBUS có ràng buộc điểm dừng.",
+      "theory_chapters": [
+        "chap3"
+      ],
+      "problems": [
+        "gk-partition-3-groups",
+        "gk-bca-credit",
+        "gk-task-assignment",
+        "gk-cbus-stops"
+      ],
+      "extra_hustack": [
+        "hs-bacp",
+        "hs-cbus",
+        "hs-cvrp",
+        "hs-tsp",
+        "hs-timetable-ict-count",
+        "hs-timetable-min-max-load"
+      ]
+    },
+    {
+      "day": 7,
+      "date": "2026-11-19",
+      "track": "midterm",
+      "title": "Ngày 7: Quy hoạch động Giữa kỳ — 1D, Lưới 2D & Unbounded Knapsack",
+      "goal": "Hệ thống hóa hàm trạng thái DP một chiều, lưới hai chiều và bài toán cái túi không giới hạn.",
+      "theory_chapters": [
+        "chap4b"
+      ],
+      "problems": [
+        "gk-climbing-stairs",
+        "gk-no-2-adjacent",
+        "gk-no-3-adjacent",
+        "gk-treasure-grid",
+        "gk-supermarket-knapsack"
+      ],
+      "extra_hustack": [
+        "hs-max-even-subseq",
+        "hs-nurse",
+        "hs-max-subseq-div-k",
+        "hs-coin-exchange-dp",
+        "hs-max-score-table"
+      ]
+    },
+    {
+      "day": 8,
+      "date": "2026-11-20",
+      "track": "final",
+      "title": "Ngày 8: Khởi động Cuối kỳ — Mô phỏng dữ liệu 2D & Two Pointers",
+      "goal": "Kết hợp Prefix Sum 2 chiều và kỹ thuật Hai con trỏ cho bài toán bộ ba và xử lý bảng thống kê.",
+      "theory_chapters": [
+        "chap2",
+        "chap5"
+      ],
+      "problems": [
+        "ck-electricity-bill",
+        "ck-daily-transactions-2d",
+        "ck-triple-sum-q"
+      ],
+      "extra_hustack": [
+        "hs-max-weighted-disjoint-seg",
+        "hs-balanced-set-partition",
+        "hs-tsp-large"
+      ]
+    },
+    {
+      "day": 9,
+      "date": "2026-11-21",
+      "track": "final",
+      "title": "Ngày 9: Quy hoạch động Dãy con (LIS, LPS, Xâu ghép & Kho báu 2D)",
+      "goal": "Phân tích trạng thái 1D/2D cho dãy con tăng ngặt (`O(n log n)`), dãy con đối xứng dài nhất và quy hoạch động hai xâu.",
+      "theory_chapters": [
+        "chap4b"
+      ],
+      "problems": [
+        "ck-d-increasing-subseq",
+        "ck-longest-palindrome-subseq",
+        "ck-interleaving-strings",
+        "ck-treasure-2d-lis"
+      ],
+      "extra_hustack": [
+        "hs-longest-inc-subseq",
+        "hs-lcs"
+      ]
+    },
+    {
+      "day": 10,
+      "date": "2026-11-22",
+      "track": "final",
+      "title": "Ngày 10: DP Cắt thanh, Đếm cấu hình & Chuỗi giao dịch K lần",
+      "goal": "Thực hành tối ưu chuyển trạng thái bằng tổng cộng dồn hoặc mảng lăn trong Quy hoạch động.",
+      "theory_chapters": [
+        "chap4b"
+      ],
+      "problems": [
+        "ck-rod-cutting",
+        "ck-otp-dice-sum",
+        "ck-stock-k-transactions"
+      ],
+      "extra_hustack": [
+        "hs-multi-knapsack-large"
+      ]
+    },
+    {
+      "day": 11,
+      "date": "2026-11-23",
+      "track": "final",
+      "title": "Ngày 11: DP Đa chiều, Chia khoảng cân bằng & Quay lui ma trận",
+      "goal": "Kết hợp tìm kiếm nhị phân theo đáp án với DP, trạng thái 3D và tìm đường tối ưu trên ma trận 4 hướng.",
+      "theory_chapters": [
+        "chap4b",
+        "chap3"
+      ],
+      "problems": [
+        "ck-equal-freq-binning",
+        "ck-stone-castle-3d",
+        "ck-matrix-max-reward"
+      ],
+      "extra_hustack": [
+        "hs-pick-non-adj-table",
+        "hs-queen-large-multi",
+        "hs-count-spanning-trees-k"
+      ]
+    },
+    {
+      "day": 12,
+      "date": "2026-11-24",
+      "track": "final",
+      "title": "Ngày 12: Đồ thị căn bản & Cây — BFS, DFS & Phân tích dữ liệu",
+      "goal": "Áp dụng BFS/DFS cho đồ thị hai phía, đếm thành phần liên thông, chu trình cơ bản và cấu trúc cây.",
+      "theory_chapters": [
+        "chap5"
+      ],
+      "problems": [
+        "ck-bank-transactions",
+        "ck-tree-edge-partition",
+        "ck-citizen-data"
+      ],
+      "extra_hustack": [
+        "hs-bfs-lex",
+        "hs-dfs-lex",
+        "hs-connected-component",
+        "hs-check-bipartite",
+        "hs-check-cyclic",
+        "hs-two-mode-elevator"
+      ]
+    },
+    {
+      "day": 13,
+      "date": "2026-11-25",
+      "track": "final",
+      "title": "Ngày 13: Đường đi ngắn nhất — Dijkstra & Khung giờ Pareto",
+      "goal": "Cài đặt Dijkstra chuẩn bằng Min-Heap và mở rộng không gian trạng thái khi có ràng buộc thời gian / giá vé.",
+      "theory_chapters": [
+        "chap5"
+      ],
+      "problems": [
+        "ck-delivery-dijkstra",
+        "ck-travel-time-window"
+      ],
+      "extra_hustack": [
+        "hs-shortest-path-dijkstra",
+        "hs-ic-bus",
+        "hs-longest-path-dag",
+        "hs-make-span-schedule",
+        "hs-ship-traverse-islands"
+      ]
+    },
+    {
+      "day": 14,
+      "date": "2026-11-26",
+      "track": "final",
+      "title": "Ngày 14: Cây khung nhỏ nhất (Kruskal DSU) & Tarjan trên đồ thị",
+      "goal": "Vận dụng DSU cho MST có điều kiện biên, thuật toán Tarjan tìm Khớp/Cầu, SCC và bài toán Steiner Tree.",
+      "theory_chapters": [
+        "chap5"
+      ],
+      "problems": [
+        "ck-urban-mst",
+        "ck-border-comm",
+        "ck-steiner-tree"
+      ],
+      "extra_hustack": [
+        "hs-mst-kruskal",
+        "hs-bridges-arti-points",
+        "hs-strongly-connected-comp"
+      ]
+    },
+    {
+      "day": 15,
+      "date": "2026-11-27",
+      "track": "final",
+      "title": "Ngày 15: DP Trạng thái (Bitmask), Cây mở rộng & Luồng mạng",
+      "goal": "Làm chủ Bitmask DP (`O(n^2 2^n)`), Rerooting DP trên cây, Hopcroft-Karp và Luồng cực đại Dinic.",
+      "theory_chapters": [
+        "chap5"
+      ],
+      "problems": [
+        "ck-min-vertex-cover",
+        "ck-max-simple-path",
+        "ck-delivery-trips"
+      ],
+      "extra_hustack": [
+        "hs-longest-path-tree",
+        "hs-max-independent-set-tree",
+        "hs-sum-path-on-tree",
+        "hs-k-longest-path-tree",
+        "hs-max-matching-bipartite",
+        "hs-max-flow"
+      ]
+    },
+    {
+      "day": 16,
+      "date": "2026-11-28",
+      "track": "final",
+      "title": "Ngày 16: Tổng hợp nâng cao & Kiểm chứng đa nghiệm",
+      "goal": "Hoàn thiện chu trình Euler/Hamilton, TSP có ràng buộc thứ tự và rà soát toàn bộ dạng bài còn vướng.",
+      "theory_chapters": [
+        "chap5"
+      ],
+      "problems": [
+        "ck-tsp-precedence"
+      ],
+      "extra_hustack": [
+        "hs-euler-cycle",
+        "hs-graph-orientation",
+        "hs-ham-cycle"
+      ]
+    }
+  ]
+}

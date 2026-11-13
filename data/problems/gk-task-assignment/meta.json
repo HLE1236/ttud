@@ -1,0 +1,36 @@
+{
+  "id": "gk-task-assignment",
+  "title": "Phân công công việc cho nhân viên (Branch & Bound)",
+  "track": "midterm",
+  "topic": "backtracking",
+  "difficulty": "Nâng cao",
+  "exam_tags": [
+    "Cuối kỳ 2024.1 Kíp 1 (Bài 3)",
+    "HUSTack 2025.2 (P.03.05.01)",
+    "HUSTack: Chưa làm"
+  ],
+  "time_limit_ms": 1000,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Có `m` nhân viên (đánh số `1..m`) và `n` công việc (đánh số `1..n`). Chi phí để nhân viên `i` thực hiện công việc `j` là `c[i][j]`.\nMỗi công việc phải được thực hiện bởi đúng 1 nhân viên, và mỗi nhân viên không được nhận quá `D` công việc.\nHãy tìm phương án phân công sao cho **tổng chi phí là nhỏ nhất**. Nếu không thể phân công hết `n` công việc, in ra `-1`.",
+  "input_spec": "- Dòng 1: Ba số nguyên `m, n, D` (`1 <= m <= 10`, `1 <= n <= 20`, `1 <= D <= 10`).\n- `m` dòng tiếp theo: dòng `i` chứa `n` số nguyên `c[i][1..n]` (`1 <= c[i][j] <= 1000`).",
+  "output_spec": "Một số nguyên duy nhất là tổng chi phí nhỏ nhất (hoặc `-1`).",
+  "samples": [
+    {
+      "input": "3 5 2\n1 1 1 1 1\n3 2 6 1 2\n2 2 3 1 5",
+      "output": "7"
+    }
+  ],
+  "theory_chapter": "chap2",
+  "mindset": "Bài này chính là bài toán **Phân việc giới hạn tải** (tương tự BCA phân môn học cho giảng viên!).\nNếu `n > m * D` -> lập tức trả `-1`.\nĐể chạy nhanh với `n <= 20`: dùng Branch & Bound:\n1. Với mỗi công việc `j`, tính sẵn `minCost[j] = min_i c[i][j]`, sau đó tính tổng hậu tố `sufMin[j]` = chi phí tối thiểu có thể của các việc từ `j` trở đi.\n2. Ở mỗi việc `j`, thử gán cho nhân viên `i` theo thứ tự chi phí tăng dần (hoặc ít tải nhất), nhưng nếu `curCost + c[i][j] + sufMin[j + 1] >= best` thì cắt nhánh ngay!\n3. Mẹo sắp xếp thứ tự công việc: xử lý các công việc có **độ chênh lệch (min2 - min1)** lớn trước giúp tìm ra nghiệm tốt rất nhanh và cắt nhánh hiệu quả.",
+  "hints": [
+    "Nhớ kiểm tra `if (n > m * D) { cout << -1; return 0; }` ngay từ đầu.",
+    "Tính `sufMin[k]` = tổng `min_i c[i][task]` cho các việc còn lại `k..n-1`. Điều kiện cắt tỉa: `if (cur + c[i][task] + sufMin[k+1] >= best) continue;`."
+  ],
+  "complexity": {
+    "time": "Quay lui + Nhánh cận O(m^n) tối ưu",
+    "space": "O(m * n)"
+  },
+  "test_count": 10
+}

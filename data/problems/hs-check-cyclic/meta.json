@@ -1,0 +1,32 @@
+{
+  "id": "hs-check-cyclic",
+  "title": "[HUSTack] Kiểm tra đồ thị có chu trình (Check Cyclic Graph)",
+  "track": "final",
+  "topic": "graph-bfs-dfs",
+  "difficulty": "Cơ bản",
+  "exam_tags": [
+    "HUSTack 2025.2 (P.06.12.04)",
+    "HUSTack: Chưa làm"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho đồ thị vô hướng `G = (V, E)` có `n` đỉnh (`1..n`) và `m` cạnh. Hãy kiểm tra xem đồ thị `G` có chứa chu trình (cycle) hay không.",
+  "input_spec": "- Dòng 1: `n, m` (`1 <= n <= 10^5`, `0 <= m <= 10^5`).\n- `m` dòng tiếp theo: hai đầu mút `u, v` của một cạnh.",
+  "output_spec": "In `1` nếu có chu trình, ngược lại in `0`.",
+  "samples": [
+    {
+      "input": "6 8\n1 2\n1 3\n1 4\n2 3\n3 5\n4 5\n4 6\n5 6",
+      "output": "1"
+    }
+  ],
+  "theory_chapter": "chap6",
+  "mindset": "Trên đồ thị **vô hướng**, cách ngắn gọn và nhanh nhất để phát hiện chu trình là dùng **DSU**: khi xét cạnh `(u, v)`, nếu `find(u) == find(v)` chứng tỏ `u` và `v` đã nối thông từ trước -> thêm cạnh này sẽ khép kín một chu trình -> in `1` ngay!",
+  "hints": [
+    "Dùng DSU vừa không sợ đệ quy tràn stack với `n = 10^5`, vừa xử lý gọn tự khuyên và cạnh song song.",
+    "Nếu duyệt hết `m` cạnh mà chưa từng gặp `find(u) == find(v)` thì đồ thị là rừng (acyclic), in `0`."
+  ],
+  "complexity": "O((n + m) * alpha(n))",
+  "test_count": 10
+}

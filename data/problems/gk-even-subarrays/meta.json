@@ -1,0 +1,34 @@
+{
+  "title": "Đếm số dãy con liên tiếp có tổng chẵn",
+  "track": "midterm",
+  "exam_tags": [
+    "GK 20212"
+  ],
+  "topic": "hash-prefix",
+  "theory_chapter": "chap2",
+  "difficulty": "Trung bình",
+  "day": 2,
+  "time_limit_ms": 1500,
+  "tc_source": "Official Zip (GK 20212) + 7 generated",
+  "statement": "Cho dãy số nguyên `a[1], ..., a[n]`. Một dãy con liên tiếp `a[i], ..., a[j]` được gọi là **dãy chẵn** nếu tổng các phần tử của nó là số chẵn.\n\nHãy đếm số lượng `Q` các dãy chẵn của `a`, kết quả chia lấy dư cho `10^9 + 7`.",
+  "input_spec": "- Dòng 1: `n` (`1 <= n <= 1000000`).\n- Dòng 2: `n` số nguyên `a[1]..a[n]` (`0 <= a[i] <= 1000`).",
+  "output_spec": "Giá trị `Q mod (10^9 + 7)`.",
+  "samples": [
+    {
+      "input": "10\n15 16 16 4 6 14 4 2 18 8",
+      "output": "45",
+      "explanation": "Tính tổng tiền tố S[0..n], đếm số tiền tố chẵn (E) và lẻ (O), kết quả là E*(E-1)/2 + O*(O-1)/2."
+    }
+  ],
+  "mindset": "Gọi `S[i] = a[1] + ... + a[i]` (`S[0] = 0`).\nTổng đoạn `a[L..R]` là `S[R] - S[L-1]`.\nKhi nào hiệu hai số là số chẵn? Khi **chúng cùng chẵn hoặc cùng lẻ**!\n- Đếm số vị trí từ `0..n` có `S[i]` chẵn (`even`, nhớ tính `S[0]=0` nên `even` bắt đầu = 1) và số vị trí lẻ (`odd`).\n- Chọn 2 vị trí bất kỳ cùng nhóm đều tạo ra 1 đoạn tổng chẵn → `even*(even-1)/2 + odd*(odd-1)/2`!",
+  "hints": [
+    "Tính tổng tiền tố `sum` từ trái sang phải, chỉ quan tâm `sum % 2`.",
+    "Khởi tạo `even_cnt = 1` (ứng với `S[0] = 0`), `odd_cnt = 0`.",
+    "Dùng `long long` khi nhân `even_cnt * (even_cnt - 1) / 2` rồi mới `% 1000000007`!"
+  ],
+  "complexity": "Time: O(n) | Space: O(1)",
+  "starter_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    \n    return 0;\n}",
+  "reference_cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    int n;\n    cin >> n;\n    long long even_cnt = 1, odd_cnt = 0, sum = 0;\n    const long long MOD = 1000000007LL;\n    for (int i = 0; i < n; i++) {\n        long long x; cin >> x;\n        sum += x;\n        if (sum % 2 == 0) even_cnt++;\n        else odd_cnt++;\n    }\n    long long ans = (even_cnt * (even_cnt - 1) / 2 + odd_cnt * (odd_cnt - 1) / 2) % MOD;\n    cout << ans << \"\\n\";\n    return 0;\n}",
+  "id": "gk-even-subarrays",
+  "test_count": 10
+}

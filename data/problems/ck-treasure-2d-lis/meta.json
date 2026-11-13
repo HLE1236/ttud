@@ -1,0 +1,34 @@
+{
+  "id": "ck-treasure-2d-lis",
+  "title": "Truy tìm kho báu 2D (Weighted 2D LIS)",
+  "track": "final",
+  "topic": "dp-lis-lcs",
+  "difficulty": "Trung bình",
+  "exam_tags": [
+    "Cuối kỳ 2023.1 Kíp 1 (Bài 2)"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Trên mặt phẳng tọa độ có `n` kho báu. Kho báu thứ `i` nằm ở tọa độ `(x_i, y_i)` (không âm) và có lượng vàng `c_i`.\nBạn muốn đi qua một dãy các kho báu `i_1, i_2, ..., i_k` sao cho tọa độ không giảm ở cả hai chiều: `x_{i_1} <= x_{i_2} <= ... <= x_{i_k}` và `y_{i_1} <= y_{i_2} <= ... <= y_{i_k}`.\nHãy tìm **tổng lượng vàng lớn nhất** có thể thu thập được.",
+  "input_spec": "- Dòng 1: Số nguyên `n` (`1 <= n <= 1000`).\n- `n` dòng tiếp theo: mỗi dòng gồm 3 số nguyên `x_i, y_i, c_i` (`0 <= x_i, y_i <= 10^9`, `1 <= c_i <= 10^9`).",
+  "output_spec": "Một số nguyên duy nhất là tổng lượng vàng lớn nhất thu được.",
+  "samples": [
+    {
+      "input": "10\n2 4 7\n4 2 10\n4 6 2\n5 5 7\n1 3 9\n1 5 1\n1 1 3\n3 1 5\n3 3 6\n2 2 2",
+      "output": "26"
+    }
+  ],
+  "theory_chapter": "chap4b",
+  "mindset": "Đây là bài toán **Dãy con không giảm dài nhất 2 chiều có trọng số**!\nBước 1 then chốt: **Sắp xếp các kho báu tăng dần theo `(x_i, y_i)`**!\nKhi đã sắp theo `(x_i, y_i)`, điều kiện `x_j <= x_i` với `j < i` gần như tự động thỏa mãn (lưu ý nếu cùng `(x, y)` trùng nhau thì càng được phép cộng dồn tiếp).\nBước 2: Gọi `dp[i]` là lượng vàng tối đa khi kết thúc tại kho báu `i` (sau khi sắp):\n`dp[i] = c[i] + max_{j < i, y[j] <= y[i]} dp[j]`.\nVới `n <= 1000`, `O(n^2)` chỉ ~`5 * 10^5` phép tính -> AC nhanh!",
+  "hints": [
+    "Nhớ dùng `long long` cho `dp[i]` và đáp án vì `c_i <= 10^9` nên tổng tới `10^12`.",
+    "Điều kiện sắp xếp bắt buộc là so sánh cả `x` trước rồi tới `y` (pair default trong C++): nếu không sắp `y` phụ khi `x` bằng nhau, bạn có thể bỏ lỡ trường hợp `(1, 1)` đi tới `(1, 3)`!"
+  ],
+  "complexity": {
+    "time": "O(n^2)",
+    "space": "O(n)"
+  },
+  "test_count": 10
+}

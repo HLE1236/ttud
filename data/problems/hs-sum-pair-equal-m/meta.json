@@ -1,0 +1,34 @@
+{
+  "id": "hs-sum-pair-equal-m",
+  "title": "[HUSTack] Đếm cặp có tổng bằng M (2-SUM)",
+  "track": "midterm",
+  "topic": "greedy-2ptr",
+  "difficulty": "Trung bình",
+  "exam_tags": [
+    "HUSTack 2025.2 (P.02.02.03)",
+    "HUSTack: Đã AC"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho dãy `a1..an` gồm các số nguyên **đôi một khác nhau** và số nguyên dương `M`. Hãy đếm số cặp chỉ số `1 <= i < j <= n` sao cho `ai + aj = M`.",
+  "input_spec": "- Dòng 1: `n, M` (`1 <= n, M <= 10^6`).\n- Dòng 2: `a1..an` (`0 <= ai <= 10^6`).",
+  "output_spec": "Số cặp tìm được.",
+  "samples": [
+    {
+      "input": "5 6\n5 2 1 4 3",
+      "output": "2"
+    }
+  ],
+  "theory_chapter": "chap2",
+  "mindset": "Hai cách đều nhanh:\n1. **Hai con trỏ (Two Pointers)**: `sort(a)`, `l = 0, r = n - 1`: nếu `a[l]+a[r] == M` tăng `ans`, `l++, r--`.\n2. **Mảng đánh dấu / Hash Table `O(n)`**: vừa đọc `x`, kiểm tra `M - x` đã xuất hiện trước đó chưa!",
+  "hints": [
+    "Vì các số đôi một phân biệt, dùng mảng đánh dấu `seen[x] = true` (hoặc Two Pointers) đều chính xác hoàn toàn."
+  ],
+  "complexity": {
+    "time": "O(n log n) hoặc O(n)",
+    "space": "O(n)"
+  },
+  "test_count": 10
+}

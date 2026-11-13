@@ -1,0 +1,33 @@
+{
+  "id": "hs-k-longest-path-tree",
+  "title": "[HUSTack] Đường đi dài nhất đúng K cạnh trên cây (K-Longest Path Tree)",
+  "track": "final",
+  "topic": "graph-bfs-dfs",
+  "difficulty": "Khó",
+  "exam_tags": [
+    "HUSTack 2025.2 (K-Longest-Path-Tree)",
+    "HUSTack: Chưa làm"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho cây vô hướng có trọng số dương `T = (V, E)` gồm `n` đỉnh (`1..n`), cạnh `(u, v)` có trọng số `w`. Cho số nguyên dương `K`, hãy tìm đường đi đơn trên cây đi qua **đúng `K` cạnh** sao cho tổng trọng số là lớn nhất. Nếu không tồn tại đường đi nào đúng `K` cạnh, in `-1`.",
+  "input_spec": "- Dòng 1: `n, K` (`1 <= n <= 10000`, `1 <= K <= 100`).\n- `n - 1` dòng tiếp theo: `u, v, w` (`1 <= w <= 10^6`).",
+  "output_spec": "Độ dài lớn nhất của đường đi đúng `K` cạnh, hoặc `-1` nếu không có.",
+  "samples": [
+    {
+      "input": "12 4\n1 2 3\n1 3 6\n1 4 2\n2 5 4\n2 10 7\n3 6 5\n3 7 2\n3 8 9\n4 9 3\n7 11 7\n7 12 3",
+      "output": "25"
+    }
+  ],
+  "theory_chapter": "chap6",
+  "mindset": "Vì `K <= 100` rất nhỏ và `n <= 10000`, ta dùng **Quy hoạch động trên cây `O(n * K)`** gọn mà không cần tới Centroid Decomposition!\nGọi `dp[u][d]` (`0 <= d <= K`) là tổng trọng số lớn nhất của một đường đi hướng xuống xuất phát từ `u` gồm đúng `d` cạnh (nằm hoàn toàn trong cây con `u`). Khi lần lượt gộp từng cây con `v` (qua cạnh trọng số `w`) vào `u`:\n1. Ghép một nhánh đã có từ các con trước tại `u` (độ dài `d_1`) với cạnh `(u, v)` và nhánh từ `v` (độ dài `d_2 = K - 1 - d_1`) -> cập nhật `ans`!\n2. Sau đó cập nhật `dp[u][d + 1] = max(dp[u][d + 1], dp[v][d] + w)` (chú ý thứ tự gộp từng con để không tự ghép hai nửa trong cùng một con `v`!).",
+  "hints": [
+    "Khởi tạo `dp[u][0] = 0`, mọi `dp[u][1..K] = -INF`.",
+    "Khi xét xong nhánh con `v`, trước hết kiểm tra `d1` từ `0` đến `K - 1`: nếu `dp[u][d1] > -INF` và `dp[v][K - 1 - d1] > -INF`, cập nhật `ans = max(ans, dp[u][d1] + w + dp[v][K - 1 - d1])`.",
+    "Sau bước ghép trên mới cập nhật `dp[u][d + 1]` từ `dp[v][d] + w` — điều này tự động bao gồm cả trường hợp đường đi đi thẳng xuống từ `u` (ứng với `d1 = 0`)."
+  ],
+  "complexity": "O(n * K) thời gian, O(n * K) bộ nhớ",
+  "test_count": 10
+}

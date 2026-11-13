@@ -1,0 +1,35 @@
+{
+  "id": "gk-stock-increasing",
+  "title": "Chuỗi ngày chứng khoán tăng liên tiếp dài nhất",
+  "track": "midterm",
+  "topic": "dp-midterm",
+  "difficulty": "Cơ bản",
+  "exam_tags": [
+    "Giữa kỳ 2021.2 (Bài 1)",
+    "Giữa kỳ 2023.2 (Bài 1)"
+  ],
+  "time_limit_ms": 1000,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Theo dõi giá cổ phiếu trong `n` ngày liên tiếp: `a[1], a[2], ..., a[n]`.\nHãy tìm độ dài của **đoạn con liên tiếp tăng ngặt** dài nhất, tức là tìm `r - l + 1` lớn nhất sao cho `a[l] < a[l+1] < ... < a[r]`.\n\n*(Lưu ý: Khác với bài toán dãy con tăng không liên tiếp LIS, bài này yêu cầu các ngày phải liên tiếp nhau nên chỉ cần Quy hoạch động `O(n)`)*",
+  "input_spec": "- Dòng 1: Số nguyên `n` (`1 <= n <= 10^6`).\n- Dòng 2: `n` số nguyên `a[1], ..., a[n]` (`|a[i]| <= 10^9`).",
+  "output_spec": "Một số nguyên duy nhất là độ dài đoạn tăng ngặt liên tiếp dài nhất.",
+  "samples": [
+    {
+      "input": "7\n1 3 2 4 6 8 5",
+      "output": "4"
+    }
+  ],
+  "theory_chapter": "chap4a",
+  "mindset": "Gọi `dp[i]` là độ dài đoạn tăng ngặt liên tiếp dài nhất kết thúc tại vị trí `i`.\n- Nếu `a[i] > a[i - 1]` thì `dp[i] = dp[i - 1] + 1`.\n- Ngược lại (`a[i] <= a[i - 1]`), chuỗi bị ngắt, bắt đầu lại từ `i`: `dp[i] = 1`.\nĐáp án là `max(dp[i])`. Thậm chí không cần mảng `dp`, chỉ cần một biến `cur` và `prev`!",
+  "hints": [
+    "Chú ý điều kiện **tăng ngặt**: `a[i] > a[i-1]` (bằng nhau cũng ngắt chuỗi!).",
+    "Với `n = 1`, đáp án là `1`."
+  ],
+  "complexity": {
+    "time": "O(n)",
+    "space": "O(1)"
+  },
+  "test_count": 10
+}

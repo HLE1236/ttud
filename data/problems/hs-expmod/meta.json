@@ -1,0 +1,34 @@
+{
+  "id": "hs-expmod",
+  "title": "[HUSTack] Lũy thừa nhanh với số mũ 64-bit (EXPMOD)",
+  "track": "midterm",
+  "topic": "greedy-2ptr",
+  "difficulty": "Trung bình",
+  "exam_tags": [
+    "HUSTack 2025.2 (P.04.08.03)",
+    "HUSTack: Chưa làm"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho hai số nguyên dương `a` và `b` lên tới `2^64 - 2` (`18446744073709551614`). Hãy tính `a^b mod (10^9 + 7)`.",
+  "input_spec": "Một dòng gồm `a, b` (`1 <= a, b <= 18446744073709551614`).",
+  "output_spec": "`a^b mod (10^9 + 7)`.",
+  "samples": [
+    {
+      "input": "2  3",
+      "output": "8"
+    }
+  ],
+  "theory_chapter": "chap4a",
+  "mindset": "Hai điểm mấu chốt:\n1. Khai báo **`unsigned long long`** (vì `b > 2^63 - 1`, `long long` sẽ bị âm/tràn!).\n2. Trước khi nhân lũy thừa nhị phân, **giảm ngay `a %= MOD`**! Khi `a < 10^9 + 7` thì `a * a < 1.000000014 * 10^18`, vẫn nằm gọn trong `unsigned long long` (~`1.84 * 10^19`)!",
+  "hints": [
+    "Nhân đôi bình phương bằng vòng `while (b > 0)`: nếu `b & 1` thì `res = (res * a) % MOD`, rồi `a = (a * a) % MOD; b >>= 1;`."
+  ],
+  "complexity": {
+    "time": "O(log b)",
+    "space": "O(1)"
+  },
+  "test_count": 10
+}

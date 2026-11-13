@@ -1,0 +1,35 @@
+{
+  "id": "ck-matrix-max-reward",
+  "title": "Đường đi phần thưởng lớn nhất trên ma trận (Quay lui đơn đường)",
+  "track": "final",
+  "topic": "graph-bfs-dfs",
+  "difficulty": "Trung bình",
+  "exam_tags": [
+    "Giữa kỳ 2025.1 (Bài 3)",
+    "Cuối kỳ 2024.1 Kíp 1 (Bài 3 - Robot)"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho một ma trận kích thước `M x N` gồm các số nguyên không âm. Ô `(i, j)` có phần thưởng `w[i][j]`, riêng các ô có `w[i][j] == 0` là **chướng ngại vật** không thể đi qua.\nMột robot xuất phát ở ô `(xs, ys)` và cần đi tới ô `(xt, yt)`. Mỗi bước robot có thể di chuyển sang 4 ô kề cạnh (lên, xuống, trái, phải) trong ma trận, **không đi lại ô đã đi qua** (đường đi đơn) và không vào ô `0`.\nHãy tìm **tổng phần thưởng lớn nhất** trên một đường đi hợp lệ từ `(xs, ys)` tới `(xt, yt)` (hoặc `0` / `-1` — ở đây dữ liệu đảm bảo có đường đi với tổng dương, in `0` nếu không có).",
+  "input_spec": "- Dòng 1: `M, N` (`1 <= M, N <= 15`, trong test thực tế số ô không bằng 0 nhỏ hoặc `M*N <= 25`).\n- Dòng 2: `xs, ys` (tọa độ xuất phát, 1-based).\n- Dòng 3: `xt, yt` (tọa độ đích, 1-based).\n- `M` dòng tiếp theo: mỗi dòng `N` số nguyên `w[i][j]` (`0 <= w[i][j] <= 1000`).",
+  "output_spec": "Một số nguyên là tổng phần thưởng lớn nhất tìm được (in `0` nếu không có đường đi).",
+  "samples": [
+    {
+      "input": "3 3\n1 1\n3 3\n5 2 4\n3 0 7\n6 3 8",
+      "output": "26"
+    }
+  ],
+  "theory_chapter": "chap3",
+  "mindset": "Khác với bài đi xuống/phải trên lưới là DAG làm được bằng DP, ở đây robot đi được **cả 4 hướng** (có thể vòng lên/sang trái) nên bài toán thành tìm đường đi đơn dài nhất -> dùng **DFS + Quay lui (Backtracking)** kết hợp **cắt nhánh (Branch & Bound)**:\nNếu cộng tất cả các ô có giá trị > 0 còn chưa đi qua vẫn nhỏ hơn hoặc bằng `best`, hoặc nếu từ `(x, y)` không thể đi tới `(xt, yt)` (kiểm tra nhanh bằng BFS hoặc DFS nếu cần), ta cắt nhánh ngay!",
+  "hints": [
+    "Nhớ đánh dấu `vis[xs][ys] = true` trước khi gọi `dfs(xs, ys, w[xs][ys])`.",
+    "Cắt nhánh hiệu quả: gọi `rem_sum` là tổng tất cả các ô còn lại chưa thăm có `w > 0`. Nếu `cur_sum + rem_sum <= best` thì quay lui luôn!"
+  ],
+  "complexity": {
+    "time": "Quay lui + nhánh cận O(4^(M*N))",
+    "space": "O(M * N)"
+  },
+  "test_count": 10
+}

@@ -1,0 +1,34 @@
+{
+  "id": "ck-stone-castle-3d",
+  "title": "Xây dựng pháo đài (Cắt khối đá 3D - DP 3 chiều)",
+  "track": "final",
+  "topic": "dp-grid-3d",
+  "difficulty": "Nâng cao",
+  "exam_tags": [
+    "Cuối kỳ 2023.1 Kíp 5 (Bài 2)"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Bạn có một khối đá hình hộp chữ nhật kích thước `L x W x H` và danh sách `N` loại kích thước khối đá mong muốn `(L_i, W_i, H_i)`.\nMỗi nhát cắt chỉ được cắt **thẳng suốt một chiều** (guillotine cut) tách khối hiện tại `A x B x C` thành hai khối hộp nhỏ hơn, ví dụ `x x B x C` và `(A - x) x B x C` (tương tự theo chiều `B` hoặc `C`). Sau khi cắt, các khối có thể **xoay theo 6 hướng** (tức `A x B x C` khớp với mẫu `L_i x W_i x H_i` nếu sau khi sắp xếp 3 kích thước tăng dần thì chúng bằng nhau).\nMột khối được gọi là **lãng phí** nếu không khớp với bất kỳ kích thước mong muốn nào. Hãy tính **tổng thể tích lãng phí nhỏ nhất**.\nCho `T` test case trong cùng 1 lần chạy.",
+  "input_spec": "- Dòng 1: `T` (`1 <= T <= 5`).\n- Mỗi test case:\n  - Dòng 1: `L, W, H` (`1 <= L, W, H <= 100`).\n  - Dòng 2: `N` (`1 <= N <= 50`).\n  - `N` dòng tiếp theo: mỗi dòng 3 số nguyên `L_i, W_i, H_i` (`1 <= L_i <= L, 1 <= W_i <= W, 1 <= H_i <= H`).",
+  "output_spec": "Gồm `T` dòng, mỗi dòng ghi tổng thể tích lãng phí nhỏ nhất.",
+  "samples": [
+    {
+      "input": "2\n5 10 3\n3\n3 9 3\n2 4 3\n2 2 2\n5 5 2\n2\n3 2 3\n1 3 2",
+      "output": "13\n8"
+    }
+  ],
+  "theory_chapter": "chap4b",
+  "mindset": "Gọi `dp[a][b][c]` là thể tích lãng phí nhỏ nhất cho khối kích thước `a x b x c`.\n**Mẹo tối ưu vàng giúp chạy `100 x 100 x 100` trong ~20ms**:\nVì khối được phép xoay tự do 6 hướng nên `dp[a][b][c]` hoàn toàn đối xứng theo mọi hoán vị của `(a, b, c)`! Ta chỉ cần tính và lưu cho bộ **đã sắp xếp `1 <= a <= b <= c <= 100`**!\n- Khởi tạo mặc định: `dp[a][b][c] = a * b * c` (nếu vứt bỏ hết cả khối).\n- Nếu bộ ba `(a, b, c)` đã sắp xếp nằm trong danh sách mong muốn -> `dp[a][b][c] = 0`.\n- Thử cắt theo chiều `a` (chỉ cần `1 <= x <= a / 2`), chiều `b` (`1 <= y <= b / 2`), và chiều `c` (`1 <= z <= c / 2`), mỗi nửa lại sắp xếp 3 cạnh lại để tra bảng `dp`!",
+  "hints": [
+    "Viết hàm `get_dp(int x, int y, int z)` tự sắp xếp `x <= y <= z` rồi trả về `dp[x][y][z]`.",
+    "Chú ý giới hạn trên test: chiều cắt chỉ cần chạy tới `dim / 2` vì cắt `(x, dim - x)` giống `(dim - x, x)`. Giảm một nửa thời gian chạy!"
+  ],
+  "complexity": {
+    "time": "O(T * L * W * H * (L+W+H) / 12)",
+    "space": "O(L * W * H)"
+  },
+  "test_count": 10
+}

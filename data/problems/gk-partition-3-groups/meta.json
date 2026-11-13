@@ -1,0 +1,38 @@
+{
+  "id": "gk-partition-3-groups",
+  "title": "Chia n phần tử thành 3 nhóm cân bằng nhất",
+  "track": "midterm",
+  "topic": "backtracking",
+  "difficulty": "Nâng cao",
+  "exam_tags": [
+    "Cuối kỳ 2022.2 (Bài 4)"
+  ],
+  "time_limit_ms": 1000,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho `n` số nguyên dương `a[1], a[2], ..., a[n]`. Hãy phân chia tất cả `n` số này thành **3 nhóm khác rỗng** (mỗi phần tử thuộc đúng 1 nhóm) sao cho độ chênh lệch giữa tổng lớn nhất và tổng nhỏ nhất trong 3 nhóm (`max(S1, S2, S3) - min(S1, S2, S3)`) là **nhỏ nhất**.",
+  "input_spec": "- Dòng 1: Số nguyên `n` (`3 <= n <= 20`).\n- Dòng 2: `n` số nguyên `a[1], ..., a[n]` (`1 <= a[i] <= 10^5`).",
+  "output_spec": "Một số nguyên duy nhất là giá trị `max - min` nhỏ nhất.",
+  "samples": [
+    {
+      "input": "3\n1 2 3",
+      "output": "2"
+    },
+    {
+      "input": "5\n1 2 3 4 5",
+      "output": "0"
+    }
+  ],
+  "theory_chapter": "chap2",
+  "mindset": "Nếu quay lui ngây thơ `3^20` (~3.4 tỷ) sẽ TLE chắc chắn! Làm sao giảm mạnh không gian tìm kiếm?\n1. **Sắp xếp giảm dần**: Xếp số lớn trước giúp nhánh cận chạm giới hạn sớm hơn rất nhiều.\n2. **Phá đối xứng (Symmetry Breaking)**: Ba nhóm có vai trò như nhau! Nếu nhóm nào hiện đang trống (tức số phần tử = 0), ta chỉ cần thử đặt `a[idx]` vào **nhóm trống đầu tiên**, KHÔNG cần thử các nhóm trống phía sau vì chúng hoàn toàn đối xứng!\n3. **Nhánh cận (Branch & Bound)**: Gọi `suf[idx]` là tổng các phần tử còn lại. Tổng lớn nhất hiện tại chắc chắn `>= curMax`; tổng nhỏ nhất có thể đạt tối đa là `curMin + suf[idx]` (thậm chí chặt hơn: `(total - max_cur)` chia cho các nhóm còn lại). Nếu `curMax - (curMin + suf[idx]) >= best` -> CẮT!",
+  "hints": [
+    "Để buộc 3 nhóm khác rỗng: ở mỗi bước, đếm xem còn bao nhiêu nhóm chưa có phần tử (`empty_cnt`). Nếu số phần tử còn lại (`n - idx`) bằng đúng `empty_cnt` thì chỉ được phép bỏ vào nhóm trống!",
+    "Phá đối xứng mạnh hơn: nếu `cnt[g] == 0`, thử gán `a[idx]` vào nhóm `g` rồi `break` (không gán vào nhóm trống tiếp theo `g+1, ...` nữa). Cách này giảm gần 6 lần số trạng thái!"
+  ],
+  "complexity": {
+    "time": "O(3^n / 6) với cắt tỉa mạnh",
+    "space": "O(n)"
+  },
+  "test_count": 10
+}

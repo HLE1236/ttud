@@ -1,0 +1,34 @@
+{
+  "id": "hs-bacp",
+  "title": "[HUSTack] Xếp chương trình đào tạo cân bằng (BACP)",
+  "track": "midterm",
+  "topic": "backtracking",
+  "difficulty": "Nâng cao",
+  "exam_tags": [
+    "HUSTack 2025.2 (P.02.05.01)",
+    "HUSTack: Chưa làm"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Có `N` môn học (`1..N`), môn `i` có `c[i]` tín chỉ. Cần xếp hết `N` môn vào `M` kỳ (`1..M`).\nMa trận tiên quyết `A[N][N]`: nếu `A[i][j] == 1` thì môn `i` **bắt buộc học ở kỳ trước môn `j`** (`period[i] < period[j]`).\nTải trọng của một kỳ là tổng tín chỉ các môn trong kỳ đó. Tìm cách xếp sao cho **tải trọng lớn nhất trong các kỳ là nhỏ nhất**.",
+  "input_spec": "- Dòng 1: `N, M` (`2 <= N <= 16, 2 <= M <= 5`).\n- Dòng 2: `c[1..N]`.\n- `N` dòng tiếp: ma trận `A` (`0/1`).",
+  "output_spec": "Giá trị max load nhỏ nhất.",
+  "samples": [
+    {
+      "input": "6 2\n4 4 4 4 2 4\n0 0 0 0 0 0\n0 0 0 0 0 0\n0 0 0 0 0 0\n0 0 1 0 0 0\n0 0 1 0 0 0\n1 0 0 0 0 0",
+      "output": "12"
+    }
+  ],
+  "theory_chapter": "chap3",
+  "mindset": "Quay lui kết hợp nhánh cận (Branch & Bound) hoặc **Bitmask DP**:\n- Với Quay lui: với mỗi môn `u`, tính sẵn ràng buộc `period[u]` phải `> max(period[p])` của các môn tiên quyết `p` trước nó, VÀ `<= M - độ sâu hậu duệ`. Ngoài ra, nếu `max_load` hiện tại đã `>= best`, cắt nhánh ngay!",
+  "hints": [
+    "Thứ tự xét môn theo **Topological Sort** (hết môn tiên quyết rồi mới tới môn sau) giúp kiểm tra `period[u] > period[p]` ngay lập tức!"
+  ],
+  "complexity": {
+    "time": "Quay lui Topo + Nhánh cận",
+    "space": "O(N * M)"
+  },
+  "test_count": 10
+}

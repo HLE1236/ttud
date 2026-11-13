@@ -1,0 +1,438 @@
+{
+  "mindset_framework": {
+    "title": "Quy trình 4 bước giải bài toán Thuật toán",
+    "subtitle": "Khung phân tích chuẩn mực từ đặc tả bài toán đến tối ưu hóa độ phức tạp trước khi cài đặt C++.",
+    "steps": [
+      {
+        "step": 1,
+        "name": "1. Phân tích đặc tả và Ràng buộc kích thước (n)",
+        "detail": "Xác định rõ dữ liệu đầu vào (Input), hàm mục tiêu/điều kiện ràng buộc (Output) và miền giá trị giới hạn. Từ giới hạn thời gian tiêu chuẩn (~10^8 phép toán/giây trong C++), khoanh vùng ngay độ phức tạp tiệm cận cho phép: n <= 20 hướng tới Quay lui O(2^n); n <= 1000 hướng tới O(n^2); n <= 10^5 hướng tới O(n log n); n <= 10^6 yêu cầu O(n).",
+        "tip": "Kiểm tra đồng thời giới hạn giá trị phần tử (ví dụ |a[i]| <= 10^9) để chọn kiểu số nguyên 64-bit (long long) ngay từ đầu."
+      },
+      {
+        "step": 2,
+        "name": "2. Kiểm chứng bằng tay và Xác định bất biến (Invariant)",
+        "detail": "Thực hiện truy vết thủ công trên một bộ dữ liệu nhỏ để nắm vững luật chuyển đổi trạng thái. Quan sát xem tại bước thứ i, ta cần lưu giữ thông tin tối thiểu nào từ các bước [1..i-1] để suy ra bước i — đây chính là cơ sở định nghĩa hàm trạng thái DP hoặc cấu trúc dữ liệu phụ trợ.",
+        "tip": "Đối với các bài có nhiều trường hợp biên (n = 1, mảng toàn số âm, đồ thị không liên thông), kiểm tra riêng trước khi lập trình."
+      },
+      {
+        "step": 3,
+        "name": "3. Thiết kế thuật toán cơ sở rồi Tối ưu hóa",
+        "detail": "Phát biểu lời giải trực tiếp (Brute-force / Quay lui) để bảo đảm tính đúng đắn về mặt toán học. Tiếp theo xác định thao tác gây dư thừa (tính lại tổng đoạn, tìm kiếm tuyến tính, hoặc lặp lại bài toán con) và thay thế bằng kỹ thuật tương ứng: Mảng cộng dồn, Hai con trỏ, Tìm kiếm nhị phân, Priority Queue, Quy hoạch động hoặc Cắt tỉa Nhánh cận.",
+        "tip": "Trong các bài Nhánh và cận, luôn chứng minh cận dưới g(S) <= f*(S) để việc cắt tỉa không loại bỏ nghiệm tối ưu."
+      },
+      {
+        "step": 4,
+        "name": "4. Chuẩn hóa cài đặt C++17 và Kiểm tra biên",
+        "detail": "Rà soát 4 lỗi phổ biến khi cài đặt: (1) Tràn số nguyên 32-bit tại các phép cộng dồn, nhân mô-đun hoặc tính bình phương khoảng cách; (2) Thiếu Fast I/O (`ios::sync_with_stdio(false); cin.tie(nullptr);`); (3) Quên phép lấy dư `(x % MOD + MOD) % MOD` với số âm; (4) Chưa khởi tạo lại mảng/biến toàn cục giữa các test case trong cùng file.",
+        "tip": "Dùng `'\\n'` thay cho `endl` để tránh flush bộ đệm xuất liên tục trên lượng dữ liệu lớn."
+      }
+    ]
+  },
+  "pattern_cheatsheet": [
+    {
+      "signal": "n <= 20, chọn tập con, phân hoạch nhóm, gán dấu nhị phân",
+      "algorithm": "Quay lui (Backtracking) / Sinh nhị phân",
+      "complexity": "O(2^n)",
+      "why": "Không gian trạng thái tối đa 2^20 (~10^6) phù hợp với tìm kiếm vét cạn.",
+      "examples": [
+        "gk-subset-sum-ab",
+        "gk-k-comb-sum-m",
+        "gk-partition-2-groups",
+        "gk-partition-3-groups"
+      ]
+    },
+    {
+      "signal": "n <= 12..30, bài toán hoán vị, định tuyến xe (TSP/CBUS), phân công tối ưu",
+      "algorithm": "Nhánh và cận (Branch & Bound)",
+      "complexity": "Hàm mũ có cắt tỉa",
+      "why": "Duy trì cận dưới f_hiện_tại + cận_phần_còn_lại >= best để cắt nhánh không tối ưu.",
+      "examples": [
+        "gk-bca-credit",
+        "gk-cbus-stops",
+        "gk-task-assignment"
+      ]
+    },
+    {
+      "signal": "n <= 10^5..10^6, nhiều truy vấn tính tổng trên đoạn [L..R] hoặc hình chữ nhật 2D",
+      "algorithm": "Mảng cộng dồn (Prefix Sum 1D / 2D)",
+      "complexity": "O(n) tiền xử lý, O(1)/truy vấn",
+      "why": "Sử dụng tính chất nghịch đảo phép cộng: S[R] - S[L-1].",
+      "examples": [
+        "gk-range-sum-queries",
+        "gk-even-subarrays",
+        "ck-daily-transactions-2d"
+      ]
+    },
+    {
+      "signal": "n <= 10^5..10^6, đếm hoặc tìm đoạn con liên tiếp độ dài k / tính chất đơn điệu",
+      "algorithm": "Cửa sổ trượt (Sliding Window) / Hai con trỏ",
+      "complexity": "O(n)",
+      "why": "Duy trì bất biến trên đoạn [L..R] khi dịch cận trái và cận phải một chiều.",
+      "examples": [
+        "gk-k-subseq-weight",
+        "gk-k-subseq-bounded",
+        "gk-resource-allocation"
+      ]
+    },
+    {
+      "signal": "Truy xuất liên tục phần tử nhỏ nhất/lớn nhất trong tập động",
+      "algorithm": "Hàng đợi ưu tiên (Heap / priority_queue) + Tham lam",
+      "complexity": "O(n log n)",
+      "why": "Mỗi thao tác chèn và lấy cực trị đạt độ phức tạp O(log n).",
+      "examples": [
+        "gk-insert-delete-max",
+        "gk-robot-merge",
+        "gk-meeting-rooms"
+      ]
+    },
+    {
+      "signal": "Bài toán có cấu trúc con tối ưu và các bài toán con gối nhau (dãy con, ba lô, xâu)",
+      "algorithm": "Quy hoạch động (Dynamic Programming)",
+      "complexity": "O(n), O(n^2) hoặc O(n*W)",
+      "why": "Lưu bảng nghiệm bài toán con dp[] nhằm tránh tính toán lặp lại theo cấu trúc đệ quy.",
+      "examples": [
+        "gk-climbing-stairs",
+        "gk-no-2-adjacent",
+        "gk-supermarket-knapsack",
+        "ck-d-increasing-subseq",
+        "ck-longest-palindrome-subseq"
+      ]
+    },
+    {
+      "signal": "Dữ liệu bản ghi dạng chuỗi thời gian HH:MM:SS kèm nhiều truy vấn thống kê",
+      "algorithm": "Bảng băm (unordered_map) + Chuẩn hóa nguyên + Tìm kiếm nhị phân",
+      "complexity": "O(n + Q log n)",
+      "why": "Chuyển đổi mốc thời gian về giây nguyên giúp áp dụng Prefix Sum và Binary Search.",
+      "examples": [
+        "ck-bank-transactions",
+        "ck-delivery-trips",
+        "ck-citizen-data"
+      ]
+    },
+    {
+      "signal": "Mô hình mạng lưới đỉnh-cạnh: liên thông, cây khung nhỏ nhất, đường đi ngắn nhất",
+      "algorithm": "BFS/DFS, Dijkstra, Kruskal + DSU",
+      "complexity": "O((V + E) log V)",
+      "why": "Dùng DSU cho bài toán gộp thành phần và Heap cho bài toán đường đi ngắn nhất trọng số không âm.",
+      "examples": [
+        "ck-delivery-dijkstra",
+        "ck-urban-mst",
+        "ck-border-comm",
+        "ck-tree-edge-partition"
+      ]
+    },
+    {
+      "signal": "n <= 10^5..10^6, nhiều truy vấn tính tổng trên đoạn [L..R] hoặc hình chữ nhật 2D",
+      "algorithm": "Mảng cộng dồn (Prefix Sum 1D / 2D)",
+      "complexity": "O(n) tiền xử lý, O(1)/truy vấn",
+      "why": "Sử dụng tính chất nghịch đảo phép cộng: S[R] - S[L-1].",
+      "examples": [
+        "hs-rmq",
+        "hs-segment-tree-sim"
+      ]
+    },
+    {
+      "signal": "Thành phần liên thông mạnh, Khớp và Cầu, Luồng cực đại, Cặp ghép hai phía",
+      "algorithm": "Tarjan (tin/low), Dinic, Hopcroft-Karp",
+      "complexity": "O(V + E) đến O(E * sqrt(V))",
+      "why": "Khai thác cây DFS (tin/low) hoặc mạng luồng phân tầng.",
+      "examples": [
+        "hs-bridges-arti-points",
+        "hs-strongly-connected-comp",
+        "hs-max-flow",
+        "hs-max-matching-bipartite",
+        "hs-graph-orientation"
+      ]
+    }
+  ],
+  "chapters": [
+    {
+      "id": "chap1",
+      "number": 1,
+      "title": "Chương 1: Chuẩn hóa C++17 & Thư viện Chuẩn (STL)",
+      "source_lectures": [
+        "lec1-chap1-introduction-library.pdf"
+      ],
+      "track": "Giữa kỳ",
+      "summary": "Thiết lập khung chương trình C++ tối ưu hiệu năng, quản lý kiểu dữ liệu 64-bit và khai thác 5 cấu trúc dữ liệu chuẩn STL: vector, map, set, stack/queue và priority_queue.",
+      "beginner_intuition": "Thư viện STL cung cấp sẵn các cấu trúc dữ liệu với đảm bảo độ phức tạp tiệm cận chặt chẽ: `vector` cho mảng động liên tiếp trong bộ nhớ; `set`/`map` (cây đỏ-đen) bảo đảm chèn, xóa, tìm kiếm `O(log n)` theo thứ tự khóa; `unordered_map` đạt `O(1)` trung bình dựa trên bảng băm; `priority_queue` (Binary Heap) cho phép truy xuất cực trị `O(1)` và cập nhật `O(log n)`.",
+      "how_to_think": [
+        "Khởi đầu bằng `#include <bits/stdc++.h>` và tắt đồng bộ I/O (`ios::sync_with_stdio(false); cin.tie(nullptr);`).",
+        "Đánh giá cận trên của phép toán cộng/nhân: khi phần tử lên tới `10^9` hoặc tổng vượt `2 * 10^9`, sử dụng `long long` (hoặc `unsigned __int128` nếu ngưỡng tới `10^19`).",
+        "Bài toán đếm tần suất khóa lớn hoặc chuỗi ký tự dùng `unordered_map` (khi không cần thứ tự) hoặc `map` (khi cần duyệt theo thứ tự từ điển).",
+        "Bài toán tìm cận dưới/cận trên động trên tập hợp dùng `std::set` kết hợp phương thức `s.lower_bound(x)` / `s.upper_bound(x)`."
+      ],
+      "template_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int n;\n    cin >> n;\n    vector<long long> a(n);\n    for (int i = 0; i < n; i++) cin >> a[i];\n\n    // Vi du dung map dem tan suat:\n    unordered_map<long long, int> cnt;\n    for (long long x : a) cnt[x]++;\n\n    return 0;\n}",
+      "common_mistakes": [
+        "Dùng kiểu `int` (32-bit) khi cộng dồn `10^5` phần tử kích thước `10^5`, gây tràn số có dấu.",
+        "Không tắt đồng bộ `stdio` khi đọc `n >= 10^5` phần tử dẫn đến TLE.",
+        "Dùng `endl` trong vòng lặp lớn gây flush bộ đệm xuất liên tục; thay bằng `'\\n'`."
+      ],
+      "problems": [
+        "gk-count-gt-c",
+        "gk-count-group",
+        "gk-count-positive",
+        "gk-equal-pairs",
+        "gk-insert-delete-max",
+        "hs-add-two-integers",
+        "hs-queue-sim",
+        "hs-stack-sim",
+        "hs-sim-priority-queue",
+        "hs-set-lower-upper",
+        "hs-upper-bound-seq",
+        "hs-word-freq-text",
+        "hs-sort-int",
+        "hs-analyze-order-raised"
+      ]
+    },
+    {
+      "id": "chap2",
+      "number": 2,
+      "title": "Chương 2: Mảng cộng dồn, Hai con trỏ & Cấu trúc dữ liệu đoạn",
+      "source_lectures": [
+        "lec2-chap2-advanced-data-structures.pdf",
+        "lec3-chap2-advanced-data-structures.pdf"
+      ],
+      "track": "Giữa kỳ",
+      "summary": "Giảm độ phức tạp bài toán truy vấn đoạn con và đếm cặp từ O(n^2) xuống O(n) hoặc O(log n) bằng Prefix Sum 1D/2D, Sliding Window, Sparse Table và Segment Tree.",
+      "beginner_intuition": "Ý tưởng cốt lõi của Mảng cộng dồn là tiền xử lý tổng tích lũy `S[i] = a[1] + ... + a[i]`, từ đó suy ra tổng đoạn bất kỳ qua hiệu `S[R] - S[L-1]` trong `O(1)`. Đối với Cửa sổ trượt và Hai con trỏ, khi độ dài hoặc tổng trên đoạn mang tính đơn điệu, dịch chuyển hai biên `L, R` chỉ tiến mà không lùi giúp tổng số bước toàn thuật toán là `2n = O(n)`.",
+      "how_to_think": [
+        "Truy vấn tổng đoạn tĩnh `[L..R]` -> xây mảng cộng dồn 1-indexed `S[i] = S[i-1] + a[i]`, kết quả `S[R] - S[L-1]`.",
+        "Truy vấn tổng hình chữ nhật trên ma trận `(r1, c1)..(r2, c2)` -> áp dụng nguyên lý bù trừ 2D: `S[r2][c2] - S[r1-1][c2] - S[r2][c1-1] + S[r1-1][c1-1]`.",
+        "Bài toán đếm/tìm đoạn con liên tiếp thỏa điều kiện đồng dư (tổng chia hết cho `K` hoặc tổng chẵn) -> quy về đếm các cặp `S[R] ≡ S[L-1] (mod K)`.",
+        "Truy vấn `min/max` đoạn tĩnh không sửa đổi -> dùng Sparse Table `O(1)`; nếu có thao tác cập nhật phần tử `update(i, v)` -> dùng Segment Tree `O(log n)`."
+      ],
+      "template_cpp": "// Mang cong don 1D (chi so tu 1)\nvector<long long> S(n + 1, 0);\nfor (int i = 1; i <= n; i++) {\n    S[i] = S[i - 1] + a[i];\n}\n// Tong doan [L..R]:\nlong long sumLR = S[R] - S[L - 1];\n\n// Cua so truot do dai K:\nlong long win = 0;\nfor (int i = 1; i <= k; i++) win += a[i];\nif (win == m) ans++;\nfor (int i = k + 1; i <= n; i++) {\n    win += a[i] - a[i - k];\n    if (win == m) ans++;\n}",
+      "common_mistakes": [
+        "Đánh chỉ số mảng từ `0` nhưng truy cập `S[L-1]` mà quên điều kiện `L == 0` hoặc quên gán `S[0] = 0`.",
+        "Áp dụng công thức bù trừ 2D thiếu bước cộng lại phần giao `S[r1-1][c1-1]`.",
+        "Trong bài đếm đoạn đồng dư 0, bỏ sót tiền tố rỗng `S[0] = 0`."
+      ],
+      "problems": [
+        "gk-max-positive-subarray",
+        "gk-range-sum-queries",
+        "gk-k-subseq-weight",
+        "gk-k-subseq-bounded",
+        "gk-even-subarrays",
+        "gk-resource-allocation",
+        "ck-daily-transactions-2d",
+        "hs-sim-prefix-sum-1d",
+        "hs-sim-prefix-sum-2d",
+        "hs-sum-pair-equal-m",
+        "hs-longest-bounded-maxseq",
+        "hs-rmq",
+        "hs-segment-tree-sim"
+      ]
+    },
+    {
+      "id": "chap3",
+      "number": 3,
+      "title": "Chương 3: Quay lui (Backtracking) & Nhánh cận (Branch & Bound)",
+      "source_lectures": [
+        "lec4-chap3-recursion-branch-and-bound-cbus-binpacking-2D.pdf",
+        "lec5-chap3-recursion-branch-and-bound-cvrp.pdf"
+      ],
+      "track": "Giữa kỳ",
+      "summary": "Xây dựng không gian tìm kiếm có hệ thống qua đệ quy trạng thái và thiết lập hàm cận dưới chặt chẽ để loại bỏ nhánh không tối ưu.",
+      "beginner_intuition": "Quay lui duyệt cây tìm kiếm nghiệm theo chiều sâu: ở tầng `k`, lần lượt gán các giá trị hợp lệ `v` thỏa ràng buộc `check(v, k)`, cập nhật trạng thái toàn cục, gọi đệ quy `Try(k + 1)` và hoàn tác chính xác trạng thái sau khi quay về. Nhánh và cận bổ sung hàm ước lượng cận dưới `g`: nếu chi phí hiện tại cộng cận dưới phần còn lại đã `>= best` (với bài min), toàn bộ cây con dưới nhánh đó không thể cho nghiệm tốt hơn và được cắt bỏ.",
+      "how_to_think": [
+        "Xác định vectơ biến quyết định `X[1..n]` và miền giá trị ứng cử tại bước `k`.",
+        "Thiết lập hàm kiểm tra ràng buộc `check(v, k)` bảo đảm tính hợp lệ từng phần (không trùng đỉnh, đủ tải trọng, thỏa thứ tự).",
+        "Cập nhật biến trạng thái trước lời gọi đệ quy và hoàn tác đối xứng ngay sau lời gọi đệ quy.",
+        "Với bài toán tối ưu (TSP, CBUS, CVRP, Phân công), tính giá trị cạnh nhỏ nhất `c_min` để dựng cận dưới `cur + rem * c_min < best`."
+      ],
+      "template_cpp": "void Try(int k) {\n    for (int v : candidates(k)) {\n        if (check(v, k)) {\n            x[k] = v;\n            // 1. Cap nhat trang thai\n            visited[v] = true;\n            curCost += cost(k, v);\n\n            if (k == n) {\n                best = min(best, curCost);\n            } else {\n                // Cat tia nhanh can (neu can):\n                if (curCost + (n - k) * cmin < best)\n                    Try(k + 1);\n            }\n\n            // 2. Khoi phuc trang thai (Backtrack!)\n            curCost -= cost(k, v);\n            visited[v] = false;\n        }\n    }\n}",
+      "common_mistakes": [
+        "Cập nhật biến đếm hoặc mảng đánh dấu trước khi gọi đệ quy nhưng quên hoàn tác sau khi thoát khỏi nhánh.",
+        "Trong bài toán chu trình khép kín (TSP, CBUS), quên cộng chi phí quay về điểm xuất phát `0` khi cập nhật `best`.",
+        "Chọn hàm ước lượng cận dưới lớn hơn chi phí thực tế tối thiểu của nhánh con, dẫn đến cắt nhầm nghiệm tối ưu."
+      ],
+      "problems": [
+        "gk-subset-sum-ab",
+        "gk-k-comb-sum-m",
+        "gk-insert-plus-minus",
+        "gk-partition-2-groups",
+        "gk-partition-3-groups",
+        "gk-bca-credit",
+        "gk-task-assignment",
+        "gk-cbus-stops",
+        "ck-matrix-max-reward",
+        "hs-binary-seq-gen",
+        "hs-binary-no-11",
+        "hs-binary-no-substr",
+        "hs-binary-contains-111",
+        "hs-bacp",
+        "hs-material-cut",
+        "hs-cbus",
+        "hs-cvrp",
+        "hs-max-common-subset",
+        "hs-timetable-ict-count",
+        "hs-timetable-min-max-load",
+        "hs-queen-large-multi",
+        "hs-count-spanning-trees-k"
+      ]
+    },
+    {
+      "id": "chap4a",
+      "number": 4,
+      "title": "Chương 4A: Tham lam (Greedy) & Chia để trị (Divide & Conquer)",
+      "source_lectures": [
+        "lec6-chap4-greedy.pdf",
+        "lec7-chap4-divide-and-conquer.pdf"
+      ],
+      "track": "Giữa kỳ",
+      "summary": "Giải quyết các bài toán tối ưu cấu trúc lựa chọn cục bộ bằng Sắp xếp/Min-Heap và phân rã bài toán kích thước lớn bằng đệ quy chia đôi.",
+      "beginner_intuition": "Thuật toán Tham lam áp dụng được khi bài toán thỏa tính chất lựa chọn tham lam (lựa chọn tối ưu tại mỗi bước thuộc về một nghiệm tối ưu toàn cục, chứng minh bằng phương pháp hoán đổi / Exchange Argument). Chia để trị phân tách bài toán kích thước `N` thành các bài toán con độc lập kích thước `N/2` (như Đếm cặp nghịch thế qua Merge Sort, Cặp điểm gần nhất, Lũy thừa nhanh) để đạt `O(N log N)` hoặc `O(log N)`.",
+      "how_to_think": [
+        "Với bài toán chọn tập đoạn rời nhau (Activity Selection), sắp xếp tăng dần theo thời điểm kết thúc `b_i` và chọn đoạn kết thúc sớm nhất tương thích.",
+        "Với bài toán gộp chi phí hoặc lập lịch phòng họp song song, sử dụng Min-Heap (`priority_queue` với `greater<>`) để lấy phần tử nhỏ nhất trong `O(log n)`.",
+        "Với Chia để trị (Chuỗi Fibonacci, Đếm cặp nghịch thế, Closest Pair), tiền xử lý kích thước khối hoặc duy trì bất biến thứ tự trong bước trộn (`merge`)."
+      ],
+      "template_cpp": "// Min-heap trong C++ (mac dinh priority_queue la Max-heap!)\npriority_queue<long long, vector<long long>, greater<long long>> pq;\n\n// Vi du ghep 2 phan tu nho nhat (Robot / Huffman):\nwhile (pq.size() > 1) {\n    long long x = pq.top(); pq.pop();\n    long long y = pq.top(); pq.pop();\n    long long s = x + y;\n    total += s;\n    pq.push(s);\n}",
+      "common_mistakes": [
+        "Khai báo `priority_queue<long long>` mặc định (Max-Heap) thay vì `priority_queue<long long, vector<long long>, greater<>>` khi cần Min-Heap.",
+        "Không dùng `long long` cho biến kích thước/chỉ số `k` khi bài toán có độ dài tăng theo hàm mũ (`k <= 10^18`)."
+      ],
+      "problems": [
+        "gk-robot-merge",
+        "gk-meeting-rooms",
+        "gk-fib-string",
+        "gk-jump-game",
+        "gk-stock-increasing",
+        "hs-disjoint-segment",
+        "hs-parallel-job-execution",
+        "hs-job-selection-planning",
+        "hs-inversion",
+        "hs-max-distance-subseq",
+        "hs-expmod",
+        "hs-tsp",
+        "hs-closest-pair",
+        "hs-balanced-set-partition",
+        "hs-tsp-large"
+      ]
+    },
+    {
+      "id": "chap4b",
+      "number": 5,
+      "title": "Chương 4B: Quy hoạch động (Dynamic Programming)",
+      "source_lectures": [
+        "lec8-chap4-dynamic-programming-overview-money-change.pdf",
+        "lec9-chap4-dynamic-programming-LIS.pdf",
+        "lec10-chap4-dynamic-programming-tsp.pdf"
+      ],
+      "track": "Giữa kỳ & Cuối kỳ",
+      "summary": "Xây dựng công thức truy hồi, xác định trạng thái cơ sở và tối ưu hóa không gian bộ nhớ cho các lớp bài toán 1D, 2D, Knapsack, LIS/LCS và Bitmask DP.",
+      "beginner_intuition": "Quy hoạch động giải quyết các bài toán có hai tính chất: cấu trúc con tối ưu và các bài toán con gối nhau. Thay vì tính lại một trạng thái nhiều lần trong cây đệ quy, mỗi bài toán con được giải đúng một lần và lưu kết quả vào bảng `dp`. Bốn bước chuẩn gồm: (1) Định nghĩa ý nghĩa toán học của trạng thái `dp[...]`; (2) Xác định công thức chuyển trạng thái theo tập lựa chọn ở bước cuối; (3) Thiết lập điều kiện biên cơ sở; (4) Xác định thứ tự duyệt bảng.",
+      "how_to_think": [
+        "Định nghĩa rõ ràng miền giá trị của `dp[i]` hoặc `dp[i][j]` (ví dụ: tổng lớn nhất xét trên tiền tố `1..i`, hoặc kết thúc bắt buộc tại `i`).",
+        "Dạng dãy con tăng (LIS): `O(n^2)` theo công thức `dp[i] = max(dp[j] + 1)` với `j < i, a[j] < a[i]`; hoặc `O(n log n)` bằng mảng `tail` kết hợp `lower_bound`.",
+        "Dạng Cái túi (Knapsack): mỗi phần tử chọn vô hạn lần thì duyệt dung lượng `w` tăng dần (`w: w[i] -> W`); mỗi phần tử chọn tối đa 1 lần (0/1 Knapsack) thì duyệt `w` giảm dần (`w: W -> w[i]`).",
+        "Với bài toán bảng hai chiều có kích thước một chiều nhỏ (`m <= 10`), biểu diễn cấu hình cột bằng số nguyên bitmask `[0 .. 2^m - 1]`."
+      ],
+      "template_cpp": "// Mau 1: Khong chon 2 phan tu lien tiep\ndp[0] = 0; dp[1] = a[1];\nfor (int i = 2; i <= n; i++) {\n    dp[i] = max(dp[i - 1], dp[i - 2] + a[i]);\n}\n\n// Mau 2: Cai tui khong gioi han (Unbounded Knapsack)\nvector<int> dp(W + 1, 0);\nfor (int i = 0; i < n; i++) {\n    for (int j = w[i]; j <= W; j++) {\n        dp[j] = max(dp[j], dp[j - w[i]] + v[i]);\n    }\n}",
+      "common_mistakes": [
+        "Khởi tạo thiếu trạng thái cơ sở (`dp[0]`) hoặc không phân biệt trạng thái không hợp lệ (`-INF` / `+INF`) với `0`.",
+        "Nhầm hướng duyệt vòng lặp dung lượng `w` giữa 0/1 Knapsack và Unbounded Knapsack.",
+        "Vượt giới hạn bộ nhớ (MLE) ở bài LCS `n, m = 10^4` nếu giữ nguyên bảng `dp[n][m]` thay vì dùng mảng lăn `O(min(n, m))`."
+      ],
+      "problems": [
+        "gk-climbing-stairs",
+        "gk-no-2-adjacent",
+        "gk-no-3-adjacent",
+        "gk-treasure-grid",
+        "gk-supermarket-knapsack",
+        "ck-d-increasing-subseq",
+        "ck-longest-palindrome-subseq",
+        "ck-interleaving-strings",
+        "ck-stock-k-transactions",
+        "ck-rod-cutting",
+        "ck-otp-dice-sum",
+        "ck-equal-freq-binning",
+        "ck-stone-castle-3d",
+        "ck-treasure-2d-lis",
+        "hs-coin-exchange-dp",
+        "hs-lcs",
+        "hs-longest-inc-subseq",
+        "hs-max-even-subseq",
+        "hs-nurse",
+        "hs-max-subseq-div-k",
+        "hs-max-weighted-disjoint-seg",
+        "hs-max-score-table",
+        "hs-pick-non-adj-table",
+        "hs-multi-knapsack-large"
+      ]
+    },
+    {
+      "id": "chap5",
+      "number": 6,
+      "title": "Chương 5 & 6: Thuật toán Đồ thị, Luồng mạng & Xử lý Dữ liệu",
+      "source_lectures": [
+        "lec11-chap5-graph-algorithms-DFS-low-num-bridges-articulation-points.pdf",
+        "lec12-chap5-graph-algorithms-DFS-low-num-strongly-connected-components.pdf",
+        "lec13-chap5-graph-algorithms-DFS-sum_path_on_tree.pdf",
+        "lec14-chap5-graph-algorithms-BFS-check-bipartite-graph.pdf",
+        "lec15-chap5-graph-algorithms-sap-xep-topo.pdf",
+        "lec16-chap5-graph-algorithms-tim-duong-di-dai-nhat-tren-DAG.pdf",
+        "lec17-chap5-graph-MaxFlow.pdf",
+        "lec18-chap5-graph-Max-Matching-Unweighted-Bipartite.pdf",
+        "lec19-chap6-introduction-to-np-complete.pdf"
+      ],
+      "track": "Cuối kỳ",
+      "summary": "Cài đặt thành thạo DFS/BFS, Tarjan (Khớp/Cầu/SCC), Cây khung nhỏ nhất (Kruskal), Đường đi ngắn nhất (Dijkstra), Luồng cực đại (Dinic) và Cặp ghép hai phía (Hopcroft-Karp).",
+      "beginner_intuition": "Đồ thị thưa được lưu trữ hiệu quả nhất bằng danh sách kề `O(V + E)`. BFS mở rộng theo từng lớp khoảng cách nên tìm được đường đi ngắn nhất trên đồ thị không trọng số trong `O(V + E)`. Thuật toán Tarjan khai thác thời điểm thăm `tin[u]` và giá trị `low[u]` trên cây DFS để phát hiện cạnh cầu (`low[v] > tin[u]`), đỉnh khớp (`low[v] >= tin[u]`) và thành phần liên thông mạnh. Với đồ thị có trọng số không âm, Dijkstra mở rộng đỉnh theo thứ tự khoảng cách tối thiểu; với bài toán kết nối chi phí nhỏ nhất, Kruskal kết hợp DSU gộp cạnh theo thứ tự trọng số tăng dần.",
+      "how_to_think": [
+        "Bài toán đường đi ngắn nhất không trọng số hoặc tô 2 màu (đồ thị hai phía): dùng BFS `O(V + E)`.",
+        "Bài toán tìm Khớp/Cầu trên đồ thị vô hướng hoặc SCC trên đồ thị có hướng: dùng Tarjan (`tin`, `low`); ưu tiên phiên bản khử đệ quy bằng `stack` nếu `N = 10^5`.",
+        "Bài toán đường đi ngắn nhất trọng số không âm: Dijkstra với Min-Heap và điều kiện kiểm tra `if (d > dist[u]) continue;`.",
+        "Bài toán nối mạng chi phí tối thiểu: Kruskal + DSU; nếu có cạnh cho trước hoặc giới hạn còn lại `S` thành phần, khởi tạo DSU với các cạnh sẵn trước khi chạy Kruskal.",
+        "Bài toán cặp ghép hai phía (`n, m <= 10^4`) dùng Hopcroft-Karp `O(E sqrt(V))`; bài toán luồng cực đại dùng Dinic với đồ thị phân tầng và con trỏ hiện tại `ptr[u]`."
+      ],
+      "template_cpp": "// DSU (Disjoint Set Union) + Kruskal\nstruct DSU {\n    vector<int> p;\n    DSU(int n) : p(n + 1) { iota(p.begin(), p.end(), 0); }\n    int find(int x) { return p[x] == x ? x : p[x] = find(p[x]); }\n    bool unite(int a, int b) {\n        a = find(a); b = find(b);\n        if (a == b) return false;\n        p[a] = b; return true;\n    }\n};\n\n// Dijkstra chuan\npriority_queue<pair<long long,int>, vector<pair<long long,int>>, greater<>> pq;\ndist[S] = 0; pq.push({0, S});\nwhile (!pq.empty()) {\n    auto [d, u] = pq.top(); pq.pop();\n    if (d > dist[u]) continue;\n    for (auto [v, w] : adj[u]) {\n        if (dist[u] + w < dist[v]) {\n            dist[v] = dist[u] + w;\n            pq.push({dist[v], v});\n        }\n    }\n}",
+      "common_mistakes": [
+        "Thiếu điều kiện `if (d > dist[u]) continue;` trong vòng lặp Dijkstra làm tăng độ phức tạp thời gian.",
+        "Biểu diễn đồ thị vô hướng nhưng chỉ thêm cung 1 chiều hoặc không dùng `edge_id` khi kiểm tra cạnh song song trong Tarjan tìm cầu.",
+        "Không sử dụng kiểu `long long` khi tổng trọng số đường đi hoặc cây khung vượt `2 * 10^9`."
+      ],
+      "problems": [
+        "ck-bank-transactions",
+        "ck-delivery-trips",
+        "ck-citizen-data",
+        "ck-electricity-bill",
+        "ck-tree-edge-partition",
+        "ck-delivery-dijkstra",
+        "ck-travel-time-window",
+        "ck-triple-sum-q",
+        "ck-urban-mst",
+        "ck-border-comm",
+        "ck-steiner-tree",
+        "ck-min-vertex-cover",
+        "ck-max-simple-path",
+        "ck-tsp-precedence",
+        "hs-bfs-lex",
+        "hs-dfs-lex",
+        "hs-connected-component",
+        "hs-check-bipartite",
+        "hs-check-cyclic",
+        "hs-bridges-arti-points",
+        "hs-strongly-connected-comp",
+        "hs-longest-path-tree",
+        "hs-max-independent-set-tree",
+        "hs-sum-path-on-tree",
+        "hs-k-longest-path-tree",
+        "hs-longest-path-dag",
+        "hs-make-span-schedule",
+        "hs-shortest-path-dijkstra",
+        "hs-mst-kruskal",
+        "hs-ic-bus",
+        "hs-max-matching-bipartite",
+        "hs-max-flow",
+        "hs-euler-cycle",
+        "hs-graph-orientation",
+        "hs-ham-cycle",
+        "hs-ship-traverse-islands",
+        "hs-two-mode-elevator"
+      ]
+    }
+  ]
+}

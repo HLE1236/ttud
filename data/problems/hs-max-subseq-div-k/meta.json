@@ -1,0 +1,37 @@
+{
+  "id": "hs-max-subseq-div-k",
+  "title": "[HUSTack] Đoạn con tổng chia hết cho K lớn nhất",
+  "track": "midterm",
+  "topic": "dp-midterm",
+  "difficulty": "Trung bình",
+  "exam_tags": [
+    "HUSTack 2025.2 (MaxSubseqDivK)",
+    "HUSTack: Chưa làm"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho dãy `n` số nguyên `a_1, ..., a_n` và số nguyên dương `K`. Tìm đoạn con **liên tiếp** khác rỗng sao cho tổng các phần tử chia hết cho `K` và đạt giá trị lớn nhất. Nếu không có đoạn con nào tổng chia hết cho `K`, in `NOT_FOUND`.",
+  "input_spec": "- Dòng 1: `n, K` (`1 <= n <= 10^5`, `1 <= K <= 10`).\n- Dòng 2: `n` số nguyên `a_1, ..., a_n` (`-1000 <= a_i <= 1000`).",
+  "output_spec": "Tổng lớn nhất chia hết cho `K`, hoặc `NOT_FOUND`.",
+  "samples": [
+    {
+      "input": "6 3\n-2 -7 2 5 2 4",
+      "output": "9"
+    },
+    {
+      "input": "4 5\n1 1 1 1",
+      "output": "NOT_FOUND"
+    }
+  ],
+  "theory_chapter": "chap4",
+  "mindset": "Đây là bản tổng quát trực tiếp của bài Đoạn con tổng chẵn (`K = 2`)! Tổng đoạn `[l..r]` chia hết cho `K` tương đương `pref[r] % K == pref[l-1] % K` (chia dư dương trong `[0..K-1]`). Với mỗi lớp đồng dư `r in [0..K-1]`, chỉ cần lưu `min_pref[r]` nhỏ nhất từng gặp trước đó.",
+  "hints": [
+    "Khởi tạo mảng `min_pref` kích thước `K` toàn `+INF`, riêng `min_pref[0] = 0`.",
+    "Tính `int rem = (int)(((pref % K) + K) % K);` để xử lý đúng cả khi `pref` âm.",
+    "Cập nhật `ans = max(ans, pref - min_pref[rem])` (nếu `min_pref[rem] < INF/2`), rồi cập nhật `min_pref[rem] = min(min_pref[rem], pref)`."
+  ],
+  "complexity": "O(n) thời gian, O(K) bộ nhớ",
+  "test_count": 10
+}

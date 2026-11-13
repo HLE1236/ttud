@@ -1,0 +1,34 @@
+{
+  "id": "hs-binary-no-substr",
+  "title": "[HUSTack] Đếm xâu nhị phân độ dài n không chứa xâu s",
+  "track": "midterm",
+  "topic": "backtracking",
+  "difficulty": "Trung bình",
+  "exam_tags": [
+    "HUSTack 2025.2 (P.02.04.02)",
+    "HUSTack: Chưa làm"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho số nguyên dương `n` (`1 <= n <= 20`) và xâu nhị phân `s` (`1 <= |s| <= 5`). Hãy đếm số lượng xâu nhị phân độ dài `n` **không chứa `s`** như một xâu con liên tiếp.",
+  "input_spec": "- Dòng 1: `n` (`1 <= n <= 20`).\n- Dòng 2: Xâu nhị phân `s` (`1 <= |s| <= 5`).",
+  "output_spec": "Số lượng `Q` thỏa mãn.",
+  "samples": [
+    {
+      "input": "3\n10",
+      "output": "4"
+    }
+  ],
+  "theory_chapter": "chap3",
+  "mindset": "Với `n <= 20`, quay lui trực tiếp sinh dần xâu và kiểm tra ngay đoạn cuối dài `|s|` không khớp `s` là chạy dư sức! (Hoặc dùng DP + KMP chạy `O(n * |s|)` cho mọi `n`!).",
+  "hints": [
+    "Nếu làm quay lui: ngay khi độ dài hiện tại `>= |s|`, kiểm tra `cur.substr(cur.size() - m) == s` -> cắt nhánh ngay!"
+  ],
+  "complexity": {
+    "time": "O(n * |s|)",
+    "space": "O(n)"
+  },
+  "test_count": 10
+}

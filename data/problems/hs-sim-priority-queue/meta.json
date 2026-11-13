@@ -1,0 +1,34 @@
+{
+  "id": "hs-sim-priority-queue",
+  "title": "[HUSTack] Mô phỏng Min Priority Queue (PUSH / POP phần tử nhỏ nhất)",
+  "track": "midterm",
+  "topic": "array-basic",
+  "difficulty": "Cơ bản",
+  "exam_tags": [
+    "HUSTack 2025.2 (P__SIM_PRIORITY_QUEUE)",
+    "HUSTack: Chưa làm"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cơ sở dữ liệu `D` lưu các số nguyên dương. Thực hiện chuỗi thao tác:\n- `PUSH e`: thêm `e` vào `D`.\n- `POP`: xóa phần tử **NHỎ NHẤT** khỏi `D` và in giá trị đó ra màn hình.\nKết thúc bởi `#`.",
+  "input_spec": "Mỗi dòng là `PUSH e` hoặc `POP`. Kết thúc bằng `#`.",
+  "output_spec": "Với mỗi lệnh `POP`, in ra số nhỏ nhất lấy được trên một dòng.",
+  "samples": [
+    {
+      "input": "PUSH 10\nPUSH 4\nPUSH 1\nPUSH 8\nPUSH 7\nPOP\nPUSH 2\nPUSH 9\nPOP\nPOP\nPOP\n#",
+      "output": "1\n2\n4\n7"
+    }
+  ],
+  "theory_chapter": "chap1",
+  "mindset": "Cẩn thận: `priority_queue<int>` mặc định trong C++ là **Max-Heap** (lấy số lớn nhất)! Để làm **Min-Heap**, khai báo `priority_queue<int, vector<int>, greater<int>> pq;`!",
+  "hints": [
+    "Hoặc dùng mẹo đẩy `-e` vào Max-Heap rồi khi `POP` in ra `-pq.top()`."
+  ],
+  "complexity": {
+    "time": "O(Q log Q)",
+    "space": "O(Q)"
+  },
+  "test_count": 10
+}

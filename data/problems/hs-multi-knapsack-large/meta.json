@@ -1,0 +1,33 @@
+{
+  "id": "hs-multi-knapsack-large",
+  "title": "[HUSTack] Xếp hàng đa balo cỡ lớn (Multi-Knapsack Large)",
+  "track": "final",
+  "topic": "dp-knapsack-stock",
+  "difficulty": "Khó",
+  "exam_tags": [
+    "HUSTack 2025.2 (MultiKnapsackLarge)",
+    "HUSTack: Chưa làm"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": true,
+  "statement": "Có `n` đơn hàng `1..n`, đơn hàng `i` có khối lượng `r[i]` và đem lại doanh thu `P * r[i]` nếu được phục vụ (`P` là đơn giá cố định). Có `m` xe tải `1..m`, xe `j` có tải trọng `q[j]` và chi phí thuê cố định `c[j]` (chỉ tốn nếu xe chở ít nhất 1 đơn hàng).\nMỗi đơn hàng được gán vào tối đa 1 xe tải (hoặc không phục vụ `-1`), tổng khối lượng trên xe `j` không quá `q[j]`. Hãy tối đa hóa **tổng lợi nhuận = Tổng doanh thu - Tổng chi phí xe sử dụng**.",
+  "input_spec": "- Dòng 1: 3 số nguyên dương `m, n, P` (`1 <= m <= 500`, `1 <= n <= 2000`).\n- Dòng 2: `n` số nguyên `r[1..n]`.\n- `m` dòng tiếp theo: `q[j], c[j]` của xe `j`.",
+  "output_spec": "- Dòng 1: in `n`.\n- Dòng 2: `n` số nguyên `s[1..n]`, trong đó `s[i] in {1..m}` hoặc `-1` nếu đơn hàng `i` bị bỏ qua.",
+  "samples": [
+    {
+      "input": "3 6 20\n4 2 5 7 3 1\n10 8\n12 9\n15 10",
+      "output": "6\n1 1 2 2 1 -1"
+    }
+  ],
+  "theory_chapter": "chap5",
+  "mindset": "Bài tối ưu tổ hợp cỡ lớn: ta sắp xếp các xe tải theo hiệu quả lợi nhuận (ví dụ `q[j]` lớn hoặc tỷ lệ `P * q[j] - c[j]` cao) và các đơn hàng theo `r[i]` giảm dần (First-Fit Decreasing), chỉ mở một xe mới nếu tổng doanh thu thực sự có thể nhét vào xe đó lớn hơn chi phí thuê `c[j]` (hoặc thử điền vào các xe đã mở trước để không tốn thêm phí mở xe!).",
+  "hints": [
+    "Ưu tiên nhét đơn hàng vào các xe **đã được sử dụng** trước (không mất thêm chi phí thuê `c[j]`).",
+    "Nếu không nhét vừa xe nào đã dùng, tìm xe chưa dùng tốt nhất (hoặc đóng gói trước một lô đơn hàng còn lại vào xe đó xem `P * sum_r - c[j] > 0` mới mở xe).",
+    "Bài chấm theo checker kiểm tra ràng buộc tải trọng và đánh giá tổng lợi nhuận đạt được."
+  ],
+  "complexity": "Tham lam First-Fit Decreasing + Đánh giá mở xe O(n * m)",
+  "test_count": 10
+}

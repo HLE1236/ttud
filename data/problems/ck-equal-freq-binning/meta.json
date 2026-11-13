@@ -1,0 +1,34 @@
+{
+  "id": "ck-equal-freq-binning",
+  "title": "Chia khoảng tần suất cân bằng (Equal-Frequency Binning)",
+  "track": "final",
+  "topic": "dp-knapsack-stock",
+  "difficulty": "Nâng cao",
+  "exam_tags": [
+    "Cuối kỳ 2024.1 Kíp 1 (Bài 4)"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Trong tiền xử lý dữ liệu, có `n` giá trị rời rạc (đã có thể sắp xếp tăng dần) với tần suất xuất hiện tương ứng là `(v[1], f[1]), ..., (v[n], f[n])` (`f[i] >= 1`).\nTa muốn chia `n` giá trị này thành đúng `K` **đoạn liên tiếp khác rỗng** (gọi là `K` thùng / bins). Tổng tần suất của một thùng là tổng các `f[i]` trong đoạn đó.\nHãy tìm cách chia sao cho độ chênh lệch giữa thùng có tổng tần suất lớn nhất và thùng có tổng tần suất nhỏ nhất (`max_sum - min_sum`) là **nhỏ nhất**.",
+  "input_spec": "- Dòng 1: Hai số nguyên `n` và `K` (`1 <= K <= n <= 120`, `1 <= K <= 20`).\n- `n` dòng tiếp theo: mỗi dòng chứa `v[i]` và `f[i]` (`1 <= v[i] <= 10^9`, `1 <= f[i] <= 10^4`).",
+  "output_spec": "Một số nguyên duy nhất là giá trị `max_sum - min_sum` nhỏ nhất.",
+  "samples": [
+    {
+      "input": "4 3\n1 2\n2 2\n3 1\n4 2",
+      "output": "1"
+    }
+  ],
+  "theory_chapter": "chap4b",
+  "mindset": "Đầu tiên sắp xếp theo `v[i]` tăng dần và tính mảng cộng dồn `pref` của `f`.\nĐể kiểm tra xem có chia được `1..n` thành `K` đoạn liên tiếp mà mỗi đoạn có tổng nằm trong `[L, R]` hay không:\nDùng **DP + Two Pointers** trong `O(n * K)`: gọi `can[k][i]` là liệu tiền tố `1..i` có chia được thành `k` đoạn thuộc `[L, R]` không. Vì các đoạn chỉ lấy tổng dương, các chỉ số `j` thỏa `L <= pref[i] - pref[j] <= R` tạo thành một cửa sổ liên tiếp `[left_i .. right_i]`! Ta dùng mảng cộng dồn trên `can[k-1]` để kiểm tra trong `O(1)`.\nCuối cùng duyệt các giá trị `L` khả dĩ (là tổng một đoạn con bất kỳ `<= Total / K`, sắp xếp giảm dần để cắt sớm khi cận dưới `(Total - L)/(K-1) - L >= best`) và chặt nhị phân tìm `R` nhỏ nhất!",
+  "hints": [
+    "Nhớ sắp xếp các cặp `(v[i], f[i])` theo `v[i]` trước rồi mới lập `pref`.",
+    "Mẹo cắt nhánh hiệu quả: nếu đang xét giá trị min `L`, thì tổng `K - 1` đoạn còn lại là `Total - L` nên max chắc chắn `>= ceil((Total - L) / (K - 1))`. Khi giá trị này `- L >= best` thì dừng ngay!"
+  ],
+  "complexity": {
+    "time": "O(n * K * log S) mỗi L ứng viên",
+    "space": "O(n)"
+  },
+  "test_count": 10
+}

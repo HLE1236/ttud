@@ -1,0 +1,33 @@
+{
+  "id": "hs-coin-exchange-dp",
+  "title": "[HUSTack] Đổi tiền ít tờ nhất (Coin Exchange DP)",
+  "track": "final",
+  "topic": "dp-knapsack-stock",
+  "difficulty": "Cơ bản",
+  "exam_tags": [
+    "HUSTack 2025.2 (P.05.11.01)",
+    "HUSTack: Chưa làm"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho tập gồm `n` loại đồng xu với mệnh giá `D[1], D[2], ..., D[n]` (mỗi loại có vô hạn đồng) và số tiền nguyên dương `x`. Hãy tìm số đồng xu tối thiểu cần dùng để có tổng mệnh giá đúng bằng `x`. Nếu không thể đổi được, in `-1`.",
+  "input_spec": "- Dòng 1: hai số nguyên `n, x` (`1 <= n <= 1000`, `1 <= x <= 1000`).\n- Dòng 2: `n` số nguyên `D[1..n]` (`1 <= D[i] <= 1000`).",
+  "output_spec": "Một số nguyên là số đồng xu ít nhất, hoặc `-1` nếu không có cách đổi.",
+  "samples": [
+    {
+      "input": "4 10\n2 1 1 3",
+      "output": "4"
+    }
+  ],
+  "theory_chapter": "chap5",
+  "mindset": "Áp dụng mô hình Quy hoạch động **Unbounded Knapsack**: đặt `dp[s]` là số đồng xu ít nhất cần dùng để tạo thành tổng `s`. Với mỗi mệnh giá `d`, duyệt `s` tăng dần từ `d` tới `x` và cập nhật `dp[s] = min(dp[s], dp[s - d] + 1)`.",
+  "hints": [
+    "Khởi tạo `dp[0] = 0`, mọi `dp[1..x] = INF` (ví dụ `1e9`).",
+    "Duyệt `s` từ `1` tới `x` (hoặc duyệt từng đồng xu `d`, rồi duyệt `s` từ `d` tới `x` tăng dần để dùng được nhiều lần một loại xu).",
+    "Nếu `dp[x] >= INF` thì in `-1`, ngược lại in `dp[x]`."
+  ],
+  "complexity": "O(n * x) thời gian, O(x) bộ nhớ",
+  "test_count": 10
+}

@@ -1,0 +1,34 @@
+{
+  "title": "Phân tích giao dịch ngân hàng (4 loại truy vấn)",
+  "track": "final",
+  "exam_tags": [
+    "CK 20212 (Bài 1–4)"
+  ],
+  "topic": "graph-bfs-dfs",
+  "theory_chapter": "chap5",
+  "difficulty": "Trung bình",
+  "day": 10,
+  "time_limit_ms": 3000,
+  "tc_source": "Official Zip (CK 20212 - 12 tests)",
+  "statement": "Dữ liệu giao dịch ngân hàng trong một ngày gồm nhiều dòng (tối đa `100000` dòng), mỗi dòng có dạng:\n`<from_account> <to_account> <money> <time_point> <atm>`\nKết thúc khối dữ liệu bằng dòng `#`.\n\nSau đó là khối các truy vấn (kết thúc bằng `#`), gồm 4 dạng:\n1. `?total_money_transaction`: tổng tiền của tất cả giao dịch.\n2. `?total_money_transaction_from <account>`: tổng tiền chuyển đi từ `<account>`.\n3. `?inspect_cycle <acc> <n>`: trả về `1` nếu tồn tại chu trình giao dịch độ dài `n` (`n` tài khoản phân biệt `A1 -> A2 -> ... -> An -> A1`) bắt đầu từ `<acc>`, ngược lại `0`.\n4. `?max_money_period <time1> <time2>`: số tiền giao dịch lớn nhất trong khoảng `[time1, time2]` (`HH:MM:SS`).",
+  "input_spec": "Khối giao dịch (tối đa `10^5` dòng), dấu `#`, khối truy vấn (tối đa `10^5` dòng), dấu `#`.",
+  "output_spec": "Mỗi dòng in kết quả của một truy vấn tương ứng.",
+  "samples": [
+    {
+      "input": "T000000005 T000000002 30 06:05:27 atm6\nT000000001 T000000005 20 10:13:45 atm1\nT000000004 T000000005 10 20:43:08 atm1\n#\n?total_money_transaction\n?total_money_transaction_from T000000005\n#",
+      "output": "60\n30",
+      "explanation": "Tổng tiền = 60, chuyển từ T000000005 = 30."
+    }
+  ],
+  "mindset": "Đây là bài **đặc sản Cuối kỳ HUST**! Bí quyết xử lý gọn 4 truy vấn trên `10^5` dòng:\n1. Dùng `unordered_map<string, long long> from_money` cộng dồn luôn ngay lúc đọc dữ liệu → trả lời câu 1 & 2 trong `O(1)`.\n2. **Biến thời gian `HH:MM:SS` thành số giây** (`0..86399`). Lưu `sec_max[s]` = giao dịch lớn nhất tại giây `s`, rồi dựng **Segment Tree** trên 86400 phần tử → trả lời `?max_money_period` trong `O(log 86400)`!\n3. Với `?inspect_cycle`: mã hóa tên tài khoản thành số nguyên `0, 1, 2...` để dựng danh sách kề `adj`, rồi DFS sâu đúng `k` bước tìm đường quay về `start` (nhớ lọc cạnh trùng trong `adj`).",
+  "hints": [
+    "Đổi `HH:MM:SS` thành `h*3600 + m*60 + s` (nằm gọn từ `0` đến `86399`).",
+    "Dùng Segment Tree (hoặc Sparse Table / RMQ trong `lec3`) trên mảng `86400` giây để tìm max đoạn `[t1..t2]` nhanh.",
+    "Với `?inspect_cycle`: đánh dấu `vis[v]` để các tài khoản trong chu trình không bị lặp lại."
+  ],
+  "complexity": "Time: O((N+Q) log 86400) + DFS | Space: O(N)",
+  "starter_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    \n    return 0;\n}",
+  "reference_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint toSec(const string& t) {\n    int h = (t[0]-'0')*10 + (t[1]-'0');\n    int m = (t[3]-'0')*10 + (t[4]-'0');\n    int s = (t[6]-'0')*10 + (t[7]-'0');\n    return h*3600 + m*60 + s;\n}\n\nunordered_map<string, int> id_map;\nint get_id(const string& s) {\n    auto it = id_map.find(s);\n    if (it != id_map.end()) return it->second;\n    int id = id_map.size();\n    return id_map[s] = id;\n}\n\nvector<vector<int>> adj;\nvector<int> vis;\n\nbool dfs_cycle(int u, int start, int rem) {\n    if (rem == 1) {\n        for (int v : adj[u]) if (v == start) return true;\n        return false;\n    }\n    for (int v : adj[u]) {\n        if (!vis[v] && v != start) {\n            vis[v] = 1;\n            if (dfs_cycle(v, start, rem - 1)) return true;\n            vis[v] = 0;\n        }\n    }\n    return false;\n}\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    long long total_money = 0;\n    unordered_map<string, long long> from_money;\n    // Bucket max money per second of day [0..86399] + Segment Tree\n    vector<int> sec_max(86400, 0);\n    string u, v, tm, atm;\n    int money;\n    vector<pair<int,int>> edges;\n    while (cin >> u && u != \"#\") {\n        cin >> v >> money >> tm >> atm;\n        total_money += money;\n        from_money[u] += money;\n        int s = toSec(tm);\n        sec_max[s] = max(sec_max[s], money);\n        int iu = get_id(u), iv = get_id(v);\n        edges.push_back({iu, iv});\n    }\n    adj.resize(id_map.size());\n    for (auto &e : edges) adj[e.first].push_back(e.second);\n    for (auto &vec : adj) {\n        sort(vec.begin(), vec.end());\n        vec.erase(unique(vec.begin(), vec.end()), vec.end());\n    }\n    // Build segment tree on 86400 seconds\n    int SZ = 86400;\n    vector<int> seg(4 * SZ, 0);\n    auto build = [&](auto& self, int node, int l, int r) -> void {\n        if (l == r) { seg[node] = sec_max[l]; return; }\n        int mid = (l + r) / 2;\n        self(self, node*2, l, mid);\n        self(self, node*2+1, mid+1, r);\n        seg[node] = max(seg[node*2], seg[node*2+1]);\n    };\n    build(build, 1, 0, SZ - 1);\n    auto query = [&](auto& self, int node, int l, int r, int ql, int qr) -> int {\n        if (qr < l || r < ql) return 0;\n        if (ql <= l && r <= qr) return seg[node];\n        int mid = (l + r) / 2;\n        return max(self(self, node*2, l, mid, ql, qr), self(self, node*2+1, mid+1, r, ql, qr));\n    };\n\n    vis.assign(id_map.size(), 0);\n    string q;\n    while (cin >> q && q != \"#\") {\n        if (q == \"?total_money_transaction\") {\n            cout << total_money << \"\\n\";\n        } else if (q == \"?total_money_transaction_from\") {\n            string acc; cin >> acc;\n            cout << from_money[acc] << \"\\n\";\n        } else if (q == \"?inspect_cycle\") {\n            string acc; int k; cin >> acc >> k;\n            if (id_map.find(acc) == id_map.end()) {\n                cout << 0 << \"\\n\";\n            } else {\n                int start = id_map[acc];\n                fill(vis.begin(), vis.end(), 0);\n                vis[start] = 1;\n                cout << (dfs_cycle(start, start, k) ? 1 : 0) << \"\\n\";\n            }\n        } else if (q == \"?max_money_period\") {\n            string t1, t2; cin >> t1 >> t2;\n            int l = toSec(t1), r = toSec(t2);\n            cout << query(query, 1, 0, SZ - 1, l, r) << \"\\n\";\n        }\n    }\n    return 0;\n}",
+  "id": "ck-bank-transactions",
+  "test_count": 12
+}

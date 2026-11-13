@@ -1,0 +1,33 @@
+{
+  "id": "hs-bfs-lex",
+  "title": "[HUSTack] Duyệt BFS theo thứ tự từ điển (BFS Lexicographic)",
+  "track": "final",
+  "topic": "graph-bfs-dfs",
+  "difficulty": "Cơ bản",
+  "exam_tags": [
+    "HUSTack 2025.2 (BFS_LEX)",
+    "HUSTack: Đã AC"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho đồ thị vô hướng `G = (V, E)` gồm `n` đỉnh (`1..n`) và `m` cạnh. Thực hiện duyệt theo chiều rộng (BFS) sao cho tại mỗi đỉnh, các đỉnh kề được xét theo thứ tự **chỉ số tăng dần**, và nếu đồ thị không liên thông thì tiếp tục khởi chạy BFS từ đỉnh chưa thăm có chỉ số nhỏ nhất (`1..n`). Hãy in ra thứ tự các đỉnh được thăm.",
+  "input_spec": "- Dòng 1: `n, m` (`1 <= n <= 10^5`, `0 <= m <= 2*10^5`).\n- `m` dòng tiếp theo: `u, v` là một cạnh vô hướng.",
+  "output_spec": "Dãy các đỉnh theo thứ tự được thăm, cách nhau bởi dấu cách.",
+  "samples": [
+    {
+      "input": "6 7\n2 4\n1 3\n3 4\n5 6\n1 2\n3 5\n2 3",
+      "output": "1 2 3 4 5 6"
+    }
+  ],
+  "theory_chapter": "chap6",
+  "mindset": "Chuẩn bị danh sách kề `adj[u]`, sau đó **sort tăng dần từng `adj[u]`** trước khi chạy BFS. Duyệt vòng lặp `u = 1..n`, hễ `!vis[u]` thì đẩy vào `queue`, đánh dấu `vis[u] = true` ngay khi push để tránh đẩy trùng!",
+  "hints": [
+    "Nhớ sắp xếp `sort(adj[u].begin(), adj[u].end())` cho mọi đỉnh `u`.",
+    "Đặt `vis[v] = true` ngay trước khi `q.push(v)` (không phải khi pop!).",
+    "Vòng ngoài chạy `for (int i = 1; i <= n; ++i) if (!vis[i]) bfs(i);` để phủ hết mọi thành phần liên thông."
+  ],
+  "complexity": "O(n + m log m)",
+  "test_count": 10
+}

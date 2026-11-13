@@ -1,0 +1,34 @@
+{
+  "id": "hs-parallel-job-execution",
+  "title": "[HUSTack] Lập lịch thực hiện công việc song song (Parallel Job)",
+  "track": "midterm",
+  "topic": "greedy-2ptr",
+  "difficulty": "Trung bình",
+  "exam_tags": [
+    "HUSTack 2025.2 (P.04.06.01)",
+    "HUSTack: Chưa làm"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Có `n` công việc `1..n`, việc `i` chạy mất `d[i]` đơn vị thời gian. Ở mỗi thời điểm nguyên (`t = 0, 1, 2, ...`), **tối đa 1 công việc được bắt đầu** (chạy song song sau khi đã bắt đầu!). Nếu việc `i` bắt đầu lúc `t`, nó hoàn thành lúc `t + d[i]`. Tìm thời điểm hoàn thành muộn nhất `T` **nhỏ nhất** có thể.",
+  "input_spec": "- Dòng 1: `n` (`1 <= n <= 10^5`).\n- Dòng 2: `d[1..n]` (`1 <= d[i] <= 10^6`).",
+  "output_spec": "Thời gian `T` nhỏ nhất.",
+  "samples": [
+    {
+      "input": "5\n3 7 4 9 1",
+      "output": "9"
+    }
+  ],
+  "theory_chapter": "chap4a",
+  "mindset": "Theo lập luận tham lam hoán đổi (Exchange Argument), công việc có thời lượng lớn cần được khởi chạy trước (ở các mốc `t = 0, 1, 2, ...`). Sắp xếp dãy `d` giảm dần: công việc thứ `i` (0-based) bắt đầu tại `t = i` và kết thúc ở `i + d[i]`. Thời điểm hoàn thành toàn bộ hệ thống là `max_{i=0..n-1} (i + d[i])`.",
+  "hints": [
+    "Dùng `sort(d.rbegin(), d.rend())` và `long long` nếu cần."
+  ],
+  "complexity": {
+    "time": "O(n log n)",
+    "space": "O(n)"
+  },
+  "test_count": 10
+}

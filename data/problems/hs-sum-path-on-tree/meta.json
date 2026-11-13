@@ -1,0 +1,33 @@
+{
+  "id": "hs-sum-path-on-tree",
+  "title": "[HUSTack] Tổng khoảng cách từ 1 đỉnh tới mọi đỉnh trên cây (Tree Rerooting)",
+  "track": "final",
+  "topic": "graph-bfs-dfs",
+  "difficulty": "Khó",
+  "exam_tags": [
+    "HUSTack 2025.2 (P.05.11.02-SumPath)",
+    "HUSTack: Đã AC"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho cây có trọng số `T = (V, E)` gồm `n` đỉnh (`1..n`). Gọi `f(v)` là tổng độ dài đường đi từ tất cả các đỉnh khác tới `v`. Hãy tìm giá trị `max { f(1), f(2), ..., f(n) }`.",
+  "input_spec": "- Dòng 1: `n` (`2 <= n <= 10^5`).\n- `n - 1` dòng tiếp theo: `u, v, w` là cạnh nối hai đỉnh có trọng số `w`.",
+  "output_spec": "Giá trị lớn nhất của `f(v)`.",
+  "samples": [
+    {
+      "input": "4\n1 2 1\n1 3 3\n3 4 2",
+      "output": "13"
+    }
+  ],
+  "theory_chapter": "chap6",
+  "mindset": "Kỹ thuật **Quy hoạch động đổi gốc (Rerooting DP)** kinh điển:\n1. Lần duyệt 1 (từ lá lên gốc `1`): tính kích thước cây con `sz[u]` và tổng khoảng cách từ đỉnh `u` tới mọi đỉnh trong cây con của nó `down[u]`.\n2. Lần duyệt 2 (từ gốc `1` xuống dưới): khi chuyển gốc từ cha `u` sang con `v` qua cạnh trọng số `w`:\n   - `sz[v]` đỉnh trong cây con `v` được **lại gần hơn** đoạn `w` (`- w * sz[v]`).\n   - `n - sz[v]` đỉnh bên ngoài cây con `v` bị **ra xa hơn** đoạn `w` (`+ w * (n - sz[v])`).\nDo đó `f[v] = f[u] + w * (n - 2 * sz[v])`!",
+  "hints": [
+    "Khởi đầu ở gốc: `f[1] = down[1]` (còn `down[u] = sum(down[v] + w * sz[v])`).",
+    "Duyệt BFS từ gốc `1` từ trên xuống: với mỗi con `v` của `u`, áp dụng `f[v] = f[u] + w * (n - 2 * sz[v])`.",
+    "Cẩn thận tràn số `int`! Tổng khoảng cách lên tới `~10^14`, dùng `long long` hoàn toàn."
+  ],
+  "complexity": "O(n)",
+  "test_count": 10
+}

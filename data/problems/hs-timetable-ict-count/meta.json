@@ -1,0 +1,37 @@
+{
+  "id": "hs-timetable-ict-count",
+  "title": "[HUSTack] Đếm cách xếp lịch học ICT (Timetable Count)",
+  "track": "midterm",
+  "topic": "backtracking",
+  "difficulty": "Trung bình",
+  "exam_tags": [
+    "HUSTack 2025.2 (Timetable-ICT-Count)",
+    "HUSTack: Đã AC"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Có `n` lớp học `1..n` (`<mã_lớp>`, thời lượng `d_i`, sĩ số `v_i`) và `m` phòng học `1..m` (`<mã_phòng>`, sức chứa `c_j`, kèm danh sách `k` khoảng tiết trống `(s, l)` có tiết bắt đầu `s` và độ dài `l` tiết liên tiếp, tức các tiết `s, s+1, ..., s+l-1`).\nMột lịch xếp hợp lệ gán mỗi lớp `i` vào **một phòng `r`** và **một khoảng tiết học liên tiếp `[t, t + d_i - 1]`** sao cho:\n- Khoảng `[t, t + d_i - 1]` nằm trọn trong một khoảng tiết trống `(s, l)` của phòng `r`.\n- Hai lớp bất kỳ đều phải học ở **các khung giờ rời nhau** (hai khoảng thời gian `[t_1, t_1 + d_1 - 1]` và `[t_2, t_2 + d_2 - 1]` không giao nhau, kể cả khi xếp ở hai phòng khác nhau).\n- Sĩ số lớp không vượt quá sức chứa phòng: `v_i <= c_r`.\n\nHãy đếm tổng số cách xếp lịch hợp lệ.",
+  "input_spec": "- Dòng 1: `n` (`1 <= n <= 10`). `n` dòng tiếp theo: `<mã_lớp> d_i v_i`.\n- Dòng tiếp theo: `m` (`1 <= m <= 10`). `m` dòng tiếp theo: `<mã_phòng> c_j k s_1 l_1 ... s_k l_k`.",
+  "output_spec": "Một số nguyên duy nhất là tổng số cách xếp hợp lệ.",
+  "samples": [
+    {
+      "input": "2\nIT3011 3 100\nIT3020 4 120\n1\nD9-101 150 6 3 3 6 2 11 1 16 5 23 3 26 5",
+      "output": "20"
+    },
+    {
+      "input": "6\nIT3011 3 100\nIT3020 4 120\nIT4663 3 60\nIT3220 4 90\nIT3030 3 100\nIT3170 2 120\n4\nD9-101 150 6 3 3 6 2 11 1 16 5 23 3 26 5\nC7-205 80 9 1 2 5 1 6 1 10 1 11 5 16 1 20 1 21 3 29 2\nD5-301 120 7 1 1 4 2 6 3 11 5 16 2 21 2 26 5\nD8-102 100 7 1 2 5 1 6 3 11 3 16 5 21 1 26 5",
+      "output": "66880"
+    }
+  ],
+  "theory_chapter": "chap2",
+  "mindset": "Điểm mấu chốt để tối ưu quay lui bài này là **tách riêng việc chọn tiết `t` và chọn phòng `r`**: tính hợp lệ về mặt **thời gian** của lớp `i` chỉ phụ thuộc vào đoạn tiết `[t, t + d_i - 1]` có trùng với các lớp đã xếp hay không, chứ không phụ thuộc vào phòng `r`! Vì vậy với mỗi cặp `(i, t)`, ta đếm trước xem có bao nhiêu phòng `r` đủ sức chứa (`c_r >= v_i`) và rảnh trọn vẹn đoạn `[t, t + d_i - 1]` — gọi số phòng này là `ways[i][t]`. Khi quay lui xếp lớp `i` vào khung `[t, t + d_i - 1]`, chỉ cần nhân tích với `ways[i][t]` mà không phải lặp thử từng phòng!",
+  "hints": [
+    "Tìm `max_slot = max(s + l)` trên tất cả phòng. Tiền xử lý `ways[i][t]` = số phòng chứa trọn `[t, t + d[i] - 1]` và có `cap >= v[i]`.",
+    "Sắp xếp thứ tự xét các lớp tăng dần theo số lựa chọn hợp lệ để giảm hệ số nhánh.",
+    "Dùng mảng đánh dấu `used_slot[t..t+d[i]-1]` trong lúc quay lui; khi tiến tới `idx == n`, cộng `cur_prod` vào kết quả."
+  ],
+  "complexity": "Quay lui kết hợp gộp nhóm phòng O(tổng lựa chọn thời gian rời nhau)",
+  "test_count": 10
+}

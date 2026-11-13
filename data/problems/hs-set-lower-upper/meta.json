@@ -1,0 +1,34 @@
+{
+  "id": "hs-set-lower-upper",
+  "title": "[HUSTack] Tập hợp động: lower_bound / upper_bound / insert / remove",
+  "track": "midterm",
+  "topic": "array-basic",
+  "difficulty": "Trung bình",
+  "exam_tags": [
+    "HUSTack 2025.2 (P.01.01.05)",
+    "HUSTack: Chưa làm"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho tập `S` khởi đầu từ `n` số nguyên `a1..an` (lưu ý tập hợp không chứa phần tử trùng!). Thực hiện dãy thao tác kết thúc bằng `#`:\n- `min_greater_equal v`: in phần tử nhỏ nhất trong `S` `>= v` (hoặc `NULL`).\n- `min_greater v`: in phần tử nhỏ nhất trong `S` `> v` (hoặc `NULL`).\n- `insert v`: chèn `v` vào `S`.\n- `remove v`: xóa `v` khỏi `S` (nếu có).",
+  "input_spec": "- Dòng 1: `n` (`1 <= n <= 10^5`).\n- Dòng 2: `a1..an`.\n- Các dòng tiếp: các thao tác trên, kết thúc bằng `#`.",
+  "output_spec": "In kết quả các truy vấn `min_greater_equal` và `min_greater` trên từng dòng.",
+  "samples": [
+    {
+      "input": "5\n3 2 4 5 9\nmin_greater_equal 10\nmin_greater 7\nmin_greater_equal 7\nmin_greater_equal 4\ninsert 5\ninsert 5\nmin_greater 8\nmin_greater 1\nmin_greater_equal 6\nmin_greater_equal 8\n#",
+      "output": "NULL\n9\n9\n4\n9\n2\n9\n9"
+    }
+  ],
+  "theory_chapter": "chap1",
+  "mindset": "Sử dụng cấu trúc cây đỏ-đen `std::set<int> s` hỗ trợ cả 4 truy vấn trong `O(log n)`:\n- `s.lower_bound(v)` trả về iterator tới phần tử đầu tiên `>= v`.\n- `s.upper_bound(v)` trả về iterator tới phần tử đầu tiên `> v`.\n- `insert` và `remove` tương ứng `s.insert(v)` và `s.erase(v)`.",
+  "hints": [
+    "Kiểm tra `if (it == s.end()) cout << \"NULL\\n\"; else cout << *it << \"\\n\";`."
+  ],
+  "complexity": {
+    "time": "O((n + Q) log n)",
+    "space": "O(n + Q)"
+  },
+  "test_count": 10
+}

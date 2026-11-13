@@ -1,0 +1,35 @@
+{
+  "id": "ck-longest-palindrome-subseq",
+  "title": "Xâu con đối xứng dài nhất (Longest Palindromic Subsequence)",
+  "track": "final",
+  "topic": "dp-lis-lcs",
+  "difficulty": "Trung bình",
+  "exam_tags": [
+    "Cuối kỳ 2025.1 (Câu 4)",
+    "Cuối kỳ 2022.2 (Bài 2 - Dãy số đối xứng)"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho một xâu ký tự `S` độ dài `n` (`1 <= n <= 1000`). Một xâu con (subsequence) được tạo ra bằng cách xóa đi 0 hoặc nhiều ký tự của `S` mà vẫn giữ nguyên thứ tự các ký tự còn lại.\nHãy tìm **độ dài lớn nhất** của một xâu con đối xứng (đọc xuôi hay đọc ngược đều giống nhau) của `S`.\n\n*(Lưu ý: Đề CK 2022.2 cho cùng bài toán này dưới dạng dãy số nguyên thay vì xâu ký tự — thuật toán DP hoàn toàn y hệt!)*",
+  "input_spec": "Một dòng duy nhất chứa xâu `S` không chứa khoảng trắng (`1 <= |S| <= 1000`).",
+  "output_spec": "Một số nguyên duy nhất là độ dài xâu con đối xứng dài nhất.",
+  "samples": [
+    {
+      "input": "bbabcbcab",
+      "output": "7"
+    }
+  ],
+  "theory_chapter": "chap4b",
+  "mindset": "Hai cách nghĩ đều cho công thức DP `O(n^2)` rõ ràng:\n- **Cách 1 (Interval DP trên đoạn `[i..j]`)**: Gọi `dp[i][j]` là độ dài LPS trong đoạn `S[i..j]`.\n  - Nếu `S[i] == S[j]`: hai đầu khớp nhau -> `dp[i][j] = dp[i+1][j-1] + 2` (với `i == j` là `1`).\n  - Nếu `S[i] != S[j]`: bỏ trái hoặc bỏ phải -> `dp[i][j] = max(dp[i+1][j], dp[i][j-1])`.\n- **Cách 2 (Mẹo quy về LCS)**: Đảo ngược `S` thành `R = reverse(S)`, khi đó `LPS(S) == LCS(S, R)`!",
+  "hints": [
+    "Với Interval DP: duyệt độ dài đoạn `len` tăng dần từ `1` đến `n` (hoặc `i` giảm dần từ `n-1` về `0`, `j` tăng dần từ `i+1` đến `n-1`).",
+    "Kiểm tra ví dụ `bbabcbcab`: `babcbab` có độ dài `7`."
+  ],
+  "complexity": {
+    "time": "O(n^2)",
+    "space": "O(n^2) hoặc O(n)"
+  },
+  "test_count": 10
+}

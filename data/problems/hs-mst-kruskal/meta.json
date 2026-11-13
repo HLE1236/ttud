@@ -1,0 +1,32 @@
+{
+  "id": "hs-mst-kruskal",
+  "title": "[HUSTack] Cây khung nhỏ nhất Kruskal (Minimum Spanning Tree)",
+  "track": "final",
+  "topic": "graph-shortest-mst",
+  "difficulty": "Cơ bản",
+  "exam_tags": [
+    "HUSTack 2025.2 (P.05.11.03)",
+    "HUSTack: Chưa làm"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho đồ thị vô hướng liên thông có trọng số `G = (V, E)` gồm `N` đỉnh (`1..N`) và `M` cạnh. Hãy tìm tổng trọng số của **Cây khung nhỏ nhất (Minimum Spanning Tree - MST)**.",
+  "input_spec": "- Dòng 1: `N, M` (`1 <= N, M <= 10^5`).\n- `M` dòng tiếp theo: `u, v, w` (`1 <= w <= 10^6`).",
+  "output_spec": "Tổng trọng số của cây khung nhỏ nhất.",
+  "samples": [
+    {
+      "input": "5 8\n1 2 1\n1 3 4\n1 5 1\n2 4 2\n2 5 1\n3 4 3\n3 5 3\n4 5 2",
+      "output": "7"
+    }
+  ],
+  "theory_chapter": "chap6",
+  "mindset": "Thuật toán **Kruskal + DSU**: Sắp xếp toàn bộ `M` cạnh theo trọng số `w` tăng dần, lần lượt xét từng cạnh `(u, v, w)` — nếu `find(u) != find(v)` thì hợp nhất hai thành phần và cộng `w` vào kết quả.",
+  "hints": [
+    "Lưu `vector<tuple<int, int, int>> edges` rồi `sort(edges.begin(), edges.end())`.",
+    "Cẩn thận tổng trọng số MST có thể lớn tới `~10^11` khi `N = 10^5, w <= 10^6` -> dùng `long long`!"
+  ],
+  "complexity": "O(M log M)",
+  "test_count": 10
+}

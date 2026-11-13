@@ -1,0 +1,33 @@
+{
+  "id": "hs-tsp-large",
+  "title": "[HUSTack] Người du lịch cỡ lớn (TSP Large Scale)",
+  "track": "midterm",
+  "topic": "greedy-2ptr",
+  "difficulty": "Khó",
+  "exam_tags": [
+    "HUSTack 2025.2 (P.04.06.03)",
+    "HUSTack: Chưa làm"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": true,
+  "statement": "Có `n` thành phố `1..n`, chi phí đi từ `i` đến `j` là `c(i, j)` (`1 <= n <= 1000`). Cần tìm hành trình khép kín `x_1 -> x_2 -> ... -> x_n -> x_1` đi qua mỗi thành phố đúng 1 lần sao cho tổng quãng đường nhỏ nhất có thể.\n*(Vì `n <= 1000` nên không thể dùng quay lui hay DP Bitmask `O(n^2 2^n)`! Cần dùng Heuristic như Nearest Neighbor + 2-opt Local Search.)*",
+  "input_spec": "- Dòng 1: số nguyên dương `n` (`1 <= n <= 1000`).\n- `n` dòng tiếp theo: ma trận chi phí `c` kích thước `n x n`.",
+  "output_spec": "- Dòng 1: in `n`.\n- Dòng 2: một hoán vị `x_1, x_2, ..., x_n` của `{1..n}`.",
+  "samples": [
+    {
+      "input": "4\n0 1 1 9\n1 0 9 3\n1 9 0 2\n9 3 2 0",
+      "output": "4\n1 3 2 4"
+    }
+  ],
+  "theory_chapter": "chap3",
+  "mindset": "Với `n = 1000`, đây là bài tối ưu heuristic chuẩn mực:\n1. Dựng hành trình ban đầu bằng **Láng giềng gần nhất (Nearest Neighbor)**: bắt đầu ở đỉnh `1`, mỗi bước nhảy sang đỉnh chưa thăm gần nhất.\n2. Tối ưu cục bộ bằng **2-opt**: với mọi cặp cạnh `(A -> B)` và `(C -> D)` trong chu trình, thử đảo ngược đoạn giữa `B..C` nếu `dist(A,C) + dist(B,D) < dist(A,B) + dist(C,D)` (cẩn thận khi ma trận chi phí bất đối xứng thì phải tính lại tổng đoạn hoặc đảo nếu ma trận đối xứng!).",
+  "hints": [
+    "Khởi tạo chu trình từ nhiều đỉnh xuất phát khác nhau (hoặc đỉnh `1`), chạy Nearest Neighbor trong `O(n^2)`.",
+    "Chạy 2-opt (hoặc relocate 1 đỉnh sang vị trí khác) trong giới hạn vòng lặp để cải thiện chất lượng lời giải.",
+    "Kiểm tra kỹ output gồm `n` ở dòng 1 và đủ hoán vị `1..n` ở dòng 2."
+  ],
+  "complexity": "O(n^2) Nearest Neighbor + Local Search 2-opt",
+  "test_count": 10
+}

@@ -1,0 +1,39 @@
+{
+  "title": "Robot gom hàng (Ghép chi phí nhỏ nhất)",
+  "track": "midterm",
+  "exam_tags": [
+    "GK 20242 (Kíp 2)"
+  ],
+  "topic": "greedy-2ptr",
+  "theory_chapter": "chap4a",
+  "difficulty": "Trung bình",
+  "day": 3,
+  "time_limit_ms": 1000,
+  "tc_source": "Official Zip (GK 20242)",
+  "statement": "Một robot nhận được `N` kiện hàng với khối lượng `a[1], ..., a[N]`. Mỗi bước, robot chỉ được phép gom **đúng 2 kiện hàng** bất kỳ có khối lượng `a` và `b` thành 1 kiện hàng mới khối lượng `a + b`, tiêu tốn chi phí bằng `5% * (a + b)`.\n\nHãy lập kế hoạch ghép cho đến khi còn 1 kiện hàng duy nhất sao cho **tổng chi phí là nhỏ nhất**. In ra **phần nguyên** của tổng chi phí.",
+  "input_spec": "- Dòng 1: số nguyên dương `N` (`2 <= N <= 30000`).\n- Các dòng tiếp theo: `N` số nguyên dương là khối lượng các gói hàng.",
+  "output_spec": "Phần nguyên của tổng chi phí nhỏ nhất tìm được.",
+  "samples": [
+    {
+      "input": "4\n10 11 12 13",
+      "output": "4",
+      "explanation": "Ghép 10+11=21, 12+13=25, 21+25=46. Tổng = 5%*(21+25+46) = 4.6 → phần nguyên là 4."
+    },
+    {
+      "input": "2\n1 2",
+      "output": "0",
+      "explanation": "5% * 3 = 0.15 → phần nguyên là 0."
+    }
+  ],
+  "mindset": "Đây chính là bài toán **Cây Huffman kinh điển**:\n- Để ý rằng kiện hàng nào được ghép sớm thì khối lượng của nó sẽ bị cộng lại nhiều lần trong các bước sau!\n- Vậy để tổng chi phí nhỏ nhất, tại mỗi bước ta **luôn chọn 2 kiện hàng nhẹ nhất hiện có** để ghép lại trước.\n- Dùng `priority_queue<long long, vector<long long>, greater<long long>>` (Min-Heap) để lấy 2 số nhỏ nhất trong `O(log N)` và đẩy tổng `x + y` lại vào heap.\n- Mẹo tránh sai số số thực: tổng `5% * sum_i` chính là `tong_cac_lan_ghep / 20` (chia nguyên)!",
+  "hints": [
+    "Mỗi bước cần lấy ra 2 số nhỏ nhất hiện tại → dùng Min-Heap (`priority_queue` với `greater<>`).",
+    "Lấy `x = pq.top(); pq.pop(); y = pq.top(); pq.pop();`, cộng `x + y` vào tổng, rồi `pq.push(x + y)`.",
+    "Tránh sai số `double`: tính `sum_cost` bằng `long long` rồi in `sum_cost / 20` (vì `5% = 5/100 = 1/20`)."
+  ],
+  "complexity": "Time: O(N log N) | Space: O(N)",
+  "starter_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    \n    return 0;\n}",
+  "reference_cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    int N;\n    cin >> N;\n    priority_queue<long long, vector<long long>, greater<long long>> pq;\n    for (int i = 0; i < N; i++) {\n        long long x;\n        cin >> x;\n        pq.push(x);\n    }\n    long long sum_cost = 0;\n    while (pq.size() > 1) {\n        long long x = pq.top(); pq.pop();\n        long long y = pq.top(); pq.pop();\n        long long s = x + y;\n        sum_cost += s;\n        pq.push(s);\n    }\n    // 5% of sum_cost = sum_cost * 5 / 100 = sum_cost / 20\n    cout << (sum_cost / 20) << \"\\n\";\n    return 0;\n}",
+  "id": "gk-robot-merge",
+  "test_count": 13
+}

@@ -1,0 +1,37 @@
+{
+  "id": "hs-max-weighted-disjoint-seg",
+  "title": "[HUSTack] Tập đoạn thẳng rời nhau có tổng độ dài lớn nhất",
+  "track": "final",
+  "topic": "dp-lis-lcs",
+  "difficulty": "Trung bình",
+  "exam_tags": [
+    "HUSTack 2025.2 (P.05.10.02)",
+    "HUSTack: Chưa làm"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho tập `X` gồm `n` đoạn thẳng `[a_1, b_1], ..., [a_n, b_n]` (`0 <= a_i <= b_i <= 100000`). Độ dài (trọng số) của đoạn `i` là `b_i - a_i`. Hai đoạn `[a_i, b_i]` và `[a_j, b_j]` rời nhau nếu chúng không có điểm chung (ví dụ nếu `b_i < a_j` hoặc `b_j < a_i`). Hãy chọn một tập con gồm các đoạn đôi một rời nhau sao cho tổng độ dài lớn nhất.",
+  "input_spec": "- Dòng 1: số nguyên dương `n` (`1 <= n <= 10000`).\n- `n` dòng tiếp theo: mỗi dòng hai số nguyên `a_i, b_i` (`0 <= a_i <= b_i <= 100000`).",
+  "output_spec": "Tổng độ dài lớn nhất của tập đoạn rời nhau chọn được.",
+  "samples": [
+    {
+      "input": "3\n2 100\n1 1000\n900 1010",
+      "output": "999"
+    },
+    {
+      "input": "7\n1 4\n3 16\n5 9\n7 13\n10 19\n14 26\n20 24",
+      "output": "21"
+    }
+  ],
+  "theory_chapter": "chap5",
+  "mindset": "Đây là bài **Weighted Interval Scheduling**. Khác với bài không trọng số (chỉ cần tham lam chọn đầu mút kết thúc nhỏ nhất), khi có trọng số `w_i = b_i - a_i`, tham lam sẽ sai ngay ở Sample 1! Ta phải sắp xếp các đoạn tăng dần theo đầu mút phải `b_i`, rồi quy hoạch động: `dp[i]` = kết quả tốt nhất trong `i` đoạn đầu. Với đoạn `i`: không chọn nó -> `dp[i-1]`; chọn nó -> cộng `w_i` với `dp[j]` (trong đó `j` là chỉ số lớn nhất có `b_j < a_i`, tìm bằng tìm kiếm nhị phân).",
+  "hints": [
+    "Sắp xếp danh sách các đoạn tăng dần theo `b`.",
+    "Dùng `lower_bound` trên mảng các giá trị `b` đã sắp xếp để tìm vị trí đầu tiên `>= a_i`; vị trí đứng ngay trước đó chính là đoạn `j` tương thích cuối cùng có `b_j < a_i`.",
+    "`dp[i] = max(dp[i-1], (b_i - a_i) + dp[j])`."
+  ],
+  "complexity": "O(n log n) thời gian, O(n) bộ nhớ",
+  "test_count": 10
+}

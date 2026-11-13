@@ -1,0 +1,36 @@
+{
+  "id": "gk-range-sum-queries",
+  "title": "Truy vấn tổng đoạn (Prefix Sum 1D)",
+  "track": "midterm",
+  "topic": "hash-prefix",
+  "difficulty": "Cơ bản",
+  "exam_tags": [
+    "Cuối kỳ 2025.1 (Câu 2)",
+    "Giữa kỳ 2022.2 (Lưu lượng mạng)",
+    "Cuối kỳ 2024.1 (Bài 2)"
+  ],
+  "time_limit_ms": 1000,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho dãy `n` số nguyên `a[1], a[2], ..., a[n]` và `q` truy vấn. Mỗi truy vấn gồm hai số nguyên `i` và `k` (với `1 <= i <= n` và `i + k - 1 <= n`), yêu cầu tính tổng của `k` phần tử liên tiếp bắt đầu từ vị trí `i`: `a[i] + a[i+1] + ... + a[i+k-1]`.\n\n*(Mẹo thi HUST: Mảng cộng dồn `pref` biến mọi truy vấn tổng đoạn thành phép trừ `O(1)`!)*",
+  "input_spec": "- Dòng 1: Hai số nguyên `n` và `q` (`1 <= n <= 10^6`, `1 <= q <= 10^5`).\n- Dòng 2: `n` số nguyên `a[1], ..., a[n]` (`|a[i]| <= 10^9`).\n- `q` dòng tiếp theo: mỗi dòng gồm hai số nguyên `i, k` (`1 <= i`, `i + k - 1 <= n`, `k >= 1`).",
+  "output_spec": "Gồm `q` dòng, mỗi dòng in kết quả của truy vấn tương ứng.",
+  "samples": [
+    {
+      "input": "5 1\n1 2 3 4 5\n2 3",
+      "output": "9"
+    }
+  ],
+  "theory_chapter": "chap1",
+  "mindset": "Tính tổng trực tiếp từng truy vấn mất `O(n*q)` -> TLE ngay khi `n = 10^6, q = 10^5`. Ta xây dựng trước mảng cộng dồn `pref[x] = a[1] + ... + a[x]` với `pref[0] = 0`. Khi đó tổng đoạn `[L, R]` (ở đây `L = i, R = i + k - 1`) chính bằng `pref[R] - pref[L - 1]`.",
+  "hints": [
+    "Dùng `vector<long long> pref(n + 1, 0)` để tránh tràn kiểu `int` vì tổng có thể lên tới `10^15`.",
+    "Với mỗi truy vấn `(i, k)`, đầu phải của đoạn là `R = i + k - 1`, đáp án là `pref[R] - pref[i - 1]`."
+  ],
+  "complexity": {
+    "time": "O(n + q)",
+    "space": "O(n)"
+  },
+  "test_count": 10
+}

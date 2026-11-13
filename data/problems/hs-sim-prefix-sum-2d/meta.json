@@ -1,0 +1,34 @@
+{
+  "id": "hs-sim-prefix-sum-2d",
+  "title": "[HUSTack] Truy vấn tổng hình chữ nhật trên bảng 2D (2D Prefix Sum)",
+  "track": "midterm",
+  "topic": "hash-prefix",
+  "difficulty": "Trung bình",
+  "exam_tags": [
+    "HUSTack 2025.2 (P.02.02.02)",
+    "HUSTack: Chưa làm"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho bảng kích thước `n x m` gồm các số nguyên không âm `a[i][j]`. Với mỗi truy vấn `(r1, c1, r2, c2)` hãy tính tổng các phần tử trong hình chữ nhật con có góc trên-trái `(r1, c1)` và góc dưới-phải `(r2, c2)`.",
+  "input_spec": "- Dòng 1: `n, m` (`1 <= n, m <= 1000`).\n- `n` dòng tiếp: mỗi dòng `m` số nguyên.\n- Dòng tiếp: `Q` (`1 <= Q <= 10^5`).\n- `Q` dòng tiếp: `r1, c1, r2, c2`.",
+  "output_spec": "`Q` dòng là kết quả tương ứng.",
+  "samples": [
+    {
+      "input": "3 4\n1 1 0 1\n1 1 1 0\n0 1 0 0\n3\n2 3 3 4\n1 3 3 4\n2 2 3 4",
+      "output": "1\n2\n3"
+    }
+  ],
+  "theory_chapter": "chap2",
+  "mindset": "Áp dụng **Mảng cộng dồn 2 chiều (Inclusion-Exclusion)**:\n- Xây bảng: `pref[i][j] = a[i][j] + pref[i-1][j] + pref[i][j-1] - pref[i-1][j-1]`.\n- Truy vấn `(r1, c1, r2, c2)`: `pref[r2][c2] - pref[r1-1][c2] - pref[r2][c1-1] + pref[r1-1][c1-1]`.\nMỗi truy vấn trả lời trong `O(1)`!",
+  "hints": [
+    "Vẽ 4 hình chữ nhật lồng nhau ra giấy để không bao giờ nhầm dấu `+ / -` công thức bù trừ!"
+  ],
+  "complexity": {
+    "time": "O(n * m + Q)",
+    "space": "O(n * m)"
+  },
+  "test_count": 10
+}

@@ -1,0 +1,34 @@
+{
+  "id": "hs-upper-bound-seq",
+  "title": "[HUSTack] Tìm phần tử nhỏ nhất lớn hơn k (Upper Bound)",
+  "track": "midterm",
+  "topic": "array-basic",
+  "difficulty": "Trung bình",
+  "exam_tags": [
+    "HUSTack 2025.2 (P.01.01.04)",
+    "HUSTack: Chưa làm"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho dãy `n` số nguyên dương `a1..an`. Với mỗi truy vấn `next k`, tìm phần tử nhỏ nhất trong dãy lớn hơn hẳn `k` (`> k`), hoặc in `-1` nếu không tồn tại. Kết thúc bằng `#`.",
+  "input_spec": "- Dòng 1: `n` (`1 <= n <= 10^5`).\n- Dòng 2: `a1..an` (`1 <= ai <= 10^6`).\n- Các dòng tiếp theo: `next k`, kết thúc bởi `#`.",
+  "output_spec": "Mỗi truy vấn in một dòng kết quả.",
+  "samples": [
+    {
+      "input": "5\n4 8 2 3 7\nnext 2\nnext 7\nnext 9\nnext 6\nnext 1\n#",
+      "output": "3\n8\n-1\n7\n2"
+    }
+  ],
+  "theory_chapter": "chap1",
+  "mindset": "Chỉ cần `sort(a.begin(), a.end())` một lần mất `O(n log n)`, sau đó mỗi truy vấn `next k` dùng `upper_bound(a.begin(), a.end(), k)` (tìm kiếm nhị phân `O(log n)`).",
+  "hints": [
+    "Nếu `it == a.end()` thì in `-1`, ngược lại in `*it`."
+  ],
+  "complexity": {
+    "time": "O((n + Q) log n)",
+    "space": "O(n)"
+  },
+  "test_count": 10
+}

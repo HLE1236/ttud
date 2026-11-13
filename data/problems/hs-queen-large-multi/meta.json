@@ -1,0 +1,33 @@
+{
+  "id": "hs-queen-large-multi",
+  "title": "[HUSTack] Tìm nhiều nghiệm N-Hậu cỡ lớn (N-Queens Large)",
+  "track": "midterm",
+  "topic": "backtracking",
+  "difficulty": "Khó",
+  "exam_tags": [
+    "HUSTack 2025.2 (Queen-Large-Multi)",
+    "HUSTack: Chưa làm"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": true,
+  "statement": "Trên bàn cờ vua kích thước `n x n` (`10 <= n <= 10000`), hãy đặt `n` quân hậu sao cho không có 2 quân nào ăn nhau (khác hàng, khác cột, khác hai đường chéo). Cần tìm **`k` lời giải phân biệt** (`1 <= k <= 20`).\nMỗi lời giải biểu diễn bởi hoán vị `x[1], x[2], ..., x[n]` của `{1..n}`, trong đó quân hậu ở cột `i` nằm tại hàng `x[i]`.",
+  "input_spec": "Một dòng chứa hai số nguyên `n` và `k` (`10 <= n <= 10000`, `1 <= k <= 20`).",
+  "output_spec": "Gồm `k` cặp dòng (tổng `2k` dòng). Với mỗi lời giải:\n- Dòng 1: in `n`.\n- Dòng 2: in `n` số nguyên `x[1] ... x[n]`.",
+  "samples": [
+    {
+      "input": "10 2",
+      "output": "10\n2 4 6 8 10 1 3 5 7 9\n10\n9 7 5 3 1 10 8 6 4 2"
+    }
+  ],
+  "theory_chapter": "chap2",
+  "mindset": "Quay lui `O(n!)` chắc chắn TLE khi `n >= 30`! Để giải `n` tới `10000` trong vài mili-giây, ta dùng thuật toán **Tìm kiếm cục bộ Min-Conflicts (Sosic & Gu)**:\n1. Khởi tạo một hoán vị ngẫu nhiên `x[1..n]` (đảm bảo sẵn khác hàng, khác cột — chỉ còn có thể trùng đường chéo!).\n2. Lưu đếm số quân hậu trên từng đường chéo chính `d1[c - x[c] + n]` và phụ `d2[c + x[c]]` để kiểm tra xung đột trong `O(1)`.\n3. Lặp: chọn ngẫu nhiên một cột đang bị xung đột `c`, rồi tìm (hoặc lấy mẫu ngẫu nhiên) một cột `c2` sao cho sau khi `swap(x[c], x[c2])` tổng số xung đột giảm đi tối đa. Chỉ mất trung bình `O(n)` bước!",
+  "hints": [
+    "Khởi tạo mảng `x[1..n]` là hoán vị ngẫu nhiên của `1..n` -> KHÔNG BAO GIỜ trùng hàng hay cột!",
+    "Mỗi vòng lặp hoán đổi 2 cột `c1` (đang bị xung đột) và `c2`: cập nhật 2 đường chéo chỉ trong `O(1)`.",
+    "Dùng thêm một `set` lưu mã băm 64-bit của từng lời giải để đảm bảo `k` lời giải in ra đôi một khác nhau."
+  ],
+  "complexity": "O(k * n) trung bình (Min-Conflicts)",
+  "test_count": 10
+}

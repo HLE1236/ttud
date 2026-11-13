@@ -1,0 +1,34 @@
+{
+  "id": "hs-disjoint-segment",
+  "title": "[HUSTack] Chọn nhiều đoạn thẳng rời nhau nhất (Disjoint Segments)",
+  "track": "midterm",
+  "topic": "greedy-2ptr",
+  "difficulty": "Nâng cao",
+  "exam_tags": [
+    "HUSTack 2025.2 (P.03.07.01)",
+    "HUSTack: Đã AC"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho `n` đoạn `[a_i, b_i]`. Chọn ra tập con gồm **nhiều đoạn nhất** sao cho không có hai đoạn nào giao nhau (kể cả chạm đầu mút).",
+  "input_spec": "- Dòng 1: `n` (`1 <= n <= 10^5`).\n- `n` dòng tiếp: `a_i, b_i` (`0 <= a_i < b_i <= 10^6`).",
+  "output_spec": "Số lượng đoạn nhiều nhất chọn được.",
+  "samples": [
+    {
+      "input": "6\n0 10\n3 7\n6 14\n9 11\n12 15\n17 19",
+      "output": "4"
+    }
+  ],
+  "theory_chapter": "chap4a",
+  "mindset": "Bài toán **Lập lịch chọn đoạn rời nhau (Activity Selection)**: sắp xếp các đoạn tăng dần theo đầu mút kết thúc `b_i`. Ở mỗi bước, luôn chọn đoạn có `b_i` nhỏ nhất sao cho `a_i > last_end` để giữ khoảng thời gian còn lại cho các đoạn sau là lớn nhất.",
+  "hints": [
+    "Chú ý 'không có điểm chung' nên điều kiện chọn là `a_i > last_b` (ngặt)."
+  ],
+  "complexity": {
+    "time": "O(n log n)",
+    "space": "O(n)"
+  },
+  "test_count": 10
+}

@@ -1,0 +1,33 @@
+{
+  "id": "hs-pick-non-adj-table",
+  "title": "[HUSTack] Chọn ô không kề cạnh tổng lớn nhất (DP Bitmask)",
+  "track": "final",
+  "topic": "dp-grid-3d",
+  "difficulty": "Khó",
+  "exam_tags": [
+    "HUSTack 2025.2 (PickNonAdjTable)",
+    "HUSTack: Chưa làm"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho bảng kích thước `m x n` (`1 <= m <= 10`, `1 <= n <= 1000`), mỗi ô chứa một số nguyên dương `1 <= a[r][c] <= 1000`. Hãy chọn một tập các ô trong bảng sao cho **không có hai ô nào được chọn chung cạnh** (không cùng kề trên-dưới hoặc trái-phải) và tổng giá trị các ô được chọn là lớn nhất.",
+  "input_spec": "- Dòng 1: `m, n` (`1 <= m <= 10`, `1 <= n <= 1000`).\n- `m` dòng tiếp theo: mỗi dòng `n` số nguyên `a[r][c]`.",
+  "output_spec": "Tổng lớn nhất thu được.",
+  "samples": [
+    {
+      "input": "2 4\n2 1 30 8\n9 4 6 5",
+      "output": "44"
+    }
+  ],
+  "theory_chapter": "chap5",
+  "mindset": "Thấy ngay số hàng `m <= 10` rất nhỏ! Đây là dấu hiệu rõ rệt của **Quy hoạch động trạng thái (DP Bitmask)** theo từng cột. Mỗi cột chỉ có tối đa `2^10 = 1024` cách chọn bit, nhưng thực tế các bit không được kề nhau theo chiều dọc `(mask & (mask << 1)) == 0`, nên số mask hợp lệ tối đa khi `m = 10` chỉ là số Fibonacci `F(12) = 144`!",
+  "hints": [
+    "Liệt kê trước tất cả các `valid_masks` có `(mask & (mask << 1)) == 0`. Khi `m = 10`, chỉ có đúng `144` mask.",
+    "Hai cột liên tiếp có cấu hình `mask1` và `mask2` hợp lệ cạnh nhau nếu `(mask1 & mask2) == 0`.",
+    "Với mỗi cột `c`, tính `col_sum[idx]` theo `valid_masks[idx]` rồi chuyển `nxt[idx] = col_sum[idx] + max_{mask_prev & mask == 0} cur[prev_idx]`."
+  ],
+  "complexity": "O(n * 144^2) thời gian (~2 * 10^7 phép bit), O(144) bộ nhớ",
+  "test_count": 10
+}

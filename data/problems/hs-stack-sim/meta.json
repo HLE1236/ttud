@@ -1,0 +1,34 @@
+{
+  "id": "hs-stack-sim",
+  "title": "[HUSTack] Mô phỏng ngăn xếp (Simulation Stack)",
+  "track": "midterm",
+  "topic": "array-basic",
+  "difficulty": "Trung bình",
+  "exam_tags": [
+    "HUSTack 2025.2 (P.01.01.02)",
+    "HUSTack: Đã AC"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Thực hiện một chuỗi các thao tác trên ngăn xếp số nguyên (`stack` — vào sau ra trước LIFO):\n- `PUSH v`: đẩy số nguyên `v` lên đỉnh ngăn xếp.\n- `POP`: lấy phần tử trên đỉnh ra và in ra màn hình (in `NULL` nếu rỗng).\nKết thúc bằng dòng `#`.",
+  "input_spec": "Mỗi dòng là `PUSH v` hoặc `POP`. Kết thúc bằng `#`.",
+  "output_spec": "Mỗi thao tác `POP` in kết quả trên một dòng.",
+  "samples": [
+    {
+      "input": "PUSH 1\nPUSH 2\nPUSH 3\nPOP\nPOP\nPUSH 4\nPUSH 5\nPOP\n#",
+      "output": "3\n2\n5"
+    }
+  ],
+  "theory_chapter": "chap1",
+  "mindset": "Dùng `std::stack<int>` (hoặc `vector<int>` với `push_back`/`back`/`pop_back`). Luôn kiểm tra `.empty()` trước khi lấy đỉnh.",
+  "hints": [
+    "Khung đọc lệnh y hệt `QUEUE_SIM`, chỉ đổi `queue` thành `stack` (`st.top()`)."
+  ],
+  "complexity": {
+    "time": "O(Q)",
+    "space": "O(Q)"
+  },
+  "test_count": 10
+}

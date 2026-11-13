@@ -1,0 +1,33 @@
+{
+  "id": "hs-euler-cycle",
+  "title": "[HUSTack] Tìm chu trình Euler (Euler Cycle - Hierholzer)",
+  "track": "final",
+  "topic": "graph-special",
+  "difficulty": "Trung bình",
+  "exam_tags": [
+    "HUSTack 2025.2 (Euler-Cycle)",
+    "HUSTack: Chưa làm"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": true,
+  "statement": "Cho đồ thị vô hướng `G = (V, E)` có `n` đỉnh (`1..n`) và `m` cạnh (`1 <= n, m <= 1000`). Hãy tìm một **chu trình Euler** (đi qua mỗi cạnh đúng 1 lần và quay về đúng đỉnh xuất phát).\nNếu đồ thị không có chu trình Euler, in `-1`.",
+  "input_spec": "- Dòng 1: `n, m` (`1 <= n, m <= 1000`).\n- `m` dòng tiếp theo: `u, v` là một cạnh vô hướng.",
+  "output_spec": "- Nếu không có chu trình Euler: in `-1`.\n- Ngược lại:\n  + Dòng 1: `L` là số đỉnh trên chu trình (`L = m + 1`).\n  + Dòng 2: dãy `L` đỉnh liên tiếp `v_1 v_2 ... v_L` (với `v_1 == v_L`).",
+  "samples": [
+    {
+      "input": "7 12\n1 2\n1 3\n2 3\n2 4\n2 5\n3 4\n3 6\n4 5\n4 6\n5 6\n5 7\n6 7",
+      "output": "13\n1 2 3 4 2 5 4 6 5 7 6 3 1"
+    }
+  ],
+  "theory_chapter": "chap6",
+  "mindset": "Điều kiện cần và đủ để đồ thị vô hướng có chu trình Euler: (1) Mọi đỉnh đều có **bậc chẵn**, và (2) Tất cả các đỉnh có bậc `> 0` phải thuộc **cùng 1 thành phần liên thông**. Khi thỏa, ta dùng **Thuật toán Hierholzer**:\n1. Lưu cạnh kèm `edge_id` và mảng `used_edge[0..m-1]` (đồ thị vô hướng mỗi cạnh xuất hiện ở cả `adj[u]` lẫn `adj[v]` nên nhất thiết phải đánh dấu `used_edge[id]`!).\n2. Dùng stack lặp: đi tới khi bế tắc ở đỉnh `u` thì đẩy `u` vào `cycle` rồi lùi stack.\n3. Kiểm tra `cycle.size() == m + 1` (tự động đảm bảo đồ thị không bị rời rạc cạnh!).",
+  "hints": [
+    "Kiểm tra nhanh `deg[u] % 2 == 1` -> lập tức in `-1`.",
+    "Chọn đỉnh xuất phát `start` là đỉnh đầu tiên có `deg[start] > 0` (hoặc `1` nếu `m == 0`).",
+    "Sau khi Hierholzer kết thúc, nếu `cycle.size() != m + 1` chứng tỏ vẫn còn cạnh ở thành phần liên thông khác -> in `-1`."
+  ],
+  "complexity": "O(n + m)",
+  "test_count": 10
+}

@@ -1,0 +1,34 @@
+{
+  "id": "hs-segment-tree-sim",
+  "title": "[HUSTack] Cây phân đoạn Segment Tree (Update + Query Max)",
+  "track": "midterm",
+  "topic": "hash-prefix",
+  "difficulty": "Nâng cao",
+  "exam_tags": [
+    "HUSTack 2025.2 (P.02.03.02)",
+    "HUSTack: Chưa làm"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho dãy `a1..an` và `m` thao tác thuộc 2 loại:\n- `update i v`: gán `a[i] = v`.\n- `get-max i j`: trả về giá trị lớn nhất trong đoạn `a[i..j]`.",
+  "input_spec": "- Dòng 1: `n` (`1 <= n <= 10^5`).\n- Dòng 2: `a1..an` (`1 <= ai <= 10^4`).\n- Dòng 3: `m` (`1 <= m <= 10^5`).\n- `m` dòng tiếp: `update i v` hoặc `get-max i j`.",
+  "output_spec": "Mỗi thao tác `get-max` in kết quả trên một dòng.",
+  "samples": [
+    {
+      "input": "10\n1 10 9 7 1 4 2 4 8 10\n5\nget-max 5 8\nget-max 5 9\nget-max 3 8\nupdate 9 20\nget-max 4 10",
+      "output": "4\n8\n9\n20"
+    }
+  ],
+  "theory_chapter": "chap2",
+  "mindset": "Vì mảng **có cập nhật giá trị động (`update`)**, Sparse Table không dùng được nữa -> phải dùng **Segment Tree (Cây phân đoạn)** kích thước `4 * n`!\nMỗi nút `id` quản lý đoạn `[l, r]`, lưu `tree[id] = max` đoạn đó. Cả `update` và `get-max` đều mất đúng `O(log n)`!",
+  "hints": [
+    "Nút con trái là `2 * id`, con phải là `2 * id + 1`. Khi truy vấn không giao `[u, v]` trả về `-INF`."
+  ],
+  "complexity": {
+    "time": "O((n + m) log n)",
+    "space": "O(4 * n)"
+  },
+  "test_count": 10
+}

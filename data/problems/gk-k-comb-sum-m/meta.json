@@ -1,0 +1,34 @@
+{
+  "title": "Đếm tổ hợp K phần tử có tổng bằng m",
+  "track": "midterm",
+  "exam_tags": [
+    "GK 20221 (Kíp 2)"
+  ],
+  "topic": "backtracking",
+  "theory_chapter": "chap3",
+  "difficulty": "Cơ bản",
+  "day": 4,
+  "time_limit_ms": 1000,
+  "tc_source": "Official Zip (GK 20221) + 6 generated",
+  "statement": "Cho dãy `n` số nguyên dương `a[1], ..., a[n]` và hai số nguyên dương `k, m`. Tính số cách chọn ra **đúng `k` phần tử** từ dãy sao cho tổng các phần tử được chọn bằng `m`.",
+  "input_spec": "- Dòng 1: `n, k, m` (`1 <= n <= 20, 1 <= k <= n/2, 1 <= m <= 1000`).\n- Dòng 2: `n` số nguyên dương `a[1]..a[n]` (`1 <= a[i] <= 100`).",
+  "output_spec": "Số cách chọn `Q`.",
+  "samples": [
+    {
+      "input": "5 3 10\n1 2 3 4 5",
+      "output": "2",
+      "explanation": "2 cách: {1,4,5} và {2,3,5}."
+    }
+  ],
+  "mindset": "Giống hệt bài quay lui tập con, chỉ thêm một tham số `cnt` để đếm xem mình đã chọn được bao nhiêu số:\n- Hàm `Try(idx, cnt, sum)`.\n- Nếu `cnt == k`: kiểm tra `sum == m` rồi dừng nhánh.\n- Cắt tỉa: nếu số phần tử còn lại `(n - idx)` không đủ để bù cho đủ `k` (`cnt + (n - idx) < k`) hoặc `sum > m` thì quay đầu ngay!",
+  "hints": [
+    "Thêm biến `cnt` vào hàm `Try(idx, cnt, sum)`.",
+    "Điều kiện dừng sớm: `if (cnt == k) { if (sum == m) ans++; return; }`.",
+    "Nhớ kiểm tra `if (idx == n)` để tránh đọc quá mảng."
+  ],
+  "complexity": "Time: O(C(n, k)) <= O(2^n) | Space: O(n)",
+  "starter_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    \n    return 0;\n}",
+  "reference_cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint n, k, m, a[25], ans = 0;\nvoid Try(int idx, int cnt, int sum) {\n    if (cnt == k) {\n        if (sum == m) ans++;\n        return;\n    }\n    if (idx == n || cnt + (n - idx) < k) return;\n    Try(idx + 1, cnt, sum);\n    if (sum + a[idx] <= m) Try(idx + 1, cnt + 1, sum + a[idx]);\n}\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    cin >> n >> k >> m;\n    for (int i = 0; i < n; i++) cin >> a[i];\n    Try(0, 0, 0);\n    cout << ans << \"\\n\";\n    return 0;\n}",
+  "id": "gk-k-comb-sum-m",
+  "test_count": 10
+}

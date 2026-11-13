@@ -1,0 +1,34 @@
+{
+  "id": "ck-border-comm",
+  "title": "Hệ thống liên lạc biên giới (Kruskal bỏ S-1 cạnh lớn nhất)",
+  "track": "final",
+  "topic": "graph-shortest-mst",
+  "difficulty": "Trung bình",
+  "exam_tags": [
+    "Cuối kỳ 2023.2 Kíp 4 (Bài 3)"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Có `P` tiền đồn biên phòng nằm tại các tọa độ nguyên `(x_i, y_i)`. Một trạm thu phát vô tuyến có tầm phủ bình phương `D` có thể nối trực tiếp hai đồn có bình phương khoảng cách `<= D`. Ngoài ra, có `S` trạm liên lạc vệ tinh (`1 <= S < P`): hai đồn nào được trang bị trạm vệ tinh đều liên lạc được với nhau bất kể khoảng cách.\nHãy tìm **giá trị `D` nhỏ nhất** (bình phương khoảng cách) sao cho toàn bộ `P` tiền đồn liên thông được với nhau.",
+  "input_spec": "- Dòng 1: Hai số nguyên `S` và `P` (`1 <= S < P <= 500`).\n- `P` dòng tiếp theo: mỗi dòng là tọa độ `(x_i, y_i)` (`|x_i|, |y_i| <= 10^4`).",
+  "output_spec": "Một số nguyên duy nhất là bình phương tầm phủ `D` tối thiểu.",
+  "samples": [
+    {
+      "input": "2 4\n0 1\n2 3\n0 6\n1 7",
+      "output": "8"
+    }
+  ],
+  "theory_chapter": "chap5",
+  "mindset": "Đây chính là bài **Cây khung nhỏ nhất dừng sớm** (Kruskal thành `S` thành phần liên thông)!\nNghĩ kỹ nhé: với `S` trạm vệ tinh, ta có thể kết nối `S` **cụm** tách biệt lại với nhau thông qua vệ tinh (1 trạm vệ tinh đặt trong mỗi cụm).\nMuốn tầm phủ `D` nhỏ nhất có thể, ta chỉ cần dùng Kruskal gom `P` tiền đồn lại cho đến khi số thành phần liên thông giảm từ `P` xuống đúng `S` (tức là đã chọn đúng **`P - S` cạnh ngắn nhất** trong MST)! Cạnh thứ `P - S` được chọn chính là `D` nhỏ nhất!",
+  "hints": [
+    "Nếu `S == P`, mỗi đồn có 1 trạm vệ tinh -> không cần nối vô tuyến (`D = 0`).",
+    "Sắp xếp `P*(P-1)/2` cạnh theo `(x1-x2)^2 + (y1-y2)^2` tăng dần. Dùng Kruskal thêm cạnh, cứ mỗi lần gộp thành công thì giảm số thành phần `comp--`. Ngay khi `comp == S`, trọng số cạnh vừa thêm chính là đáp án!"
+  ],
+  "complexity": {
+    "time": "O(P^2 log P)",
+    "space": "O(P^2)"
+  },
+  "test_count": 10
+}

@@ -1,0 +1,35 @@
+{
+  "id": "gk-count-gt-c",
+  "title": "Đếm phần tử lớn hơn ngưỡng C (Giám sát ngưỡng)",
+  "track": "midterm",
+  "topic": "array-basic",
+  "difficulty": "Cơ bản",
+  "exam_tags": [
+    "Cuối kỳ 2025.1 (Câu 1)",
+    "Giữa kỳ 2022.2 (PM2.5)"
+  ],
+  "time_limit_ms": 1000,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho dãy số nguyên `a[1], a[2], ..., a[n]` và một số nguyên ngưỡng `c`.\nHãy đếm xem trong dãy có bao nhiêu phần tử **lớn hơn hẳn** `c` (tức là `a[i] > c`).\n\n*(Lưu ý: Dạng này xuất hiện dưới nhiều ngữ cảnh như đếm số ngày bụi mịn PM2.5 vượt ngưỡng hoặc đếm giao dịch lớn hơn c).*",
+  "input_spec": "- Dòng 1: Hai số nguyên `n` và `c` (`1 <= n <= 10^6`, `-10^9 <= c <= 10^9`).\n- Dòng 2: `n` số nguyên `a[1], ..., a[n]` (`-10^9 <= a[i] <= 10^9`).",
+  "output_spec": "Một số nguyên duy nhất là số lượng phần tử thỏa mãn `a[i] > c`.",
+  "samples": [
+    {
+      "input": "5 120\n1 120 121 20 60",
+      "output": "1"
+    }
+  ],
+  "theory_chapter": "chap1",
+  "mindset": "Bài khởi động kiểm tra kỹ năng nhập xuất nhanh (`ios::sync_with_stdio(false)`) với `n <= 10^6` và duyệt mảng `O(n)`. Với `n = 10^6`, không cần lưu cả mảng nếu chỉ đếm trực tiếp từng số vừa đọc vào!",
+  "hints": [
+    "Đọc từng số `x` trong vòng lặp `n` lần, nếu `x > c` thì tăng biến `ans` lên 1.",
+    "Nhớ bật `ios::sync_with_stdio(false); cin.tie(nullptr);` vì `n = 10^6` có thể bị TLE nếu dùng `cin` chậm mặc định."
+  ],
+  "complexity": {
+    "time": "O(n)",
+    "space": "O(1)"
+  },
+  "test_count": 10
+}

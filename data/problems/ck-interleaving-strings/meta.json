@@ -1,0 +1,34 @@
+{
+  "id": "ck-interleaving-strings",
+  "title": "Kiểm tra chuỗi ghép (Interleaving Strings)",
+  "track": "final",
+  "topic": "dp-lis-lcs",
+  "difficulty": "Trung bình",
+  "exam_tags": [
+    "Cuối kỳ 2024.1 Kíp 2 (Bài 4)"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho ba xâu ký tự `A, B, C` (không chứa khoảng trắng). Xâu `C` được gọi là **chuỗi ghép** từ `A` và `B` nếu có thể tách `A` và `B` thành các đoạn con liên tiếp sao cho khi trộn xen kẽ chúng lại (vẫn giữ nguyên thứ tự các ký tự trong `A` và trong `B`) thì thu được đúng xâu `C`.\nHãy kiểm tra `C` có phải là chuỗi ghép của `A` và `B` hay không.",
+  "input_spec": "- Dòng 1: Xâu `A` (`1 <= |A| <= 1000`).\n- Dòng 2: Xâu `B` (`1 <= |B| <= 1000`).\n- Dòng 3: Xâu `C` (`1 <= |C| <= 2000`).",
+  "output_spec": "In ra `T` nếu `C` là chuỗi ghép của `A` và `B`, ngược lại in `F`.",
+  "samples": [
+    {
+      "input": "aabaabca\nabbcabc\naababbaabcabcca",
+      "output": "T"
+    }
+  ],
+  "theory_chapter": "chap4b",
+  "mindset": "Trước hết, điều kiện cần là `|A| + |B| == |C|`. Nếu khác -> `F` ngay!\nGọi `dp[i][j]` (`true/false`) là liệu `i` ký tự đầu của `A` và `j` ký tự đầu của `B` có thể ghép thành `i + j` ký tự đầu của `C` không?\nỞ ký tự thứ `i + j` của `C` (tức `C[i + j - 1]`):\n- Hoặc nó đến từ `A[i - 1]` (nếu `i > 0 && A[i - 1] == C[i + j - 1] && dp[i - 1][j]`)\n- Hoặc nó đến từ `B[j - 1]` (nếu `j > 0 && B[j - 1] == C[i + j - 1] && dp[i][j - 1]`)",
+  "hints": [
+    "Nhớ `dp[0][0] = true` (0 ký tự của A + 0 ký tự của B tạo 0 ký tự của C).",
+    "Bài toán tương tự việc tìm đường đi từ `(0, 0)` đến `(n, m)` trên lưới 2D mà chỉ đi xuống (lấy từ `A`) hoặc sang phải (lấy từ `B`)!"
+  ],
+  "complexity": {
+    "time": "O(|A| * |B|)",
+    "space": "O(|A| * |B|) hoặc O(|B|)"
+  },
+  "test_count": 10
+}

@@ -1,0 +1,33 @@
+{
+  "id": "hs-check-bipartite",
+  "title": "[HUSTack] Kiểm tra đồ thị hai phía (Bipartite Graph)",
+  "track": "final",
+  "topic": "graph-bfs-dfs",
+  "difficulty": "Cơ bản",
+  "exam_tags": [
+    "HUSTack 2025.2 (P.06.12.01)",
+    "HUSTack: Chưa làm"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho đồ thị vô hướng `G = (V, E)` gồm `N` đỉnh (`1..N`) và `M` cạnh. Hãy kiểm tra xem `G` có phải là **đồ thị hai phía (Bipartite Graph)** hay không (tức có thể chia tập đỉnh thành 2 nhóm sao cho mọi cạnh đều nối hai đỉnh thuộc 2 nhóm khác nhau).",
+  "input_spec": "- Dòng 1: `N, M` (`1 <= N, M <= 10^5`).\n- `M` dòng tiếp theo: hai đỉnh `u, v` của một cạnh.",
+  "output_spec": "In `1` nếu `G` là đồ thị hai phía, ngược lại in `0`.",
+  "samples": [
+    {
+      "input": "6 6\n1 2\n1 3\n2 5\n2 6\n4 5\n4 6",
+      "output": "1"
+    }
+  ],
+  "theory_chapter": "chap6",
+  "mindset": "Dùng **tô 2 màu bằng BFS**: duyệt mọi thành phần liên thông, tô đỉnh gốc màu `0`, mỗi khi đi qua cạnh `(u, v)`: nếu `v` chưa tô màu thì tô màu `1 - color[u]`; nếu `v` đã tô màu mà `color[v] == color[u]` -> phát hiện chu trình độ dài lẻ -> KHÔNG phải đồ thị hai phía (in `0`).",
+  "hints": [
+    "Khởi tạo mảng `color(N + 1, -1)` (`-1` là chưa tô).",
+    "Chạy vòng lặp `s = 1..N` để tô màu toàn bộ các thành phần liên thông rời nhau.",
+    "Cũng chú ý khuyên tự nối `(u, u)` nếu có: `color[u] == color[u]` -> lập tức trả `0`."
+  ],
+  "complexity": "O(N + M)",
+  "test_count": 10
+}

@@ -1,0 +1,33 @@
+{
+  "id": "hs-strongly-connected-comp",
+  "title": "[HUSTack] Thành phần liên thông mạnh (SCC Tarjan)",
+  "track": "final",
+  "topic": "graph-bfs-dfs",
+  "difficulty": "Khó",
+  "exam_tags": [
+    "HUSTack 2025.2 (P.05.10.01)",
+    "HUSTack: Đã AC"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho đồ thị **có hướng** `G = (V, E)` có `N` đỉnh (`1..N`) và `M` cung. Hãy đếm số lượng thành phần liên thông mạnh (Strongly Connected Components - SCC) của `G`.",
+  "input_spec": "- Dòng 1: `N, M` (`1 <= N <= 10^5`, `1 <= M <= 10^6`).\n- `M` dòng tiếp theo: `u, v` là một cung có hướng `u -> v`.",
+  "output_spec": "Một số nguyên duy nhất là số thành phần liên thông mạnh.",
+  "samples": [
+    {
+      "input": "8 13\n1 2\n1 8\n2 3\n2 6\n3 6\n4 3\n4 5\n5 4\n6 4\n7 1\n7 2\n7 6\n8 7",
+      "output": "3"
+    }
+  ],
+  "theory_chapter": "chap6",
+  "mindset": "Thuật toán **Tarjan tìm SCC (`tin`, `low`, `on_stack`)**: Khi thăm xong toàn bộ cung đi ra từ đỉnh `u`, nếu `low[u] == tin[u]` thì `u` chính là gốc của một SCC! Lúc này bật `pop` dần các đỉnh trên `stack` cho đến khi gặp lại `u` và đánh dấu `on_stack = false`.\nMẹo chống TLE/Stack Overflow với `N = 10^5`: dùng phiên bản Tarjan **không đệ quy** (hoặc đồ thị đủ sâu vẫn chạy mượt trên stack tường minh).",
+  "hints": [
+    "Khác với đồ thị vô hướng, trong Tarjan có hướng chỉ cập nhật `low[u] = min(low[u], tin[v])` nếu đỉnh `v` **đang nằm trong `stack`** (`in_stack[v] == true`).",
+    "Nếu `v` đã được gom vào một SCC khác trước đó (`in_stack[v] == false`), không được cập nhật `low[u]` qua cạnh chéo `(u, v)`.",
+    "Cài đặt không đệ quy bằng `vector<int> call_st` + `ptr[u]` để an toàn 100% trước đồ thị đường thẳng `10^5` đỉnh."
+  ],
+  "complexity": "O(N + M)",
+  "test_count": 10
+}

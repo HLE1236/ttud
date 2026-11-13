@@ -1,0 +1,33 @@
+{
+  "id": "hs-ic-bus",
+  "title": "[HUSTack] Xe buýt liên tỉnh (IC_BUS)",
+  "track": "final",
+  "topic": "graph-shortest-mst",
+  "difficulty": "Khó",
+  "exam_tags": [
+    "HUSTack 2025.2 (P.05.12.03)",
+    "HUSTack: Chưa làm"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Có `n` thành phố `1..n` và `m` con đường hai chiều nối giữa chúng. Tại mỗi thành phố `i` có một tuyến xe buýt `i` với giá vé lên xe là `C[i]` và đi được tối đa `D[i]` con đường liên tiếp trong 1 lượt đi.\nHãy tìm chi phí nhỏ nhất để đi từ thành phố `1` tới thành phố `n`.",
+  "input_spec": "- Dòng 1: `n, m` (`1 <= n <= 5000`, `1 <= m <= 10000`).\n- `n` dòng tiếp theo: `C[i], D[i]` (`1 <= C[i] <= 10000`, `1 <= D[i] <= 100`).\n- `m` dòng tiếp theo: hai thành phố `u, v` có đường hai chiều.",
+  "output_spec": "Số tiền tối thiểu để đi từ thành phố `1` tới thành phố `n`.",
+  "samples": [
+    {
+      "input": "6 6\n10 2\n30 1\n50 1\n20 3\n30 1\n20 1\n1 2\n1 3\n1 5\n2 4\n2 5\n4 6",
+      "output": "30"
+    }
+  ],
+  "theory_chapter": "chap6",
+  "mindset": "Bài toán gồm **2 pha kết hợp BFS + Dijkstra** rõ ràng:\n- **Pha 1 (Xây đồ thị giá vé mới)**: Từ mỗi thành phố `i = 1..n`, chạy một lượt BFS giới hạn độ sâu tối đa `D[i]` bước trên đồ thị đường bộ. Mọi thành phố `j` đi tới được đều trở thành một cung **có hướng trọng số `C[i]`** (`i -> j`, nghĩa là lên tuyến buýt tại `i`, trả `C[i]`, xuống ở `j`)! Tuy nhiên, để khỏi phải lưu hàng triệu cạnh (`n * n`), ta có thể chạy **Dijkstra trực tiếp trên đồ thị gốc hoặc tiền xử lý** (nhưng với `n <= 5000, m <= 10000`, BFS từ `n` đỉnh chỉ tốn `5000 * 10000`? Cẩn thận! Một cách tiết kiệm bộ nhớ hơn là lưu `bfs_reach[i]` hoặc chạy Dijkstra trạng thái `dist[u][rem_steps]`? Không, `5000 * 100 = 5 * 10^5` trạng thái — Dijkstra trên cặp `(u, rem_steps)`!!).\n- Nào phân tích **cả 2 cách**: Cách 2D Dijkstra `dist[u][d]` (`5000 * 101` = 500k ô): tại thành phố `u` còn `d` bước trên vé hiện tại, có thể (a) đi tiếp `d - 1` sang `v` với giá `+0` (0-1 BFS/Dijkstra!), hoặc (b) mua vé mới ở `u` lên trạng thái `(u, D[u])` với giá `+C[u]`! Hoặc Cách 1 xây danh sách `reach[i]` khi `n <= 5000`: thực tế nếu đồ thị đầy, `5000` lần BFS tốn `5*10^7` phép toán (~0.1s), còn Dijkstra `(u, d)` với `0` và `C[u]` hoặc Dial/PQ chỉ có `n * 100` đỉnh!",
+  "hints": [
+    "Nếu dùng BFS dựng đồ thị mới: chạy BFS từ từng đỉnh `i`, với mỗi đỉnh `v` cách `i` không quá `D[i]` cạnh thì chi phí chuyển từ `i` sang `v` là `C[i]`.",
+    "Chạy Dijkstra tìm `dist[1] -> dist[n]` trên đồ thị chi phí vừa dựng (`dist[1..n]`) — thậm chí có thể tính `dist[n]` trực tiếp bằng Dijkstra `dist[u]` nơi mỗi khi `pop(u)` mới chạy 1 lần BFS tới khoảng cách `D[u]` từ `u`!!",
+    "Trong Dijkstra theo `min_cost`, mỗi đỉnh `u` chỉ được rút ra từ hàng đợi ưu tiên và mở rộng đúng 1 lần khi đã chốt khoảng cách nhỏ nhất `dist[u]`. Lúc lấy `u` ra mới chạy BFS trong bán kính `D[u]` bước từ `u` để cập nhật `dist[v] = min(dist[v], dist[u] + C[u])`, tránh tốn bộ nhớ lưu `O(n^2)` cạnh trung gian."
+  ],
+  "complexity": "O(n * (n + m) log n) thực tế cực nhanh (~20ms), bộ nhớ O(n + m)",
+  "test_count": 10
+}

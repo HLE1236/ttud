@@ -1,0 +1,34 @@
+{
+  "id": "hs-max-distance-subseq",
+  "title": "[HUSTack] Chọn C phần tử có khoảng cách nhỏ nhất lớn nhất (Binary Search)",
+  "track": "midterm",
+  "topic": "greedy-2ptr",
+  "difficulty": "Nâng cao",
+  "exam_tags": [
+    "HUSTack 2025.2 (P.04.07.02)",
+    "HUSTack: Chưa làm"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho `N` vị trí trên trục số `x1..xN` (`0 <= x_i <= 10^9`) và số lượng `C` (`2 <= C <= N`). Cần chọn ra đúng `C` vị trí sao cho **khoảng cách nhỏ nhất giữa 2 phần tử bất kỳ** trong tập được chọn là **lớn nhất** (bài toán Aggressive Cows kinh điển).",
+  "input_spec": "- Dòng 1: Số test `T` (`1 <= T <= 20`).\n- Mỗi test: dòng 1 `N, C` (`2 <= N <= 10^5`), dòng 2 `x1..xN`.",
+  "output_spec": "`T` dòng kết quả.",
+  "samples": [
+    {
+      "input": "1\n5 3\n1 2 8 4 9",
+      "output": "3"
+    }
+  ],
+  "theory_chapter": "chap4a",
+  "mindset": "**Chặt nhị phân trên đáp án (Binary Search on Answer)**!\n1. Sắp xếp `x` tăng dần.\n2. Để kiểm tra xem có thể đạt khoảng cách `D` hay không: đặt tham lam phần tử đầu tại `x[0]`, sau đó cứ gặp vị trí `x[i] - last >= D` thì chọn thêm 1 cái -> nếu chọn được `>= C` phần tử là đạt!\n3. Chặt nhị phân `D` trong `[0 .. x[N-1] - x[0]]` mất `30` bước!",
+  "hints": [
+    "Nếu sắp `x` tăng dần rồi đặt từ `x[0]` luôn tối ưu."
+  ],
+  "complexity": {
+    "time": "O(T * N log(maxX))",
+    "space": "O(N)"
+  },
+  "test_count": 10
+}

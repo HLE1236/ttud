@@ -1,0 +1,34 @@
+{
+  "id": "hs-cvrp",
+  "title": "[HUSTack] Định tuyến xe tải giao hàng (CVRP - K xe sức chứa Q)",
+  "track": "midterm",
+  "topic": "backtracking",
+  "difficulty": "Nâng cao",
+  "exam_tags": [
+    "HUSTack 2025.2 (P.03.05.01)",
+    "HUSTack: Đã AC"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Một đội `K` xe tải giống nhau có tải trọng `Q` cần giao hàng từ kho `0` cho `n` khách hàng `1..n` (khách `i` cần `d[i]` kiện). Khoảng cách là `c[i][j]`. Mỗi khách được phục vụ bởi đúng 1 xe (một số xe có thể không đi). Tìm tổng quãng đường đi nhỏ nhất.",
+  "input_spec": "- Dòng 1: `n, K, Q` (`2 <= n <= 12`, `1 <= K <= 5`, `1 <= Q <= 50`).\n- Dòng 2: `d[1..n]` (`1 <= d[i] <= 10`).\n- `n + 1` dòng tiếp: ma trận khoảng cách `c` (`0..n`).",
+  "output_spec": "Tổng quãng đường nhỏ nhất.",
+  "samples": [
+    {
+      "input": "4 2 15\n7 7 11 2\n0 12 12 11 14\n14 0 11 14 14\n14 10 0 11 12\n10 14 12 0 13\n10 13 14 11 0",
+      "output": "70"
+    }
+  ],
+  "theory_chapter": "chap3",
+  "mindset": "Quay lui kết hợp **DP Held-Karp (Bitmask)** hoặc 2 pha cực hay:\n- **Cách Held-Karp 2 bước siêu sạch**: Với mỗi tập con khách `mask` (`2^n <= 4096` tập) có tổng nhu cầu `<= Q`, dùng Held-Karp TSP tính quãng đường ngắn nhất `bestRoute[mask]` để **1 xe** đi hết `mask` và quay về `0`!\n- Sau đó tính DP `dp[k][mask]` = tổng quãng đường nhỏ nhất dùng `k` xe để phục vụ tập `mask`: chia `mask` thành `sub` (xe thứ `k`) và `mask ^ sub` (`k-1` xe đầu) -> nhanh gấp 100 lần quay lui thuần!",
+  "hints": [
+    "Với `n <= 12`, số vòng lặp `3^n` bằng `531,441` — chạy chỉ trong **5 ms**!"
+  ],
+  "complexity": {
+    "time": "O(n^2 * 2^n + K * 3^n)",
+    "space": "O(n * 2^n)"
+  },
+  "test_count": 10
+}

@@ -1,0 +1,34 @@
+{
+  "id": "hs-sort-int",
+  "title": "[HUSTack] Sắp xếp dãy số nguyên tăng dần (10^6 phần tử)",
+  "track": "midterm",
+  "topic": "array-basic",
+  "difficulty": "Cơ bản",
+  "exam_tags": [
+    "HUSTack 2025.2 (P.04.08.01)",
+    "HUSTack: Chưa làm"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho `n` số nguyên `a1..an`. Hãy sắp xếp dãy không giảm và in ra màn hình.",
+  "input_spec": "- Dòng 1: `n` (`1 <= n <= 10^6`).\n- Dòng 2: `a1..an` (`0 <= a[i] <= 10^5`).",
+  "output_spec": "Dãy đã sắp xếp, cách nhau bởi dấu cách.",
+  "samples": [
+    {
+      "input": "4\n1 3 4 2",
+      "output": "1 2 3 4"
+    }
+  ],
+  "theory_chapter": "chap1",
+  "mindset": "Gọi `sort(a.begin(), a.end())` hoặc dùng **Counting Sort (`O(n + 10^5)`)** vì `0 <= a[i] <= 10^5`! Đừng quên `ios::sync_with_stdio(false); cin.tie(nullptr);` vì in `10^6` số!",
+  "hints": [
+    "Dùng `'\\n'` cuối dòng và khoảng trắng `' '` giữa các số, tránh `endl`."
+  ],
+  "complexity": {
+    "time": "O(n log n)",
+    "space": "O(n)"
+  },
+  "test_count": 10
+}

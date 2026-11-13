@@ -1,0 +1,33 @@
+{
+  "id": "hs-max-independent-set-tree",
+  "title": "[HUSTack] Tập độc lập có trọng số lớn nhất trên cây (Tree MIS)",
+  "track": "final",
+  "topic": "graph-bfs-dfs",
+  "difficulty": "Khó",
+  "exam_tags": [
+    "HUSTack 2025.2 (P.05.11.02)",
+    "HUSTack: Chưa làm"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho cây `T = (V, E)` gồm `n` đỉnh (`1..n`). Mỗi đỉnh `v` có trọng số dương `w(v)`. Hãy chọn một tập đỉnh độc lập `S` (không có 2 đỉnh nào trong `S` được nối trực tiếp bởi một cạnh) sao cho tổng trọng số các đỉnh thuộc `S` là lớn nhất.",
+  "input_spec": "- Dòng 1: `n` (`1 <= n <= 10^5`).\n- Dòng 2: `n` số nguyên `w(1..n)`.\n- `n - 1` dòng tiếp theo: `u, v` là cạnh của cây.",
+  "output_spec": "Tổng trọng số lớn nhất.",
+  "samples": [
+    {
+      "input": "9\n9 5 10 4 3 2 6 1 8\n1 5\n2 3\n2 4\n2 6\n3 5\n6 7\n6 8\n6 9",
+      "output": "38"
+    }
+  ],
+  "theory_chapter": "chap6",
+  "mindset": "**Quy hoạch động trên cây (Tree DP)**: chọn gốc `1`, dựng thứ tự BFS từ gốc xuống rồi tính ngược từ lá lên gốc (không cần đệ quy nên chạy cực an toàn với `n = 10^5`!):\n- `dp[u][1]`: tổng lớn nhất trong cây con gốc `u` khi **chọn `u`** -> không được chọn con `v` nào: `dp[u][1] = w[u] + sum dp[v][0]`.\n- `dp[u][0]`: tổng lớn nhất khi **không chọn `u`** -> mỗi con `v` chọn hay không tùy ý: `dp[u][0] = sum max(dp[v][0], dp[v][1])`.",
+  "hints": [
+    "Chạy BFS từ đỉnh `1` để lưu danh sách đỉnh theo thứ tự `order` từ trên xuống và mảng `parent[u]`.",
+    "Duyệt ngược `order` từ cuối về đầu để đảm bảo mọi con `v` đã tính xong trước cha `u`.",
+    "Kết quả cuối cùng là `max(dp[1][0], dp[1][1])`."
+  ],
+  "complexity": "O(n)",
+  "test_count": 10
+}

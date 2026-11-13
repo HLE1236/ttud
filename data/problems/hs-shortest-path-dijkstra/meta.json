@@ -1,0 +1,33 @@
+{
+  "id": "hs-shortest-path-dijkstra",
+  "title": "[HUSTack] Đường đi ngắn nhất Dijkstra (Shortest Path Dijkstra)",
+  "track": "final",
+  "topic": "graph-shortest-mst",
+  "difficulty": "Cơ bản",
+  "exam_tags": [
+    "HUSTack 2025.2 (P.05.11.04)",
+    "HUSTack: Chưa làm"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho đồ thị có hướng trọng số không âm `G = (V, E)` gồm `n` đỉnh (`1..n`) và `m` cung. Cho đỉnh xuất phát `s` và đỉnh đích `t`, hãy tìm độ dài đường đi ngắn nhất từ `s` tới `t` (in `-1` nếu không có đường đi).",
+  "input_spec": "- Dòng 1: `n, m` (`1 <= n <= 10^5`, `1 <= m <= 10^5`).\n- `m` dòng tiếp theo: `u, v, w` (`u -> v` trọng số `w >= 0`).\n- Dòng cuối: `s, t`.",
+  "output_spec": "Độ dài đường đi ngắn nhất từ `s` đến `t`, hoặc `-1` nếu không đi tới được.",
+  "samples": [
+    {
+      "input": "5 7\n2 5 87\n1 2 97\n4 5 78\n3 1 72\n1 4 19\n2 3 63\n5 1 18\n1 5",
+      "output": "97"
+    }
+  ],
+  "theory_chapter": "chap6",
+  "mindset": "Cài đặt chuẩn **Thuật toán Dijkstra với Priority Queue (`min-heap`)** độ phức tạp `O((n + m) log n)`.",
+  "hints": [
+    "Dùng `long long` cho mảng khoảng cách `dist` và phần tử trong `priority_queue`.",
+    "Luôn kiểm tra `if (d > dist[u]) continue;` ngay sau khi `pop()` khỏi heap để tránh xét lại bản ghi lỗi thời (lazy deletion).",
+    "Nếu rút ra đúng đỉnh `t` thì có thể `break` sớm và in `dist[t]`."
+  ],
+  "complexity": "O((n + m) log n)",
+  "test_count": 10
+}

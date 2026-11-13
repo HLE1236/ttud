@@ -1,0 +1,33 @@
+{
+  "id": "hs-lcs",
+  "title": "[HUSTack] Dãy con chung dài nhất (LCS)",
+  "track": "final",
+  "topic": "dp-lis-lcs",
+  "difficulty": "Cơ bản",
+  "exam_tags": [
+    "HUSTack 2025.2 (P.05.09.04)",
+    "HUSTack: Chưa làm"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho hai dãy số nguyên `X = (X_1, ..., X_n)` và `Y = (Y_1, ..., Y_m)`. Hãy tìm độ dài dãy con chung dài nhất (Longest Common Subsequence - các phần tử không nhất thiết liên tiếp, nhưng giữ nguyên thứ tự xuất hiện) của `X` và `Y`.",
+  "input_spec": "- Dòng 1: hai số nguyên dương `n, m` (`1 <= n, m <= 10000`).\n- Dòng 2: `n` số nguyên `X_1, ..., X_n`.\n- Dòng 3: `m` số nguyên `Y_1, ..., Y_m`.",
+  "output_spec": "Độ dài dãy con chung dài nhất.",
+  "samples": [
+    {
+      "input": "7 10\n3 7 2 5 1 4 9\n4 3 2 3 6 1 5 4 9 7",
+      "output": "5"
+    }
+  ],
+  "theory_chapter": "chap5",
+  "mindset": "Gọi `dp[i][j]` là độ dài LCS của tiền tố `X[1..i]` và `Y[1..j]`. Nếu `X[i] == Y[j]` thì `dp[i][j] = dp[i-1][j-1] + 1`; ngược lại lấy `max(dp[i-1][j], dp[i][j-1])`. Do `n, m` tới `10000`, mảng 2 chiều `10001 x 10001` kiểu `int` sẽ tốn ~`400 MB` dễ bị MLE (quá `256 MB`), nên ta BẮT BUỘC tối ưu bộ nhớ bằng **mảng lăn 1 chiều (rolling array)** chỉ tốn `O(m)`.",
+  "hints": [
+    "Công thức 2D: `X[i] == Y[j] -> dp[i][j] = dp[i-1][j-1] + 1`, khác nhau -> `max(dp[i-1][j], dp[i][j-1])`.",
+    "Để giảm bộ nhớ xuống `O(min(n, m))`, dùng hai mảng 1 chiều `prev[m+1]` và `cur[m+1]`, sau mỗi vòng `i` thì `swap(prev, cur)`.",
+    "Kiểm tra giới hạn `n, m <= 10000` -> `n * m = 10^8` phép lặp rất nhẹ trong C++ (`~0.1s`)."
+  ],
+  "complexity": "O(n * m) thời gian, O(m) bộ nhớ",
+  "test_count": 10
+}

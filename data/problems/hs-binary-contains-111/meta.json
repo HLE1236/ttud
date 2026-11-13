@@ -1,0 +1,38 @@
+{
+  "id": "hs-binary-contains-111",
+  "title": "[HUSTack] Sinh xâu nhị phân độ dài n luôn chứa '111'",
+  "track": "midterm",
+  "topic": "backtracking",
+  "difficulty": "Trung bình",
+  "exam_tags": [
+    "HUSTack 2025.2 (P.02.04.03)",
+    "HUSTack: Đã AC"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Liệt kê theo thứ tự từ điển tất cả các xâu nhị phân độ dài `n` **chứa ít nhất một lần cụm `'111'`** liên tiếp.",
+  "input_spec": "Một số nguyên `n` (`1 <= n <= 16`).",
+  "output_spec": "Mỗi xâu hợp lệ trên một dòng.",
+  "samples": [
+    {
+      "input": "3",
+      "output": "111"
+    },
+    {
+      "input": "4",
+      "output": "0111\n1110\n1111"
+    }
+  ],
+  "theory_chapter": "chap3",
+  "mindset": "Trong hàm quay lui `dfs(i, consecutive_ones, has111)`: nhớ truyền thêm cờ `has111` (đã xuất hiện `'111'` chưa) và số bit `'1'` liên tiếp ở cuối `c1`. Nếu còn `n - i` bước mà `!has111` và `c1 + (n - i) < 3` thì cắt nhánh luôn vì không bao giờ ghép đủ 3 số `'1'` nữa!",
+  "hints": [
+    "Nếu `n < 3`, không in ra gì cả."
+  ],
+  "complexity": {
+    "time": "O(n * 2^n)",
+    "space": "O(n)"
+  },
+  "test_count": 10
+}

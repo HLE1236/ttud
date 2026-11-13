@@ -1,0 +1,34 @@
+{
+  "id": "ck-travel-time-window",
+  "title": "Tối ưu chi phí di chuyển kèm khung giờ (Pareto Dijkstra)",
+  "track": "final",
+  "topic": "graph-shortest-mst",
+  "difficulty": "Nâng cao",
+  "exam_tags": [
+    "Cuối kỳ 2024.1 Kíp 1 (Bài 5)"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Một công ty giao hàng cần đi từ `S` đến `T` trong thành phố có `N` địa điểm (`0..N-1`) và `M` con đường. Xe xuất phát tại `S` ở thời điểm `0`.\nMỗi con đường gồm 8 số `u, v, d, t, type, toll, openTime, closeTime`:\n- `type = 1`: 1 chiều (`u -> v`), `type = 2`: 2 chiều (`u <-> v`).\n- Thời gian qua đường là `time = d * t`; Chi phí đi đường là `cost = d * t + toll`.\n- Nếu xe tới `u` trước `openTime`, xe được phép **đợi miễn phí** đến `openTime` rồi mới đi. Tuy nhiên, xe bắt buộc phải **tới `v` không muộn hơn `closeTime`** (`arrive_time <= closeTime`).\nHãy tìm **tổng chi phí nhỏ nhất** để đi từ `S` đến `T` (hoặc `-1` nếu không đi được).",
+  "input_spec": "- Dòng 1: `N, M` (`1 <= N <= 100`, `1 <= M <= 10000`).\n- `M` dòng tiếp theo: `u, v, d, t, type, toll, openTime, closeTime` (các số không âm <= `10^6`).\n- Dòng cuối: `S, T`.",
+  "output_spec": "Tổng chi phí nhỏ nhất (hoặc `-1`).",
+  "samples": [
+    {
+      "input": "4 5\n0 1 10 1 1 5 0 100\n0 2 20 2 1 8 5 50\n1 2 15 1 1 10 15 100\n2 3 15 1 1 7 20 100\n1 3 10 1 1 6 25 100\n0 3",
+      "output": "31"
+    }
+  ],
+  "theory_chapter": "chap5",
+  "mindset": "Tại sao Dijkstra thông thường chỉ lưu `min_cost[u]` sẽ BỊ SAI?\nHãy nghĩ: có thể đường A đến `u` **rẻ hơn** (`cost = 10`) nhưng lại tới **muộn** (`time = 50`, bị lỡ khung giờ `closeTime` ở cạnh sau), trong khi đường B tới `u` **đắt hơn chút** (`cost = 15`) nhưng tới **sớm hơn** (`time = 10`, kịp đi đường tiếp theo tới `T`)!\nDo đó trạng thái ở mỗi đỉnh là một cặp **`(cost, time)`**. Một trạng thái `(c1, t1)` **thống trị (dominate)** hoàn toàn `(c2, t2)` nếu `c1 <= c2` VÀ `t1 <= t2`! Ta duy trì danh sách các trạng thái **Pareto tối ưu** (không bị cái nào khác trội hơn cả 2 tiêu chí) tại mỗi đỉnh `u`, và ưu tiên pop `(cost, time)` nhỏ nhất trong min-heap!",
+  "hints": [
+    "Dùng min-heap bật theo `(cost, time, u)`. Nếu đỉnh `u` pop ra bị một trạng thái trước đó trong `best[u]` có `prev_cost <= cost` và `prev_time <= time` thì bỏ qua luôn (vì cả cost lẫn time đều thua!).",
+    "Vì ta pop theo `cost` tăng dần trước: mọi trạng thái trước đó được chấp nhận ở `u` ĐỀU có `prev_cost <= cost`! Do vậy điều kiện không bị thống trị đơn giản: chỉ cần kiểm tra `time < min_time_seen[u]`!! Nếu `time >= min_time_seen[u]` thì bỏ qua ngay, ngược lại cập nhật `min_time_seen[u] = time`! Kỹ thuật này rất gọn mà vẫn 100% chính xác!"
+  ],
+  "complexity": {
+    "time": "O(states log states)",
+    "space": "O(N + M)"
+  },
+  "test_count": 10
+}

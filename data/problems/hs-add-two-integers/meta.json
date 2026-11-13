@@ -1,0 +1,34 @@
+{
+  "id": "hs-add-two-integers",
+  "title": "[HUSTack] Cộng hai số nguyên lớn (Add Two Integers)",
+  "track": "midterm",
+  "topic": "array-basic",
+  "difficulty": "Cơ bản",
+  "exam_tags": [
+    "HUSTack 2025.2 (P.01.01.01)",
+    "HUSTack: Đã AC"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Tính tổng của hai số nguyên không âm `a` và `b` (`0 <= a, b <= 10^19`).\n*(Lưu ý giới hạn kiểu dữ liệu: `10^19` vượt ngưỡng `long long` có dấu (~`9.22 * 10^18`), và tổng `10^19 + 10^19 = 2 * 10^19` cũng vượt ngưỡng `unsigned long long` (~`1.84 * 10^19`), do đó cần dùng `unsigned __int128` hoặc cộng hai xâu ký tự.)*",
+  "input_spec": "Một dòng chứa hai số nguyên `a` và `b` (`0 <= a, b <= 10^19`).",
+  "output_spec": "Tổng `a + b`.",
+  "samples": [
+    {
+      "input": "3 5",
+      "output": "8"
+    }
+  ],
+  "theory_chapter": "chap1",
+  "mindset": "Bài khởi động kinh điển của HUST nhằm kiểm tra bạn có đọc kỹ giới hạn `10^19` không: `long long` tối đa ~`9.2 * 10^18`, `unsigned long long` tối đa ~`1.84 * 10^19`, còn `10^19 + 10^19 = 2 * 10^19` nên cộng bằng chuỗi (hoặc tách phần cao/thấp, hoặc `__uint128_t`) mới an toàn 100%!",
+  "hints": [
+    "Đọc hai số dưới dạng `string a, b`, cộng từ phải sang trái kèm biến nhớ `carry`."
+  ],
+  "complexity": {
+    "time": "O(|a| + |b|)",
+    "space": "O(|a| + |b|)"
+  },
+  "test_count": 10
+}

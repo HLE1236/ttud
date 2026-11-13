@@ -1,0 +1,33 @@
+{
+  "id": "hs-longest-path-dag",
+  "title": "[HUSTack] Đường đi dài nhất trên đồ thị DAG (Longest Path DAG)",
+  "track": "final",
+  "topic": "graph-shortest-mst",
+  "difficulty": "Cơ bản",
+  "exam_tags": [
+    "HUSTack 2025.2 (P.06.12.03)",
+    "HUSTack: Chưa làm"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho `n` hòn đảo đánh số `1, 2, ..., n`. Có `m` đường nối một chiều giữa các đảo, mỗi đường có dạng `(i, j, w)` với `i < j` và độ dài `w`. Hãy tìm độ dài đường đi dài nhất từ đảo `1` tới đảo `n`.",
+  "input_spec": "- Dòng 1: `n, m` (`1 <= n <= 10^5`, `1 <= m <= 10^6`).\n- `m` dòng tiếp theo: `i, j, w` (`1 <= i < j <= n`, `1 <= w <= 1000`).",
+  "output_spec": "Độ dài đường đi dài nhất từ `1` tới `n` (hoặc `-1` nếu không đi được).",
+  "samples": [
+    {
+      "input": "5 8\n1 2 8\n2 3 8\n3 4 4\n4 5 10\n1 4 3\n2 4 9\n1 7 1\n5 6 9",
+      "output": "30"
+    }
+  ],
+  "theory_chapter": "chap6",
+  "mindset": "Vì mọi cung đều thỏa `i < j`, đồ thị đã được **sắp xếp Topo sẵn theo thứ tự `1, 2, ..., n`**! Do đó chỉ cần QHĐ tuyến tính `dp[u]` (độ dài dài nhất từ `1` tới `u`): duyệt `u = 1..n`, đẩy sang mọi đỉnh kề `v` của `u`: `dp[v] = max(dp[v], dp[u] + w)`.",
+  "hints": [
+    "Khởi tạo `dp[1] = 0` và `dp[2..n] = -INF`.",
+    "Cẩn thận bỏ qua cạnh có chỉ số vượt ngoài `[1..n]` (trong đề gốc HUSTack ví dụ có 2 dòng thử nhiễu vượt `n=5`).",
+    "Nếu `dp[u] > -INF/2` thì mới cập nhật qua các cung đi ra từ `u` để đảm bảo đường đi thực sự bắt đầu từ `1`."
+  ],
+  "complexity": "O(n + m)",
+  "test_count": 10
+}

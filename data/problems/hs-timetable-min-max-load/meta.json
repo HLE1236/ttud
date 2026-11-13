@@ -1,0 +1,33 @@
+{
+  "id": "hs-timetable-min-max-load",
+  "title": "[HUSTack] Cân bằng tải phòng học ICT (Timetable Min-Max Load)",
+  "track": "midterm",
+  "topic": "backtracking",
+  "difficulty": "Trung bình",
+  "exam_tags": [
+    "HUSTack 2025.2 (Timetable-MinMax-Load)",
+    "HUSTack: Chưa làm"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cùng mô hình `n` lớp học (`<mã_lớp>`, `d_i`, `v_i`) và `m` phòng học (`<mã_phòng>`, `c_j`, danh sách `k` khoảng tiết trống `(s, l)`). Hai lớp bất kỳ đều phải xếp ở các khung thời gian `[t, t + d_i - 1]` **không giao nhau** và nằm trọn trong một khoảng trống của phòng có `c_r >= v_i`. Tải (load) của một phòng là **tổng thời lượng `d_i`** của các lớp được gán vào phòng đó.\nHãy tìm phương án gán hợp lệ sao cho **tải lớn nhất trong các phòng** là nhỏ nhất có thể. Nếu không có phương án xếp hợp lệ, in `-1`.",
+  "input_spec": "Giống hệt bài Timetable Count (`1 <= n <= 10`, `1 <= m <= 10`).",
+  "output_spec": "Giá trị tải tối đa nhỏ nhất tìm được, hoặc `-1` nếu vô nghiệm.",
+  "samples": [
+    {
+      "input": "6\nIT3011 3 100\nIT3020 4 120\nIT4663 3 60\nIT3220 4 90\nIT3030 3 100\nIT3170 2 120\n4\nD9-101 150 6 3 3 6 2 11 1 16 5 23 3 26 5\nC7-205 80 9 1 2 5 1 6 1 10 1 11 5 16 1 20 1 21 3 29 2\nD5-301 120 7 1 1 4 2 6 3 11 5 16 2 21 2 26 5\nD8-102 100 7 1 2 5 1 6 3 11 3 16 5 21 1 26 5",
+      "output": "6"
+    }
+  ],
+  "theory_chapter": "chap2",
+  "mindset": "Kết hợp **Nhánh và Cận (Branch & Bound)**! Sắp xếp các lớp theo thứ tự khó xếp trước (`v_i` giảm dần, `d_i` giảm dần) và dựng sẵn các cặp `(phòng r, tiết bắt đầu st)` hợp lệ cho từng lớp. Khi chọn phương án cho lớp `i`, ưu tiên thử các phòng đang có `room_load[r] + d_i` **nhỏ nhất** trước để nhanh tìm được nghiệm tốt, đồng thời cắt nhánh ngay nếu `room_load[r] + d_i >= best` hoặc đạt cận dưới lý tưởng `ceil(sum_d / m)`.",
+  "hints": [
+    "Khởi tạo `best = INF` và cận dưới `lb = (sum_d + m - 1) / m` (nhưng phải có `lb >= max(d_i)`).",
+    "Dùng mảng `occ[t]` để đánh dấu các tiết thời gian đã có lớp học; kiểm tra đoạn `[st, st + d[i] - 1]` chưa bị chiếm trước khi đặt.",
+    "Cắt nhánh: nếu `room_load[r] + d[i] >= best` thì bỏ qua luôn, và nếu `best == lb` thì dừng tìm kiếm ngay!"
+  ],
+  "complexity": "Nhánh & Cận với n <= 10",
+  "test_count": 10
+}

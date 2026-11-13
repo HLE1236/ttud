@@ -1,0 +1,34 @@
+{
+  "id": "hs-cbus",
+  "title": "[HUSTack] Tuyến xe buýt CBUS chuẩn (Đón-trả n hành khách)",
+  "track": "midterm",
+  "topic": "backtracking",
+  "difficulty": "Nâng cao",
+  "exam_tags": [
+    "HUSTack 2025.2 (P.03.04.02)",
+    "HUSTack: Đã AC"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Có `n` hành khách `1..n`. Khách `i` cần đi từ điểm `i` tới `i + n`. Xe buýt xuất phát từ điểm `0` với sức chứa tối đa `k` khách trên xe tại mọi thời điểm.\nCho ma trận khoảng cách `c` kích thước `(2n+1) x (2n+1)`, tìm độ dài hành trình ngắn nhất phục vụ hết `n` khách rồi quay về `0`.",
+  "input_spec": "- Dòng 1: `n, k` (`1 <= n <= 11`, `1 <= k <= 10`).\n- `2n + 1` dòng tiếp: ma trận khoảng cách `c` (`c[i][j]`).",
+  "output_spec": "Độ dài hành trình ngắn nhất.",
+  "samples": [
+    {
+      "input": "3  2\n0  8  5  1  10  5  9\n9  0  5  6  6  2  8\n2  2  0  3  8  7  2\n5  3  4  0  3  2  7\n9  6  8  7  0  9  10\n3  8  10  6  5  0  2\n3  4  4  5  2  2  0",
+      "output": "25"
+    }
+  ],
+  "theory_chapter": "chap3",
+  "mindset": "Đây là bài **CBUS gốc** (phiên bản không giới hạn số trạm trung gian). Dùng Quay lui + Nhánh cận với đánh giá cận dưới `f + (2*n + 1 - step) * cmin >= f_best` (hoặc chặt hơn dùng `min_out[v]`).",
+  "hints": [
+    "Khách `v <= n` đón được khi `load < k` và chưa đón; trả khách `v > n` được khi đã đón `v - n` và chưa trả `v`."
+  ],
+  "complexity": {
+    "time": "Quay lui + Nhánh cận",
+    "space": "O(n^2)"
+  },
+  "test_count": 10
+}

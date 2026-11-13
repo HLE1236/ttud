@@ -1,0 +1,33 @@
+{
+  "id": "hs-max-matching-bipartite",
+  "title": "[HUSTack] Cặp ghép cực đại trên đồ thị hai phía (Max Bipartite Matching)",
+  "track": "final",
+  "topic": "graph-special",
+  "difficulty": "Khó",
+  "exam_tags": [
+    "HUSTack 2025.2 (P.05.12.02)",
+    "HUSTack: Chưa làm"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Có `n` công việc `1..n` và `m` nhân viên `1..m`. Với mỗi công việc `i`, cho danh sách `T(i)` gồm các nhân viên có thể làm công việc đó. Mỗi công việc giao cho tối đa 1 nhân viên, mỗi nhân viên chỉ nhận tối đa 1 công việc. Hãy tìm số công việc tối đa có thể phân công.",
+  "input_spec": "- Dòng 1: hai số nguyên dương `n, m` (`1 <= n, m <= 10000`).\n- `n` dòng tiếp theo: dòng `i+1` bắt đầu bằng số nguyên `k` rồi tới `k` chỉ số nhân viên trong `T(i)`.",
+  "output_spec": "Số công việc nhiều nhất phân công được.",
+  "samples": [
+    {
+      "input": "3 4\n2 1 4\n2 1 3\n1 2",
+      "output": "3"
+    }
+  ],
+  "theory_chapter": "chap6",
+  "mindset": "Vì `n, m <= 10000`, thuật toán **Kuhn DFS `O(V * E)`** đơn giản có thể hơi chậm nếu đồ thị dày, nên chuẩn nhất là dùng **Thuật toán Hopcroft-Karp `O(E * sqrt(V))`**: mỗi pha dùng BFS tìm tập các đường mở ngắn nhất đồng thời rồi đẩy qua nhiều DFS cùng lúc (hoặc Dinic trên đồ thị mạng hai phía).",
+  "hints": [
+    "Hopcroft-Karp chia 2 bước lặp: `bfs()` phân tầng các đỉnh tự do phía trái qua cạnh chưa ghép -> cạnh đã ghép; sau đó chạy `dfs(u)` cho mọi đỉnh trái tự do có `dist[u] == 0`.",
+    "Dùng `pairU[1..n]`, `pairV[1..m]` và `dist[0..n]` (trong đó `0` đại diện cho đỉnh giả `NIL`!).",
+    "Đặt `INF = 1e9`; mỗi lần `bfs()` trả về `true` tức là còn đường tăng cặp ghép."
+  ],
+  "complexity": "O(E * sqrt(V)) (Hopcroft-Karp)",
+  "test_count": 10
+}

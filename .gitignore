@@ -1,0 +1,14 @@
+# Database tiến độ & bài nộp cá nhân (tự động tạo khi chạy lần đầu)
+data/ttud.db
+data/ttud.db-shm
+data/ttud.db-wal
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/

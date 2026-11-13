@@ -1,0 +1,33 @@
+{
+  "id": "hs-make-span-schedule",
+  "title": "[HUSTack] Lập lịch dự án sớm nhất (Make Span Schedule / Critical Path)",
+  "track": "final",
+  "topic": "graph-shortest-mst",
+  "difficulty": "Trung bình",
+  "exam_tags": [
+    "HUSTack 2025.2 (MakeSpanSchedule)",
+    "HUSTack: Chưa làm"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Một dự án gồm `n` công việc `1..n`, công việc `i` cần thời gian `d(i)` để hoàn thành. Có `m` ràng buộc thứ tự: mỗi cặp `(i, j)` quy định công việc `j` chỉ được bắt đầu sau khi công việc `i` đã làm xong.\nHãy tính **thời điểm hoàn thành sớm nhất** của toàn bộ dự án (biết mọi công việc đều có thể làm song song miễn là thỏa ràng buộc tiên quyết).",
+  "input_spec": "- Dòng 1: `n, m` (`1 <= n <= 10^4`, `1 <= m <= 2*10^5`).\n- Dòng 2: `n` số nguyên `d(1..n)` (`1 <= d(i) <= 1000`).\n- `m` dòng tiếp theo: `i, j` (`i` phải xong trước `j`).",
+  "output_spec": "Thời điểm hoàn thành sớm nhất của dự án.",
+  "samples": [
+    {
+      "input": "9 13\n5 3 1 2 6 4 3 1 4\n1 3\n1 5\n1 6\n2 1\n2 3\n3 5\n4 1\n4 2\n4 6\n5 8\n7 9\n9 5\n9 8",
+      "output": "18"
+    }
+  ],
+  "theory_chapter": "chap6",
+  "mindset": "Bài toán **Đường găng (Critical Path)** trên DAG! Dùng **Sắp xếp Topo (thuật toán Kahn dùng Queue)**:\n- Công việc `u` có `indeg[u] == 0` có thể bắt đầu ngay lúc `0`, hoàn thành lúc `finish[u] = d[u]`.\n- Khi xử lý xong `u` và đi tới công việc kề `v`: cập nhật `start[v] = max(start[v], finish[u])`. Khi `indeg[v]` về `0`, `finish[v] = start[v] + d[v]` và đẩy vào hàng đợi!",
+  "hints": [
+    "Khởi tạo `start[1..n] = 0`, đẩy tất cả đỉnh `indeg == 0` vào queue với `finish[u] = d[u]`.",
+    "Với mỗi cung `u -> v`: `start[v] = max(start[v], finish[u])`, giảm `indeg[v]`; khi `indeg[v] == 0` thì `finish[v] = start[v] + d[v]` và push `v`.",
+    "Đáp án là `max(finish[1..n])`."
+  ],
+  "complexity": "O(n + m)",
+  "test_count": 10
+}

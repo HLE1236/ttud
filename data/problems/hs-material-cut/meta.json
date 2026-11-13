@@ -1,0 +1,34 @@
+{
+  "id": "hs-material-cut",
+  "title": "[HUSTack] Cắt tấm chữ nhật thành n mảnh (Cut Material)",
+  "track": "midterm",
+  "topic": "backtracking",
+  "difficulty": "Nâng cao",
+  "exam_tags": [
+    "HUSTack 2025.2 (P.03.04.01)",
+    "HUSTack: Chưa làm"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho một tấm vật liệu hình chữ nhật kích thước `H x W` và `n` hình chữ nhật nhỏ kích thước `(h_i, w_i)` (`i = 1..n`). Các hình chữ nhật nhỏ **có thể xoay 90 độ** khi xếp vào tấm lớn.\nHãy kiểm tra xem có thể cắt/xếp tất cả `n` hình chữ nhật này nằm gọn bên trong tấm `H x W` (không chồng lên nhau) hay không (`1` nếu được, `0` nếu không).",
+  "input_spec": "- Dòng 1: `H, W` (`1 <= H, W <= 10`).\n- Dòng 2: `n` (`1 <= n <= 10`).\n- `n` dòng tiếp: `h_i, w_i` (`1 <= h_i, w_i <= 10`).",
+  "output_spec": "In `1` hoặc `0`.",
+  "samples": [
+    {
+      "input": "7 5\n4\n1 5\n6 2\n2 2\n4 3",
+      "output": "1"
+    }
+  ],
+  "theory_chapter": "chap3",
+  "mindset": "Vì `H, W <= 10` và `n <= 10`, ta mô phỏng trực tiếp lưới `mark[H][W]`!\n- Kiểm tra nhanh tổng diện tích: nếu `sum(h_i * w_i) > H * W` -> chắc chắn in `0`!\n- Mẹo quay lui nhanh: ở mỗi bước, luôn tìm **ô trống đầu tiên (trên cùng, trái nhất)** hoặc gán mảnh `k` vào vị trí `(r, c)` hợp lệ. Thực tế đặt từng mảnh `k` theo thứ tự diện tích giảm dần + chọn góc `(r, c)` là rất nhanh (`n <= 10`)!",
+  "hints": [
+    "Đừng quên thử **cả 2 hướng xoay**: `(h[k], w[k])` và `(w[k], h[k])` (nếu `h[k] != w[k]`)."
+  ],
+  "complexity": {
+    "time": "Quay lui + Cắt diện tích",
+    "space": "O(H * W)"
+  },
+  "test_count": 10
+}

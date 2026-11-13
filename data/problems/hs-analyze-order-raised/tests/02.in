@@ -1,0 +1,37 @@
+ORD00001 13:15:51
+ORD00002 11:50:46
+ORD00003 16:32:06
+ORD00004 11:47:25
+ORD00005 14:03:10
+ORD00006 21:13:26
+ORD00007 05:38:55
+ORD00008 22:14:25
+ORD00009 23:40:58
+ORD00010 18:45:05
+ORD00011 09:53:05
+ORD00012 18:57:49
+ORD00013 07:02:35
+ORD00014 05:50:58
+ORD00015 18:33:40
+ORD00016 12:13:54
+ORD00017 23:42:24
+ORD00018 06:14:00
+ORD00019 01:54:19
+ORD00020 03:09:38
+#
+?number_orders
+?number_orders
+?number_orders
+?number_orders_in_period 04:23:58 05:18:11
+?number_orders_in_period 03:19:29 04:31:06
+?number_orders_in_period 12:36:36 16:45:34
+?number_orders
+?number_orders
+?number_orders_at_time 13:15:51
+?number_orders
+?number_orders_in_period 06:21:10 20:08:16
+?number_orders
+?number_orders_at_time 01:54:19
+?number_orders
+?number_orders_at_time 18:57:49
+###

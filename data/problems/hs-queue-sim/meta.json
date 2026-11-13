@@ -1,0 +1,35 @@
+{
+  "id": "hs-queue-sim",
+  "title": "[HUSTack] Mô phỏng hàng đợi (Simulation Queue)",
+  "track": "midterm",
+  "topic": "array-basic",
+  "difficulty": "Trung bình",
+  "exam_tags": [
+    "HUSTack 2025.2 (P.01.02.03)",
+    "HUSTack: Đã AC"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Thực hiện một chuỗi các thao tác trên hàng đợi số nguyên (`queue` — vào trước ra trước FIFO):\n- `PUSH v`: thêm số nguyên `v` vào cuối hàng đợi.\n- `POP`: lấy phần tử đầu hàng đợi ra và in giá trị đó (nếu hàng đợi rỗng, in `NULL`).\nDữ liệu kết thúc bởi dòng `#`.",
+  "input_spec": "Mỗi dòng là `PUSH v` hoặc `POP`. Kết thúc bằng `#`.",
+  "output_spec": "Kết quả mỗi thao tác `POP` trên một dòng.",
+  "samples": [
+    {
+      "input": "PUSH 1\nPUSH 2\nPUSH 3\nPOP\nPOP\nPUSH 4\nPUSH 5\nPOP\n#",
+      "output": "1\n2\n3"
+    }
+  ],
+  "theory_chapter": "chap1",
+  "mindset": "Dùng trực tiếp `std::queue<int>` trong STL C++. Đọc từng token `cmd` bằng `while (cin >> cmd && cmd != \"#\")` rất gọn.",
+  "hints": [
+    "Nếu `cmd == \"PUSH\"`, đọc `int v; cin >> v; q.push(v);`.",
+    "Nếu `cmd == \"POP\"`, kiểm tra `q.empty()` trước khi gọi `q.front(); q.pop();`."
+  ],
+  "complexity": {
+    "time": "O(Q)",
+    "space": "O(Q)"
+  },
+  "test_count": 10
+}

@@ -1,0 +1,34 @@
+{
+  "id": "hs-max-common-subset",
+  "title": "[HUSTack] Giao của hai tập hợp số nguyên (Max Common Subset)",
+  "track": "midterm",
+  "topic": "greedy-2ptr",
+  "difficulty": "Trung bình",
+  "exam_tags": [
+    "HUSTack 2025.2 (P.03.07.04)",
+    "HUSTack: Đã AC"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho 2 tập hợp `A` (`n` số) và `B` (`m` số). Tìm kích thước của **tập con chung lớn nhất** của `A` và `B`.",
+  "input_spec": "- Dòng 1: `n, m` (`1 <= n, m <= 10^5`).\n- Dòng 2: `n` số tập `A` (`1 <= a_i <= 10^6`).\n- Dòng 3: `m` số tập `B` (`1 <= b_i <= 10^6`).",
+  "output_spec": "Số phần tử chung của `A` và `B`.",
+  "samples": [
+    {
+      "input": "6 6\n7 3 10 1 2 8\n6 2 8 10 5 7",
+      "output": "4"
+    }
+  ],
+  "theory_chapter": "chap1",
+  "mindset": "Vì các số `<= 10^6` (hoặc dùng `sort` + Two Pointers / `unordered_set`), chỉ cần đánh dấu các phần tử có trong `A` (`vector<bool> inA(1000001)`), rồi đếm phần tử của `B` có trong `inA` (nhớ bỏ đánh dấu sau khi đếm để không đếm trùng).",
+  "hints": [
+    "Dùng mảng đánh dấu `inA` chạy `O(n + m)` hiệu quả!"
+  ],
+  "complexity": {
+    "time": "O(n + m)",
+    "space": "O(maxA)"
+  },
+  "test_count": 10
+}

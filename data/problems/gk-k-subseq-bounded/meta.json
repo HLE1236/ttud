@@ -1,0 +1,33 @@
+{
+  "title": "Đếm dãy con k-phần tử tổng trong [A, B]",
+  "track": "midterm",
+  "exam_tags": [
+    "GK 20221 (Kíp 2)"
+  ],
+  "topic": "hash-prefix",
+  "theory_chapter": "chap2",
+  "difficulty": "Cơ bản",
+  "day": 2,
+  "time_limit_ms": 1000,
+  "tc_source": "Official Zip (GK 20221) + 6 generated",
+  "statement": "Cho dãy số nguyên `a[1], ..., a[n]` và các số nguyên dương `k, A, B`. Tính số lượng `Q` các dãy con gồm `k` phần tử **liên tiếp** sao cho tổng của chúng nằm trong đoạn `[A, B]` (`A <= tổng <= B`).",
+  "input_spec": "- Dòng 1: `n, k, A, B` (`1 <= n <= 10^5, 1 <= k <= n/2`).\n- Dòng 2: `n` số nguyên `a[1]..a[n]` (`1 <= a[i] <= 100`).",
+  "output_spec": "Giá trị `Q` tìm được.",
+  "samples": [
+    {
+      "input": "5 3 6 18\n2 2 8 8 3",
+      "output": "2",
+      "explanation": "(2,2,8)=12 và (2,8,8)=18 thỏa mãn trong [6,18]; (8,8,3)=19 > 18."
+    }
+  ],
+  "mindset": "Y hệt bài `k-subsequence weight equal to m`, chỉ thay điều kiện kiểm tra `win == m` thành `win >= A && win <= B`!",
+  "hints": [
+    "Dùng Cửa sổ trượt độ dài `k` với biến tổng `win`.",
+    "Nhớ kiểm tra cả hai đầu: `A <= win && win <= B`."
+  ],
+  "complexity": "Time: O(n) | Space: O(n)",
+  "starter_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    \n    return 0;\n}",
+  "reference_cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    int n, k;\n    long long A, B;\n    cin >> n >> k >> A >> B;\n    vector<long long> a(n);\n    for (int i = 0; i < n; i++) cin >> a[i];\n    long long win = 0, ans = 0;\n    for (int i = 0; i < k; i++) win += a[i];\n    if (win >= A && win <= B) ans++;\n    for (int i = k; i < n; i++) {\n        win += a[i] - a[i - k];\n        if (win >= A && win <= B) ans++;\n    }\n    cout << ans << \"\\n\";\n    return 0;\n}",
+  "id": "gk-k-subseq-bounded",
+  "test_count": 10
+}

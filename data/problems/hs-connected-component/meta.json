@@ -1,0 +1,32 @@
+{
+  "id": "hs-connected-component",
+  "title": "[HUSTack] Đếm số thành phần liên thông (Connected Components)",
+  "track": "final",
+  "topic": "graph-bfs-dfs",
+  "difficulty": "Cơ bản",
+  "exam_tags": [
+    "HUSTack 2025.2 (CONNECTED_COMPONENT)",
+    "HUSTack: Đã AC"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho đồ thị vô hướng `G = (V, E)` có `N` đỉnh (`1..N`) và `M` cạnh. Hãy đếm số lượng thành phần liên thông của đồ thị `G`.",
+  "input_spec": "- Dòng 1: `N, M` (`1 <= N, M <= 10^5`).\n- `M` dòng tiếp theo: `u, v` là cạnh nối hai đỉnh.",
+  "output_spec": "Một số nguyên duy nhất là số thành phần liên thông.",
+  "samples": [
+    {
+      "input": "8 8\n1 2\n1 7\n1 8\n2 7\n4 5\n4 6\n5 6\n7 8",
+      "output": "3"
+    }
+  ],
+  "theory_chapter": "chap6",
+  "mindset": "Cách 1: Dùng BFS/DFS lặp qua mọi đỉnh `1..N`, hễ gặp đỉnh chưa thăm thì tăng `comp++` rồi loang hết thành phần đó. Cách 2 (nhanh và gọn hơn nữa): Dùng **DSU (Disjoint Set Union)** khởi tạo `comp = N`, mỗi khi gộp thành công 2 đỉnh khác tập thì `comp--`.",
+  "hints": [
+    "Dùng DSU không bao giờ bị tràn stack như DFS đệ quy trên cây dây chuyền `10^5` đỉnh.",
+    "Cài đặt `find_set` với path compression, hợp nhất `u` và `v` nếu `find(u) != find(v)` thì giảm `comp` đi 1."
+  ],
+  "complexity": "O((N + M) * alpha(N))",
+  "test_count": 10
+}

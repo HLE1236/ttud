@@ -1,0 +1,33 @@
+{
+  "id": "hs-max-score-table",
+  "title": "[HUSTack] Tổng điểm lớn nhất trên bảng (Max Score Table)",
+  "track": "final",
+  "topic": "dp-grid-3d",
+  "difficulty": "Cơ bản",
+  "exam_tags": [
+    "HUSTack 2025.2 (MaxScoreTable)",
+    "HUSTack: Chưa làm"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho bảng kích thước `m x n` gồm các số nguyên `a[r][c]` (`-1000 <= a[r][c] <= 1000`). Bạn xuất phát tại **một ô bất kỳ ở cột 1** và đi sang phải đến **một ô bất kỳ ở cột `n`**. Từ ô `(r, c)` chỉ được đi tiếp sang `(r - 1, c + 1)`, `(r, c + 1)`, hoặc `(r + 1, c + 1)` (nếu còn nằm trong bảng). Hãy tìm tổng điểm lớn nhất thu được dọc đường đi.",
+  "input_spec": "- Dòng 1: `m, n` (`1 <= m, n <= 1000`).\n- `m` dòng tiếp theo: mỗi dòng `n` số nguyên `a[r][c]`.",
+  "output_spec": "Tổng điểm lớn nhất khi đi từ cột 1 đến cột `n`.",
+  "samples": [
+    {
+      "input": "4 5\n3 4 1 5 7\n4 3 7 1 6\n5 2 6 2 8\n3 4 2 1 6",
+      "output": "27"
+    }
+  ],
+  "theory_chapter": "chap5",
+  "mindset": "Quy hoạch động trên bảng 2D theo chiều cột từ trái sang phải! Gọi `dp[r][c]` là tổng lớn nhất khi kết thúc tại ô `(r, c)`.",
+  "hints": [
+    "Khởi tạo cột 1: `dp[r][0] = a[r][0]` với mọi hàng `r = 0..m-1`.",
+    "Với mỗi cột `c` từ `1` tới `n-1`: `dp[r][c] = a[r][c] + max(dp[r][c-1], dp[r-1][c-1] nếu r>0, dp[r+1][c-1] nếu r+1<m)`.",
+    "Kết quả là `max_{r=0..m-1} dp[r][n-1]`."
+  ],
+  "complexity": "O(m * n) thời gian, O(m * n) bộ nhớ",
+  "test_count": 10
+}

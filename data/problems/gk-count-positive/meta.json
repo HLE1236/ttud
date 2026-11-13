@@ -1,0 +1,35 @@
+{
+  "title": "Đếm số lần nhận tiền",
+  "track": "midterm",
+  "exam_tags": [
+    "GK 20242 (Kíp 2)",
+    "CK 20241"
+  ],
+  "topic": "array-basic",
+  "theory_chapter": "chap1",
+  "difficulty": "Cơ bản",
+  "day": 1,
+  "time_limit_ms": 1000,
+  "tc_source": "Official Zip (GK 20242)",
+  "statement": "Công ty ABC theo dõi lịch sử giao dịch tài khoản ngân hàng trong suốt `n` ngày. Mỗi ngày `i`, giao dịch được ghi nhận là một số nguyên `a[i]`:\n- Nếu `a[i] > 0`: công ty nhận được tiền từ khách hàng.\n- Nếu `a[i] < 0`: công ty chi trả cho nhà cung cấp.\n- Nếu `a[i] = 0`: không phát sinh giao dịch.\n\nHãy đếm số lần công ty nhận được tiền từ khách hàng trong `n` ngày.",
+  "input_spec": "- Dòng 1: số nguyên dương `n` (`1 <= n <= 100000`).\n- Dòng 2: `n` số nguyên `a[1], ..., a[n]` (`-1000 <= a[i] <= 10000`).",
+  "output_spec": "Ghi ra một số nguyên duy nhất là số lần công ty nhận được tiền (`a[i] > 0`).",
+  "samples": [
+    {
+      "input": "5\n4 2 -5 -7 9",
+      "output": "3",
+      "explanation": "Có 3 ngày nhận tiền (> 0) là ngày 1 (4), ngày 2 (2), ngày 5 (9)."
+    }
+  ],
+  "mindset": "Đây là bài làm quen đọc dữ liệu và đếm có điều kiện.\n- Bước 1: Nhìn `n <= 10^5`, ta chỉ cần duyệt một vòng lặp `O(n)`.\n- Bước 2: Thậm chí không cần lưu cả mảng, cứ đọc từng số `x`, nếu `x > 0` thì tăng biến đếm `cnt++`.\n- Chú ý: `0` không tính là nhận tiền (`x > 0`, không phải `>= 0`).",
+  "hints": [
+    "Dùng vòng lặp `for` từ `0` đến `n - 1`, mỗi bước đọc một số `x`.",
+    "Kiểm tra điều kiện `if (x > 0) cnt++;`.",
+    "Nhớ thêm `ios::sync_with_stdio(false); cin.tie(nullptr);` để đọc `10^5` số nhanh."
+  ],
+  "complexity": "Time: O(n) | Space: O(1)",
+  "starter_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    \n    // Viet code cua ban o day\n    \n    return 0;\n}",
+  "reference_cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    int n, cnt = 0, x;\n    cin >> n;\n    for (int i = 0; i < n; i++) {\n        cin >> x;\n        if (x > 0) cnt++;\n    }\n    cout << cnt << \"\\n\";\n    return 0;\n}",
+  "id": "gk-count-positive",
+  "test_count": 10
+}

@@ -1,0 +1,38 @@
+{
+  "id": "ck-min-vertex-cover",
+  "title": "Đếm tập phủ đỉnh nhỏ nhất (Minimum Vertex Cover)",
+  "track": "final",
+  "topic": "graph-special",
+  "difficulty": "Trung bình",
+  "exam_tags": [
+    "Cuối kỳ 2025.1 (Câu 3)"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho đồ thị vô hướng gồm `n` đỉnh (`1..n`) và `m` cạnh `(u, v)`. Một tập hợp các đỉnh `C` được gọi là **tập phủ đỉnh (Vertex Cover)** nếu mọi cạnh `(u, v)` của đồ thị đều có ít nhất một đầu mút nằm trong `C` (tức `u in C` hoặc `v in C`).\nHãy tìm:\n1. Kích thước nhỏ nhất của một tập phủ đỉnh (gọi là `MBF`).\n2. Số lượng tập phủ đỉnh khác nhau có kích thước đúng bằng `MBF`.",
+  "input_spec": "- Dòng 1: Hai số nguyên `n` và `m` (`1 <= n <= 20`, `0 <= m <= 200`).\n- `m` dòng tiếp theo: mỗi dòng gồm 2 số nguyên `u, v` (`1 <= u, v <= n`).",
+  "output_spec": "Một dòng chứa 2 số nguyên cách nhau bởi dấu cách: kích thước nhỏ nhất `MBF` và số lượng tập phủ đỉnh kích thước `MBF`.",
+  "samples": [
+    {
+      "input": "3 2\n2 3\n1 2",
+      "output": "1 1"
+    },
+    {
+      "input": "4 4\n1 2\n2 3\n3 1\n3 4",
+      "output": "2 2"
+    }
+  ],
+  "theory_chapter": "chap5",
+  "mindset": "Bài toán Minimum Vertex Cover tổng quát là NP-hard, và đề cho **`n <= 10` (hoặc `<= 20`)** chính là để ta dùng **Bitmask** duyệt `2^n` tập đỉnh con!\nMẹo viết Bitmask cực sạch:\nBiểu diễn kề của mỗi đỉnh bằng một bitmask `adj[u]` (hoặc lưu danh sách cạnh `(u, v)`). Một `mask` `n` bit là tập phủ hợp lệ khi và chỉ khi với mọi cạnh `(u, v)`, ít nhất 1 trong bit `u` hoặc bit `v` của `mask` bật lên (`((mask >> u) & 1) || ((mask >> v) & 1)`).",
+  "hints": [
+    "Đếm số đỉnh trong `mask` bằng `__builtin_popcount(mask)`.",
+    "Cẩn thận đỉnh đánh số 1-based trong input -> đổi sang 0-based `u-1, v-1` trước khi dịch bit!"
+  ],
+  "complexity": {
+    "time": "O(2^n * m)",
+    "space": "O(m)"
+  },
+  "test_count": 10
+}

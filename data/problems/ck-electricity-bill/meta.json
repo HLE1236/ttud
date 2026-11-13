@@ -1,0 +1,34 @@
+{
+  "id": "ck-electricity-bill",
+  "title": "Tính tiền điện theo khung giờ",
+  "track": "final",
+  "topic": "array-basic",
+  "difficulty": "Cơ bản",
+  "exam_tags": [
+    "Cuối kỳ 2024.2 (Bài 1)"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Công ty điện lực chia một ngày 24 giờ (`0h, 1h, ..., 23h`) thành `K` khung giờ tính tiền khác nhau (đôi một không giao nhau). Mỗi khung giờ gồm `(gio_bat_dau, gio_ket_thuc, gia)` nghĩa là các giờ `h` thỏa mãn `gio_bat_dau <= h < gio_ket_thuc` (tức từ `gio_bat_dau` đến `gio_ket_thuc - 1`) có đơn giá là `gia` đồng/kWh. Các giờ không nằm trong khung giờ nào có giá `0` đồng.\nCho dữ liệu tiêu thụ điện trong 24 giờ của `N` hộ gia đình, hãy tính **tổng tiền điện** của tất cả `N` hộ gia đình.",
+  "input_spec": "- Dòng 1: Hai số nguyên `K, N` (`1 <= K <= 10`, `1 <= N <= 500`).\n- `K` dòng tiếp theo: mỗi dòng gồm 3 số nguyên `gio_bat_dau, gio_ket_thuc, gia` (`0 <= gio_bat_dau < gio_ket_thuc <= 24`, `0 <= gia <= 10000`).\n- `N` dòng tiếp theo: mỗi dòng gồm 24 số nguyên không âm `e[0..23]` là số kWh tiêu thụ ở mỗi giờ (`0 <= e[h] <= 1000`).",
+  "output_spec": "Một số nguyên duy nhất là tổng tiền điện của tất cả `N` hộ.",
+  "samples": [
+    {
+      "input": "2 2\n9 13 3500\n17 20 4500\n0 0 0 0 0 0 0 0 0 2 7 2 1 0 0 3 2 1 1 1 0 0 0 0\n0 0 0 0 0 0 0 0 0 0 1 2 0 0 0 0 2 1 3 2 0 0 0 0",
+      "output": "93000"
+    }
+  ],
+  "theory_chapter": "chap5",
+  "mindset": "Bài khởi động dễ lấy 2 điểm ở đầu đề cuối kỳ! Chỉ cần tạo mảng `price[24]` lưu đơn giá từng giờ `0..23` (khởi tạo bằng `0`), tô giá `gia` cho các giờ `h` từ `gio_bat_dau` đến `gio_ket_thuc - 1`, rồi duyệt qua `N x 24` số để cộng `e[h] * price[h]`.",
+  "hints": [
+    "Khởi tạo `long long price[24] = {0};`.",
+    "Chú ý khoảng nửa mở `[start, end)`: giờ 9h–13h gồm các giờ bắt đầu tại 9, 10, 11, 12 (`for h = start; h < end; h++`). Tổng tiền dùng `long long`."
+  ],
+  "complexity": {
+    "time": "O(24 * K + 24 * N)",
+    "space": "O(1)"
+  },
+  "test_count": 10
+}

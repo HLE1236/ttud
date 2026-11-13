@@ -1,0 +1,33 @@
+{
+  "id": "hs-closest-pair",
+  "title": "[HUSTack] Cặp điểm gần nhất trên mặt phẳng (Closest Pair)",
+  "track": "midterm",
+  "topic": "greedy-2ptr",
+  "difficulty": "Trung bình",
+  "exam_tags": [
+    "HUSTack 2025.2 (ClosestPair)",
+    "HUSTack: Chưa làm"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho `N` điểm phân biệt trên mặt phẳng tọa độ `Oxy`, điểm thứ `i` có tọa độ nguyên `(X_i, Y_i)`. Hãy tìm khoảng cách Euclid nhỏ nhất giữa hai điểm bất kỳ trong tập điểm.",
+  "input_spec": "- Dòng 1: số nguyên `N` (`2 <= N <= 100000`).\n- `N` dòng tiếp theo: hai số nguyên `X_i, Y_i` (`|X_i|, |Y_i| <= 10^6`).",
+  "output_spec": "Một số thực là khoảng cách nhỏ nhất, làm tròn đúng **6 chữ số** sau dấu phẩy thập phân.",
+  "samples": [
+    {
+      "input": "5\n0 0\n1 1\n100 45\n2 3\n9 9",
+      "output": "1.414214"
+    }
+  ],
+  "theory_chapter": "chap3",
+  "mindset": "Thuật toán **Chia để trị (Divide & Conquer) `O(N log N)`** kinh điển:\n1. Sắp xếp các điểm tăng dần theo hoành độ `x`.\n2. Chia đôi tập điểm ở `mid`, tìm `d = min(solve(left), solve(right))`.\n3. Xét dải băng quanh đường thẳng đứng `x = mid_x` có `|x_i - mid_x| < sqrt(d)`. Sắp xếp các điểm trong dải theo tung độ `y`; bằng chứng minh hình học (mỗi ô vuông `d/2 x d/2` chứa tối đa 1 điểm), mỗi điểm chỉ cần so với tối đa ~7 điểm kế tiếp có `dy^2 < d`!",
+  "hints": [
+    "Lưu khoảng cách bình phương `dist2 = dx*dx + dy*dy` bằng `long long` để tránh sai số số thực trong lúc so sánh.",
+    "Sắp xếp mảng ban đầu theo `x`; trong hàm đệ quy kết hợp `inplace_merge` hoặc sort lại theo `y` cho dải hẹp.",
+    "In kết quả bằng `cout << fixed << setprecision(6) << sqrt((double)best_d2)`."
+  ],
+  "complexity": "O(N log N) thời gian, O(N) bộ nhớ",
+  "test_count": 10
+}

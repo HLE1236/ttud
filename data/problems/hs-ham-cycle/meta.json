@@ -1,0 +1,32 @@
+{
+  "id": "hs-ham-cycle",
+  "title": "[HUSTack] Kiểm tra đồ thị có chu trình Hamilton (Hamiltonian Cycle)",
+  "track": "final",
+  "topic": "graph-special",
+  "difficulty": "Trung bình",
+  "exam_tags": [
+    "HUSTack 2025.2 (P.06.12.05)",
+    "HUSTack: Chưa làm"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho `T` đồ thị vô hướng `G = (V, E)`. Hãy kiểm tra mỗi đồ thị xem nó có phải là **đồ thị Hamilton** hay không (tồn tại một chu trình đơn đi qua tất cả `n` đỉnh mỗi đỉnh đúng 1 lần).",
+  "input_spec": "- Dòng 1: số nguyên dương `T` (số bộ đồ thị).\n- Tiếp theo là mô tả `T` đồ thị: mỗi đồ thị bắt đầu bằng `n, m`, rồi `m` dòng cạnh `u, v`.",
+  "output_spec": "Gồm `T` dòng, dòng thứ `i` in `1` nếu đồ thị thứ `i` có chu trình Hamilton, ngược lại in `0`.",
+  "samples": [
+    {
+      "input": "2\n5 5\n1 2\n1 3\n2 4\n2 5\n3 5\n7 13\n1 3\n1 5\n1 7\n2 4\n2 5\n2 6\n3 4\n3 5\n3 7\n4 6\n4 7\n5 7\n6 7",
+      "output": "0\n1"
+    }
+  ],
+  "theory_chapter": "chap6",
+  "mindset": "Bài toán kiểm tra chu trình Hamilton là NP-Complete nên ta giải bằng **Quay lui + Cắt tỉa nhanh**:\n1. Kiểm tra điều kiện cần đơn giản trước: với `n >= 3`, nếu có đỉnh nào bậc `< 2` -> lập tức không có chu trình Hamilton (`0`).\n2. Cố định đỉnh xuất phát là `1` (do tính đối xứng của chu trình). Dùng quay lui chọn đỉnh kế tiếp chưa thăm; khi đủ `n` đỉnh, kiểm tra xem đỉnh cuối có kề lại với đỉnh `1` hay không!",
+  "hints": [
+    "Dùng ma trận kề `g[u][v]` (khi `n` nhỏ/vừa) hoặc `unordered_set` để kiểm tra `g[last][1]` trong `O(1)`.",
+    "Cắt nhánh hiệu quả: ưu tiên đi sang đỉnh kề có **số láng giềng chưa thăm ít nhất** (quy tắc Warnsdorff), hoặc kiểm tra đỉnh bậc `<= 1` trong phần còn lại."
+  ],
+  "complexity": "Quay lui + Cắt nhánh theo bậc đỉnh",
+  "test_count": 10
+}

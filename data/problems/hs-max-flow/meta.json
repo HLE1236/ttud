@@ -1,0 +1,33 @@
+{
+  "id": "hs-max-flow",
+  "title": "[HUSTack] Luồng cực đại trên mạng (Maximum Flow - Dinic)",
+  "track": "final",
+  "topic": "graph-special",
+  "difficulty": "Khó",
+  "exam_tags": [
+    "HUSTack 2025.2 (P.05.12.01)",
+    "HUSTack: Chưa làm"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho mạng luồng có hướng `G = (V, E)` gồm `N` đỉnh (`1..N`), `M` cung, đỉnh nguồn `s` và đỉnh đích `t`. Mỗi cung có hướng `(u, v)` có khả năng thông qua `c(u, v)`. Hãy tìm giá trị **luồng cực đại (Max Flow)** từ `s` đến `t`.",
+  "input_spec": "- Dòng 1: `N, M` (`1 <= N <= 10^4`, `1 <= M <= 10^6`).\n- Dòng 2: `s, t`.\n- `M` dòng tiếp theo: `u, v, c(u, v)`.",
+  "output_spec": "Giá trị luồng cực đại tìm được.",
+  "samples": [
+    {
+      "input": "7 12\n6 7\n1 7 7\n2 3 6\n2 5 6\n3 1 6\n3 7 11\n4 1 7\n4 2 4\n4 5 5\n5 1 4\n5 3 4\n6 2 8\n6 4 10",
+      "output": "17"
+    }
+  ],
+  "theory_chapter": "chap6",
+  "mindset": "Với `N <= 10^4, M <= 10^6`, Edmonds-Karp `O(N * M^2)` dễ TLE trên mạng lớn. Giải pháp chuẩn là **Thuật toán Dinic**:\n1. Dùng BFS dựng **đồ thị phân tầng (Level Graph)** từ `s` đến `t`.\n2. Dùng DFS (kết hợp **con trỏ hiện tại `ptr[u]`** để không đi lại các cung chết) đẩy luồng đồng thời trên toàn bộ đường tăng ngắn nhất.\n3. Lưu mỗi cung thuận `u -> v` (dung lượng `c`) đi kèm cung nghịch `v -> u` (dung lượng `0`).",
+  "hints": [
+    "Nhớ lưu trữ `long long` cho luồng và tổng luồng để tránh tràn `int`.",
+    "Cập nhật `ptr[u]` ngay trong vòng `for (int& cid = ptr[u]; ...)` — đây là tối ưu bắt buộc để Dinic đạt độ phức tạp `O(V^2 E)` / `O(E sqrt(V))`.",
+    "Kiểm tra điều kiện dừng DFS: `if (pushed == 0) return 0;` và đi qua cung nghịch `edges[id ^ 1].flow -= tr`."
+  ],
+  "complexity": "Dinic Algorithm (rất nhanh trên đồ thị tới 10^4 đỉnh)",
+  "test_count": 10
+}
