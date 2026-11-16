@@ -1,0 +1,31 @@
+{
+  "title": "[HUSTack] Thu gom hàng tại các trạm kho (Warehouse)",
+  "track": "final",
+  "topic": "dp-grid-3d",
+  "difficulty": "Khó",
+  "exam_tags": [
+    "HUSTack Programming Advanced (WAREHOUSE)",
+    "TTUD Lab 4"
+  ],
+  "time_limit_ms": 1000,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Một xe tải đi qua một số trạm trong `N` trạm `1, 2, ..., N` nằm trên đường thẳng (trạm `i` ở tọa độ `i`). Mỗi trạm `i` có:\n- `a_i`: lượng hàng hóa.\n- `t_i`: thời gian bốc hàng tại trạm `i`.\n\nLộ trình của xe là một dãy các trạm tăng dần `x_1 < x_2 < ... < x_k` sao cho khoảng cách giữa hai trạm liên tiếp `x_{j+1} - x_j <= D` và tổng thời gian bốc hàng không vượt quá `T`. Hãy tìm tổng lượng hàng hóa lớn nhất xe có thể thu gom.",
+  "input_spec": "- Dòng 1: `N, T, D` (`1 <= N <= 1000`, `1 <= T <= 100`, `1 <= D <= 10`)\n- Dòng 2: `a_1, ..., a_N` (`1 <= a_i <= 10`)\n- Dòng 3: `t_1, ..., t_N` (`1 <= t_i <= 10`).",
+  "output_spec": "Tổng lượng hàng lớn nhất có thể thu gom.",
+  "samples": [
+    {
+      "input": "6 6 2\n6 8 5 10 11 6\n1 2 2 3 3 2",
+      "output": "24"
+    }
+  ],
+  "theory_chapter": "chap4b",
+  "mindset": "Gọi `dp[i][t]` là tổng lượng hàng lớn nhất thu được khi **kết thúc tại trạm `i`** và đã tiêu tốn đúng `t` đơn vị thời gian (`t <= T`).\n- Cơ sở: có thể bắt đầu trực tiếp từ trạm `i` (nếu `t_i <= T`): `dp[i][t_i] = a_i`.\n- Chuyển trạng thái: để đi tới `i` với thời gian `t >= t_i`, trạm trước đó `j` phải thỏa `max(1, i - D) <= j < i`, khi đó `dp[i][t] = max(dp[i][t], dp[j][t - t_i] + a_i)`.\n- Đáp án: `max(dp[i][t])` với mọi `1 <= i <= N, 0 <= t <= T`.",
+  "hints": [
+    "Chú ý trạm đầu tiên của hành trình có thể là BẤT KỲ trạm `i` nào (không nhất thiết là trạm 1), và trạm cuối cũng là bất kỳ trạm nào."
+  ],
+  "complexity": "O(N * T * D)",
+  "id": "hs-warehouse",
+  "test_count": 10
+}

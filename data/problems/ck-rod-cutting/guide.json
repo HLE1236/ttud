@@ -1,0 +1,7 @@
+{
+  "pattern": "dp-knapsack",
+  "recognize": "Cắt thanh dài `n <= 1000` thành các đoạn `1..n` với giá bán `p[i]` để tổng tiền lớn nhất.\n- Thực chất y hệt Unbounded Knapsack với sức chứa `n`, mỗi đoạn `cut` giá trị `p[cut]`.",
+  "idea": "Đặt `dp[len]` = doanh thu lớn nhất của thanh dài `len` (`dp[0] = 0`).\nVới mỗi độ dài `len = 1..n`, thử nhát cắt đầu tiên dài `cut = 1..len`: `dp[len] = max(dp[len], p[cut] + dp[len - cut])`.\nĐộ phức tạp `O(n^2)` chạy rất nhanh với `n <= 1000`.",
+  "pseudocode": "dp[0] = 0\ncho len từ 1 đến n:\n    cho cut từ 1 đến len:\n        dp[len] = max(dp[len], p[cut] + dp[len - cut])\nin dp[n]",
+  "skeleton_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int n;\n    if (!(cin >> n)) return 0;\n    vector<long long> p(n + 1);\n    for (int i = 1; i <= n; i++) cin >> p[i];\n\n    vector<long long> dp(n + 1, 0);\n    // TODO: Vòng lặp len = 1..n và cut = 1..len cập nhật dp[len]\n\n    cout << dp[n] << '\\n';\n    return 0;\n}\n"
+}

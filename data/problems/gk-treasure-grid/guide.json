@@ -1,0 +1,7 @@
+{
+  "pattern": "dp-grid",
+  "recognize": "Bảng `n x m` (`<= 1000`), đi từ `(1,1)` tới `(n,m)` chỉ đi xuống, sang phải, hoặc chéo xuống phải; ô `0` là vật cản; tìm **chi phí nhỏ nhất**.\n- Chỉ đi tiến nên không có chu trình → **QHĐ trên lưới 2D** (nhớ dùng `INF` lớn thay cho `-1` vì tổng có thể âm).",
+  "idea": "Đặt `dp[i][j]` = chi phí nhỏ nhất để đi tới ô `(i, j)` (`dp[][] = INF`, `dp[1][1] = a[1][1]` nếu `a[1][1] != 0`).\nNếu `a[i][j] != 0`, lấy `prev = min({dp[i-1][j], dp[i][j-1], dp[i-1][j-1]})`; nếu `prev < INF / 2` thì `dp[i][j] = prev + a[i][j]`.",
+  "pseudocode": "dp[1..n][1..m] = +INF\nnếu a[1][1] != 0: dp[1][1] = a[1][1]\ncho i từ 1 đến n, j từ 1 đến m:\n    nếu (i,j) == (1,1) hoặc a[i][j] == 0: tiếp\n    prev = min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1])\n    nếu prev < INF / 2: dp[i][j] = prev + a[i][j]\nin -1 nếu dp[n][m] >= INF / 2, ngược lại in dp[n][m]",
+  "skeleton_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nstatic const long long INF = (long long)4e18;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int n, m;\n    if (!(cin >> n >> m)) return 0;\n    vector<vector<long long>> a(n + 1, vector<long long>(m + 1));\n    for (int i = 1; i <= n; i++)\n        for (int j = 1; j <= m; j++)\n            cin >> a[i][j];\n\n    vector<vector<long long>> dp(n + 1, vector<long long>(m + 1, INF));\n    // TODO: Khởi tạo dp[1][1] (nếu a[1][1] != 0) và điền bảng dp[i][j]\n\n    if (dp[n][m] >= INF / 2) cout << -1 << '\\n';\n    else cout << dp[n][m] << '\\n';\n    return 0;\n}\n"
+}

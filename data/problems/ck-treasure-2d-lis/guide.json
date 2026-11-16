@@ -1,0 +1,7 @@
+{
+  "pattern": "dp-subseq",
+  "recognize": "Chọn dãy kho báu `(x_i, y_i)` sao cho cả `x` và `y` đều **không giảm**, tổng vàng `c_i` lớn nhất (`n <= 1000`).\n- `n <= 1000` + *dãy con tăng 2 chiều* → **Sắp xếp theo `(x, y)` rồi chạy LIS `O(n^2)`**.",
+  "idea": "Bước 1: Sort các điểm tăng dần theo `x`, nếu `x` bằng nhau thì tăng dần theo `y`.\nSau khi sort, mọi điểm `j < i` đều đã có `x[j] <= x[i]` rồi!\nBước 2: Đặt `dp[i]` = tổng vàng lớn nhất kết thúc ở kho báu `i`: `dp[i] = c[i] + max_{j < i, y[j] <= y[i]} dp[j]` (hoặc `c[i]` nếu không nối sau ai).",
+  "pseudocode": "sắp xếp các điểm tăng dần theo (x, y)\ncho i từ 0 đến n - 1:\n    dp[i] = p[i].c\n    cho j từ 0 đến i - 1:\n        nếu p[j].y <= p[i].y:\n            dp[i] = max(dp[i], dp[j] + p[i].c)\n    ans = max(ans, dp[i])\nin ans",
+  "skeleton_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nstruct Point {\n    long long x, y, c;\n    bool operator<(const Point& o) const {\n        return x != o.x ? x < o.x : y < o.y;\n    }\n};\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int n;\n    if (!(cin >> n)) return 0;\n    vector<Point> p(n);\n    for (int i = 0; i < n; i++) cin >> p[i].x >> p[i].y >> p[i].c;\n\n    sort(p.begin(), p.end());\n    vector<long long> dp(n, 0);\n    long long ans = 0;\n\n    // TODO: Chạy LIS O(n^2) theo điều kiện p[j].y <= p[i].y để tính dp[i] và cập nhật ans\n\n    cout << ans << '\\n';\n    return 0;\n}\n"
+}

@@ -1,0 +1,527 @@
+{
+  "chapter": "chap3",
+  "intro": "Chương này giải quyết nhóm bài toán mà **kích thước `n` nhỏ (`n <= 20`)**: liệt kê tất cả cấu hình (xâu nhị phân, tập con, hoán vị), đếm số cách thỏa điều kiện, hoặc tìm phương án tối ưu khi phải thử nhiều lựa chọn (chia nhóm, phân công việc, người du lịch TSP, xe buýt CBUS).\n\nTin vui là mọi bài quay lui đều dùng **chung một bộ khung `Try(k)`**. Khi nắm chắc bộ khung này và biết thêm 2 mẹo cắt nhánh (Nhánh và Cận), bạn có thể ăn trọn 1–2 câu giữa kỳ và cuối kỳ.",
+  "learning_path": {
+    "guided": [
+      "hs-binary-seq-gen",
+      "gk-subset-sum-ab",
+      "gk-k-comb-sum-m"
+    ],
+    "practice": [
+      "hs-binary-no-11",
+      "hs-binary-contains-111",
+      "gk-partition-2-groups",
+      "hs-binary-no-substr",
+      "hs-tsp",
+      "hs-cbus",
+      "hs-material-cut",
+      "hs-count-spanning-trees-k",
+      "hs-bacp",
+      "hs-cvrp",
+      "hs-permutation-gen",
+      "hs-sum-int-partition",
+      "hs-sudoku-count",
+      "hs-knight-move-score",
+      "hs-bca-credit-lb"
+    ],
+    "exam": [
+      "gk-insert-plus-minus",
+      "gk-partition-3-groups",
+      "gk-bca-credit",
+      "gk-task-assignment",
+      "gk-cbus-stops",
+      "ck-matrix-max-reward",
+      "gk-jump-game"
+    ]
+  },
+  "patterns": [
+    {
+      "id": "binary-subset",
+      "name": "Dạng 1: Sinh dãy nhị phân & Tập con (O(2^n))",
+      "when": [
+        "Đọc đề thấy **`n <= 20`** (hoặc `n <= 16`).",
+        "Mỗi phần tử chỉ có **2 trạng thái**: `0` hoặc `1`, **chọn** hoặc **không chọn**, dấu `+` hoặc `-`.",
+        "Đề yêu cầu: *liệt kê tất cả xâu nhị phân*, *đếm số tập con có tổng thuộc `[A, B]`*, *điền dấu `+`/`-` để được tổng `b`*."
+      ],
+      "idea": "Tại vị trí `i` (từ `0` đến `n - 1`), ta thử lần lượt **2 nhánh**:\n- Nhánh 1: không chọn phần tử `i` (hoặc đặt `'0'`).\n- Nhánh 2: chọn phần tử `i` (hoặc đặt `'1'`), đồng thời cập nhật tổng/trạng thái hiện tại.\n\nKhi đi hết `i == n`, ta kiểm tra điều kiện đề bài và in ra hoặc cộng biến đếm `ans`. Nếu có cận trên (ví dụ tổng các số dương đã vượt `B`), ta **dừng nhánh đó ngay** mà không cần đi tiếp.",
+      "steps": [
+        "Bước 1: Đọc `n` và mảng `a[0..n-1]` (hoặc các tham số `A, B`).",
+        "Bước 2: Viết hàm `void Try(int i, int sum)` với `i` là chỉ số đang xét, `sum` là tổng các phần tử đã chọn.",
+        "Bước 3: Viết điều kiện dừng ở đầu hàm: `if (i == n) { if (sum >= A && sum <= B) ans++; return; }`.",
+        "Bước 4: Gọi đệ quy 2 nhánh: nhánh bỏ qua `Try(i + 1, sum)` và nhánh chọn `if (sum + a[i] <= B) Try(i + 1, sum + a[i]);`.",
+        "Bước 5: Trong `main()`, gọi `Try(0, 0)` rồi in `ans`."
+      ],
+      "template_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint n, A, B;\nint a[25];\nlong long ans = 0;\n\n// Try(i, sum): dang xet phan tu thu i, tong hien tai la sum\nvoid Try(int i, int sum) {\n    // Cat tia som: vi a[i] > 0, neu sum da vuot B thi khong bao gio dat <= B nua\n    if (sum > B) return;\n\n    // Dieu kien dung: da quyet dinh xong ca n phan tu (0 .. n-1)\n    if (i == n) {\n        if (sum >= A) ans++; // Thoa man A <= sum <= B thi tang dap an\n        return;\n    }\n\n    // Nhanh 1: KHONG chon a[i]\n    Try(i + 1, sum);\n\n    // Nhanh 2: CHON a[i] (chi goi neu khong vuot B)\n    if (sum + a[i] <= B) {\n        Try(i + 1, sum + a[i]);\n    }\n}\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    cin >> n >> A >> B;              // Doc n va khoang [A, B]\n    for (int i = 0; i < n; i++) {\n        cin >> a[i];                  // Doc mang gia tri duong\n    }\n    Try(0, 0);                        // Bat dau xet tu phan tu 0 voi tong = 0\n    cout << ans << '\\n';\n    return 0;\n}",
+      "trace": {
+        "title": "Chạy tay đếm tập con có tổng thuộc [5, 10]",
+        "input": "n = 3, A = 5, B = 10, a = [4, 6, 3]",
+        "headers": [
+          "Bước",
+          "Gọi hàm",
+          "Phần tử a[i]",
+          "Lựa chọn",
+          "sum mới",
+          "Kết quả / Ghi chú"
+        ],
+        "rows": [
+          [
+            "1",
+            "Try(0, 0)",
+            "a[0] = 4",
+            "Không chọn",
+            "0",
+            "Đi tiếp Try(1, 0)"
+          ],
+          [
+            "2",
+            "Try(1, 0)",
+            "a[1] = 6",
+            "Không chọn",
+            "0",
+            "Đi tiếp Try(2, 0)"
+          ],
+          [
+            "3",
+            "Try(2, 0)",
+            "a[2] = 3",
+            "Không chọn / Chọn",
+            "0 / 3",
+            "Đều < 5 -> không tăng ans"
+          ],
+          [
+            "4",
+            "Try(1, 0)",
+            "a[1] = 6",
+            "Chọn",
+            "6",
+            "Đi tiếp Try(2, 6)"
+          ],
+          [
+            "5",
+            "Try(2, 6)",
+            "a[2] = 3",
+            "Không chọn",
+            "6",
+            "i==3, 5<=6<=10 -> ans=1 ({6})"
+          ],
+          [
+            "6",
+            "Try(2, 6)",
+            "a[2] = 3",
+            "Chọn",
+            "9",
+            "i==3, 5<=9<=10 -> ans=2 ({6,3})"
+          ],
+          [
+            "7",
+            "Try(0, 0)",
+            "a[0] = 4",
+            "Chọn",
+            "4",
+            "Đi tiếp Try(1, 4)"
+          ],
+          [
+            "8",
+            "Try(1, 4)",
+            "a[1] = 6",
+            "Không chọn",
+            "4",
+            "Sang Try(2,4): chọn 3 -> sum=7 -> ans=3 ({4,3})"
+          ],
+          [
+            "9",
+            "Try(1, 4)",
+            "a[1] = 6",
+            "Chọn",
+            "10",
+            "Sang Try(2,10): chỉ bỏ 3 -> sum=10 -> ans=4 ({4,6})"
+          ]
+        ],
+        "note": "Nhánh `sum=10` khi xét `a[2]=3` thấy `10 + 3 > 10` nên **cắt luôn nhánh chọn**, không gọi đệ quy thừa."
+      },
+      "pitfalls": [
+        "Quên điều kiện `sum > B` khiến chạy đủ `2^n` không cần thiết (với `a[i]` có thể âm thì KHÔNG được cắt nhánh `sum > B`!).",
+        "Nhầm thứ tự nhánh: khi đề yêu cầu in theo **thứ tự từ điển**, luôn thử `'0'` trước rồi mới thử `'1'`.",
+        "Chú ý bài `gk-insert-plus-minus`: `n` có thể lên tới `30`, lúc đó `2^30` quá lớn nên cần chuyển sang DP theo tổng (hoặc chia đôi tập)."
+      ],
+      "problems": [
+        "hs-binary-seq-gen",
+        "hs-binary-no-11",
+        "hs-binary-contains-111",
+        "hs-binary-no-substr",
+        "gk-subset-sum-ab",
+        "gk-insert-plus-minus"
+      ]
+    },
+    {
+      "id": "comb-constraint",
+      "name": "Dạng 2: Tổ hợp & Quay lui có ràng buộc (Try(k))",
+      "when": [
+        "Đề yêu cầu chọn **đúng `k` phần tử** từ `n` phần tử (tổ hợp), hoặc xếp vị trí thỏa điều kiện không xung đột.",
+        "Các từ khoá: *chọn k phần tử*, *đặt quân hậu*, *cắt/xếp hình chữ nhật*, *xếp lịch không trùng tiết*, *đếm cây khung*."
+      ],
+      "idea": "Dùng bộ khung 5 bước chuẩn của quay lui `Try(k)`:\n1. Kiểm tra nếu đã đủ cấu hình (`k` đạt đích) -> cập nhật kết quả.\n2. Duyệt từng ứng viên `v` hợp lệ ở bước `k`.\n3. Kiểm tra `check(v, k)` xem `v` có vi phạm ràng buộc với các bước trước không.\n4. Ghi nhận `v` vào trạng thái (đánh dấu `used`/`occ`).\n5. Gọi `Try(k + 1)`, sau đó **hoàn tác (backtrack)** trạng thái để thử ứng viên tiếp theo.",
+      "steps": [
+        "Bước 1: Xác định xem bài cần **duyệt chỉ số tăng dần** (tổ hợp, dùng `start` hoặc `idx`) hay **thử mọi giá trị** (có mảng `used[]`).",
+        "Bước 2: Nếu là tổ hợp `k` phần tử, viết `Try(idx, cnt, sum)` và cắt nhánh ngay khi `cnt + (n - idx) < k` (số còn lại không đủ bù cho đủ `k`).",
+        "Bước 3: Nếu có ma trận/lưới đánh dấu (`grid`, `occ`), viết hai hàm phụ `can_place(...)` và `set_place(..., true/false)` cho code sạch, dễ debug.",
+        "Bước 4: Luôn nhớ **khôi phục lại trạng thái** ngay sau lời gọi `Try(k + 1)`."
+      ],
+      "template_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint n, k, m;\nint a[25];\nlong long ans = 0;\n\n// Try(idx, cnt, sum): dang xet tu vi tri idx, da chon cnt so, tong la sum\nvoid Try(int idx, int cnt, int sum) {\n    // Da chon du k phan tu -> kiem tra tong co dung bang m khong\n    if (cnt == k) {\n        if (sum == m) ans++;\n        return;\n    }\n    // Cat tia 1: het mang hoac so phan tu con lai (n - idx) khong du de chon them\n    if (idx == n || cnt + (n - idx) < k) return;\n\n    // Lua chon 1: BO QUA a[idx]\n    Try(idx + 1, cnt, sum);\n\n    // Lua chon 2: CHON a[idx] (cat tia 2: chi chon khi sum + a[idx] <= m)\n    if (sum + a[idx] <= m) {\n        Try(idx + 1, cnt + 1, sum + a[idx]);\n    }\n}\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    cin >> n >> k >> m;             // Doc n phan tu, chon k so tong bang m\n    for (int i = 0; i < n; i++) cin >> a[i];\n\n    Try(0, 0, 0);                    // Bat dau tu idx=0, da chon 0 so, tong=0\n    cout << ans << '\\n';\n    return 0;\n}",
+      "trace": {
+        "title": "Chạy tay đếm tổ hợp k = 3 số có tổng m = 10",
+        "input": "n = 5, k = 3, m = 10, a = [1, 2, 3, 4, 5]",
+        "headers": [
+          "Bước",
+          "Hàm đang gọi",
+          "cnt",
+          "sum",
+          "Còn lại",
+          "Quyết định"
+        ],
+        "rows": [
+          [
+            "1",
+            "Try(0,0,0)",
+            "0",
+            "0",
+            "5 số",
+            "Thử bỏ 1 -> Try(1,0,0) rồi chọn 1 -> Try(1,1,1)"
+          ],
+          [
+            "2",
+            "Try(1,1,1)",
+            "1",
+            "1",
+            "4 số",
+            "Thử chọn 2 -> Try(2,2,3)"
+          ],
+          [
+            "3",
+            "Try(2,2,3)",
+            "2",
+            "3",
+            "3 số",
+            "Thử chọn 3/4/5 -> tổng 6, 7, 8 (<10)"
+          ],
+          [
+            "4",
+            "Try(2,1,1)",
+            "1",
+            "1",
+            "3 số",
+            "Bỏ 2,3; chọn 4,5 -> sum=1+4+5=10 -> ans=1"
+          ],
+          [
+            "5",
+            "Try(1,0,0)",
+            "0",
+            "0",
+            "4 số",
+            "Bỏ 1, chọn 2 -> Try(2,1,2)"
+          ],
+          [
+            "6",
+            "Try(2,1,2)",
+            "1",
+            "2",
+            "3 số",
+            "Chọn 3 -> Try(3,2,5) -> chọn 5 -> sum=10 -> ans=2"
+          ],
+          [
+            "7",
+            "Try(3,0,0)",
+            "0",
+            "0",
+            "2 số",
+            "cnt + (5 - 3) = 2 < 3 -> CẮT NHÁNH ngay"
+          ]
+        ],
+        "note": "Nhờ kiểm tra `cnt + (n - idx) < k`, ta không bao giờ đi vào các nhánh không thể đủ `k` phần tử."
+      },
+      "pitfalls": [
+        "Quên hoàn tác mảng đánh dấu (`vis[v] = false` hoặc `occ[t] = 0`) sau khi đệ quy trả về.",
+        "Thay đổi biến toàn cục mà không trả về giá trị cũ làm hỏng tất cả các nhánh anh em phía sau.",
+        "Lưu ý bài `hs-queen-large-multi`: khi `n` lên tới `10000`, quay lui sẽ TLE nên đề dùng thuật toán tìm kiếm cục bộ Min-Conflicts."
+      ],
+      "problems": [
+        "gk-k-comb-sum-m",
+        "hs-material-cut",
+        "hs-timetable-ict-count",
+        "hs-count-spanning-trees-k",
+        "hs-queen-large-multi",
+        "hs-permutation-gen",
+        "hs-sum-int-partition",
+        "hs-sudoku-count"
+      ]
+    },
+    {
+      "id": "group-partition",
+      "name": "Dạng 3: Phân hoạch nhóm & Chia tải cân bằng (Phá đối xứng)",
+      "when": [
+        "Chia `n <= 20` phần tử vào `2` hoặc `3` nhóm sao cho `max - min` nhỏ nhất.",
+        "Phân công `n` môn học / công việc cho `m` giảng viên / nhân viên / phòng học để **tải lớn nhất là nhỏ nhất** (Min-Max Load).",
+        "Có kèm ràng buộc: cặp môn xung đột (BCA), môn tiên quyết (BACP), giới hạn số việc tối đa `D`."
+      ],
+      "idea": "Mỗi bước `k` chọn nhóm `g` (hoặc giảng viên `v`) cho phần tử thứ `k`.\nĐể tránh chạy `3^20` hoặc `m^n` bị TLE, ta dùng **3 kỹ thuật tăng tốc cực mạnh**:\n1. **Sắp xếp phần tử giảm dần** theo trọng số trước khi quay lui để nhánh cận sớm đạt kỷ lục `best` nhỏ.\n2. **Cắt nhánh ngay lập tức**: nếu `load[g] + w[k] >= best` (đã tệ hơn hoặc bằng kỷ lục) thì bỏ qua.\n3. **Phá đối xứng (Symmetry Breaking)**: khi các nhóm giống hệt nhau (bài chia 2, 3 nhóm), nếu nhóm `g` đang rỗng (`cnt[g] == 0`), sau khi thử đặt vào nhóm `g` rồi thì **`break`**, không thử đặt vào các nhóm rỗng phía sau nữa!",
+      "steps": [
+        "Bước 1: Đọc dữ liệu và lưu các ràng buộc (ma trận `conflict[u][v]`, danh sách giảng viên dạy được `D[k]`).",
+        "Bước 2: Sắp xếp đối tượng theo trọng số giảm dần (hoặc tạo mảng `best` khởi tạo bằng `1e9`).",
+        "Bước 3: Viết hàm `check(v, k)` kiểm tra xung đột với các phần tử `1..k-1` đã gán cho `v`.",
+        "Bước 4: Trong `Try(k)`, thử gán `k` cho từng `v`; nếu `load[v] + w[k] >= best` thì bỏ qua luôn.",
+        "Bước 5: Cập nhật `load[v] += w[k]`, gọi `Try(k + 1)` (hoặc cập nhật `best` khi `k == n`), rồi `load[v] -= w[k]`."
+      ],
+      "template_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint m, n;\nvector<int> can_teach[35]; // Danh sach giang vien day duoc mon k\nint crd[35], load_gv[15], x[35];\nbool conflict[35][35];\nint best = 1e9;\n\n// Kiem tra giao mon k cho giang vien v co trung voi mon i < k nao khong\nbool check(int v, int k) {\n    for (int i = 1; i < k; i++) {\n        if (conflict[i][k] && x[i] == v) return false;\n    }\n    return true;\n}\n\n// Try(k): dang phan cong mon thu k (1..n)\nvoid Try(int k) {\n    for (int v : can_teach[k]) {\n        if (!check(v, k)) continue;         // Vi pham xung dot -> bo qua\n        if (load_gv[v] + crd[k] >= best) continue; // Nhanh can: vuot ky luc thi cat!\n\n        x[k] = v;\n        load_gv[v] += crd[k];               // Ghi nhan tai cua giang vien v\n\n        if (k == n) {\n            int mx = 0;\n            for (int i = 1; i <= m; i++) mx = max(mx, load_gv[i]);\n            best = min(best, mx);           // Cap nhat ky luc moi\n        } else {\n            Try(k + 1);                     // Phan cong mon tiep theo\n        }\n\n        load_gv[v] -= crd[k];               // Hoan tac tai de thu giang vien khac\n    }\n}\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    cin >> m >> n;\n    for (int i = 1; i <= m; i++) {\n        int k; cin >> k;\n        while (k--) { int c; cin >> c; can_teach[c].push_back(i); }\n    }\n    for (int i = 1; i <= n; i++) cin >> crd[i];\n    int K; cin >> K;\n    while (K--) { int u, v; cin >> u >> v; conflict[u][v] = conflict[v][u] = true; }\n\n    Try(1);\n    cout << (best == 1e9 ? -1 : best) << '\\n';\n    return 0;\n}",
+      "trace": {
+        "title": "Chạy tay phá đối xứng khi chia 3 nhóm",
+        "input": "n = 4, a = [5, 4, 3, 2] (đã sort giảm dần)",
+        "headers": [
+          "Bước",
+          "Đặt số",
+          "Nhóm 0",
+          "Nhóm 1",
+          "Nhóm 2",
+          "Hành động cắt tỉa"
+        ],
+        "rows": [
+          [
+            "1",
+            "a[0] = 5",
+            "[5]",
+            "[]",
+            "[]",
+            "Nhóm 0 rỗng -> đặt 5 vào nhóm 0 rồi BREAK (không thử nhóm 1, 2)"
+          ],
+          [
+            "2",
+            "a[1] = 4",
+            "[5,4]",
+            "[]",
+            "[]",
+            "Thử đặt 4 vào nhóm 0 (tổng 9)"
+          ],
+          [
+            "3",
+            "a[1] = 4",
+            "[5]",
+            "[4]",
+            "[]",
+            "Nhóm 1 rỗng -> đặt 4 vào nhóm 1 rồi BREAK (không thử nhóm 2)"
+          ],
+          [
+            "4",
+            "a[2] = 3",
+            "[5]",
+            "[4]",
+            "[3]",
+            "Đặt 3 vào nhóm 2 (nhóm rỗng duy nhất còn lại)"
+          ],
+          [
+            "5",
+            "a[3] = 2",
+            "[5]",
+            "[4]",
+            "[3,2]",
+            "Đặt 2 vào nhóm 2 -> tổng [5, 4, 5] -> max-min = 1!"
+          ],
+          [
+            "6",
+            "Quay lui",
+            "-",
+            "-",
+            "-",
+            "Mọi nhánh có max >= min + còn_lại + best đều bị cắt"
+          ]
+        ],
+        "note": "Nhờ phá đối xứng ở nhóm rỗng, số cấu hình giảm ít nhất `3! = 6` lần ngay ở những tầng đầu tiên."
+      },
+      "pitfalls": [
+        "Quên `if (best == 1e9)` in `-1` khi không có lời giải hợp lệ.",
+        "Khi chia thành `k` nhóm khác rỗng (như `gk-partition-3-groups`), quên kiểm tra còn đủ phần tử để lấp các nhóm đang rỗng hay không (`n - idx < empty_groups`).",
+        "Lưu ý bài `hs-balanced-set-partition`: `n <= 10000` nên không quay lui được mà dùng Tham lam LPT (đưa vào thùng nhỏ nhất bằng `priority_queue`)."
+      ],
+      "problems": [
+        "gk-partition-2-groups",
+        "gk-partition-3-groups",
+        "gk-task-assignment",
+        "gk-bca-credit",
+        "hs-bacp",
+        "hs-timetable-min-max-load",
+        "hs-balanced-set-partition",
+        "hs-bca-credit-lb"
+      ]
+    },
+    {
+      "id": "bnb-routing",
+      "name": "Dạng 4: Nhánh và Cận trên hành trình & lưới (TSP, CBUS, CVRP)",
+      "when": [
+        "Tìm **hành trình ngắn nhất** đi qua mọi thành phố đúng 1 lần rồi quay về điểm xuất phát (`n <= 20`).",
+        "Xe buýt **đón khách `i` rồi mới được trả tại `i + n`**, sức chứa tối đa `k` (`n <= 11`).",
+        "Robot đi **4 hướng** trên lưới nhỏ (`M, N <= 15`) tìm tổng thưởng lớn nhất không lặp ô."
+      ],
+      "idea": "Đây là quay lui hoán vị (mỗi bước chọn đỉnh kế tiếp `v` chưa thăm), nhưng bắt buộc có **hàm cận (Bound)** để không bị TLE:\n- Tìm `cmin` = cạnh nhỏ nhất trong toàn ma trận (hoặc tổng `min_out[v]` của các đỉnh chưa đi).\n- Tại bước `k` với chi phí hiện tại `f`, vẫn còn `(so_dinh_con_lai)` bước nữa mới về đích `0`.\n- Cận dưới chắc chắn là `f + so_buoc_con_lai * cmin`. Nếu giá trị này **`>= f_best`**, cắt nhánh ngay lập tức!",
+      "steps": [
+        "Bước 1: Đọc ma trận chi phí `c[][]` và đồng thời tìm `cmin` (cạnh dương nhỏ nhất với `i != j`).",
+        "Bước 2: Đặt đỉnh xuất phát `x[0] = 0` (hoặc `1`), đánh dấu `vis[0] = true`, `f = 0`, `f_best = 1e9`.",
+        "Bước 3: Trong `Try(k)`, duyệt các đỉnh `v` chưa thăm (`!vis[v]`) thỏa điều kiện bài toán (với CBUS: đón `v <= n` cần `load < cap`; trả `v > n` cần đã đón `vis[v - n]`).",
+        "Bước 4: Nếu là bước cuối cùng, cập nhật `f_best = min(f_best, f + c[x[k-1]][v] + c[v][0])`.",
+        "Bước 5: Ngược lại, kiểm tra `if (f + c[x[k-1]][v] + (con_lai) * cmin < f_best)` thì mới cập nhật trạng thái, gọi `Try(k + 1)`, rồi hoàn tác."
+      ],
+      "template_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint n, cap, cmin = 1e9;\nint c[30][30], x[30];\nbool vis[30];\nint load = 0, f = 0, f_best = 1e9;\n\n// Kiem tra co the di toi diem v o buoc hien tai hay khong\nbool check(int v) {\n    if (vis[v]) return false;             // Da di qua roi\n    if (v <= n) return load < cap;        // Diem don khach: xe phai con cho\n    return vis[v - n];                    // Diem tra khach: phai da don khach (v - n)\n}\n\n// Try(k): chon diem thu k trong lo trinh (k = 1 .. 2*n)\nvoid Try(int k) {\n    for (int v = 1; v <= 2 * n; v++) {\n        if (!check(v)) continue;\n\n        int step_cost = c[x[k - 1]][v];   // Chi phi di tu diem truoc toi v\n        x[k] = v;\n        vis[v] = true;\n        f += step_cost;\n        load += (v <= n ? 1 : -1);        // Don khach tang tai, tra khach giam tai\n\n        if (k == 2 * n) {\n            f_best = min(f_best, f + c[v][0]); // Du 2n diem -> cong them quang duong ve 0\n        } else {\n            // Can duoi: con (2*n + 1 - k) doan nua moi ve toi 0\n            int lower_bound = f + (2 * n + 1 - k) * cmin;\n            if (lower_bound < f_best) {\n                Try(k + 1);               // Chi di tiep neu van co hy vong tot hon ky luc\n            }\n        }\n\n        // Hoan tac tat ca bien trang thai\n        load -= (v <= n ? 1 : -1);\n        f -= step_cost;\n        vis[v] = false;\n    }\n}\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    cin >> n >> cap;\n    for (int i = 0; i <= 2 * n; i++) {\n        for (int j = 0; j <= 2 * n; j++) {\n            cin >> c[i][j];\n            if (i != j) cmin = min(cmin, c[i][j]); // Luu canh nho nhat de tinh can duoi\n        }\n    }\n    x[0] = 0;                             // Xuat phat tu ben 0\n    Try(1);\n    cout << f_best << '\\n';\n    return 0;\n}",
+      "trace": {
+        "title": "Chạy tay CBUS cắt nhánh bằng cận dưới",
+        "input": "n = 2, cap = 1, cmin = 2, f_best hiện tại = 14",
+        "headers": [
+          "Bước k",
+          "Lộ trình x[]",
+          "load",
+          "f hiện tại",
+          "Cận dưới f + (5-k)*cmin",
+          "Quyết định"
+        ],
+        "rows": [
+          [
+            "1",
+            "0 -> 1 (đón 1)",
+            "1",
+            "3",
+            "3 + 4*2 = 11 < 14",
+            "Đi tiếp Try(2)"
+          ],
+          [
+            "2",
+            "0 -> 1 -> 2",
+            "-",
+            "-",
+            "-",
+            "Bị chặn vì load=1 == cap (không đón thêm 2)"
+          ],
+          [
+            "2",
+            "0 -> 1 -> 3 (trả 1)",
+            "0",
+            "7",
+            "7 + 3*2 = 13 < 14",
+            "Đi tiếp Try(3)"
+          ],
+          [
+            "3",
+            "0 -> 1 -> 3 -> 2",
+            "1",
+            "11",
+            "11 + 2*2 = 15 >= 14",
+            "CẮT NHÁNH! (không thể < 14)"
+          ],
+          [
+            "1",
+            "0 -> 2 (đón 2)",
+            "1",
+            "2",
+            "2 + 4*2 = 10 < 14",
+            "Thử nhánh khác tốt hơn -> tìm được f_best mới"
+          ]
+        ],
+        "note": "Chú ý công thức số cạnh còn lại: tại bước `k`, đã đi `k` cạnh, tổng cộng có `2n + 1` cạnh nên còn `2n + 1 - k` cạnh nữa."
+      },
+      "pitfalls": [
+        "Đếm sai số cạnh còn lại trong công thức cận dưới (`2n - k` thay vì `2n + 1 - k`, thiếu cạnh quay về `0`).",
+        "Với `n = 20` (bài `hs-tsp`), quay lui + `cmin` có thể chậm nếu các cạnh gần bằng nhau -> dùng `min_out[v]` hoặc Bitmask DP (`O(n^2 2^n)`).",
+        "Với `n = 1000` (`hs-tsp-large`), không thể dùng quay lui mà phải dùng Nearest Neighbor + 2-opt."
+      ],
+      "problems": [
+        "hs-cbus",
+        "gk-cbus-stops",
+        "ck-matrix-max-reward",
+        "hs-tsp",
+        "hs-cvrp",
+        "hs-tsp-large",
+        "hs-knight-move-score"
+      ]
+    },
+    {
+      "id": "related-dnc",
+      "name": "Dạng 5: Chia để trị & Tham lam bổ trợ (trong nhóm bài chương 3)",
+      "when": [
+        "`n` lớn (`10^5 - 10^6`) nên không thể quay lui.",
+        "Đề bài: *tìm cặp điểm gần nhất*, *đếm phần tử chung 2 tập*, *nhảy ít bước nhất tới cuối mảng*."
+      ],
+      "idea": "Dù nằm trong danh sách bài tập chương 3 trên hệ thống, các bài này có `n` lên tới `10^5 - 10^6` nên cần đổi chiến thuật:\n- `hs-max-common-subset`: dùng mảng đánh dấu `bool has[]` (vì giá trị `<= 10^6`) hoặc `sort` + 2 con trỏ.\n- `gk-jump-game`: dùng tham lam theo tầm với (`curEnd`, `farthest`) trong `O(n)`.\n- `hs-closest-pair`: dùng Chia để trị `O(n log n)` chia đôi theo tọa độ `x` và xét dải giữa theo `y`.",
+      "steps": [
+        "Bước 1: Đọc giới hạn `n`: thấy `10^5` trở lên là loại ngay ý định quay lui.",
+        "Bước 2: Chọn cấu trúc phù hợp: mảng đánh dấu (`<= 10^6`), tham lam một lượt duyệt, hoặc chia đôi đoạn `[l, r)`.",
+        "Bước 3: Lưu ý dùng `long long` khi tính bình phương khoảng cách `(dx*dx + dy*dy)` để tránh tràn `int`."
+      ],
+      "template_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\n// Mau minh hoa Tham lam tam voi (Jump Game O(n))\nint minJumps(const vector<int>& p) {\n    int n = (int)p.size();\n    if (n <= 1) return 0;              // Da o dich ngay tu dau\n    int jumps = 0, curEnd = 0, farthest = 0;\n    for (int i = 0; i < n - 1; i++) {\n        farthest = max(farthest, i + p[i]); // Tam voi xa nhat tu [0..i]\n        if (i == curEnd) {                  // Het tam cua buoc nhay hien tai\n            if (farthest <= i) return -1;   // Bi ket, khong tien them duoc\n            jumps++;                        // Bat buoc nhay them 1 buoc\n            curEnd = farthest;              // Mo rong bien moi\n            if (curEnd >= n - 1) break;\n        }\n    }\n    return curEnd >= n - 1 ? jumps : -1;\n}\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    int T; cin >> T;\n    while (T--) {\n        int n; cin >> n;\n        vector<int> p(n);\n        for (int i = 0; i < n; i++) cin >> p[i];\n        cout << minJumps(p) << '\\n';\n    }\n    return 0;\n}",
+      "trace": {
+        "title": "Chạy tay Jump Game với mảng bước nhảy",
+        "input": "p = [2, 3, 1, 1, 4]",
+        "headers": [
+          "i",
+          "p[i]",
+          "i + p[i]",
+          "farthest",
+          "curEnd",
+          "jumps",
+          "Ghi chú"
+        ],
+        "rows": [
+          [
+            "0",
+            "2",
+            "2",
+            "2",
+            "0",
+            "0",
+            "i == curEnd -> nhảy 1 bước, curEnd = 2"
+          ],
+          [
+            "1",
+            "3",
+            "4",
+            "4",
+            "2",
+            "1",
+            "Cập nhật farthest = 4"
+          ],
+          [
+            "2",
+            "1",
+            "3",
+            "4",
+            "2",
+            "1",
+            "i == curEnd -> nhảy bước 2, curEnd = 4 >= n-1 -> DỪNG"
+          ],
+          [
+            "-",
+            "-",
+            "-",
+            "-",
+            "4",
+            "2",
+            "Kết quả: 2 bước (0 -> 1 -> 4)"
+          ],
+          [
+            "*",
+            "*",
+            "*",
+            "*",
+            "*",
+            "*",
+            "Mảng [1, 0, 1]: tại i=1, farthest=1 <= i -> trả -1"
+          ]
+        ],
+        "note": "Mỗi bước nhảy ứng với một lớp BFS, nhưng chỉ cần 2 biến `curEnd` và `farthest` nên chạy `O(n)` và tốn `O(1)` bộ nhớ phụ."
+      },
+      "pitfalls": [
+        "Trong `hs-closest-pair`, tính `dx * dx + dy * dy` bằng `int` sẽ bị tràn số khi `|x| <= 10^6` (bình phương lên `10^12`). Phải dùng `long long`.",
+        "Trong `gk-jump-game`, quên xử lý trường hợp `n == 1` (đáp án là `0` bước nhảy)."
+      ],
+      "problems": [
+        "hs-max-common-subset",
+        "gk-jump-game",
+        "hs-closest-pair"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "pattern": "dp-subseq",
+  "recognize": "Chọn tập đoạn thẳng `[a_i, b_i]` rời nhau (`n <= 10000`) sao cho **tổng độ dài `(b_i - a_i)` lớn nhất**.\n- Có trọng số nên Tham lam sẽ sai! Cần **Sắp xếp theo đầu mút phải + QHĐ + Tìm kiếm nhị phân (`O(n log n)`)**.",
+  "idea": "Sắp xếp các đoạn tăng dần theo đầu mút phải `b_i`.\nĐặt `dp[i]` = tổng độ dài lớn nhất khi chỉ xét `i` đoạn đầu (`1..i`).\nVới đoạn `i` (`[a, b]`):\n- Không chọn đoạn `i`: `dp[i - 1]`.\n- Chọn đoạn `i`: cần cộng `(b - a)` với `dp[j]`, trong đó `j` là số đoạn đứng trước có đầu mút phải `< a` (tìm nhanh bằng `lower_bound` trên mảng `ends`).",
+  "pseudocode": "sắp xếp các đoạn tăng dần theo b_i\nlưu ends[i] = b_i\ndp[0] = 0\ncho i từ 1 đến n:\n    j = số phần tử trong ends[0..i-2] có giá trị < a_i (dùng lower_bound)\n    dp[i] = max(dp[i - 1], (b_i - a_i) + dp[j])\nin dp[n]",
+  "skeleton_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int n;\n    if (!(cin >> n)) return 0;\n    vector<pair<int, int>> seg(n);\n    for (int i = 0; i < n; i++) cin >> seg[i].first >> seg[i].second;\n\n    sort(seg.begin(), seg.end(), [](const auto& A, const auto& B) {\n        return A.second != B.second ? A.second < B.second : A.first < B.first;\n    });\n    vector<int> ends(n);\n    for (int i = 0; i < n; i++) ends[i] = seg[i].second;\n\n    vector<long long> dp(n + 1, 0);\n    // TODO: Với i = 1..n, dùng lower_bound tìm j có ends < seg[i-1].first và cập nhật dp[i]\n\n    cout << dp[n] << '\\n';\n    return 0;\n}\n"
+}

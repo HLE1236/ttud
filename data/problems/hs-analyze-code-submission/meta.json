@@ -1,0 +1,31 @@
+{
+  "title": "[HUSTack] Thống kê bài nộp cuộc thi lập trình (Analyze Code Submission)",
+  "track": "final",
+  "topic": "hash-prefix",
+  "difficulty": "Trung bình",
+  "exam_tags": [
+    "HUSTack Project1 (ANALYZE_CODE_SUBMISSION)",
+    "HUSTack: Đã AC"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Dữ liệu nộp bài của một kỳ thi gồm các dòng `<UserID> <ProblemID> <TimePoint> <Status> <Point>` (`Status` là `ERR` hoặc `OK`, `Point` trong `0..10`), kết thúc bởi `#`.\nĐiểm của mỗi thí sinh trên một bài toán là **điểm lớn nhất** trong các lần nộp bài đó của thí sinh.\n\nXử lý 5 loại truy vấn (kết thúc bởi `#`):\n- `?total_number_submissions`: tổng số lần nộp.\n- `?number_error_submision`: tổng số lần nộp có trạng thái `ERR`.\n- `?number_error_submision_of_user <UserID>`: số lần nộp `ERR` của `<UserID>`.\n- `?total_point_of_user <UserID>`: tổng điểm của `<UserID>` trên tất cả các bài.\n- `?number_submission_period <from_time> <to_time>`: số lần nộp trong khoảng `[from_time, to_time]`.",
+  "input_spec": "Khối nộp bài (tối đa `10^5` dòng), `#`, khối truy vấn (tối đa `10^5` dòng), `#`.",
+  "output_spec": "Mỗi truy vấn in kết quả trên một dòng.",
+  "samples": [
+    {
+      "input": "U001 P01 10:30:20 ERR 0\nU001 P01 10:35:20 OK 10\nU001 P02 10:40:20 ERR 0\nU001 P02 10:55:20 OK 7\nU002 P01 10:40:20 ERR 0\nU001 P01 11:35:20 OK 8\nU002 P02 10:40:20 OK 10\n#\n?total_number_submissions\n?number_error_submision\n?number_error_submision_of_user U002\n?total_point_of_user U001\n?number_submission_period 10:00:00 11:30:45\n#",
+      "output": "7\n3\n1\n17\n6"
+    }
+  ],
+  "theory_chapter": "chap5",
+  "mindset": "Ghi ý tên lệnh trên HUSTack có từ `submision` (1 chữ `s`) — cần đọc đúng theo đề!\n- Dùng `unordered_map<string, int> bestProb[user#prob]` và `userTotal[user]`: mỗi khi `pt > bestProb[key]`, cộng thêm phần chênh lệch `pt - bestProb[key]` vào `userTotal[user]` và cập nhật `bestProb[key] = pt`.\n- Dùng mảng cộng dồn `86401` phần tử theo giây cho `?number_submission_period`.",
+  "hints": [
+    "Để ý chính tả query: `?number_error_submision` và `?number_error_submision_of_user`."
+  ],
+  "complexity": "O(N + Q + 86400)",
+  "id": "hs-analyze-code-submission",
+  "test_count": 10
+}

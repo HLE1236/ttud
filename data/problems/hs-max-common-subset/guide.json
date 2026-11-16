@@ -1,0 +1,7 @@
+{
+  "pattern": "related-dnc",
+  "recognize": "Tìm số phần tử chung của 2 tập `A` (`n <= 10^5`) và `B` (`m <= 10^5`), các giá trị `<= 10^6`.\n- `n, m <= 10^5` nên cần `O(n + m)` hoặc `O(n log n)` → dùng **mảng đánh dấu `vector<bool>`** (hoặc `sort` + 2 con trỏ).",
+  "idea": "Vì giá trị phần tử nhỏ (`1 <= x <= 10^6`), tạo mảng `has[1000001]` đánh dấu các số có mặt trong tập `A`. Sau đó duyệt từng số `y` của tập `B`: nếu `has[y]` đang `true` thì tăng `ans++` và đặt `has[y] = false` để tránh đếm trùng.",
+  "pseudocode": "tạo mảng bool has[1000001] = false\nđọc n số tập A -> gán has[x] = true\nđọc m số tập B:\n    nếu has[y]: ans++; has[y] = false\nin ans",
+  "skeleton_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int n, m;\n    if (!(cin >> n >> m)) return 0;\n    vector<bool> has(1000001, false);\n    for (int i = 0; i < n; i++) {\n        int x; cin >> x;\n        has[x] = true;\n    }\n\n    int ans = 0;\n    for (int i = 0; i < m; i++) {\n        int y; cin >> y;\n        // TODO: Nếu y có trong has thì tăng ans và xóa đánh dấu để không đếm trùng\n    }\n    cout << ans << '\\n';\n    return 0;\n}\n"
+}

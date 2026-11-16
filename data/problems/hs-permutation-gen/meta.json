@@ -1,0 +1,31 @@
+{
+  "title": "[HUSTack] Liệt kê tất cả hoán vị độ dài n (Permutation Generation)",
+  "track": "midterm",
+  "topic": "backtracking",
+  "difficulty": "Cơ bản",
+  "exam_tags": [
+    "HUSTack Project1 (PERMUTATION_GEN)",
+    "HUSTack: Đã AC"
+  ],
+  "time_limit_ms": 1000,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho số nguyên dương `n`. Hãy liệt kê tất cả các hoán vị của `{1, 2, ..., n}` theo **thứ tự từ điển** tăng dần.",
+  "input_spec": "Một số nguyên dương `n` (`1 <= n <= 8`).",
+  "output_spec": "Mỗi hoán vị in trên một dòng, các số cách nhau bởi dấu cách.",
+  "samples": [
+    {
+      "input": "3",
+      "output": "1 2 3\n1 3 2\n2 1 3\n2 3 1\n3 1 2\n3 2 1"
+    }
+  ],
+  "theory_chapter": "chap3",
+  "mindset": "Bài quay lui hoán vị cơ bản nhất: tại vị trí `k` (`0..n-1`), duyệt `v` từ `1` đến `n` (tăng dần để ra đúng thứ tự từ điển). Nếu `!used[v]`, đánh dấu `used[v] = true`, gán `p[k] = v`, gọi `Try(k + 1)`, rồi hoàn tác `used[v] = false`.",
+  "hints": [
+    "Cũng có thể dùng `std::next_permutation(p.begin(), p.end())` bắt đầu từ `1, 2, ..., n`."
+  ],
+  "complexity": "O(n * n!)",
+  "id": "hs-permutation-gen",
+  "test_count": 10
+}

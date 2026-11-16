@@ -1,0 +1,229 @@
+MakeRoot 1
+Insert 2 1
+Insert 3 1
+Insert 4 3
+Insert 5 1
+Insert 6 3
+Insert 7 3
+Insert 8 4
+Insert 9 2
+Insert 10 5
+Insert 11 10
+Insert 12 1
+Insert 13 5
+Insert 14 1
+Insert 15 6
+Insert 16 1
+Insert 17 8
+Insert 18 7
+PreOrder
+Insert 19 1
+InOrder
+Insert 20 3
+Insert 21 8
+Insert 22 5
+Insert 23 17
+PostOrder
+Insert 24 11
+Insert 25 13
+Insert 26 25
+Insert 27 19
+Insert 28 20
+PreOrder
+Insert 29 25
+Insert 30 9
+Insert 31 29
+Insert 32 28
+Insert 33 28
+Insert 34 4
+PostOrder
+Insert 35 24
+PostOrder
+Insert 36 17
+Insert 37 14
+Insert 38 15
+Insert 39 24
+Insert 40 15
+Insert 41 19
+Insert 42 24
+Insert 43 15
+Insert 44 42
+Insert 45 20
+InOrder
+Insert 46 13
+Insert 47 13
+Insert 48 44
+Insert 49 17
+Insert 50 48
+Insert 51 49
+Insert 52 49
+Insert 53 29
+PreOrder
+Insert 54 8
+Insert 55 48
+Insert 56 4
+Insert 57 34
+Insert 58 45
+Insert 59 17
+PreOrder
+Insert 60 16
+Insert 61 59
+Insert 62 53
+Insert 63 4
+Insert 64 52
+Insert 65 32
+Insert 66 60
+Insert 67 11
+Insert 68 57
+Insert 69 43
+Insert 70 28
+Insert 71 26
+Insert 72 26
+Insert 73 40
+Insert 74 32
+Insert 75 3
+PostOrder
+Insert 76 55
+Insert 77 24
+PreOrder
+Insert 78 9
+Insert 79 16
+Insert 80 48
+Insert 81 18
+Insert 82 73
+Insert 83 72
+Insert 84 17
+Insert 85 70
+Insert 86 48
+Insert 87 58
+Insert 88 39
+Insert 89 53
+Insert 90 3
+Insert 91 73
+Insert 92 20
+PostOrder
+Insert 93 34
+Insert 94 71
+PreOrder
+Insert 95 10
+Insert 96 39
+Insert 97 80
+Insert 98 77
+Insert 99 91
+Insert 100 19
+Insert 101 18
+Insert 102 84
+PostOrder
+Insert 103 90
+Insert 104 55
+Insert 105 16
+Insert 106 49
+Insert 107 35
+Insert 108 102
+Insert 109 78
+Insert 110 81
+Insert 111 30
+Insert 112 32
+Insert 113 77
+Insert 114 23
+Insert 115 61
+Insert 116 53
+InOrder
+Insert 117 96
+Insert 118 79
+Insert 119 77
+Insert 120 37
+Insert 121 109
+Insert 122 97
+Insert 123 100
+Insert 124 53
+Insert 125 70
+Insert 126 28
+Insert 127 69
+Insert 128 69
+Insert 129 28
+Insert 130 84
+Insert 131 71
+Insert 132 29
+Insert 133 118
+Insert 134 97
+Insert 135 5
+Insert 136 56
+Insert 137 52
+Insert 138 22
+InOrder
+Insert 139 14
+Insert 140 50
+Insert 141 27
+Insert 142 1
+Insert 143 40
+Insert 144 52
+Insert 145 72
+Insert 146 56
+InOrder
+Insert 147 42
+Insert 148 73
+Insert 149 15
+Insert 150 40
+Insert 151 90
+Insert 152 4
+Insert 153 131
+Insert 154 135
+Insert 155 88
+Insert 156 65
+Insert 157 26
+Insert 158 75
+Insert 159 75
+Insert 160 28
+Insert 161 86
+InOrder
+Insert 162 157
+Insert 163 120
+Insert 164 143
+Insert 165 52
+Insert 166 60
+Insert 167 6
+Insert 168 30
+Insert 169 92
+Insert 170 25
+Insert 171 160
+Insert 172 22
+Insert 173 153
+Insert 174 151
+Insert 175 93
+Insert 176 32
+PreOrder
+Insert 177 53
+Insert 178 100
+Insert 179 106
+Insert 180 167
+Insert 181 178
+PreOrder
+Insert 182 27
+Insert 183 156
+Insert 184 23
+Insert 185 149
+Insert 186 166
+InOrder
+Insert 187 65
+Insert 188 43
+Insert 189 130
+Insert 190 141
+Insert 191 91
+PostOrder
+Insert 192 11
+PostOrder
+Insert 193 49
+Insert 194 15
+PostOrder
+Insert 195 170
+Insert 196 119
+Insert 197 24
+Insert 198 140
+Insert 199 141
+Insert 200 170
+PreOrder
+PreOrder
+InOrder
+PostOrder
+*

@@ -1,0 +1,7 @@
+{
+  "pattern": "comb-constraint",
+  "recognize": "Sinh tất cả các cách phân tích `N <= 20` thành tổng các số không giảm theo thứ tự từ điển.",
+  "idea": "Truyền giá trị nhỏ nhất được phép chọn `minVal` vào hàm quay lui `Try(rem, minVal)` để tránh trùng lặp hoán vị (ví dụ chỉ sinh `1 1 2`, không sinh `1 2 1`).",
+  "pseudocode": "Try(rem, minVal):\n  if rem == 0: in cur; return\n  for v = minVal .. rem:\n    cur.push_back(v)\n    Try(rem - v, v)\n    cur.pop_back()",
+  "skeleton_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint N;\nvector<int> cur;\n\nvoid Try(int rem, int minVal) {\n    // TODO 1: Neu rem == 0 thi in cur va return\n\n    // TODO 2: Duyet v tu minVal den rem, them vao cur, goi Try(rem - v, v), pop_back\n}\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    cin >> N;\n    Try(N, 1);\n    return 0;\n}\n"
+}

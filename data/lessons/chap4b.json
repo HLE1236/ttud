@@ -1,0 +1,481 @@
+{
+  "chapter": "chap4b",
+  "intro": "Quy hoạch động (QHĐ) là phần **chắc chắn có mặt** ở cả giữa kỳ và cuối kỳ TTUD. Nhiều bạn thấy khó vì không biết **bắt đầu từ đâu**.\n\nBí quyết là luôn đi đúng **5 câu hỏi vàng** cho mọi bài QHĐ:\n1. **Trạng thái**: `dp[...]` lưu ý nghĩa gì?\n2. **Công thức chuyển**: `dp[i]` tính từ các `dp[...]` nhỏ hơn nào?\n3. **Bài toán cơ sở**: giá trị khởi tạo ban đầu (`dp[0]`, `dp[1]`, ...) là gì?\n4. **Thứ tự vòng lặp**: duyệt `i` tăng dần hay giảm dần để cái cần dùng đã tính xong trước?\n5. **Đáp án ở đâu**: `dp[n]`, `max(dp[i])`, hay `dp[n][m]`?",
+  "learning_path": {
+    "guided": [
+      "gk-climbing-stairs",
+      "gk-no-2-adjacent",
+      "gk-supermarket-knapsack"
+    ],
+    "practice": [
+      "gk-no-3-adjacent",
+      "hs-coin-exchange-dp",
+      "hs-longest-inc-subseq",
+      "hs-lcs",
+      "hs-max-even-subseq",
+      "hs-max-score-table",
+      "hs-nurse",
+      "hs-max-subseq-div-k",
+      "hs-max-weighted-disjoint-seg",
+      "hs-pick-non-adj-table",
+      "hs-c-k-n",
+      "hs-domino",
+      "hs-largest-black-subrect",
+      "hs-warehouse",
+      "hs-drone-pickup",
+      "hs-gold-mining",
+      "hs-k-inversion"
+    ],
+    "exam": [
+      "gk-stock-increasing",
+      "gk-treasure-grid",
+      "ck-rod-cutting",
+      "ck-d-increasing-subseq",
+      "ck-treasure-2d-lis",
+      "ck-longest-palindrome-subseq",
+      "ck-interleaving-strings",
+      "ck-otp-dice-sum",
+      "ck-stock-k-transactions",
+      "ck-stone-castle-3d",
+      "ck-equal-freq-binning"
+    ]
+  },
+  "patterns": [
+    {
+      "id": "dp-1d",
+      "name": "Dạng 1: Quy hoạch động 1 chiều (Cầu thang, Không kề, Đoạn con)",
+      "when": [
+        "Dãy tuyến tính `1..n` (`n` tới `10^5 - 10^6`).",
+        "Đề hỏi: *số cách đi tới bước n*, *chọn tập phần tử không kề nhau có tổng lớn nhất*, *đoạn con liên tiếp dài nhất/tổng chẵn lớn nhất*, *lập lịch làm việc liên tiếp từ K1 đến K2 ngày*."
+      ],
+      "idea": "Áp dụng đúng 5 bước (ví dụ bài **Không chọn 2 phần tử kề nhau**):\n1. **Trạng thái**: `dp[i]` = tổng lớn nhất chọn được khi chỉ xét `a[1..i]`.\n2. **Công thức**: tại `a[i]` có 2 lựa chọn: bỏ `a[i]` -> `dp[i-1]`; chọn `a[i]` (phải bỏ `a[i-1]`) -> `dp[i-2] + a[i]`. Vậy `dp[i] = max(dp[i-1], dp[i-2] + a[i])`.\n3. **Cơ sở**: `dp[0] = 0`, `dp[1] = a[1]`.\n4. **Thứ tự**: `i` tăng dần từ `2` đến `n`.\n5. **Đáp án**: `dp[n]`.",
+      "steps": [
+        "Bước 1: Ghi ra giấy ý nghĩa của `dp[i]` trước khi gõ một dòng code nào.",
+        "Bước 2: Xét bước cuối cùng ở vị trí `i`: nó có thể đi tới từ những trạng thái nào trước đó?",
+        "Bước 3: Khởi tạo cẩn thận các chỉ số nhỏ (`dp[0]`, `dp[1]`, `dp[2]`), dùng `long long` nếu tổng có thể vượt `2 * 10^9`.",
+        "Bước 4: Nếu bài hỏi *đoạn con liên tiếp tổng chia hết cho K* (hoặc chẵn), nhớ mẹo: lưu `min_pref[r]` = tổng tiền tố nhỏ nhất có số dư `r`."
+      ],
+      "template_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int n;\n    cin >> n;\n    vector<long long> a(n + 1);\n    for (int i = 1; i <= n; i++) cin >> a[i]; // Dung 1-based cho de viet dp[i-1], dp[i-2]\n\n    // 1. Trang thai: dp[i] = tong lon nhat khi xet tu a[1] den a[i]\n    vector<long long> dp(n + 1, 0);\n\n    // 2. Co so:\n    dp[0] = 0;\n    if (n >= 1) dp[1] = a[1]; // Chi co 1 phan tu thi chon luon (vi a[i] > 0)\n\n    // 3. Thu tu tinh: i tang dan tu 2 den n\n    for (int i = 2; i <= n; i++) {\n        long long skip_i = dp[i - 1];        // Khong chon a[i]\n        long long take_i = dp[i - 2] + a[i]; // Chon a[i] -> bat buoc bo a[i-1]\n        dp[i] = max(skip_i, take_i);         // 4. Cong thuc chuyen\n    }\n\n    // 5. Dap an nam tai dp[n]\n    cout << dp[n] << '\\n';\n    return 0;\n}",
+      "trace": {
+        "title": "Chạy tay bài Không chọn 2 phần tử kề nhau",
+        "input": "n = 5, a = [2, 5, 4, 6, 7]",
+        "headers": [
+          "i",
+          "a[i]",
+          "Bỏ a[i] (dp[i-1])",
+          "Chọn a[i] (dp[i-2]+a[i])",
+          "dp[i]",
+          "Nghiệm tương ứng"
+        ],
+        "rows": [
+          [
+            "0",
+            "-",
+            "-",
+            "-",
+            "0",
+            "Rỗng"
+          ],
+          [
+            "1",
+            "2",
+            "-",
+            "-",
+            "2",
+            "{2}"
+          ],
+          [
+            "2",
+            "5",
+            "2",
+            "0 + 5 = 5",
+            "5",
+            "{5}"
+          ],
+          [
+            "3",
+            "4",
+            "5",
+            "2 + 4 = 6",
+            "6",
+            "{2, 4}"
+          ],
+          [
+            "4",
+            "6",
+            "6",
+            "5 + 6 = 11",
+            "11",
+            "{5, 6}"
+          ],
+          [
+            "5",
+            "7",
+            "11",
+            "6 + 7 = 13",
+            "13",
+            "{2, 4, 7}"
+          ]
+        ],
+        "note": "Tại `i = 5`, dù `{5, 6}` tổng `11` đang lớn hơn `{2, 4}`, nhưng chọn `a[5] = 7` ghép với `dp[3] = 6` lại cho `13` (lớn hơn)."
+      },
+      "pitfalls": [
+        "Dùng `int` trong bài `gk-climbing-stairs` (`n = 70` có đáp án vượt `10^18`, tràn `int` từ `n = 37`). Phải dùng `long long`.",
+        "Quên `if (n >= 2)` khi gán `dp[2]` lúc `n = 1` gây truy cập ngoài mảng.",
+        "Với bài `hs-max-even-subseq` / `hs-max-subseq-div-k`, số âm trong C++ có `x % K` ra âm nên phải chuẩn hóa `((pref % K) + K) % K`."
+      ],
+      "problems": [
+        "gk-climbing-stairs",
+        "gk-stock-increasing",
+        "gk-no-2-adjacent",
+        "gk-no-3-adjacent",
+        "hs-max-even-subseq",
+        "hs-max-subseq-div-k",
+        "hs-nurse",
+        "hs-c-k-n",
+        "hs-domino",
+        "hs-gold-mining"
+      ]
+    },
+    {
+      "id": "dp-subseq",
+      "name": "Dạng 2: Dãy con tăng & QHĐ trên 2 xâu (LIS, LCS, LPS)",
+      "when": [
+        "Tìm **dãy con** (bỏ bớt phần tử, giữ thứ tự, **không cần liên tiếp**) tăng dài nhất (LIS), D-tăng, hoặc trên cặp tọa độ `(x, y)`.",
+        "Cho 2 dãy/2 xâu `A, B` và hỏi **dãy con chung dài nhất (LCS)**, **chuỗi ghép (Interleaving)**, hoặc **xâu con đối xứng dài nhất (LPS)**.",
+        "Chọn các **đoạn thẳng rời nhau** có trọng số để tổng độ dài lớn nhất."
+      ],
+      "idea": "Nhóm bài này có 2 mô hình chính:\n- **LIS (1 dãy)**: `dp[i]` = độ dài dãy con tăng dài nhất kết thúc đúng tại `i`. Nếu `n <= 5000` thì duyệt mọi `j < i` có `a[j] < a[i]` (`O(n^2)`). Nếu `n <= 10^5` thì dùng mảng `tail[]` + `lower_bound` (`O(n log n)`).\n- **LCS / 2 xâu**: `dp[i][j]` = kết quả trên `i` phần tử đầu của `A` và `j` phần tử đầu của `B`. Nếu `A[i] == B[j]` thì `dp[i][j] = dp[i-1][j-1] + 1`, ngược lại lấy `max(dp[i-1][j], dp[i][j-1])`.",
+      "steps": [
+        "Bước 1: Phân biệt rõ *đoạn con liên tiếp* (subarray) hay *dãy con không liên tiếp* (subsequence).",
+        "Bước 2: Nếu là LIS `n <= 10^4` (hoặc bài 2D cần sort theo `x` trước), viết 2 vòng `for` `O(n^2)`. Nếu `n = 10^5`, dùng `lower_bound` trên `tail`.",
+        "Bước 3: Nếu là LCS với `n, m <= 10000`, nhớ bảng `10000 x 10000` sẽ tràn RAM `256 MB` -> dùng **2 mảng 1 chiều** `prev` và `cur`."
+      ],
+      "template_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    // Mau 1: LIS O(n log n) dung mang tail[] + lower_bound\n    int n;\n    cin >> n;\n    vector<long long> tail; // tail[k] = gia tri ket thuc nho nhat cua day tang do dai k + 1\n\n    for (int i = 0; i < n; i++) {\n        long long x;\n        cin >> x;\n        // Tim vi tri dau tien >= x (neu tang khong ngat thi doi thanh upper_bound)\n        auto it = lower_bound(tail.begin(), tail.end(), x);\n        if (it == tail.end()) {\n            tail.push_back(x); // x lon hon moi phan tu -> keo dai them 1\n        } else {\n            *it = x;           // Giam phan tu ket thuc de de noi tiep ve sau\n        }\n    }\n    cout << tail.size() << '\\n'; // Do dai tail chinh la do dai LIS\n    return 0;\n}",
+      "trace": {
+        "title": "Chạy tay LIS O(n log n) với mảng tail[]",
+        "input": "n = 6, a = [5, 8, 2, 8, 10, 10]",
+        "headers": [
+          "Bước",
+          "x = a[i]",
+          "lower_bound tìm thấy",
+          "Mảng tail[] sau bước",
+          "Độ dài LIS hiện tại"
+        ],
+        "rows": [
+          [
+            "1",
+            "5",
+            "Cuối mảng (push_back)",
+            "[5]",
+            "1"
+          ],
+          [
+            "2",
+            "8",
+            "Cuối mảng (push_back)",
+            "[5, 8]",
+            "2"
+          ],
+          [
+            "3",
+            "2",
+            "Vị trí 0 (giá trị 5)",
+            "[2, 8]",
+            "2"
+          ],
+          [
+            "4",
+            "8",
+            "Vị trí 1 (giá trị 8)",
+            "[2, 8]",
+            "2"
+          ],
+          [
+            "5",
+            "10",
+            "Cuối mảng (push_back)",
+            "[2, 8, 10]",
+            "3"
+          ],
+          [
+            "6",
+            "10",
+            "Vị trí 2 (giá trị 10)",
+            "[2, 8, 10]",
+            "3"
+          ]
+        ],
+        "note": "Chú ý: `tail` lưu `[2, 8, 10]` không nhất thiết là dãy con thực tế, nhưng độ dài của nó luôn bằng đúng độ dài LIS (ở đây là `3`, ví dụ `[5, 8, 10]`)."
+      },
+      "pitfalls": [
+        "Nhầm `lower_bound` (tăng ngặt `<`) với `upper_bound` (tăng không ngặt `<=`).",
+        "Trong `hs-lcs` (`n, m <= 10000`), khai báo `int dp[10005][10005]` tốn ~400 MB gây MLE! Phải dùng mảng lăn 2 hàng `prev` và `cur`.",
+        "Trong `ck-treasure-2d-lis`, quên `sort` theo `(x, y)` trước khi chạy `dp[i]`."
+      ],
+      "problems": [
+        "hs-longest-inc-subseq",
+        "ck-d-increasing-subseq",
+        "ck-treasure-2d-lis",
+        "hs-lcs",
+        "ck-longest-palindrome-subseq",
+        "ck-interleaving-strings",
+        "hs-max-weighted-disjoint-seg",
+        "hs-k-inversion"
+      ]
+    },
+    {
+      "id": "dp-knapsack",
+      "name": "Dạng 3: Ba lô, Đổi tiền & Đếm cách chia tổng (Knapsack & Coin)",
+      "when": [
+        "Có **ngân sách / sức chứa / tổng mục tiêu `W` hoặc `x`** nhỏ (`W <= 10^4 - 10^5`).",
+        "Mỗi món đồ có **giá/trọng lượng** và **giá trị**: mua tối đa 1 lần (0/1 Knapsack) hoặc **mua không giới hạn** (Unbounded Knapsack, Đổi tiền, Cắt thanh kim loại).",
+        "Gieo `n` xúc xắc `m` mặt để tổng bằng `x`."
+      ],
+      "idea": "Đặt `dp[w]` = kết quả tối ưu (giá trị lớn nhất, số đồng xu ít nhất, hoặc số cách) khi tổng trọng lượng/tiền là `w`.\n\n**Quy tắc cực kỳ quan trọng về chiều vòng `for` của `w`:**\n- Nếu **mỗi món được dùng NHIỀU LẦN** (Unbounded Knapsack, Đổi tiền, Cắt thanh): duyệt `w` **TĂNG DẦN** từ `cost[i]` lên `W`.\n- Nếu **mỗi món chỉ dùng TỐI ĐA 1 LẦN** (0/1 Knapsack): duyệt `w` **GIẢM DẦN** từ `W` về `cost[i]` để tránh lấy lại chính món `i` vừa cập nhật!",
+      "steps": [
+        "Bước 1: Khởi tạo `dp[0]` (bằng `0` nếu tối đa giá trị / tối thiểu số xu; bằng `1` nếu đếm số cách).",
+        "Bước 2: Các ô còn lại `dp[1..W]`: khởi tạo `0` (bài max giá trị), `+INF` (bài min số xu), hoặc `0` (bài đếm cách).",
+        "Bước 3: Xác định 1 lần hay vô hạn lần để chọn chiều vòng `w` (giảm dần vs tăng dần).",
+        "Bước 4: Đọc kỹ xem đáp án là `dp[W]` hay `*max_element(dp)` (nếu không bắt buộc dùng hết `W`)."
+      ],
+      "template_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    // Mau Unbounded Knapsack: mua khong gioi han moi mat hang\n    int n, W;\n    cin >> n >> W;\n    vector<int> cost(n), val(n);\n    for (int i = 0; i < n; i++) cin >> cost[i];\n    for (int i = 0; i < n; i++) cin >> val[i];\n\n    // 1. Trang thai: dp[w] = tong gia tri lon nhat voi so tien <= w\n    // 2. Co so: dp[0..W] = 0\n    vector<long long> dp(W + 1, 0);\n\n    // 3. Duyet tung mon hang, w TANG DAN vi duoc mua nhieu lan\n    for (int i = 0; i < n; i++) {\n        for (int w = cost[i]; w <= W; w++) {\n            // 4. Cong thuc: khong mua them hoac mua them 1 mon i tu trang thai (w - cost[i])\n            dp[w] = max(dp[w], dp[w - cost[i]] + val[i]);\n        }\n    }\n\n    // 5. Dap an tai dp[W]\n    cout << dp[W] << '\\n';\n    return 0;\n}",
+      "trace": {
+        "title": "Chạy tay Unbounded Knapsack với W = 5",
+        "input": "n = 2, W = 5; món 0: (cost=2, val=3); món 1: (cost=3, val=5)",
+        "headers": [
+          "Món i",
+          "w=0",
+          "w=1",
+          "w=2",
+          "w=3",
+          "w=4",
+          "w=5"
+        ],
+        "rows": [
+          [
+            "Ban đầu",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0"
+          ],
+          [
+            "Sau món 0 (2, 3)",
+            "0",
+            "0",
+            "3",
+            "3",
+            "6",
+            "6"
+          ],
+          [
+            "Sau món 1 (3, 5)",
+            "0",
+            "0",
+            "3",
+            "5",
+            "6",
+            "8"
+          ]
+        ],
+        "note": "Ở hàng món 0: `dp[4] = dp[2] + 3 = 6` (lấy 2 lần món 0). Ở hàng món 1: `dp[5] = max(6, dp[2] + 5) = 8` (1 món 0 + 1 món 1)."
+      },
+      "pitfalls": [
+        "Nhầm chiều vòng `w` giữa 0/1 Knapsack (giảm dần) và Unbounded (tăng dần).",
+        "Trong bài Đổi tiền (`hs-coin-exchange-dp`), quên kiểm tra `dp[x] >= INF` để in `-1` khi không đổi được.",
+        "Trong bài `ck-otp-dice-sum`, quên cộng `MOD` trước khi `% MOD` khi trừ cửa sổ trượt: `(win - dp[...] + MOD) % MOD`."
+      ],
+      "problems": [
+        "gk-supermarket-knapsack",
+        "hs-coin-exchange-dp",
+        "ck-rod-cutting",
+        "ck-otp-dice-sum",
+        "ck-equal-freq-binning",
+        "hs-multi-knapsack-large"
+      ]
+    },
+    {
+      "id": "dp-grid",
+      "name": "Dạng 4: Quy hoạch động trên lưới / bảng 2D & 3D",
+      "when": [
+        "Cho bảng kích thước `n x m`, đi từ `(1,1)` đến `(n,m)` hoặc từ cột `1` sang cột `n`.",
+        "Chỉ được đi theo hướng **tiến** (phải, xuống, chéo xuống phải — không quay ngược lại nên không có chu trình).",
+        "Hoặc cắt khối hộp 3D (`ck-stone-castle-3d`), chọn ô không kề cạnh trên bảng mỏng (`m <= 10`, `hs-pick-non-adj-table`)."
+      ],
+      "idea": "Do không được quay ngược lại, mỗi ô `(i, j)` chỉ phụ thuộc vào 2–3 ô đứng trước nó ở hàng trên hoặc cột bên trái.\n1. **Trạng thái**: `dp[i][j]` = tổng tốt nhất khi kết thúc tại ô `(i, j)`.\n2. **Công thức**: `dp[i][j] = opt(các ô tiền nhiệm hợp lệ) + a[i][j]`.\n3. **Cẩn thận ô vật cản và số âm**: nếu không tới được ô nào đó, gán `+INF` (khi tìm min) hoặc `-INF` (khi tìm max), **tuyệt đối không dùng `-1`** vì đường đi hợp lệ có thể có tổng âm!",
+      "steps": [
+        "Bước 1: Đọc lưới `a[1..n][1..m]` (dùng 1-based để đỡ kiểm tra biên quá nhiều, hoặc kiểm tra `i > 1`, `j > 1`).",
+        "Bước 2: Khởi tạo toàn bộ bảng `dp` bằng `+INF` (hoặc `-INF`), riêng ô xuất phát `dp[1][1] = a[1][1]` (nếu không phải vật cản).",
+        "Bước 3: Duyệt `i` từ `1..n`, `j` từ `1..m` (hoặc cột `c` từ `1..n` trước rồi hàng `r` nếu đi từ cột 1 sang cột `n`).",
+        "Bước 4: Kiểm tra điều kiện vật cản (`a[i][j] == 0`) và chỉ cộng `a[i][j]` nếu ít nhất một ô tiền nhiệm tới được (`prev < INF / 2`)."
+      ],
+      "template_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nconst long long INF = (long long)4e18; // Dung INF lon thay vi -1 vi chi phi co the am\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int n, m;\n    cin >> n >> m;\n    vector<vector<long long>> a(n + 1, vector<long long>(m + 1));\n    for (int i = 1; i <= n; i++)\n        for (int j = 1; j <= m; j++)\n            cin >> a[i][j];\n\n    // 1. Trang thai: dp[i][j] = chi phi nho nhat de di tu (1,1) toi (i,j)\n    vector<vector<long long>> dp(n + 1, vector<long long>(m + 1, INF));\n\n    // 2. Co so: o xuat phat (1,1) neu khong bi chan\n    if (a[1][1] != 0) dp[1][1] = a[1][1];\n\n    // 3. Thu tu: duyet tung hang i = 1..n, tung cot j = 1..m\n    for (int i = 1; i <= n; i++) {\n        for (int j = 1; j <= m; j++) {\n            if (i == 1 && j == 1) continue;\n            if (a[i][j] == 0) continue; // O vat can -> giu nguyen INF\n\n            // 4. Cong thuc: lay min tu 3 o phia truoc (tren, trai, cheo tren-trai)\n            long long best_prev = min({dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]});\n            if (best_prev < INF / 2) {\n                dp[i][j] = best_prev + a[i][j];\n            }\n        }\n    }\n\n    // 5. Dap an tai (n, m)\n    cout << (dp[n][m] >= INF / 2 ? -1 : dp[n][m]) << '\\n';\n    return 0;\n}",
+      "trace": {
+        "title": "Chạy tay Grid DP tìm đường chi phí nhỏ nhất (0 là vật cản)",
+        "input": "Lưới 3x3: hàng1=[1, 2, 0], hàng2=[5, -9, 2], hàng3=[1, 4, 3]",
+        "headers": [
+          "Ô (i,j)",
+          "a[i][j]",
+          "Các ô trước (trên, trái, chéo)",
+          "best_prev",
+          "dp[i][j]"
+        ],
+        "rows": [
+          [
+            "(1,1)",
+            "1",
+            "Xuất phát",
+            "-",
+            "1"
+          ],
+          [
+            "(1,2)",
+            "2",
+            "trái=1",
+            "1",
+            "3"
+          ],
+          [
+            "(1,3)",
+            "0",
+            "Vật cản",
+            "-",
+            "INF"
+          ],
+          [
+            "(2,1)",
+            "5",
+            "trên=1",
+            "1",
+            "6"
+          ],
+          [
+            "(2,2)",
+            "-9",
+            "trên=3, trái=6, chéo=1",
+            "1",
+            "-8"
+          ],
+          [
+            "(2,3)",
+            "2",
+            "trên=INF, trái=-8, chéo=3",
+            "-8",
+            "-6"
+          ],
+          [
+            "(3,2)",
+            "4",
+            "trên=-8, trái=7, chéo=6",
+            "-8",
+            "-4"
+          ],
+          [
+            "(3,3)",
+            "3",
+            "trên=-6, trái=-4, chéo=-8",
+            "-8",
+            "-5"
+          ]
+        ],
+        "note": "Chú ý ô `(3,3)` đi chéo từ `(2,2)` có `dp=-8` nên cho kết quả `-8 + 3 = -5` (âm, hợp lệ!)."
+      },
+      "pitfalls": [
+        "Dùng `-1` làm giá trị chưa tới được trong khi bài cho phép ô có giá trị âm (như `gk-treasure-grid`, `hs-max-score-table`).",
+        "Trong `hs-max-score-table` (đi từ cột `1` sang cột `n`), quên duyệt **cột ở vòng ngoài, hàng ở vòng trong**! Nếu duyệt hàng ngoài, cột trong sẽ dùng phải ô chưa tính.",
+        "Với robot đi cả **4 hướng** (`ck-matrix-max-reward`), KHÔNG dùng DP lưới được vì có chu trình -> phải quay về DFS/Quay lui ở Chương 3."
+      ],
+      "problems": [
+        "gk-treasure-grid",
+        "hs-max-score-table",
+        "ck-stone-castle-3d",
+        "hs-pick-non-adj-table",
+        "hs-largest-black-subrect",
+        "hs-warehouse",
+        "hs-drone-pickup"
+      ]
+    },
+    {
+      "id": "dp-state",
+      "name": "Dạng 5: QHĐ theo trạng thái (Mua bán chứng khoán tối đa K lần)",
+      "when": [
+        "Bài toán diễn ra theo từng ngày `i = 1..n`.",
+        "Tại mỗi ngày bạn ở một trong số ít **trạng thái rời rạc** (ví dụ: *đang cầm cổ phiếu* vs *đang cầm tiền mặt*), kèm bộ đếm số lần giao dịch `t <= k`."
+      ],
+      "idea": "Thay vì chỉ dùng 1 mảng `dp[i]`, ta tách thành 2 mảng theo trạng thái kết thúc ngày hiện tại sau tối đa `t` giao dịch:\n- `hold[t]`: tiền tối đa khi **đang giữ 1 cổ phiếu** (có thể giữ từ hôm qua, hoặc hôm nay mới mua từ `cash[t - 1] - price`).\n- `cash[t]`: tiền tối đa khi **không giữ cổ phiếu** (có thể giữ tiền từ hôm qua, hoặc hôm nay bán ra `hold[t] + price`).\n\nMẹo giảm `O(n * k)` thành `O(n)`: nếu `2 * k >= n` thì số lần giao dịch không bị giới hạn nữa -> cứ thấy `p[i] > p[i-1]` là cộng lãi luôn!",
+      "steps": [
+        "Bước 1: Xử lý ngay trường hợp đặc biệt `k <= 0` hoặc `n <= 1` (in `0`), và `2 * k >= n` (cộng mọi đoạn tăng).",
+        "Bước 2: Khởi tạo `cash[0..k] = 0`, `hold[0..k] = -4e18` (âm vô cực vì chưa mua được cổ phiếu nào).",
+        "Bước 3: Duyệt từng ngày `price`: cập nhật `hold[t]` và `cash[t]` cho `t = 1..k`.",
+        "Bước 4: Đáp án là `cash[k]`."
+      ],
+      "template_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int n, k;\n    cin >> n >> k;\n    vector<long long> p(n);\n    for (int i = 0; i < n; i++) cin >> p[i];\n\n    if (k <= 0 || n <= 1) { cout << 0 << '\\n'; return 0; }\n\n    // Meo vang: 1 giao dich can it nhat 2 ngay -> neu 2*k >= n thi mua ban thoai mai\n    if (2 * k >= n) {\n        long long ans = 0;\n        for (int i = 1; i < n; i++)\n            if (p[i] > p[i - 1]) ans += p[i] - p[i - 1];\n        cout << ans << '\\n';\n        return 0;\n    }\n\n    // 1. Trang thai: cash[t] = tien mat toi da sau toi da t giao dich;\n    //                hold[t] = tien toi da khi dang giu co phieu o giao dich thu t\n    vector<long long> cash(k + 1, 0), hold(k + 1, -(long long)4e18);\n\n    for (long long price : p) {\n        for (int t = 1; t <= k; t++) {\n            hold[t] = max(hold[t], cash[t - 1] - price); // Giu nguyen hoac mua vao\n            cash[t] = max(cash[t], hold[t] + price);     // Giu tien hoac ban ra\n        }\n    }\n    cout << cash[k] << '\\n';\n    return 0;\n}",
+      "trace": {
+        "title": "Chạy tay Stock K với k = 2 giao dịch",
+        "input": "p = [10, 22, 5, 75, 65, 80], k = 2",
+        "headers": [
+          "Ngày (giá)",
+          "hold[1]",
+          "cash[1]",
+          "hold[2]",
+          "cash[2]"
+        ],
+        "rows": [
+          [
+            "Ngày 0 (10)",
+            "-10",
+            "0",
+            "-10",
+            "0"
+          ],
+          [
+            "Ngày 1 (22)",
+            "-10",
+            "12",
+            "-10",
+            "12"
+          ],
+          [
+            "Ngày 2 (5)",
+            "-5",
+            "12",
+            "7 (=12-5)",
+            "12"
+          ],
+          [
+            "Ngày 3 (75)",
+            "-5",
+            "70",
+            "7",
+            "82 (=7+75)"
+          ],
+          [
+            "Ngày 4 (65)",
+            "-5",
+            "70",
+            "7",
+            "82"
+          ],
+          [
+            "Ngày 5 (80)",
+            "-5",
+            "75",
+            "7",
+            "87 (=7+80)"
+          ]
+        ],
+        "note": "Kết quả `cash[2] = 87`: mua 10 bán 22 (+12), rồi mua 5 bán 80 (+75) -> tổng lãi `87`."
+      },
+      "pitfalls": [
+        "Quên nhánh tối ưu `2 * k >= n`, dẫn đến chạy `10^5 * 1000` vòng lặp có thể sát/vượt Time Limit.",
+        "Khởi tạo `hold[] = 0` thay vì `-INF` sẽ làm sai hoàn toàn khi ngày đầu bán khống."
+      ],
+      "problems": [
+        "ck-stock-k-transactions"
+      ]
+    }
+  ]
+}

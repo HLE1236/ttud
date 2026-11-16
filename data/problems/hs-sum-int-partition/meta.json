@@ -1,0 +1,31 @@
+{
+  "title": "[HUSTack] Liệt kê cách phân tích N thành tổng các số nguyên dương",
+  "track": "midterm",
+  "topic": "backtracking",
+  "difficulty": "Cơ bản",
+  "exam_tags": [
+    "HUSTack Project1 (gen-sol-represent-n-as-sum-int)",
+    "HUSTack: Đã AC"
+  ],
+  "time_limit_ms": 1000,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho số nguyên dương `N`. Hãy liệt kê tất cả các cách biểu diễn `N` dưới dạng tổng các số nguyên dương không giảm:\n`N = x[1] + x[2] + ... + x[k]` với `1 <= x[1] <= x[2] <= ... <= x[k]`.\n\nCác cách biểu diễn được in theo thứ tự từ điển tăng dần.",
+  "input_spec": "Một số nguyên dương `N` (`1 <= N <= 20`).",
+  "output_spec": "Mỗi cách biểu diễn in trên một dòng, các số cách nhau bởi khoảng trắng.",
+  "samples": [
+    {
+      "input": "4",
+      "output": "1 1 1 1\n1 1 2\n1 3\n2 2\n4"
+    }
+  ],
+  "theory_chapter": "chap3",
+  "mindset": "Quay lui giữ trạng thái `Try(int rem, int minVal)`: để các số sinh ra **không giảm** và đúng thứ tự từ điển, ở mỗi bước thử chọn `v` từ `minVal` đến `rem`, đẩy `v` vào mảng `cur`, gọi `Try(rem - v, v)`, rồi `cur.pop_back()`.",
+  "hints": [
+    "Điều kiện dừng: khi `rem == 0`, in toàn bộ `cur`."
+  ],
+  "complexity": "O(p(N)) với p(20) = 627",
+  "id": "hs-sum-int-partition",
+  "test_count": 10
+}

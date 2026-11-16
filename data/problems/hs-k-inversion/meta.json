@@ -1,0 +1,32 @@
+{
+  "title": "[HUSTack] Đếm số k-nghịch thế của hoán vị (K-Inversion + Fenwick)",
+  "track": "final",
+  "topic": "dp-lis-lcs",
+  "difficulty": "Trung bình",
+  "exam_tags": [
+    "HUSTack Programming Advanced (k-inversion)",
+    "HUSTack: Chưa làm"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho hoán vị `a = (a_1, a_2, ..., a_n)` của `{1, 2, ..., n}` và số nguyên dương `k`.\nMột dãy chỉ số `1 <= i_1 < i_2 < ... < i_k <= n` được gọi là một **`k`-nghịch thế** nếu `a[i_1] > a[i_2] > ... > a[i_k]`.\n\nHãy đếm số lượng `Q` các `k`-nghịch thế của hoán vị `a` theo modulo `10^9 + 7`.",
+  "input_spec": "- Dòng 1: hai số nguyên dương `n, k` (`1 <= n <= 100000`, `2 <= k <= 10`)\n- Dòng 2: hoán vị `a_1, a_2, ..., a_n`.",
+  "output_spec": "Giá trị `Q mod (10^9 + 7)`.",
+  "samples": [
+    {
+      "input": "6 3\n3 5 4 1 2 6",
+      "output": "2"
+    }
+  ],
+  "theory_chapter": "chap4b",
+  "mindset": "Gọi `dp[len][i]` là số dãy con giảm dần độ dài `len` kết thúc tại phần tử `a[i]` (`1 <= len <= k`).\n- Với `len = 1`: `dp[1][i] = 1` với mọi `i`.\n- Với mỗi bước `len = 2..k`: ta duyệt `i` từ `1` đến `n` và cần tính `sum_{j < i, a[j] > a[i]} dp[len - 1][j]`.\nDùng **Fenwick Tree (BIT)** đánh chỉ số theo giá trị `a[j]` (`1..n`): tại vị trí `i`, tổng các `dp[len - 1][j]` có `a[j] > a[i]` bằng `(tổng BIT toàn bộ đã thêm) - query(a[i])`! Sau khi tính `dp[len][i]`, ta thêm `dp[len - 1][i]` vào BIT tại vị trí `a[i]`.",
+  "hints": [
+    "Mỗi tầng `len` cần xóa sạch mảng BIT (`fill(bit.begin(), bit.end(), 0)`).",
+    "Kết quả cuối cùng là tổng `dp[k][1..n] % MOD`."
+  ],
+  "complexity": "O(k * n log n)",
+  "id": "hs-k-inversion",
+  "test_count": 10
+}

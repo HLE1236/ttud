@@ -1,0 +1,36 @@
+{
+  "title": "[HUSTack] Tính giá trị biểu thức chỉ có phép + và *",
+  "track": "midterm",
+  "topic": "array-basic",
+  "difficulty": "Trung bình",
+  "exam_tags": [
+    "HUSTack Project1 (EVALUATE_EXPRESSION_ADD_MUL_OPERAND)",
+    "HUSTack: Đã AC"
+  ],
+  "time_limit_ms": 1000,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho một xâu biểu diễn biểu thức toán học gồm các số nguyên dương, phép cộng `+` và phép nhân `*` (có thể có khoảng trắng xen giữa). Hãy kiểm tra tính hợp lệ về cú pháp và tính giá trị `Q` của biểu thức theo modulo `10^9 + 7`.",
+  "input_spec": "Một dòng duy nhất chứa xâu biểu thức (số phép toán tối đa `10000`).",
+  "output_spec": "In ra `Q mod (10^9 + 7)` nếu biểu thức hợp lệ; ngược lại in ra `NOT_CORRECT`.",
+  "samples": [
+    {
+      "input": "5+7*3*10*10",
+      "output": "2105"
+    },
+    {
+      "input": "5*+ 7*3*10*10",
+      "output": "NOT_CORRECT"
+    }
+  ],
+  "theory_chapter": "chap1",
+  "mindset": "Tách xâu thành dãy token (Số nguyên dương hoặc Toán tử `+`/`*`). Biểu thức hợp lệ phải bắt đầu bằng Số, kết thúc bằng Số, và xen kẽ Số - Toán tử - Số.\nĐể tính giá trị ưu tiên phép `*` trước `+`: dùng một biến `term` tích lũy cụm nhân liên tiếp (nhân modulo `10^9 + 7`), khi gặp `+` thì cộng `term` vào `ans` rồi đặt lại `term`.",
+  "hints": [
+    "Chú ý khoảng trắng giữa hai số (ví dụ `5 7 + 3`) là **sai cú pháp** (`NOT_CORRECT`) vì thiếu toán tử.",
+    "Các số trong biểu thức có thể lớn, cần lấy dư `% MOD` ngay khi đọc chữ số: `val = (val * 10 + (c - '0')) % MOD`."
+  ],
+  "complexity": "O(|S|)",
+  "id": "hs-eval-expr-add-mul",
+  "test_count": 10
+}

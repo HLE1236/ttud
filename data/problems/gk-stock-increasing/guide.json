@@ -1,0 +1,7 @@
+{
+  "pattern": "dp-1d",
+  "recognize": "Tìm độ dài **đoạn con liên tiếp tăng ngặt** dài nhất (`n <= 10^6`).\n- Chú ý chữ **liên tiếp**! Khác với LIS (không liên tiếp), bài này chỉ cần **QHĐ 1 chiều `O(n)`**.",
+  "idea": "Đặt `dp[i]` = độ dài đoạn con liên tiếp tăng ngặt dài nhất kết thúc đúng tại `i`.\n- Nếu `a[i] > a[i-1]` thì nối tiếp được: `dp[i] = dp[i-1] + 1`.\n- Ngược lại chuỗi bị đứt: `dp[i] = 1`.\nĐáp án là `max(dp[i])`. Thậm chí chỉ cần 1 biến `cur` và `prev` mà không cần mảng `dp`.",
+  "pseudocode": "cur = 0, best = 0\nvới mỗi i từ 0 đến n - 1:\n    nếu i == 0 hoặc a[i] <= prev: cur = 1\n    ngược lại: cur++\n    best = max(best, cur)\n    prev = a[i]\nin best",
+  "skeleton_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int n;\n    if (!(cin >> n)) return 0;\n\n    long long prev = 0, x;\n    int cur = 0, best = 0;\n    for (int i = 0; i < n; i++) {\n        cin >> x;\n        // TODO: Cập nhật cur (nếu i == 0 hoặc x <= prev thì cur = 1, ngược lại cur++) và cập nhật best\n        prev = x;\n    }\n    cout << best << '\\n';\n    return 0;\n}\n"
+}

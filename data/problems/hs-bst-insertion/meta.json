@@ -1,0 +1,31 @@
+{
+  "title": "[HUSTack] Chèn và duyệt tiền tự Cây tìm kiếm nhị phân (BST)",
+  "track": "midterm",
+  "topic": "array-basic",
+  "difficulty": "Cơ bản",
+  "exam_tags": [
+    "HUSTack Project1 (BST_INSERTION_MANIPULATION)",
+    "HUSTack: Đã AC"
+  ],
+  "time_limit_ms": 1000,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho một cây tìm kiếm nhị phân (BST) ban đầu rỗng (`NULL`). Thực hiện chuỗi thao tác `insert k`: chèn khóa `k` vào BST (nếu `k` đã tồn tại trong cây thì bỏ qua, không chèn trùng).\n\nSau khi kết thúc bằng dòng `#`, in ra dãy các khóa theo thứ tự duyệt tiền tự (**PreOrder**: Gốc -> Trái -> Phải).",
+  "input_spec": "- Các dòng lệnh dạng `insert k`.\n- Dòng cuối cùng là `#`.",
+  "output_spec": "Một dòng chứa các khóa theo phép duyệt PreOrder, cách nhau bởi một khoảng trắng.",
+  "samples": [
+    {
+      "input": "insert 20\ninsert 10\ninsert 26\ninsert 7\ninsert 15\ninsert 23\ninsert 30\ninsert 3\ninsert 8\n#",
+      "output": "20 10 7 3 8 15 26 23 30"
+    }
+  ],
+  "theory_chapter": "chap2",
+  "mindset": "Cài đặt `struct Node { int key; Node *left, *right; };` và viết hàm đệ quy `insert(Node* root, int k)`:\n- Nếu `root == nullptr`: tạo nút mới.\n- Nếu `k < root->key`: gán `root->left = insert(root->left, k)`.\n- Nếu `k > root->key`: gán `root->right = insert(root->right, k)`.\n- Nếu `k == root->key`: không làm gì cả.",
+  "hints": [
+    "Duyệt PreOrder: in `root->key`, gọi đệ quy `root->left`, rồi gọi đệ quy `root->right`."
+  ],
+  "complexity": "O(N * h) với h là chiều cao cây",
+  "id": "hs-bst-insertion",
+  "test_count": 10
+}

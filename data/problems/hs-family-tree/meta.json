@@ -1,0 +1,31 @@
+{
+  "title": "[HUSTack] Truy vấn cây gia phả (Family Tree - DFS)",
+  "track": "final",
+  "topic": "graph-bfs-dfs",
+  "difficulty": "Trung bình",
+  "exam_tags": [
+    "HUSTack Project1 (FAMILY_TREE)",
+    "HUSTack: Đã AC"
+  ],
+  "time_limit_ms": 1000,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho một cây gia phả gồm các quan hệ `<child> <parent>` (`<child>` là con của `<parent>`). Tổng số người tối đa `10^4`.\nThực hiện các truy vấn:\n- `descendants <name>`: trả về tổng số hậu duệ (con, cháu, chắt, ...) của `<name>`.\n- `generation <name>`: trả về số thế hệ hậu duệ (chiều cao cây con tính từ `<name>`, bằng `0` nếu không có con).",
+  "input_spec": "- Khối 1: các dòng `<child> <parent>`, kết thúc bởi `***`.\n- Khối 2: các dòng truy vấn `<cmd> <name>`, kết thúc bởi `***`.",
+  "output_spec": "Mỗi truy vấn in một số nguyên trên một dòng.",
+  "samples": [
+    {
+      "input": "Peter Newman\nMichael Thomas\nJohn David\nPaul Mark\nStephan Mark\nPierre Thomas\nMark Newman\nBill David\nDavid Newman\nThomas Mark\n***\ndescendants Newman\ndescendants Mark\ndescendants David\ngeneration Mark\n***",
+      "output": "10\n5\n2\n2"
+    }
+  ],
+  "theory_chapter": "chap5",
+  "mindset": "Ánh xạ mỗi tên người sang chỉ số nguyên (hoặc dùng `unordered_map<string, vector<string>> adj` lưu danh sách con trực tiếp). Dùng DFS tính một lần hoặc memoize cho từng nút:\n- `subSize[u] = 1 + sum(subSize[v])` -> `descendants(u) = subSize[u] - 1`.\n- `height[u] = max(1 + height[v])` (hoặc `0` nếu `u` không có con) -> `generation(u) = height[u]`.",
+  "hints": [
+    "Nếu có nhiều thành phần (rừng cây), chỉ cần memoize `desc[u]` và `gen[u]` khi truy vấn hoặc DFS từ các nút không có cha."
+  ],
+  "complexity": "O(N + Q)",
+  "id": "hs-family-tree",
+  "test_count": 10
+}

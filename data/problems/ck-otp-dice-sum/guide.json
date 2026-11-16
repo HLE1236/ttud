@@ -1,0 +1,7 @@
+{
+  "pattern": "dp-knapsack",
+  "recognize": "Đếm số cách chọn `n <= 100` số trong `[1, m]` (`m <= 100`) có tổng đúng bằng `x <= 10000` theo modulo `10^9 + 7`.\n- **QHĐ chia tổng theo bước** + mẹo **Cửa sổ trượt** để giảm từ `O(n*x*m)` xuống `O(n*x)`.",
+  "idea": "Đặt `dp[s]` = số cách đạt tổng `s` sau `i` thiết bị (`dp[0] = 1` khi `i = 0`).\nChuyển sang thiết bị tiếp theo: `ndp[s] = tổng dp[s - k]` với `k = 1..m`, tức là tổng của cửa sổ `[s - m .. s - 1]` trên mảng `dp` cũ! Duy trì biến `win` trượt sang phải để tính mỗi `ndp[s]` trong `O(1)`.",
+  "pseudocode": "nếu x < n hoặc x > n * m: in 0, kết thúc\ndp[0] = 1\ncho i từ 1 đến n:\n    win = 0, ndp = 0\n    cho s từ 1 đến x:\n        win = (win + dp[s - 1]) % MOD\n        nếu s - m - 1 >= 0: win = (win - dp[s - m - 1] + MOD) % MOD\n        ndp[s] = win\n    dp = ndp\nin dp[x]",
+  "skeleton_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nstatic const long long MOD = 1000000007LL;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int m, n, x;\n    if (!(cin >> m >> n >> x)) return 0;\n    if (x < n || x > n * m) {\n        cout << 0 << '\\n';\n        return 0;\n    }\n\n    vector<long long> dp(x + 1, 0);\n    dp[0] = 1;\n    // TODO: Lặp n bước, dùng cửa sổ trượt win tính ndp[s] = sum_{k=1..m} dp[s-k]\n\n    cout << dp[x] << '\\n';\n    return 0;\n}\n"
+}

@@ -1,0 +1,31 @@
+{
+  "title": "[HUSTack] Lưu trữ và tìm kiếm xâu ký tự (Store & Search String)",
+  "track": "midterm",
+  "topic": "hash-prefix",
+  "difficulty": "Cơ bản",
+  "exam_tags": [
+    "HUSTack Project1 (STORE_SEARCH_STRING)",
+    "HUSTack: Đã AC"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Một cơ sở dữ liệu ban đầu chứa `n` khóa là các xâu ký tự (`1 <= n <= 100000`, độ dài mỗi khóa `<= 50`). Thực hiện tối đa `100000` truy vấn thuộc 2 loại:\n- `find k`: trả về `1` nếu `k` có trong CSDL, ngược lại `0`.\n- `insert k`: chèn `k` vào CSDL; trả về `1` nếu chèn thành công (`k` chưa từng tồn tại), trả về `0` nếu `k` đã tồn tại.",
+  "input_spec": "- Khối 1: các khóa ban đầu (mỗi dòng 1 xâu), kết thúc bởi dòng `*`.\n- Khối 2: các lệnh `find k` hoặc `insert k`, kết thúc bởi dòng `***`.",
+  "output_spec": "Mỗi truy vấn in ra `0` hoặc `1` trên một dòng.",
+  "samples": [
+    {
+      "input": "computer\nuniversity\nschool\ntechnology\nphone\n*\nfind school\nfind book\ninsert book\nfind algorithm\nfind book\ninsert book\n***",
+      "output": "1\n0\n1\n0\n1\n0"
+    }
+  ],
+  "theory_chapter": "chap1",
+  "mindset": "Dùng `unordered_set<string> db` (hoặc `set<string>`). Lưu ý phương thức `db.insert(k).second` trong C++ trả về trực tiếp `true` nếu chèn mới thành công và `false` nếu đã tồn tại!",
+  "hints": [
+    "Dùng `while (cin >> s && s != \"*\")` cho khối 1 và `while (cin >> cmd && cmd != \"***\")` cho khối 2."
+  ],
+  "complexity": "O((N + Q) * |key|)",
+  "id": "hs-store-search-string",
+  "test_count": 10
+}

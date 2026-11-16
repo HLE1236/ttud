@@ -1,0 +1,31 @@
+{
+  "title": "[HUSTack] Kiểm tra phần tử đã xuất hiện trước đó (Set Exist)",
+  "track": "midterm",
+  "topic": "hash-prefix",
+  "difficulty": "Cơ bản",
+  "exam_tags": [
+    "HUSTack Project1 (ipmac-set-exist)",
+    "HUSTack: Đã AC"
+  ],
+  "time_limit_ms": 1000,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho dãy số nguyên `A_1, A_2, ..., A_n`. Với mỗi phần tử `A_i` (`1 <= i <= n`), hãy kiểm tra xem trước đó (tức tồn tại `j < i`) đã từng có phần tử `A_j == A_i` hay chưa.",
+  "input_spec": "- Dòng 1: `n` (`1 <= n <= 100000`)\n- Dòng 2: `n` số nguyên `A_1, ..., A_n` (`1 <= A_i <= 10^9`).",
+  "output_spec": "Gồm `n` dòng, dòng thứ `i` in ra `1` nếu đã xuất hiện trước đó, ngược lại in ra `0`.",
+  "samples": [
+    {
+      "input": "5\n1 4 3 1 4",
+      "output": "0\n0\n0\n1\n1"
+    }
+  ],
+  "theory_chapter": "chap1",
+  "mindset": "Vì `A_i` lên tới `10^9` nên không thể dùng mảng đánh dấu trực tiếp. Ta dùng `unordered_set<int> seen` (hoặc `set<int>`): với mỗi `A_i`, nếu `seen.count(A_i)` thì in `1`, ngược lại in `0` rồi `seen.insert(A_i)`.",
+  "hints": [
+    "Với `unordered_set`, nên gọi `seen.reserve(n * 2)` để tránh rehash giữa chừng."
+  ],
+  "complexity": "O(n) trung bình (unordered_set) hoặc O(n log n) (set)",
+  "id": "hs-set-exist",
+  "test_count": 10
+}

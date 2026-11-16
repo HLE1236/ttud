@@ -1,0 +1,102 @@
+U0031 P09 13:06:33 OK 1
+U0066 P11 22:44:49 ERR 0
+U0196 P10 06:36:54 ERR 0
+U0122 P03 12:54:57 ERR 0
+U0087 P06 05:01:39 OK 6
+U0040 P02 04:08:26 OK 7
+U0044 P04 01:36:41 OK 3
+U0036 P14 19:50:54 ERR 0
+U0115 P10 23:35:06 ERR 0
+U0106 P13 00:09:52 ERR 0
+U0013 P03 20:44:26 ERR 0
+U0092 P09 22:24:29 OK 1
+U0066 P10 23:41:17 ERR 0
+U0008 P04 23:44:38 OK 1
+U0011 P02 19:26:51 OK 5
+U0003 P14 21:17:34 ERR 0
+U0117 P13 02:00:07 OK 8
+U0087 P06 21:55:07 OK 9
+U0045 P01 16:43:23 ERR 0
+U0124 P06 06:47:01 OK 1
+U0052 P13 12:17:31 OK 4
+U0156 P14 09:44:03 OK 1
+U0162 P06 07:38:21 OK 4
+U0174 P07 21:23:31 OK 1
+U0186 P11 12:52:10 ERR 0
+U0073 P12 01:32:05 ERR 0
+U0021 P07 10:41:39 ERR 0
+U0018 P06 04:43:19 ERR 0
+U0049 P06 18:13:21 OK 2
+U0007 P03 12:36:44 OK 9
+U0137 P05 15:26:29 OK 2
+U0141 P04 16:49:04 OK 6
+U0105 P13 22:07:34 OK 9
+U0024 P02 12:23:58 ERR 0
+U0089 P11 06:08:21 OK 1
+U0021 P09 07:44:18 OK 5
+U0158 P04 23:32:17 OK 10
+U0190 P01 09:05:23 OK 8
+U0044 P09 23:16:25 OK 1
+U0143 P12 04:49:59 OK 10
+U0153 P02 21:51:55 ERR 0
+U0050 P12 08:39:00 ERR 0
+U0090 P07 01:04:35 OK 9
+U0035 P08 21:24:56 OK 6
+U0042 P07 02:06:22 OK 7
+U0045 P12 08:54:30 OK 7
+U0180 P03 01:24:48 ERR 0
+U0197 P01 18:04:18 ERR 0
+U0017 P03 08:05:43 OK 7
+U0176 P07 14:25:02 OK 9
+#
+?total_point_of_user U0011
+?number_error_submision
+?number_error_submision
+?number_error_submision_of_user U0091
+?total_point_of_user U0103
+?total_number_submissions
+?number_error_submision_of_user U0136
+?number_error_submision_of_user U0161
+?number_submission_period 08:22:01 15:26:34
+?number_error_submision
+?number_error_submision_of_user U0117
+?number_error_submision
+?number_error_submision_of_user U0092
+?number_submission_period 06:02:48 19:33:28
+?total_point_of_user U0191
+?total_point_of_user U0165
+?number_submission_period 00:40:34 21:31:34
+?number_error_submision
+?number_error_submision_of_user U0190
+?total_point_of_user U0100
+?total_point_of_user U0147
+?number_error_submision
+?number_submission_period 10:45:29 18:54:58
+?number_error_submision_of_user U0038
+?number_error_submision
+?number_error_submision
+?total_number_submissions
+?total_point_of_user U0165
+?number_error_submision
+?total_point_of_user U0194
+?number_error_submision_of_user U0195
+?total_number_submissions
+?number_submission_period 04:47:56 22:20:35
+?total_point_of_user U0146
+?number_error_submision
+?number_error_submision
+?total_point_of_user U0024
+?number_error_submision_of_user U0024
+?number_error_submision
+?total_point_of_user U0131
+?number_error_submision_of_user U0120
+?total_number_submissions
+?number_error_submision
+?number_submission_period 07:14:33 19:31:56
+?total_number_submissions
+?total_point_of_user U0124
+?number_submission_period 06:33:43 11:08:06
+?number_error_submision_of_user U0109
+?total_number_submissions
+?number_error_submision_of_user U0103
+#

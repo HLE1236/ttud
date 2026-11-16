@@ -1,0 +1,102 @@
+C0009 P001 984 S004 23:42:16
+C0047 P001 970 S022 16:27:50
+C0028 P001 848 S028 01:43:16
+C0009 P001 934 S015 13:54:02
+C0007 P001 755 S008 05:47:27
+C0036 P001 325 S023 09:33:34
+C0019 P001 307 S017 08:04:58
+C0032 P001 745 S017 18:57:11
+C0022 P001 757 S016 18:49:46
+C0005 P001 370 S008 16:56:28
+C0041 P001 622 S015 22:16:48
+C0031 P001 55 S018 22:25:23
+C0046 P001 107 S009 18:36:42
+C0037 P001 600 S023 00:14:16
+C0007 P001 859 S008 13:23:48
+C0005 P001 628 S029 03:43:01
+C0037 P001 373 S026 07:20:05
+C0006 P001 16 S002 19:31:47
+C0011 P001 42 S028 03:56:04
+C0021 P001 303 S011 13:06:33
+C0048 P001 470 S025 05:58:16
+C0035 P001 507 S012 00:33:31
+C0047 P001 539 S010 16:23:21
+C0004 P001 639 S011 05:12:10
+C0023 P001 310 S018 07:11:30
+C0039 P001 99 S025 04:47:16
+C0035 P001 888 S007 06:38:35
+C0016 P001 342 S009 12:29:04
+C0014 P001 233 S001 08:49:28
+C0025 P001 313 S017 17:25:12
+C0037 P001 824 S007 05:03:12
+C0001 P001 144 S008 23:10:53
+C0045 P001 87 S028 13:13:09
+C0001 P001 61 S010 12:43:09
+C0030 P001 144 S003 02:52:50
+C0020 P001 156 S025 13:34:08
+C0004 P001 828 S005 00:31:42
+C0007 P001 913 S029 12:12:46
+C0037 P001 395 S008 01:48:15
+C0037 P001 351 S025 12:03:20
+C0008 P001 286 S025 06:58:24
+C0037 P001 675 S016 15:32:17
+C0025 P001 412 S018 19:32:45
+C0007 P001 868 S014 00:43:01
+C0024 P001 781 S018 23:48:08
+C0025 P001 451 S023 18:39:32
+C0023 P001 432 S029 19:48:27
+C0022 P001 618 S017 17:25:32
+C0010 P001 858 S007 12:19:59
+C0016 P001 339 S029 13:07:23
+#
+?total_number_orders
+?total_revenue
+?revenue_of_shop S024
+?total_revenue_in_period 11:58:40 13:32:43
+?total_revenue_in_period 05:22:22 21:03:00
+?total_number_orders
+?total_consume_of_customer_shop C0011 S018
+?revenue_of_shop S025
+?total_number_orders
+?revenue_of_shop S024
+?total_consume_of_customer_shop C0033 S007
+?total_consume_of_customer_shop C0042 S022
+?revenue_of_shop S020
+?total_revenue
+?revenue_of_shop S024
+?total_number_orders
+?revenue_of_shop S010
+?total_consume_of_customer_shop C0015 S022
+?total_revenue
+?total_number_orders
+?total_revenue
+?total_revenue
+?total_number_orders
+?total_revenue
+?total_number_orders
+?total_revenue
+?total_number_orders
+?total_number_orders
+?total_number_orders
+?total_revenue
+?total_revenue
+?total_consume_of_customer_shop C0009 S027
+?total_consume_of_customer_shop C0001 S012
+?total_consume_of_customer_shop C0015 S014
+?total_number_orders
+?total_number_orders
+?total_consume_of_customer_shop C0045 S024
+?total_revenue_in_period 08:20:28 22:01:07
+?revenue_of_shop S005
+?total_revenue
+?total_revenue_in_period 13:12:02 16:16:27
+?total_revenue
+?total_revenue
+?total_number_orders
+?total_consume_of_customer_shop C0031 S002
+?total_consume_of_customer_shop C0006 S008
+?total_number_orders
+?revenue_of_shop S015
+?total_number_orders
+?total_number_orders
+#

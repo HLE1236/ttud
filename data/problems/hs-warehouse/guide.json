@@ -1,0 +1,7 @@
+{
+  "pattern": "dp-grid",
+  "recognize": "Chọn dãy trạm tăng dần cách nhau `<= D`, tổng thời gian `<= T` (`N <= 1000, T <= 100, D <= 10`) -> **QHĐ 2D `dp[i][t]`**.",
+  "idea": "`dp[i][t]` = lượng hàng tối đa khi dừng cuối ở trạm `i` với tổng thời gian `t`. Thử mọi trạm `j` trong `[i-D .. i-1]`.",
+  "pseudocode": "for i = 1..N:\n  if t[i] <= T: dp[i][t[i]] = a[i]\n  for j = max(1, i - D) .. i - 1:\n    for tm = t[i] .. T:\n      if dp[j][tm - t[i]] >= 0:\n        dp[i][tm] = max(dp[i][tm], dp[j][tm - t[i]] + a[i])",
+  "skeleton_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    int N, T, D; cin >> N >> T >> D;\n    vector<int> a(N + 1), t(N + 1);\n    for (int i = 1; i <= N; i++) cin >> a[i];\n    for (int i = 1; i <= N; i++) cin >> t[i];\n    vector<vector<int>> dp(N + 1, vector<int>(T + 1, -1));\n    // TODO: Dien bang dp[i][tm] va tim gia tri lon nhat\n    return 0;\n}\n"
+}

@@ -1,0 +1,31 @@
+{
+  "title": "[HUSTack] Phân tích đơn hàng thương mại điện tử (Analyze Sales Order)",
+  "track": "final",
+  "topic": "hash-prefix",
+  "difficulty": "Trung bình",
+  "exam_tags": [
+    "HUSTack Project1 (ANALYZE_SALES_ORDER_E_COMMERCE)",
+    "HUSTack: Đã AC"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Dữ liệu đơn hàng của một sàn TMĐT gồm các dòng dạng `<CustomerID> <ProductID> <Price> <ShopID> <TimePoint>` (`TimePoint` dạng `HH:MM:SS`), kết thúc bằng `#`.\nSau đó là khối truy vấn (tối đa `10^5` dòng, kết thúc bằng `#`), gồm 5 loại:\n- `?total_number_orders`: tổng số đơn hàng.\n- `?total_revenue`: tổng doanh thu toàn sàn.\n- `?revenue_of_shop <ShopID>`: tổng doanh thu của cửa hàng `<ShopID>`.\n- `?total_consume_of_customer_shop <CustomerID> <ShopID>`: tổng tiền khách `<CustomerID>` mua tại `<ShopID>`.\n- `?total_revenue_in_period <from_time> <to_time>`: tổng doanh thu trong khoảng thời gian `[from_time, to_time]`.",
+  "input_spec": "Khối dữ liệu đơn hàng (tối đa `10^5` dòng), `#`, khối truy vấn (tối đa `10^5` dòng), `#`.",
+  "output_spec": "Mỗi truy vấn in một số nguyên trên một dòng.",
+  "samples": [
+    {
+      "input": "C001 P001 10 SHOP001 10:30:10\nC001 P002 30 SHOP001 12:30:10\nC003 P001 40 SHOP002 10:15:20\nC001 P001 80 SHOP002 08:40:10\nC002 P001 130 SHOP001 10:30:10\nC002 P001 160 SHOP003 11:30:20\n#\n?total_number_orders\n?total_revenue\n?revenue_of_shop SHOP001\n?total_consume_of_customer_shop C001 SHOP001\n?total_revenue_in_period 10:00:00 18:40:45\n#",
+      "output": "6\n450\n170\n40\n370"
+    }
+  ],
+  "theory_chapter": "chap5",
+  "mindset": "Chuẩn bài **Xử lý dữ liệu + Bảng băm + Mảng cộng dồn theo giây** của Cuối kỳ HUST:\n1. Đổi `HH:MM:SS` thành giây nguyên `s = h*3600 + m*60 + sec` trong `[0..86399]`.\n2. Cộng dồn doanh thu từng giây vào `revSec[s]`, rồi dựng mảng cộng dồn `pref[0..86400]` để trả lời `?total_revenue_in_period` trong `O(1)`!\n3. Dùng `unordered_map<string, long long>` cho `shopRev[shop]` và `custShop[cust + \"#\" + shop]`.",
+  "hints": [
+    "Nếu chưa có dữ liệu về một `<ShopID>` hoặc cặp `<CustomerID, ShopID>`, giá trị mặc định trong map là `0`."
+  ],
+  "complexity": "O(N + Q + 86400)",
+  "id": "hs-analyze-sales-order",
+  "test_count": 10
+}

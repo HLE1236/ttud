@@ -1,0 +1,32 @@
+{
+  "title": "[HUSTack] Chữ ký hậu tố của xâu (Z-Algorithm / SIGNATURE)",
+  "track": "final",
+  "topic": "hash-prefix",
+  "difficulty": "Trung bình",
+  "exam_tags": [
+    "HUSTack Programming Advanced (suffix-signature)",
+    "HUSTack: Chưa làm"
+  ],
+  "time_limit_ms": 1000,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Độ tương đồng của hai xâu `A` và `B` là độ dài tiền tố chung dài nhất (LCP) tính từ vị trí đầu tiên của hai xâu (ví dụ `abc` và `abd` có độ tương đồng là `2`).\n\n**Chữ ký hậu tố** của một xâu `S` là tổng độ tương đồng của `S` với tất cả các hậu tố của chính nó (bao gồm cả hậu tố bắt đầu từ vị trí `0` là chính `S`). Hãy tính chữ ký hậu tố cho `t` xâu.",
+  "input_spec": "- Dòng 1: số lượng xâu `t` (`1 <= t <= 10`)\n- `t` dòng tiếp theo: mỗi dòng là một xâu `S` gồm các chữ cái thường `'a'..'z'` (`1 <= |S| <= 100000`).",
+  "output_spec": "In ra `t` dòng, mỗi dòng là chữ ký hậu tố của xâu tương ứng.",
+  "samples": [
+    {
+      "input": "2\nababaa\naa",
+      "output": "11\n3"
+    }
+  ],
+  "theory_chapter": "chap1",
+  "mindset": "Đây là ứng dụng trực tiếp nhất của **thuật toán Z (Z-function)**!\nMảng `z[i]` chính là độ dài tiền tố chung dài nhất giữa `S` và hậu tố `S[i..n-1]`. Do đó đáp án đơn giản là `n + sum(z[i] với i = 1..n-1)`.\nNhớ dùng `long long` vì với xâu `\"aaaa...\"` dài `10^5`, tổng đạt `n * (n + 1) / 2 ~ 5 * 10^9` vượt kiểu `int`!",
+  "hints": [
+    "Dùng `Z-box [l, r]` để tính toàn bộ mảng `z[]` trong `O(n)`.",
+    "Kiểu kết quả bắt buộc là `long long`."
+  ],
+  "complexity": "O(t * |S|)",
+  "id": "hs-suffix-signature",
+  "test_count": 10
+}

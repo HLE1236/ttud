@@ -1,0 +1,7 @@
+{
+  "pattern": "binary-subset",
+  "recognize": "Liệt kê theo thứ tự từ điển tất cả xâu nhị phân độ dài `n <= 16` **chứa ít nhất một lần `'111'`**.\n- `n <= 16` + *liệt kê theo thứ tự từ điển* → **Quay lui sinh nhị phân** truyền thêm trạng thái đếm số bit `'1'` liên tiếp ở cuối.",
+  "idea": "Viết `Try(i, c1, has)`:\n- `c1`: số ký tự `'1'` liên tiếp ngay trước vị trí `i`.\n- `has`: `true` nếu xâu đã từng xuất hiện `'111'`.\n- **Cắt tỉa**: nếu `!has` mà `c1 + (n - i) < 3` (dù điền toàn `'1'` ở phần còn lại cũng không đủ 3 số `'1'` liên tiếp) → `return` ngay!",
+  "pseudocode": "hàm Try(i, c1, has):\n    nếu không has và c1 + (n - i) < 3: return\n    nếu i == n:\n        in s\n        return\n    s[i] = '0'; Try(i + 1, 0, has)\n    s[i] = '1'; Try(i + 1, c1 + 1, has hoặc (c1 + 1 >= 3))",
+  "skeleton_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint n;\nstring s;\n\nvoid Try(int i, int c1, bool has) {\n    // TODO 1: Cắt tỉa nếu !has và c1 + (n - i) < 3\n\n    // TODO 2: Nếu i == n thì in s và return\n\n    // TODO 3: Thử s[i] = '0' (reset c1 về 0) rồi thử s[i] = '1' (tăng c1, cập nhật has)\n}\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    if (!(cin >> n)) return 0;\n    s.assign(n, '0');\n    Try(0, 0, false);\n    return 0;\n}\n"
+}

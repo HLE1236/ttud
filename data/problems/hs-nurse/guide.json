@@ -1,0 +1,7 @@
+{
+  "pattern": "dp-1d",
+  "recognize": "Đếm số lịch trực `N <= 1000` ngày (`1` là làm, `0` là nghỉ): mỗi đợt làm dài `[K1, K2]`, giữa 2 đợt có **đúng 1 ngày nghỉ**.\n- `N <= 1000`, đếm số cách theo ngày kết thúc → **QHĐ 1 chiều chia 2 trạng thái** (`dp0`, `dp1`).",
+  "idea": "Đặt:\n- `dp0[i]` = số lịch hợp lệ cho `i` ngày đầu mà **ngày `i` là ngày nghỉ (`0`)**.\n- `dp1[i]` = số lịch hợp lệ cho `i` ngày đầu mà **ngày `i` kết thúc một đợt làm (`1`)**.\nCông thức:\n- `dp0[i] = dp1[i - 1]` (vì không thể nghỉ 2 ngày liên tiếp).\n- `dp1[i] = tổng dp0[i - k]` với `k` chạy từ `K1` đến `K2` (với `i - k >= 0`, và đặt `dp0[0] = dp1[0] = 1`).\nĐáp án: `(dp0[N] + dp1[N]) % MOD`.",
+  "pseudocode": "dp0[0] = 1, dp1[0] = 1\ncho i từ 1 đến N:\n    dp0[i] = dp1[i - 1]\n    dp1[i] = tổng dp0[i - k] với k từ K1 đến K2 (nếu i - k >= 0) chia dư MOD\nin (dp0[N] + dp1[N]) % MOD",
+  "skeleton_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int N, K1, K2;\n    if (!(cin >> N >> K1 >> K2)) return 0;\n\n    const long long MOD = 1000000007LL;\n    vector<long long> dp0(N + 1, 0), dp1(N + 1, 0);\n    dp0[0] = dp1[0] = 1;\n\n    // TODO: Với i = 1..N, tính dp0[i] và dp1[i] theo modulo MOD\n\n    cout << (dp0[N] + dp1[N]) % MOD << '\\n';\n    return 0;\n}\n"
+}

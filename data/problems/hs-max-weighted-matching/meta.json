@@ -1,0 +1,31 @@
+{
+  "title": "[HUSTack] Cặp ghép có trọng số lớn nhất trên đồ thị hai phía (Max Weighted Matching)",
+  "track": "final",
+  "topic": "graph-special",
+  "difficulty": "Khó",
+  "exam_tags": [
+    "HUSTack Programming Advanced (MAX_WEIGHTED_MATCHING)",
+    "HUSTack: Chưa làm"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho đồ thị hai phía `G = (X, Y, E)` trong đó tập `X` có `n` đỉnh (`1..n`), tập `Y` có `m` đỉnh (`1..m`) và `K` cạnh nối `(u, v)` (`u in X, v in Y`) với trọng số `w = c(u, v)`. Hãy tìm một cặp ghép (matching) trên `G` sao cho **tổng trọng số các cạnh được chọn là lớn nhất**.",
+  "input_spec": "- Dòng 1: `n, m` (`1 <= n, m <= 200`)\n- Dòng 2: số cạnh `K`\n- `K` dòng tiếp theo: `u, v, w` (`1 <= u <= n`, `1 <= v <= m`, `1 <= w <= 10000`).",
+  "output_spec": "Tổng trọng số lớn nhất của cặp ghép tìm được.",
+  "samples": [
+    {
+      "input": "4 4\n8\n1 2 1\n1 4 7\n2 1 1\n2 3 2\n3 2 6\n3 3 9\n4 3 8\n4 4 9",
+      "output": "22"
+    }
+  ],
+  "theory_chapter": "chap5",
+  "mindset": "Mô hình hóa thành bài toán **Luồng chi phí nhỏ nhất (Min-Cost Flow)**:\n- Tạo đỉnh nguồn `S` nối tới mỗi đỉnh `u in X` (dung lượng `1`, chi phí `0`).\n- Với mỗi cạnh `(u, v, w)`, thêm cung `u -> v` (dung lượng `1`, chi phí **`-w`**).\n- Nối mỗi đỉnh `v in Y` tới đích `T` (dung lượng `1`, chi phí `0`).\n\nDùng thuật toán tìm đường tăng ngắn nhất (SPFA hoặc Dijkstra với thế Johnson) đẩy từng đơn vị luồng từ `S` đến `T`. **Dừng ngay** khi chi phí đường tăng `dist[T] >= 0` (vì đẩy thêm sẽ làm giảm tổng trọng số!). Đáp án là `-totalCost`.",
+  "hints": [
+    "Chú ý có thể có nhiều cạnh song song giữa cùng cặp `(u, v)` hoặc không cần chọn đủ `min(n, m)` cạnh nếu trọng số có số âm."
+  ],
+  "complexity": "O(min(n, m) * K * log V) với Johnson Dijkstra hoặc SPFA",
+  "id": "hs-max-weighted-matching",
+  "test_count": 10
+}

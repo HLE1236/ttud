@@ -1,0 +1,22 @@
+MakeRoot 1
+Insert 2 1
+Insert 3 2
+Insert 4 2
+PostOrder
+Insert 5 4
+Insert 6 3
+Insert 7 6
+Insert 8 2
+Insert 9 2
+Insert 10 9
+InOrder
+Insert 11 7
+Insert 12 7
+Insert 13 3
+InOrder
+Insert 14 11
+Insert 15 8
+PreOrder
+InOrder
+PostOrder
+*

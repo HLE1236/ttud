@@ -1,0 +1,32 @@
+{
+  "title": "[HUSTack] Mô phỏng cây Fenwick (Binary Indexed Tree)",
+  "track": "midterm",
+  "topic": "hash-prefix",
+  "difficulty": "Trung bình",
+  "exam_tags": [
+    "HUSTack Programming Advanced (SIM_FENWICK_TREE)",
+    "HUSTack: Chưa làm"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho dãy `n` số nguyên `a[1], a[2], ..., a[n]`. Thực hiện `Q` thao tác thuộc 2 loại:\n- `sum k`: trả về tổng tiền tố `a[1] + a[2] + ... + a[k]`.\n- `update k v`: cập nhật gán giá trị `a[k] = v`.",
+  "input_spec": "- Dòng 1: `n` (`1 <= n <= 1000000`)\n- Dòng 2: `a[1], a[2], ..., a[n]` (`1 <= a[i] <= 100`)\n- Dòng 3: `Q` (`1 <= Q <= 1000000`)\n- `Q` dòng tiếp theo: mỗi dòng là một lệnh `sum k` hoặc `update k v` (`1 <= v <= 1000`).",
+  "output_spec": "Với mỗi lệnh `sum k`, in ra tổng tìm được trên một dòng.",
+  "samples": [
+    {
+      "input": "10\n2 8 5 1 10 5 9 9 3 5\n5\nupdate 6 2\nupdate 2 2\nupdate 3 8\nsum 2\nsum 3",
+      "output": "4\n12"
+    }
+  ],
+  "theory_chapter": "chap2",
+  "mindset": "**Fenwick Tree (BIT)** nhỏ gọn hơn Segment Tree gấp 4 lần bộ nhớ và chạy cực nhanh với `n, Q = 10^6`:\n- Vì lệnh `update k v` là **gán** `a[k] = v` (trong khi BIT cộng dồn độ chênh lệch), ta lưu thêm mảng `a[]` hiện tại, tính `delta = v - a[k]`, gán `a[k] = v` rồi gọi `add(k, delta)`.\n- Hàm `add(idx, delta)`: `for (; idx <= n; idx += idx & -idx) bit[idx] += delta;`.\n- Hàm `query(idx)`: `for (; idx > 0; idx -= idx & -idx) s += bit[idx];`.",
+  "hints": [
+    "Có thể dựng BIT ban đầu trong `O(n)` bằng `for i = 1..n: j = i + (i & -i); if (j <= n) bit[j] += bit[i];`.",
+    "Dùng `long long` cho mảng `bit[]` và kết quả `sum`."
+  ],
+  "complexity": "O(n + Q log n)",
+  "id": "hs-sim-fenwick-tree",
+  "test_count": 10
+}

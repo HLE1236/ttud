@@ -1,0 +1,102 @@
+C0044 P001 826 S018 09:48:26
+C0027 P001 110 S026 02:09:41
+C0022 P001 922 S029 20:11:35
+C0011 P001 382 S024 23:56:17
+C0046 P001 429 S024 07:18:51
+C0022 P001 521 S013 13:00:37
+C0017 P001 96 S026 02:54:06
+C0027 P001 742 S018 07:42:13
+C0029 P001 913 S021 05:34:38
+C0036 P001 932 S018 14:48:44
+C0021 P001 291 S019 00:20:11
+C0023 P001 214 S013 05:44:13
+C0010 P001 363 S003 03:48:53
+C0028 P001 340 S001 22:16:14
+C0033 P001 936 S004 22:58:31
+C0050 P001 135 S006 12:01:29
+C0001 P001 736 S009 04:01:23
+C0037 P001 568 S003 03:21:33
+C0006 P001 436 S018 15:47:54
+C0025 P001 619 S006 15:36:41
+C0014 P001 738 S026 22:52:08
+C0047 P001 851 S025 19:24:13
+C0001 P001 734 S001 10:09:19
+C0026 P001 694 S004 19:38:41
+C0018 P001 530 S003 03:42:05
+C0013 P001 841 S018 13:44:42
+C0045 P001 188 S028 15:05:21
+C0005 P001 483 S029 13:23:04
+C0009 P001 447 S008 16:01:21
+C0044 P001 194 S005 18:00:20
+C0004 P001 801 S027 23:50:43
+C0019 P001 891 S009 16:23:23
+C0038 P001 650 S021 03:34:21
+C0026 P001 119 S029 09:26:22
+C0040 P001 570 S017 21:57:35
+C0004 P001 282 S021 07:45:14
+C0016 P001 487 S020 06:25:26
+C0016 P001 172 S009 23:58:02
+C0004 P001 148 S022 15:04:44
+C0050 P001 129 S015 22:52:06
+C0034 P001 474 S006 03:15:21
+C0039 P001 504 S008 02:15:05
+C0036 P001 670 S008 14:26:21
+C0034 P001 515 S019 15:53:48
+C0041 P001 429 S002 00:34:37
+C0041 P001 83 S016 03:39:55
+C0022 P001 145 S008 00:05:12
+C0027 P001 422 S029 21:05:54
+C0016 P001 996 S019 04:16:44
+C0032 P001 684 S027 23:24:56
+#
+?total_revenue
+?total_consume_of_customer_shop C0014 S010
+?revenue_of_shop S010
+?total_revenue
+?total_revenue_in_period 19:46:43 22:00:38
+?total_consume_of_customer_shop C0002 S021
+?total_revenue
+?total_revenue
+?total_revenue
+?total_number_orders
+?revenue_of_shop S016
+?total_revenue_in_period 09:25:09 14:18:02
+?total_revenue
+?total_revenue_in_period 16:07:40 17:02:23
+?total_revenue_in_period 02:32:41 04:16:46
+?total_number_orders
+?revenue_of_shop S021
+?total_revenue_in_period 02:20:03 11:33:30
+?total_number_orders
+?total_number_orders
+?revenue_of_shop S008
+?total_revenue
+?total_consume_of_customer_shop C0034 S009
+?total_number_orders
+?total_number_orders
+?revenue_of_shop S006
+?total_revenue
+?total_number_orders
+?total_revenue
+?revenue_of_shop S016
+?total_revenue
+?total_number_orders
+?total_consume_of_customer_shop C0048 S012
+?total_consume_of_customer_shop C0021 S003
+?revenue_of_shop S024
+?revenue_of_shop S029
+?total_consume_of_customer_shop C0018 S012
+?total_revenue
+?total_number_orders
+?total_revenue_in_period 17:54:22 23:53:41
+?total_revenue_in_period 08:25:03 18:06:10
+?total_consume_of_customer_shop C0018 S017
+?total_revenue_in_period 09:43:59 16:05:01
+?total_consume_of_customer_shop C0007 S008
+?revenue_of_shop S011
+?total_revenue_in_period 14:11:11 22:35:52
+?total_number_orders
+?total_consume_of_customer_shop C0043 S006
+?total_revenue
+?revenue_of_shop S021
+#

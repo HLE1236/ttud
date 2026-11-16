@@ -1,0 +1,36 @@
+{
+  "title": "[HUSTack] Tính giá trị biểu thức có dấu ngoặc +, *, ()",
+  "track": "midterm",
+  "topic": "array-basic",
+  "difficulty": "Trung bình",
+  "exam_tags": [
+    "HUSTack Project1 (EVALUATE_EXPRESSION_ADD_MUL)",
+    "HUSTack: Đã AC"
+  ],
+  "time_limit_ms": 1000,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho một xâu biểu diễn biểu thức toán học gồm các số nguyên dương, phép cộng `+`, phép nhân `*` và dấu ngoặc tròn `(`, `)` (có thể có khoảng trắng). Hãy kiểm tra tính hợp lệ cú pháp và tính giá trị `Q` của biểu thức theo modulo `10^9 + 7`.",
+  "input_spec": "Một dòng duy nhất chứa xâu biểu thức (tối đa `10000` phép toán).",
+  "output_spec": "In ra `Q mod (10^9 + 7)` nếu hợp lệ; ngược lại in ra `NOT_CORRECT`.",
+  "samples": [
+    {
+      "input": "(2+4*10)*(5) + 7",
+      "output": "217"
+    },
+    {
+      "input": "((2+4*10)*(5) + 7",
+      "output": "NOT_CORRECT"
+    }
+  ],
+  "theory_chapter": "chap1",
+  "mindset": "Có dấu ngoặc và độ ưu tiên `* > +`, cách cài sạch nhất và ít lỗi nhất là **Bộ phân tích đệ quy (Recursive Descent Parser)**:\n- `parseExpr()`: đọc `parseTerm()`, lặp khi gặp `+` thì cộng thêm `parseTerm()`.\n- `parseTerm()`: đọc `parseFactor()`, lặp khi gặp `*` thì nhân thêm `parseFactor()`.\n- `parseFactor()`: nếu là số thì trả về giá trị số; nếu là `(` thì gọi `parseExpr()` rồi bắt buộc phải gặp `)`; ngược lại báo lỗi cú pháp!",
+  "hints": [
+    "Sau khi `parseExpr()` kết thúc, con trỏ token phải đi hết toàn bộ mảng token (nếu còn dư ký tự hoặc dấu `)` thừa thì báo `NOT_CORRECT`).",
+    "Kiểm tra kỹ trường hợp ngoặc rỗng `()` hoặc hai số đứng cạnh nhau `(2)(3)`."
+  ],
+  "complexity": "O(|S|)",
+  "id": "hs-eval-expr-paren",
+  "test_count": 10
+}

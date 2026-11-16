@@ -1,0 +1,31 @@
+{
+  "title": "[HUSTack] Đếm dãy con k phần tử liên tiếp có tổng chẵn (k-Subsequence Even)",
+  "track": "midterm",
+  "topic": "hash-prefix",
+  "difficulty": "Cơ bản",
+  "exam_tags": [
+    "HUSTack Project1 (K_SUBSEQ_EVEN)",
+    "HUSTack: Đã AC"
+  ],
+  "time_limit_ms": 1000,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho dãy số nguyên `a_1, a_2, ..., a_n`. Một `k`-dãy con là đoạn gồm `k` phần tử liên tiếp `a_i, a_{i+1}, ..., a_{i+k-1}`. Trọng số của một `k`-dãy con là tổng các phần tử của nó.\n\nHãy đếm số lượng `Q` các `k`-dãy con có trọng số là **số chẵn**.",
+  "input_spec": "- Dòng 1: hai số nguyên dương `n, k` (`1 <= n <= 100000`, `1 <= k <= n/2`)\n- Dòng 2: `n` số nguyên `a_1, a_2, ..., a_n` (`1 <= a_i <= 10000`).",
+  "output_spec": "Ghi giá trị `Q`.",
+  "samples": [
+    {
+      "input": "6 3\n2 4 5 1 1 2",
+      "output": "2"
+    }
+  ],
+  "theory_chapter": "chap2",
+  "mindset": "Dùng **cửa sổ trượt (Sliding Window)** độ dài cố định `k`: tính tổng `k` phần tử đầu tiên `win`, nếu `win % 2 == 0` thì tăng `ans`. Khi trượt sang phải thêm `a[i]` và bỏ `a[i - k]`, cập nhật `win += a[i] - a[i - k]` rồi kiểm tra tính chẵn lẻ trong `O(1)`.",
+  "hints": [
+    "Có thể giữ biến `odd_cnt` (số phần tử lẻ trong cửa sổ) hoặc tính tổng `win` trực tiếp bằng `long long`."
+  ],
+  "complexity": "O(n) thời gian, O(n) bộ nhớ",
+  "id": "hs-k-subseq-even",
+  "test_count": 10
+}

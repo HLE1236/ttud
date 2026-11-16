@@ -1,0 +1,7 @@
+{
+  "pattern": "dp-1d",
+  "recognize": "Mở rộng từ bài `gk-no-2-adjacent` (`n <= 10^5`): tổng lớn nhất sao cho **không chọn 3 số liên tiếp**.\n- **QHĐ 1 chiều** xét 3 trường hợp kết thúc tại `i`.",
+  "idea": "Đặt `dp[i]` = tổng lớn nhất chọn từ `a[1..i]` không có 3 số liên tiếp.\nTại vị trí `i` có 3 khả năng:\n1. Bỏ `a[i]`: `dp[i-1]`.\n2. Chọn `a[i]` nhưng bỏ `a[i-1]`: `dp[i-2] + a[i]`.\n3. Chọn cả `a[i]` và `a[i-1]` (bắt buộc bỏ `a[i-2]`): `dp[i-3] + a[i-1] + a[i]`.\nCơ sở: `dp[1] = a[1]`, `dp[2] = a[1] + a[2]`.",
+  "pseudocode": "nếu n >= 1: dp[1] = a[1]\nnếu n >= 2: dp[2] = a[1] + a[2]\ncho i từ 3 đến n:\n    dp[i] = max(dp[i-1], dp[i-2] + a[i], dp[i-3] + a[i-1] + a[i])\nin dp[n]",
+  "skeleton_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int n;\n    if (!(cin >> n)) return 0;\n    vector<long long> a(n + 1), dp(n + 1, 0);\n    for (int i = 1; i <= n; i++) cin >> a[i];\n\n    // TODO 1: Khởi tạo dp[1] (nếu n >= 1) và dp[2] (nếu n >= 2)\n\n    // TODO 2: Vòng lặp i = 3..n cập nhật dp[i] theo 3 trường hợp\n\n    cout << dp[n] << '\\n';\n    return 0;\n}\n"
+}

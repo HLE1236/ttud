@@ -1,0 +1,134 @@
+Q001 4
+Q002 8
+Q003 7
+Q004 3
+Q005 9
+Q006 5
+Q007 8
+Q008 9
+Q009 9
+Q010 3
+#
+A001_0 Q001 0
+A001_1 Q001 0
+A001_2 Q001 1
+A001_3 Q001 0
+A002_0 Q002 0
+A002_1 Q002 0
+A002_2 Q002 0
+A002_3 Q002 1
+A003_0 Q003 0
+A003_1 Q003 0
+A003_2 Q003 1
+A003_3 Q003 0
+A004_0 Q004 1
+A004_1 Q004 0
+A004_2 Q004 0
+A004_3 Q004 0
+A005_0 Q005 1
+A005_1 Q005 0
+A005_2 Q005 0
+A005_3 Q005 0
+A006_0 Q006 0
+A006_1 Q006 1
+A006_2 Q006 0
+A006_3 Q006 0
+A007_0 Q007 0
+A007_1 Q007 0
+A007_2 Q007 1
+A007_3 Q007 0
+A008_0 Q008 1
+A008_1 Q008 0
+A008_2 Q008 0
+A008_3 Q008 0
+A009_0 Q009 0
+A009_1 Q009 0
+A009_2 Q009 0
+A009_3 Q009 1
+A010_0 Q010 0
+A010_1 Q010 0
+A010_2 Q010 1
+A010_3 Q010 0
+#
+U038 T05 A001_3 19:49:37
+U024 T04 A009_3 06:10:08
+U010 T01 A004_0 21:49:09
+U011 T01 A010_3 20:53:32
+U044 T04 A005_3 05:39:49
+U046 T02 A010_0 14:51:12
+U003 T02 A004_2 14:52:14
+U045 T01 A001_1 12:23:59
+U034 T04 A008_1 23:07:38
+U048 T02 A009_0 04:12:06
+U015 T04 A010_0 17:50:39
+U023 T03 A008_0 22:45:05
+U043 T02 A002_0 22:31:32
+U029 T04 A002_3 14:22:30
+U020 T05 A009_3 02:46:22
+U004 T05 A008_3 21:14:24
+U035 T03 A003_3 23:52:58
+U026 T01 A001_1 10:11:52
+U042 T04 A010_1 20:28:39
+U030 T02 A003_1 11:33:56
+U033 T02 A001_0 18:23:45
+U008 T05 A010_0 12:18:14
+U027 T02 A002_1 07:18:07
+U034 T03 A010_2 16:49:26
+U012 T05 A004_0 12:45:25
+U002 T02 A003_1 13:42:34
+U003 T01 A005_3 23:58:06
+U015 T05 A009_0 12:25:00
+U006 T03 A009_3 02:34:52
+U015 T02 A002_0 20:09:15
+U023 T02 A004_3 06:44:51
+U014 T01 A004_0 00:55:20
+U027 T05 A007_2 02:25:59
+U045 T05 A007_3 03:26:06
+U017 T05 A010_3 16:45:06
+U008 T03 A005_0 05:35:42
+U038 T02 A006_0 19:25:33
+U027 T03 A003_1 17:53:59
+U017 T02 A004_0 22:56:00
+U029 T03 A002_3 04:35:53
+#
+?point_user_of_test U010 T05
+?point_user_of_test U019 T01
+?point_user_of_test U027 T01
+?point_user_of_test U033 T02
+?point_user_of_test U040 T05
+?point_user_of_test U023 T03
+?point_user_of_test U048 T02
+?point_user_of_test U041 T05
+?point_user_of_test U032 T01
+?point_user_of_test U044 T02
+?point_user_of_test U042 T01
+?point_user_of_test U019 T04
+?point_user_of_test U040 T03
+?point_user_of_test U039 T03
+?point_user_of_test U040 T03
+?point_user_of_test U029 T03
+?point_user_of_test U020 T03
+?point_user_of_test U002 T03
+?point_user_of_test U025 T03
+?point_user_of_test U040 T05
+?point_user_of_test U015 T04
+?point_user_of_test U018 T03
+?point_user_of_test U010 T02
+?point_user_of_test U048 T05
+?point_user_of_test U022 T04
+?point_user_of_test U032 T02
+?point_user_of_test U044 T01
+?point_user_of_test U046 T04
+?point_user_of_test U033 T02
+?point_user_of_test U026 T02
+?point_user_of_test U007 T05
+?point_user_of_test U015 T03
+?point_user_of_test U012 T02
+?point_user_of_test U042 T03
+?point_user_of_test U002 T02
+?point_user_of_test U041 T03
+?point_user_of_test U015 T04
+?point_user_of_test U024 T04
+?point_user_of_test U030 T01
+?point_user_of_test U027 T05
+###

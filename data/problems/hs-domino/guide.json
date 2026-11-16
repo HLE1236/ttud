@@ -1,0 +1,7 @@
+{
+  "pattern": "dp-1d",
+  "recognize": "Lát bảng `2 x n` bằng gạch `2x1`, `1x2`, `2x2` -> QHĐ 1 chiều `dp[i]`.",
+  "idea": "`dp[i] = (dp[i - 1] + 2 * dp[i - 2]) % MOD`, `dp[0] = 1, dp[1] = 1`.",
+  "pseudocode": "dp[0] = 1; dp[1] = 1\nfor i = 2..n:\n  dp[i] = (dp[i-1] + 2 * dp[i-2]) % MOD",
+  "skeleton_cpp": "#include <bits/stdc++.h>\nusing namespace std;\nconst long long MOD = 1e9 + 7;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    int n; cin >> n;\n    // TODO: Tinh dp[0..n] va in dp[n]\n    return 0;\n}\n"
+}

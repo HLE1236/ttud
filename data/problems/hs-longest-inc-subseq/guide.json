@@ -1,0 +1,7 @@
+{
+  "pattern": "dp-subseq",
+  "recognize": "Tìm độ dài **dãy con tăng ngặt dài nhất (LIS)** với `n <= 10^5`.\n- `n = 10^5` nên QHĐ `O(n^2)` sẽ TLE ở test lớn → cần **LIS `O(n log n)` dùng `lower_bound`**.",
+  "idea": "Duy trì mảng `tail`: `tail[k]` là phần tử kết thúc **nhỏ nhất** trong tất cả các dãy con tăng độ dài `k + 1` đã gặp.\nVì `tail` luôn tăng ngặt, với mỗi `x` đọc vào, dùng `lower_bound(tail.begin(), tail.end(), x)` tìm vị trí đầu tiên `>= x` để ghi đè (giúp phần tử kết thúc nhỏ xuống, dễ nối dài về sau), hoặc `push_back(x)` nếu `x` lớn hơn mọi phần tử trong `tail`.\nĐáp án là `tail.size()`.",
+  "pseudocode": "tạo mảng rỗng tail\nvới mỗi x trong n phần tử:\n    it = lower_bound(tail, x)\n    nếu it == tail.end(): tail.push_back(x)\n    ngược lại: *it = x\nin tail.size()",
+  "skeleton_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int n;\n    if (!(cin >> n)) return 0;\n\n    vector<long long> tail;\n    for (int i = 0; i < n; i++) {\n        long long x;\n        cin >> x;\n        // TODO: Dùng lower_bound trên tail để cập nhật hoặc push_back(x)\n    }\n\n    cout << tail.size() << '\\n';\n    return 0;\n}\n"
+}

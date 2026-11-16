@@ -1,0 +1,7 @@
+{
+  "pattern": "group-partition",
+  "recognize": "`m <= 10, n <= 30`, phân công môn cho giảng viên với ràng buộc xung đột + **cận dưới `LB[t]`** và tối thiểu hóa max load -> **Nhánh và Cận**.",
+  "idea": "Sắp xếp môn theo số GV hợp lệ tăng dần. Tại `Try(idx)`, giữ `load[t]`, `cnt[t]`, `need = tổng max(0, LB[t] - cnt[t])`. Cắt ngay nếu `load[t] + crd[c] >= best` hoặc `n - 1 - idx < new_need`.",
+  "pseudocode": "Try(idx, curMax, need):\n  if n - idx < need: return\n  if idx == n: best = min(best, curMax); return\n  c = order[idx]\n  for t in teachers_of[c]:\n    if load[t] + crd[c] >= best: continue\n    if conflict(c, assigned[t]): continue\n    giao c cho t, cap nhat need\n    Try(idx + 1, max(curMax, load[t]), new_need)\n    hoan tac",
+  "skeleton_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint m, n;\nbool canTeach[15][35], conf[35][35];\nint crd[35], LB[15], loadT[15], cntT[15];\nvector<int> assigned[15];\nint best = 1e9;\n\nvoid Try(int idx, int curMax, int need) {\n    // TODO 1: Cat nhanh neu n - idx < need\n    // TODO 2: Neu idx == n thi best = min(best, curMax) va return\n    // TODO 3: Duyet cac giang vien t hop le, kiem tra xung dot va loadT[t] + crd[c] < best\n}\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    // Doc du lieu va goi Try\n    return 0;\n}\n"
+}

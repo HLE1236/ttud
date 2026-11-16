@@ -1,0 +1,31 @@
+{
+  "title": "[HUSTack] Tính mã băm đa thức của xâu (Hash Over Strings)",
+  "track": "midterm",
+  "topic": "hash-prefix",
+  "difficulty": "Cơ bản",
+  "exam_tags": [
+    "HUSTack Project1 (HASH_FUNCTION_STRING)",
+    "HUSTack: Đã AC"
+  ],
+  "time_limit_ms": 1000,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho xâu `s[1..k]` gồm các chữ cái thường `'a'..'z'` và số nguyên dương `m`. Mã băm của xâu `s` được định nghĩa là:\n`H(s) = (s[1] * 256^(k-1) + s[2] * 256^(k-2) + ... + s[k] * 256^0) mod m`\n(với `s[i]` là mã ASCII của ký tự thứ `i`).\n\nCho `n` xâu `s_1, ..., s_n`, hãy tính mã băm của từng xâu.",
+  "input_spec": "- Dòng 1: hai số nguyên `n` và `m` (`1 <= n, m <= 100000`)\n- `n` dòng tiếp theo: mỗi dòng là một xâu có độ dài không quá `200`.",
+  "output_spec": "Gồm `n` dòng, mỗi dòng là mã băm tương ứng.",
+  "samples": [
+    {
+      "input": "4 1000\na\nab\nabc\nabcd",
+      "output": "97\n930\n179\n924"
+    }
+  ],
+  "theory_chapter": "chap1",
+  "mindset": "Áp dụng **lược đồ Horner** để tính đa thức băm trong `O(|s|)` mà không cần hàm lũy thừa: khởi tạo `h = 0`, duyệt từng ký tự `c` trong `s`: `h = (h * 256 + (int)c) % m`.",
+  "hints": [
+    "Dùng `long long` hoặc `int` (vì `m <= 10^5`, `10^5 * 256 = 2.56 * 10^7` không tràn `int`, nhưng dùng `long long` cho an toàn tuyệt đối)."
+  ],
+  "complexity": "O(tổng độ dài các xâu)",
+  "id": "hs-hash-string",
+  "test_count": 10
+}

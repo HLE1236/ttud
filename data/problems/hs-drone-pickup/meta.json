@@ -1,0 +1,32 @@
+{
+  "title": "[HUSTack] Hành trình Drone thu hàng tối đa K chặng (DRONE PICKUP)",
+  "track": "final",
+  "topic": "dp-grid-3d",
+  "difficulty": "Trung bình",
+  "exam_tags": [
+    "HUSTack Programming Advanced (drone)",
+    "TTUD Codeforces L.05"
+  ],
+  "time_limit_ms": 1000,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Một chiếc drone cần bay từ điểm `1` đến điểm `N` trên đường thẳng gồm các điểm `1, 2, ..., N`. Mỗi điểm `i` có:\n- `c_i`: lượng hàng thu được khi dừng ở điểm `i`.\n- `a_i`: năng lượng nhận được khi dừng ở điểm `i`, cho phép drone bay thẳng đến một điểm bất kỳ trong đoạn `[i + 1 .. min(N, i + a_i)]`.\n\nDrone chỉ được thực hiện tối đa `K` chặng bay (tức dừng tại tối đa `K + 1` điểm, tính cả điểm `1` và điểm `N`). Hãy tính tổng lượng hàng lớn nhất thu được khi đi từ `1` tới `N`, hoặc in `-1` nếu không thể đến `N`.",
+  "input_spec": "- Dòng 1: `N, K` (`1 <= N <= 3000`, `1 <= K <= 50`)\n- Dòng 2: `c_1, c_2, ..., c_N` (`1 <= c_i <= 1000`)\n- Dòng 3: `a_1, a_2, ..., a_N` (`1 <= a_i <= 50`).",
+  "output_spec": "Tổng lượng hàng lớn nhất, hoặc `-1` nếu không đến được `N`.",
+  "samples": [
+    {
+      "input": "6 3\n3 1 4 2 2 2\n2 3 1 1 3 1",
+      "output": "8",
+      "explanation": "Lộ trình 1 -> 2 -> 5 -> 6 (3 chặng bay, 4 điểm dừng) cho tổng hàng 3 + 1 + 2 + 2 = 8."
+    }
+  ],
+  "theory_chapter": "chap4b",
+  "mindset": "Gọi `dp[i][k]` là lượng hàng lớn nhất khi dừng tại điểm `i` sau đúng `k` chặng bay (`0 <= k <= K`).\n- Cơ sở: `dp[1][0] = c[1]`, các trạng thái khác là `-1`.\n- Chuyển trạng thái: từ mỗi trạng thái hợp lệ `(i, k)` với `k < K`, thử nhảy tới mọi `j` từ `i + 1` đến `min(N, i + a[i])`: cập nhật `dp[j][k + 1] = max(dp[j][k + 1], dp[i][k] + c[j])`.\n- Đáp án: `max(dp[N][0..K])`.",
+  "hints": [
+    "Vì `a[i] <= 50`, số phép chuyển trạng thái tối đa chỉ là `N * K * 50 ~ 7.5 * 10^6`, chạy dưới `50 ms`!"
+  ],
+  "complexity": "O(N * K * max(a_i))",
+  "id": "hs-drone-pickup",
+  "test_count": 10
+}

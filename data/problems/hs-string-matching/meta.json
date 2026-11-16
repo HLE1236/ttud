@@ -1,0 +1,32 @@
+{
+  "title": "[HUSTack] Đếm số lần xuất hiện của mẫu trong xâu (String Matching - KMP)",
+  "track": "midterm",
+  "topic": "hash-prefix",
+  "difficulty": "Trung bình",
+  "exam_tags": [
+    "HUSTack Project1 (STRING_MATCHING)",
+    "HUSTack: Đã AC"
+  ],
+  "time_limit_ms": 1000,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho văn bản `T` và mẫu `P` đều là các xâu ký tự (có thể chứa khoảng trắng). Hãy đếm số lần xuất hiện (kể cả chồng lấn) của `P` trong `T`.",
+  "input_spec": "- Dòng 1: xâu mẫu `P` (`1 <= |P| <= 10^5`)\n- Dòng 2: xâu văn bản `T` (`1 <= |T| <= 10^6`)",
+  "output_spec": "Một số nguyên là số lần `P` xuất hiện trong `T`.",
+  "samples": [
+    {
+      "input": "computer\nThere are so many kinds of computers today including high performance computers, laptop computers. Mobile phones are also computers",
+      "output": "4"
+    }
+  ],
+  "theory_chapter": "chap1",
+  "mindset": "Vì `|P| <= 10^5` và `|T| <= 10^6`, nếu dùng `T.find(P)` hoặc so sánh trực tiếp `O(|P| * |T|)` sẽ bị TLE trên các xâu lặp như `P = \"aaa...ab\"`, `T = \"aaa...\"`.\nGiải pháp chuẩn `O(|P| + |T|)` là **thuật toán KMP** (tính mảng tiền tố `pi[]` của `P`, rồi đối khớp qua `T`) hoặc **Rolling Hash**.",
+  "hints": [
+    "Dùng `getline` để đọc `P` và `T` vì cả hai đều có thể chứa khoảng trắng.",
+    "Sau khi khớp đủ `j == |P|`, tăng đáp án và lùi `j = pi[j - 1]` để đếm được cả các lần xuất hiện chồng lấn (ví dụ `\"aa\"` trong `\"aaaa\"` có `3` lần)."
+  ],
+  "complexity": "O(|P| + |T|)",
+  "id": "hs-string-matching",
+  "test_count": 10
+}

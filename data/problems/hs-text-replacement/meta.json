@@ -1,0 +1,32 @@
+{
+  "title": "[HUSTack] Thay thế xâu ký tự trong văn bản (Text Replacement)",
+  "track": "midterm",
+  "topic": "array-basic",
+  "difficulty": "Cơ bản",
+  "exam_tags": [
+    "HUSTack Project1 (TEXT_REPLACEMENT)",
+    "HUSTack: Đã AC"
+  ],
+  "time_limit_ms": 1000,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho văn bản `T` và 2 mẫu `P1`, `P2` đều là các xâu ký tự (không chứa ký tự xuống dòng, độ dài `T` không vượt quá `1000`). Hãy thay thế mọi lần xuất hiện của xâu `P1` trong `T` bằng xâu `P2` (duyệt từ trái sang phải, không chồng lấn).",
+  "input_spec": "- Dòng 1: xâu `P1`\n- Dòng 2: xâu `P2`\n- Dòng 3: văn bản `T`",
+  "output_spec": "Ghi văn bản `T` sau khi đã thay thế.",
+  "samples": [
+    {
+      "input": "AI\nArtificial Intelligence\nRecently, AI is a key technology. AI enable efficient operations in many fields.",
+      "output": "Recently, Artificial Intelligence is a key technology. Artificial Intelligence enable efficient operations in many fields."
+    }
+  ],
+  "theory_chapter": "chap1",
+  "mindset": "Dùng `std::getline` đọc cả dòng (vì `P1`, `P2`, `T` đều có thể chứa khoảng trắng). Sau đó dùng `T.find(P1, pos)` duyệt từ trái sang phải, nối phần trước vị trí tìm thấy và `P2` vào kết quả mới, rồi dịch `pos += P1.size()` để tránh vòng lặp vô hạn khi `P2` chứa `P1`.",
+  "hints": [
+    "Nếu `P1` rỗng thì không thay thế, in nguyên `T`.",
+    "Luôn tăng `pos` lên `pos + P1.size()` (không thay thế chồng lên phần `P2` vừa chèn)."
+  ],
+  "complexity": "O(|T| * |P1|)",
+  "id": "hs-text-replacement",
+  "test_count": 10
+}

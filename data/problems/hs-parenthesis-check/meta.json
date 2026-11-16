@@ -1,0 +1,32 @@
+{
+  "title": "[HUSTack] Kiểm tra dãy ngoặc đúng (Check Parenthesis)",
+  "track": "midterm",
+  "topic": "array-basic",
+  "difficulty": "Cơ bản",
+  "exam_tags": [
+    "HUSTack Project1 (PARENTHESIS_CHECK)",
+    "HUSTack: Đã AC"
+  ],
+  "time_limit_ms": 1000,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho một xâu ký tự chỉ gồm 6 loại ngoặc `(`, `)`, `[`, `]`, `{`, `}`. Hãy kiểm tra xem xâu ngoặc đó có hợp lệ (đóng mở đúng thứ tự và đúng cặp) hay không.\n\nVí dụ: `([]{()}()[])` là hợp lệ (`1`); `([]{()]()[])` là không hợp lệ (`0`).",
+  "input_spec": "Một dòng duy nhất chứa xâu ngoặc có độ dài tối đa `10^6`.",
+  "output_spec": "In ra `1` nếu hợp lệ, ngược lại in ra `0`.",
+  "samples": [
+    {
+      "input": "(()[][]{}){}{}[][]({[]()})",
+      "output": "1"
+    }
+  ],
+  "theory_chapter": "chap1",
+  "mindset": "Bài kinh điển của `std::stack<char>`: gặp ngoặc mở thì `push` vào stack; gặp ngoặc đóng thì kiểm tra stack có rỗng không và phần tử đỉnh có khớp cặp không (`(` với `)`, `[` với `]`, `{` với `}`). Cuối cùng stack phải rỗng hoàn toàn.",
+  "hints": [
+    "Nếu độ dài xâu là số lẻ có thể kết luận ngay `0`.",
+    "Sau khi duyệt hết xâu, nhớ kiểm tra `st.empty()` (tránh trường hợp thừa ngoặc mở như `((()`)."
+  ],
+  "complexity": "O(n) thời gian, O(n) bộ nhớ",
+  "id": "hs-parenthesis-check",
+  "test_count": 10
+}

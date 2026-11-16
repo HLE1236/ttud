@@ -1,0 +1,7 @@
+{
+  "pattern": "related-dnc",
+  "recognize": "Mảng `p[1..n]` (`n <= 10^6`), từ `i` nhảy tới tối đa `i + p[i]`, tìm số bước nhảy ít nhất từ `1` tới `n`.\n- `n <= 10^6` → không thể quay lui hay DP `O(n^2)`, bắt buộc dùng **Tham lam theo tầm với `O(n)`**.",
+  "idea": "Duy trì 2 biên:\n- `curEnd`: vị trí xa nhất có thể tới với `jumps` bước hiện tại.\n- `farthest`: vị trí xa nhất có thể vươn tới nếu nhảy từ một ô nào đó trong `[0..i]`.\nDuyệt `i` từ `0` đến `n - 2`: cập nhật `farthest = max(farthest, i + p[i])`. Khi `i == curEnd`: bắt buộc tăng `jumps++` và đặt `curEnd = farthest` (nếu `farthest <= i` nghĩa là kẹt → trả `-1`).",
+  "pseudocode": "nếu n <= 1: trả 0\njumps = 0, curEnd = 0, farthest = 0\ncho i từ 0 đến n - 2:\n    farthest = max(farthest, i + p[i])\n    nếu i == curEnd:\n        nếu farthest <= i: trả -1\n        jumps++; curEnd = farthest\n        nếu curEnd >= n - 1: break\nnếu curEnd >= n - 1: trả jumps, ngược lại -1",
+  "skeleton_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int T;\n    if (!(cin >> T)) return 0;\n    while (T--) {\n        int n;\n        cin >> n;\n        vector<int> p(n);\n        for (int i = 0; i < n; i++) cin >> p[i];\n\n        if (n <= 1) {\n            cout << 0 << '\\n';\n            continue;\n        }\n        int jumps = 0, curEnd = 0, farthest = 0;\n        // TODO: Duyệt i = 0..n-2 cập nhật farthest và tăng jumps khi chạm curEnd\n        cout << -1 << '\\n';\n    }\n    return 0;\n}\n"
+}

@@ -1,0 +1,31 @@
+{
+  "title": "[HUSTack] Phân công công việc tối thiểu chi phí (Hungarian / Min-Cost Flow)",
+  "track": "final",
+  "topic": "graph-special",
+  "difficulty": "Trung bình",
+  "exam_tags": [
+    "HUSTack Programming Advanced (min-cost-flow-task-assignment)",
+    "HUSTack: Chưa làm"
+  ],
+  "time_limit_ms": 1000,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Có `n` công nhân `1..n` và `n` công việc `1..n`. Chi phí để giao công việc `j` cho công nhân `i` là `c[i, j]`. Hãy tìm phương án phân công sao cho mỗi công nhân làm đúng 1 công việc, mỗi công việc do đúng 1 công nhân thực hiện và tổng chi phí là nhỏ nhất.",
+  "input_spec": "- Dòng 1: `n` (`1 <= n <= 200`)\n- `n` dòng tiếp theo: dòng `i` chứa `n` số nguyên `c[i, 1], ..., c[i, n]` (`0 <= c[i, j] <= 10^6`).",
+  "output_spec": "Tổng chi phí nhỏ nhất.",
+  "samples": [
+    {
+      "input": "4\n7 8 13 10\n7 5 6 9\n6 19 12 11\n24 23 18 10",
+      "output": "30"
+    }
+  ],
+  "theory_chapter": "chap5",
+  "mindset": "Với `n = 200`, thuật toán Quay lui Nhánh cận `O(n!)` không thể chạy kịp. Ta sử dụng **Thuật toán Hungary (Hungarian Algorithm) `O(n^3)`** hoặc **Min-Cost Max-Flow**!\nThuật toán Hungary cực kỳ gọn nhẹ (~30 dòng C++), dùng mảng thế `u[0..n], v[0..n]`, khớp `p[0..n]` và đường mở rộng `way[0..n]`, chạy chỉ vài mili-giây cho `n = 200`.",
+  "hints": [
+    "Kiểm tra kiểu `long long` cho tổng chi phí và mảng thế `u, v`."
+  ],
+  "complexity": "O(n^3)",
+  "id": "hs-task-assign-min-cost",
+  "test_count": 10
+}

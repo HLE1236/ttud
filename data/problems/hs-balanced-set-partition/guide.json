@@ -1,0 +1,7 @@
+{
+  "pattern": "group-partition",
+  "recognize": "Chia `n <= 10000` phần tử vào `m <= 1000` nhóm sao cho chênh lệch `max - min` nhỏ nhất, in ra phương án.\n- `n = 10000` quá lớn để quay lui! → Dùng **Tham lam LPT + Priority Queue** (và Local Search cải thiện thêm).",
+  "idea": "1. Sắp xếp các phần tử theo trọng số `w[i]` **giảm dần** (món nặng xếp trước).\n2. Dùng min-heap `priority_queue` lưu `(tổng_hiện_tại, chỉ_số_nhóm)`. Với mỗi phần tử, lấy nhóm đang nhẹ nhất ra để bỏ phần tử vào rồi đẩy lại vào heap.\n3. (Tùy chọn) Chạy thêm vài trăm bước chuyển 1 phần tử từ nhóm nặng nhất sang nhóm nhẹ nhất nếu giúp giảm chênh lệch.",
+  "pseudocode": "sắp xếp chỉ số ord[] theo w[i] giảm dần\nđưa (0, j) với j = 1..m vào min-heap pq\nvới mỗi i trong ord:\n    lấy (cur, b) nhỏ nhất từ pq\n    x[i] = b; load[b] += w[i]\n    đẩy (load[b], b) lại vào pq\nin n và mảng x[0..n-1]",
+  "skeleton_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int n, m;\n    if (!(cin >> n >> m)) return 0;\n    vector<long long> w(n);\n    for (int i = 0; i < n; i++) cin >> w[i];\n\n    vector<int> x(n, 1);\n    // TODO: Sắp xếp chỉ số theo w giảm dần, dùng min-heap gán từng phần tử vào nhóm có load nhỏ nhất\n\n    cout << n << '\\n';\n    for (int i = 0; i < n; i++) {\n        if (i) cout << ' ';\n        cout << x[i];\n    }\n    cout << '\\n';\n    return 0;\n}\n"
+}

@@ -1,0 +1,31 @@
+{
+  "title": "[HUSTack] Bài toán đong nước (WATER JUGS - BFS)",
+  "track": "final",
+  "topic": "graph-bfs-dfs",
+  "difficulty": "Trung bình",
+  "exam_tags": [
+    "HUSTack Project1 (WATERJUG)",
+    "HUSTack: Đã AC"
+  ],
+  "time_limit_ms": 1000,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Có hai bình rỗng dung tích `a` lít và `b` lít (`a, b` nguyên dương) cùng một nguồn nước vô hạn. Mỗi bước bạn có thể thực hiện một trong 6 thao tác:\n- Đổ đầy bình 1 hoặc bình 2.\n- Đổ hết nước ở bình 1 hoặc bình 2.\n- Đổ nước từ bình này sang bình kia cho đến khi bình nhận đầy hoặc bình cho cạn.\n\nHãy tìm **số bước ít nhất** để một trong hai bình chứa đúng `c` lít nước, hoặc in `-1` nếu không thể.",
+  "input_spec": "Một dòng chứa 3 số nguyên dương `a, b, c` (`1 <= a, b, c <= 900`).",
+  "output_spec": "Số bước tối thiểu, hoặc `-1` nếu vô nghiệm.",
+  "samples": [
+    {
+      "input": "6 8 4",
+      "output": "4"
+    }
+  ],
+  "theory_chapter": "chap5",
+  "mindset": "Mô hình hóa trạng thái lượng nước trong hai bình thành đỉnh `(x, y)` trên đồ thị không trọng số (`0 <= x <= a`, `0 <= y <= b`).\nDùng **BFS** xuất phát từ `(0, 0)` với mảng đánh dấu `dist[905][905]` để tìm đường đi ngắn nhất tới bất kỳ trạng thái nào có `x == c || y == c`.\n(Điều kiện cần và đủ để có nghiệm là `c <= max(a, b)` và `c % gcd(a, b) == 0`.)",
+  "hints": [
+    "Nếu `c > max(a, b)` hoặc `c % std::gcd(a, b) != 0` có thể trả ngay `-1`."
+  ],
+  "complexity": "O(a * b)",
+  "id": "hs-water-jug",
+  "test_count": 10
+}

@@ -152,37 +152,41 @@ function applyTheme(theme) {
 function renderRoadmap() {
   const { roadmap, stats, roadmap_checked } = state.bootstrap;
   const pmap = getProblemMap();
-  const checkedDays = Object.values(roadmap_checked || {}).filter(Boolean).length;
+  const checkedDays = roadmap.days.filter((d) => roadmap_checked?.[String(d.day)]).length;
+  const coreIds = [...new Set(roadmap.days.flatMap((d) => d.problems || []))];
+  const coreSolved = coreIds.filter((pid) => pmap[pid]?.status?.solved).length;
+  const btDpIds = [...new Set(roadmap.days.filter((d) => d.phase === "backtracking" || d.phase === "dp").flatMap((d) => d.problems || []))];
+  const btDpSolved = btDpIds.filter((pid) => pmap[pid]?.status?.solved).length;
   const pctAll = stats.total ? Math.round((stats.solved * 100) / stats.total) : 0;
-  const pctMid = stats.midterm_total ? Math.round((stats.midterm_solved * 100) / stats.midterm_total) : 0;
-  const pctFin = stats.final_total ? Math.round((stats.final_solved * 100) / stats.final_total) : 0;
+  const pctCore = coreIds.length ? Math.round((coreSolved * 100) / coreIds.length) : 0;
+  const pctBtDp = btDpIds.length ? Math.round((btDpSolved * 100) / btDpIds.length) : 0;
 
   document.getElementById("roadmap-summary").innerHTML = `
     <div class="sum-box">
-      <div class="sum-box-label">Tổng tiến độ AC</div>
+      <div class="sum-box-label">Bài trọng tâm Lộ trình</div>
+      <div class="sum-box-val">${coreSolved} / ${coreIds.length} bài (${pctCore}%)</div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${pctCore}%"></div></div>
+    </div>
+    <div class="sum-box">
+      <div class="sum-box-label">Quay lui &amp; QHĐ (Ngày 5–11)</div>
+      <div class="sum-box-val">${btDpSolved} / ${btDpIds.length} bài (${pctBtDp}%)</div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${pctBtDp}%"></div></div>
+    </div>
+    <div class="sum-box">
+      <div class="sum-box-label">Tổng tiến độ kho đề</div>
       <div class="sum-box-val">${stats.solved} / ${stats.total} bài (${pctAll}%)</div>
       <div class="progress-bar"><div class="progress-fill" style="width:${pctAll}%"></div></div>
     </div>
     <div class="sum-box">
-      <div class="sum-box-label">Phần 1: Giữa kỳ (Ngày 1–7)</div>
-      <div class="sum-box-val">${stats.midterm_solved} / ${stats.midterm_total} bài (${pctMid}%)</div>
-      <div class="progress-bar"><div class="progress-fill" style="width:${pctMid}%"></div></div>
-    </div>
-    <div class="sum-box">
-      <div class="sum-box-label">Phần 2: Cuối kỳ (Ngày 8–16)</div>
-      <div class="sum-box-val">${stats.final_solved} / ${stats.final_total} bài (${pctFin}%)</div>
-      <div class="progress-bar"><div class="progress-fill" style="width:${pctFin}%"></div></div>
-    </div>
-    <div class="sum-box">
       <div class="sum-box-label">Số ngày đã hoàn thành</div>
       <div class="sum-box-val">${checkedDays} / ${roadmap.days.length} ngày</div>
-      <div class="progress-bar"><div class="progress-fill" style="width:${Math.round((checkedDays * 100) / roadmap.days.length)}%"></div></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${roadmap.days.length ? Math.round((checkedDays * 100) / roadmap.days.length) : 0}%"></div></div>
     </div>
   `;
 
   const container = document.getElementById("roadmap-days");
   const filteredDays = roadmap.days.filter(
-    (d) => state.roadmapTrack === "all" || d.track === state.roadmapTrack
+    (d) => state.roadmapTrack === "all" || d.phase === state.roadmapTrack || d.track === state.roadmapTrack
   );
 
   container.innerHTML = filteredDays
@@ -317,7 +321,16 @@ function renderTheoryContent() {
     return;
   }
 
+  if (state.activeTheoryTab === "path") {
+    box.innerHTML = renderLearningPath(theory, pmap);
+    return;
+  }
+
   if (state.activeTheoryTab === "cheatsheet") {
+    if (theory.recognition) {
+      box.innerHTML = renderRecognition(theory, pmap);
+      return;
+    }
     box.innerHTML = `
       <div class="theory-doc-inner">
         <h2>Đối chiếu giới hạn kích thước dữ liệu và Thuật toán</h2>
@@ -352,6 +365,10 @@ function renderTheoryContent() {
   }
 
   const chap = theory.chapters.find((c) => c.id === state.activeTheoryTab) || theory.chapters[0];
+  if (chap.lesson) {
+    box.innerHTML = renderLessonChapter(chap, pmap);
+    return;
+  }
   const lecLinks = (chap.source_lectures || [])
     .map((l) => `<a class="btn btn-sm btn-ghost" href="/api/lecture/${encodeURIComponent(l)}.pdf" target="_blank">${esc(l)}.pdf</a>`)
     .join(" ");
@@ -430,11 +447,226 @@ window.copyChapterCode = function (cid, btn) {
   }
 };
 
-window.openTheoryChapter = function (cid) {
+window.openTheoryChapter = function (cid, patternId) {
   state.activeTheoryTab = cid;
   switchView("theory");
   renderTheorySidebar();
   renderTheoryContent();
+  if (patternId) {
+    setTimeout(() => document.getElementById(`pat-${cid}-${patternId}`)?.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
+  } else {
+    document.getElementById("theory-content")?.scrollTo?.(0, 0);
+  }
+};
+
+window.scrollToPattern = function (anchorId) {
+  document.getElementById(anchorId)?.scrollIntoView({ behavior: "smooth", block: "start" });
+};
+
+function probListHtml(pids, pmap, opts = {}) {
+  const items = (pids || [])
+    .map((pid, i) => {
+      const p = pmap[pid];
+      if (!p) return "";
+      const solved = Boolean(p.status?.solved);
+      const tried = !solved && (p.status?.attempts || 0) > 0;
+      return `
+        <div class="day-prob-item" onclick="openProblem('${pid}')">
+          <div class="day-prob-left">
+            <span class="status-dot ${solved ? "ac" : tried ? "tried" : ""}"></span>
+            ${opts.numbered ? `<span class="muted small">${i + 1}.</span>` : ""}
+            <span class="day-prob-title">${esc(p.title)}</span>
+          </div>
+          <div style="display:flex;gap:6px;align-items:center;">
+            ${p.has_guide ? `<span class="badge badge-official" title="Có hướng dẫn từng tầng + khung code">Có hướng dẫn</span>` : ""}
+            ${p.exam_tags?.length ? `<span class="muted small">${esc(p.exam_tags[0])}</span>` : ""}
+            ${solved ? `<span class="badge verdict-AC">AC</span>` : `<span class="badge ${diffBadgeClass(p.difficulty)}">${esc(p.difficulty)}</span>`}
+          </div>
+        </div>`;
+    })
+    .join("");
+  return items
+    ? `<div class="day-problems" style="border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;">${items}</div>`
+    : `<p class="muted small">(Chưa có bài)</p>`;
+}
+
+function countSolved(pids, pmap) {
+  const list = (pids || []).filter((pid) => pmap[pid]);
+  return { done: list.filter((pid) => pmap[pid].status?.solved).length, total: list.length };
+}
+
+function renderTraceTable(tr) {
+  if (!tr || !tr.headers) return "";
+  return `
+    <div class="trace-box">
+      <div class="trace-title">${esc(tr.title || "Chạy tay từng bước")}</div>
+      ${tr.input ? `<div class="muted small" style="margin-bottom:6px;">Dữ liệu: <code>${esc(tr.input)}</code></div>` : ""}
+      <div class="trace-scroll">
+        <table class="theory-table trace-table">
+          <thead><tr>${tr.headers.map((h) => `<th>${esc(h)}</th>`).join("")}</tr></thead>
+          <tbody>${(tr.rows || []).map((r) => `<tr>${r.map((c) => `<td><code>${esc(c)}</code></td>`).join("")}</tr>`).join("")}</tbody>
+        </table>
+      </div>
+      ${tr.note ? `<div class="small" style="margin-top:6px;">${renderProse(tr.note)}</div>` : ""}
+    </div>`;
+}
+
+function renderLessonChapter(chap, pmap) {
+  const L = chap.lesson;
+  const lp = L.learning_path || {};
+  const pats = L.patterns || [];
+  const stage = (num, title, desc, pids) => {
+    const c = countSolved(pids, pmap);
+    return `
+      <div class="path-stage">
+        <div class="path-stage-head"><span class="guide-num">${num}</span><strong>${esc(title)}</strong>
+          ${c.total ? `<span class="muted small" style="margin-left:auto;">AC ${c.done}/${c.total}</span>` : ""}</div>
+        <div class="muted small" style="margin:4px 0 8px;">${desc}</div>
+        ${pids ? probListHtml(pids, pmap, { numbered: true }) : ""}
+      </div>`;
+  };
+  const lecLinks = (chap.source_lectures || [])
+    .map((l) => `<a class="btn btn-sm btn-ghost" href="/api/lecture/${encodeURIComponent(l)}.pdf" target="_blank">${esc(l)}.pdf</a>`)
+    .join(" ");
+
+  const patHtml = pats
+    .map(
+      (p) => `
+    <section class="pattern-card" id="pat-${chap.id}-${esc(p.id)}">
+      <h3>${esc(p.name)}</h3>
+      <div class="callout callout-tip">
+        <h4>Khi nào dùng? (Dấu hiệu nhận biết)</h4>
+        <ul>${(p.when || []).map((w) => `<li>${renderProse(w)}</li>`).join("")}</ul>
+      </div>
+      <div class="section-block"><h4>Ý tưởng</h4>${renderProse(p.idea)}</div>
+      ${(p.steps || []).length ? `<div class="section-block"><h4>Bắt đầu code từ đâu?</h4><ol>${p.steps.map((s) => `<li style="margin-bottom:6px;">${renderProse(s)}</li>`).join("")}</ol></div>` : ""}
+      <div class="section-block">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <h4 style="margin:0;">Code mẫu chung (có chú thích)</h4>
+          <button class="btn btn-sm btn-ghost" onclick="copyCodeById('code-${chap.id}-${esc(p.id)}', this)">Sao chép</button>
+        </div>
+        <pre class="code-box" id="code-${chap.id}-${esc(p.id)}">${esc(p.template_cpp || "")}</pre>
+      </div>
+      ${renderTraceTable(p.trace)}
+      ${(p.pitfalls || []).length ? `<div class="callout callout-warn"><h4>Lỗi hay gặp</h4><ul>${p.pitfalls.map((m) => `<li>${renderProse(m)}</li>`).join("")}</ul></div>` : ""}
+      <div class="section-block"><h4>Bài luyện dạng này (dễ → khó)</h4>${probListHtml(p.problems, pmap, { numbered: true })}</div>
+    </section>`
+    )
+    .join("");
+
+  return `
+    <div class="theory-doc-inner">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:12px;">
+        <div>
+          <span class="badge ${chap.track === "midterm" ? "badge-midterm" : "badge-final"}">${esc(chap.track === "midterm" ? "Giữa kỳ" : chap.track)}</span>
+          <h2 style="margin-top:6px;">${esc(chap.title)}</h2>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">${lecLinks}</div>
+      </div>
+      <div class="prose-lead">${renderProse(L.intro)}</div>
+
+      <div class="section-block">
+        <h4>Lộ trình chương</h4>
+        <div class="path-grid">
+          ${stage(1, "Đọc lý thuyết các dạng", "Đọc lần lượt từng dạng bên dưới: dấu hiệu nhận biết → ý tưởng → code mẫu → bảng chạy tay.", null)}
+          ${stage(2, "Bài mẫu có hướng dẫn kỹ", "Làm theo tab <strong>Hướng dẫn giải</strong> từng tầng, khung code đã được nạp sẵn vào Editor.", lp.guided)}
+          ${stage(3, "Luyện tập", "Tự làm, chỉ mở gợi ý khi bí quá 15–20 phút.", lp.practice)}
+          ${stage(4, "Đề thi thật", "Bấm giờ như đi thi.", lp.exam)}
+        </div>
+      </div>
+
+      <div class="section-block">
+        <h4>Các dạng bài trong chương</h4>
+        <div class="pattern-toc">
+          ${pats.map((p) => `<button class="btn btn-sm btn-ghost" onclick="scrollToPattern('pat-${chap.id}-${esc(p.id)}')">${esc(p.name)}</button>`).join("")}
+        </div>
+      </div>
+      ${patHtml}
+
+      <details class="guide-more" style="margin-top:20px;">
+        <summary>Tóm tắt slide gốc của chương</summary>
+        ${renderProse(chap.summary)}
+        <ol>${(chap.how_to_think || []).map((t) => `<li>${renderProse(t)}</li>`).join("")}</ol>
+        <pre class="code-box">${esc(chap.template_cpp || "")}</pre>
+      </details>
+    </div>`;
+}
+
+function renderLearningPath(theory, pmap) {
+  const cards = theory.chapters
+    .map((c) => {
+      const all = c.problems || [];
+      const cnt = countSolved(all, pmap);
+      const pct = cnt.total ? Math.round((cnt.done * 100) / cnt.total) : 0;
+      const L = c.lesson;
+      const next = L
+        ? [...(L.learning_path?.guided || []), ...(L.learning_path?.practice || []), ...(L.learning_path?.exam || [])].find((pid) => pmap[pid] && !pmap[pid].status?.solved)
+        : all.find((pid) => pmap[pid] && !pmap[pid].status?.solved);
+      return `
+        <div class="surface path-chap-card">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
+            <strong>${esc(c.title)}</strong>
+            ${L ? `<span class="badge badge-official">Bài giảng chi tiết</span>` : `<span class="badge badge-medium">Tóm tắt</span>`}
+          </div>
+          <div class="muted small" style="margin:6px 0;">${L ? `${(L.patterns || []).length} dạng bài · ` : ""}AC ${cnt.done}/${cnt.total} bài</div>
+          <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+          <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;">
+            <button class="btn btn-sm btn-ghost" onclick="openTheoryChapter('${c.id}')">Học lý thuyết</button>
+            ${next ? `<button class="btn btn-sm btn-ghost" onclick="openProblem('${next}')">Làm bài tiếp theo: ${esc(pmap[next].title)}</button>` : ""}
+          </div>
+        </div>`;
+    })
+    .join("");
+  return `
+    <div class="theory-doc-inner">
+      <h2>Lộ trình học theo chương</h2>
+      <p class="muted prose-lead">Học theo thứ tự: <strong>Lý thuyết dạng bài → 2–3 bài mẫu có hướng dẫn → Luyện tập → Đề thi thật</strong>. Nếu chưa biết bắt đầu từ đâu, cứ bấm "Làm bài tiếp theo".</p>
+    </div>
+    <div class="path-chap-grid">${cards}</div>`;
+}
+
+function renderRecognition(theory, pmap) {
+  const R = theory.recognition;
+  const exLinks = (ids) =>
+    (ids || []).filter((pid) => pmap[pid]).map((pid) => `<button class="btn-link small" onclick="openProblem('${pid}')">${esc(pmap[pid].title)}</button>`).join("<br>");
+  return `
+    <div class="theory-doc-inner">
+      <h2>${esc(R.title)}</h2>
+      <div class="prose-lead">${renderProse(R.intro)}</div>
+      <div class="callout callout-tip">
+        <h4>Quy trình 60 giây khi đọc đề</h4>
+        <ol>${(R.checklist || []).map((s) => `<li style="margin-bottom:4px;">${renderProse(s)}</li>`).join("")}</ol>
+      </div>
+      <h3>1. Nhìn giới hạn n → đoán độ phức tạp</h3>
+      <table class="theory-table">
+        <thead><tr><th>Giới hạn</th><th>Độ phức tạp cho phép</th><th>Thường là</th></tr></thead>
+        <tbody>${(R.limits || []).map((r) => `<tr><td><code>${esc(r.n)}</code></td><td><code>${esc(r.complexity)}</code></td><td>${renderProse(r.techniques)}</td></tr>`).join("")}</tbody>
+      </table>
+      <h3 style="margin-top:20px;">2. Đọc đề thấy từ khoá → nghĩ tới thuật toán</h3>
+      <table class="theory-table">
+        <thead><tr><th>Đề bài nói gì</th><th>Nghĩ ngay tới</th><th>Vì sao</th><th>Bài ví dụ</th></tr></thead>
+        <tbody>${(R.keywords || []).map((r) => `<tr>
+          <td><strong>${renderProse(r.signal)}</strong></td>
+          <td>${(r.chapter && r.pattern) ? `<button class="btn-link small" onclick="openTheoryChapter('${r.chapter}', '${esc(r.pattern)}')">${esc(r.algorithm)}</button>` : `<span class="badge badge-midterm">${esc(r.algorithm)}</span>`}</td>
+          <td class="small">${renderProse(r.why)}</td>
+          <td>${exLinks(r.examples)}</td></tr>`).join("")}</tbody>
+      </table>
+      <h3 style="margin-top:20px;">3. Phân biệt các dạng dễ nhầm</h3>
+      <table class="theory-table">
+        <thead><tr><th>Câu hỏi</th><th>Nếu CÓ</th><th>Nếu KHÔNG</th></tr></thead>
+        <tbody>${(R.confusions || []).map((r) => `<tr><td>${renderProse(r.question)}</td><td>${renderProse(r.yes)}</td><td>${renderProse(r.no)}</td></tr>`).join("")}</tbody>
+      </table>
+    </div>`;
+}
+
+window.copyCodeById = function (id, btn) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  navigator.clipboard?.writeText(el.textContent);
+  if (btn) {
+    btn.textContent = "Đã chép";
+    setTimeout(() => { btn.textContent = "Sao chép"; }, 1400);
+  }
 };
 
 function renderProblemBankFilters() {
@@ -549,6 +781,10 @@ function initEditor() {
     },
   });
   state.editor.setValue(STARTER_CPP);
+  if (typeof window.attachCppAutocomplete === "function") {
+    const enabled = localStorage.getItem("ttud_autocomplete") !== "false";
+    state.autocomplete = window.attachCppAutocomplete(state.editor, { enabled });
+  }
   state.editor.on("change", () => {
     if (!state.currentProblem) return;
     document.getElementById("draft-status").textContent = "Đang lưu nháp...";
@@ -620,42 +856,13 @@ window.openProblem = async function (pid) {
     .join("");
   document.getElementById("prob-samples").innerHTML = samplesHtml || `<p class="muted">Không có sample đính kèm — xem ở tab Thư mục Test.</p>`;
 
-  // Mindset & Hints
-  document.getElementById("prob-mindset").innerHTML = renderProse(prob.mindset);
-  const hintsEl = document.getElementById("prob-hints");
-  hintsEl.innerHTML = (prob.hints || [])
-    .map(
-      (h, idx) => `
-      <div class="hint-card">
-        <button class="hint-toggle" onclick="this.nextElementSibling.classList.toggle('hidden')">Gợi ý ${idx + 1}</button>
-        <div class="hint-body hidden">${renderProse(h)}</div>
-      </div>`
-    )
-    .join("");
+  // Huong dan giai mo dan tung tang
+  renderGuideLadder(prob);
 
   const comp = prob.complexity || {};
   document.getElementById("prob-complexity").innerHTML = `
     <div><strong>Thời gian:</strong> <code>${esc(comp.time || "—")}</code> · <strong>Bộ nhớ:</strong> <code>${esc(comp.space || "—")}</code></div>
   `;
-
-  // Hidden reference code
-  const refPre = document.getElementById("prob-ref-code");
-  const toggleRefBtn = document.getElementById("btn-toggle-ref");
-  const loadRefBtn = document.getElementById("btn-load-ref");
-  refPre.textContent = prob.ref_cpp || "// Không có code mẫu";
-  refPre.classList.add("hidden");
-  loadRefBtn.classList.add("hidden");
-  toggleRefBtn.textContent = "Hiện lời giải tham khảo";
-  toggleRefBtn.onclick = () => {
-    const hidden = refPre.classList.toggle("hidden");
-    toggleRefBtn.textContent = hidden ? "Hiện lời giải tham khảo" : "Ẩn lời giải tham khảo";
-    loadRefBtn.classList.toggle("hidden", hidden);
-  };
-  loadRefBtn.onclick = () => {
-    if (confirm("Thay thế toàn bộ code trong Editor bằng lời giải C++ tham khảo?")) {
-      state.editor.setValue(prob.ref_cpp || "");
-    }
-  };
 
   // Notes
   document.getElementById("note-textarea").value = prob.note || "";
@@ -672,9 +879,18 @@ window.openProblem = async function (pid) {
     .map((tn) => `<button class="test-chip" onclick="previewTest('${esc(tn)}', this)">Test #${esc(tn)}</button>`)
     .join("");
 
-  // Load draft or starter
-  state.editor.setValue(prob.draft && prob.draft.trim() ? prob.draft : STARTER_CPP);
-  document.getElementById("draft-status").textContent = prob.draft ? "Đã nạp bản nháp" : "Template mới";
+  // Load draft, else guided skeleton, else starter
+  const skeleton = prob.guide?.skeleton_cpp;
+  if (prob.draft && prob.draft.trim()) {
+    state.editor.setValue(prob.draft);
+    document.getElementById("draft-status").textContent = "Đã nạp bản nháp";
+  } else if (skeleton) {
+    state.editor.setValue(skeleton);
+    document.getElementById("draft-status").textContent = "Khung code có sẵn — điền vào các chỗ TODO";
+  } else {
+    state.editor.setValue(STARTER_CPP);
+    document.getElementById("draft-status").textContent = "Template mới";
+  }
   setTimeout(() => state.editor.refresh(), 20);
 
   // Preload Sample #1 into custom runner
@@ -689,6 +905,94 @@ window.openProblem = async function (pid) {
   document.getElementById("verdict-container").innerHTML = `<div class="muted center-empty">Nhấn <strong>Nộp bài</strong> (Ctrl+Shift+Enter) để chấm trên toàn bộ ${prob.test_count} test case.</div>`;
   setLeftTab("statement");
   setRightTab("sample");
+};
+
+function findPatternForProblem(pid, patternId) {
+  for (const chap of state.bootstrap?.theory?.chapters || []) {
+    for (const pat of chap.lesson?.patterns || []) {
+      if ((patternId && pat.id === patternId) || (pat.problems || []).includes(pid)) {
+        return { chap, pat };
+      }
+    }
+  }
+  return null;
+}
+
+function buildGuideSteps(prob) {
+  const g = prob.guide;
+  const hintsHtml = (prob.hints || []).length
+    ? `<ul>${prob.hints.map((h) => `<li>${renderProse(h)}</li>`).join("")}</ul>`
+    : "";
+  const solution = {
+    title: "Lời giải đầy đủ (C++17)",
+    html: `<pre class="code-box">${esc(prob.ref_cpp || "// Không có code mẫu")}</pre>
+      <button class="btn btn-sm btn-ghost" onclick="loadGuideCode('ref')">Nạp lời giải vào Editor</button>`,
+  };
+  if (!g) {
+    return [
+      { title: "Nhận dạng & Phân tích", html: renderProse(prob.mindset) || `<p class="muted">Chưa có phân tích.</p>` },
+      { title: "Gợi ý cách làm", html: hintsHtml || `<p class="muted">Chưa có gợi ý.</p>` },
+      solution,
+    ];
+  }
+  return [
+    { title: "Nhận dạng dạng bài", html: renderProse(g.recognize) },
+    {
+      title: "Ý tưởng thuật toán",
+      html: renderProse(g.idea) +
+        (prob.mindset ? `<details class="guide-more"><summary>Phân tích thêm</summary>${renderProse(prob.mindset)}${hintsHtml}</details>` : ""),
+    },
+    { title: "Mã giả", html: `<pre class="code-box">${esc(g.pseudocode || "")}</pre>` },
+    {
+      title: "Khung code (điền vào chỗ TODO)",
+      html: `<pre class="code-box">${esc(g.skeleton_cpp || "")}</pre>
+        <button class="btn btn-sm btn-ghost" onclick="loadGuideCode('skeleton')">Nạp khung vào Editor</button>`,
+    },
+    solution,
+  ];
+}
+
+function renderGuideLadder(prob) {
+  state.guideOpened = 1;
+  state.guideSteps = buildGuideSteps(prob);
+  const found = findPatternForProblem(prob.id, prob.guide?.pattern);
+  state.guidePatternLink = found
+    ? `<div class="guide-pattern-link">Thuộc dạng: <strong>${esc(found.pat.name)}</strong>
+         <button class="btn-link small" onclick="openTheoryChapter('${found.chap.id}', '${esc(found.pat.id)}')">Xem bài giảng dạng này →</button></div>`
+    : "";
+  drawGuideLadder();
+}
+
+function drawGuideLadder() {
+  const el = document.getElementById("prob-guide-ladder");
+  const steps = state.guideSteps || [];
+  el.innerHTML = state.guidePatternLink + steps
+    .map((s, i) => {
+      const open = i < state.guideOpened;
+      if (open) {
+        return `<div class="guide-step open"><div class="guide-step-head"><span class="guide-num">${i + 1}</span>${esc(s.title)}</div>
+          <div class="guide-step-body prose">${s.html}</div></div>`;
+      }
+      const isNext = i === state.guideOpened;
+      return `<div class="guide-step locked"><div class="guide-step-head"><span class="guide-num">${i + 1}</span>${esc(s.title)}
+          ${isNext ? `<button class="btn btn-sm btn-ghost" style="margin-left:auto;" onclick="openNextGuideStep()">${i === steps.length - 1 ? "Xem lời giải" : "Mở tầng này"}</button>` : `<span class="muted small" style="margin-left:auto;">Đang khoá</span>`}
+        </div></div>`;
+    })
+    .join("");
+}
+
+window.openNextGuideStep = function () {
+  const steps = state.guideSteps || [];
+  if (state.guideOpened === steps.length - 1 && !confirm("Bạn chắc chắn muốn xem lời giải đầy đủ? Hãy thử tự code từ khung trước nhé!")) return;
+  state.guideOpened = Math.min(steps.length, state.guideOpened + 1);
+  drawGuideLadder();
+};
+
+window.loadGuideCode = function (kind) {
+  const prob = state.currentProblem;
+  if (!prob || !state.editor) return;
+  const code = kind === "ref" ? prob.ref_cpp : prob.guide?.skeleton_cpp;
+  if (code && confirm("Thay thế toàn bộ code trong Editor?")) state.editor.setValue(code);
 };
 
 window.loadSampleIntoRunner = function (idx) {
@@ -956,6 +1260,23 @@ function bindEvents() {
   document.getElementById("btn-copy-sample1").onclick = () => loadSampleIntoRunner(0);
   document.getElementById("btn-run-sample").onclick = runSample;
   document.getElementById("btn-submit").onclick = submitSolution;
+
+  const acBtn = document.getElementById("btn-autocomplete-toggle");
+  if (acBtn && state.autocomplete) {
+    const syncAcBtn = () => {
+      const on = state.autocomplete.isEnabled();
+      acBtn.textContent = on ? "Gợi ý: Bật" : "Gợi ý: Tắt";
+      acBtn.classList.toggle("btn-toggle-on", on);
+    };
+    syncAcBtn();
+    acBtn.onclick = () => {
+      const next = !state.autocomplete.isEnabled();
+      state.autocomplete.setEnabled(next);
+      localStorage.setItem("ttud_autocomplete", String(next));
+      syncAcBtn();
+      state.editor.focus();
+    };
+  }
 
   document.getElementById("btn-font-dec").onclick = () => {
     state.fontSize = Math.max(11, state.fontSize - 1);

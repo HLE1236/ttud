@@ -1,0 +1,7 @@
+{
+  "pattern": "dp-subseq",
+  "recognize": "Kiểm tra xâu `C` (`|C| <= 2000`) có phải trộn xen kẽ giữ nguyên thứ tự từ `A` (`<= 1000`) và `B` (`<= 1000`) không.\n- 2 xâu + độ dài `<= 1000` → **QHĐ 2 chiều `dp[i][j]`** (tối ưu mảng 1D).",
+  "idea": "Trước hết, nếu `|A| + |B| != |C|` thì chắc chắn là `F`.\nĐặt `dp[i][j]` (`true/false`) = `i` ký tự đầu của `A` và `j` ký tự đầu của `B` có ghép được thành `i + j` ký tự đầu của `C` không.\nKý tự `C[i + j - 1]` có thể lấy từ `A[i - 1]` (nếu khớp và `dp[i - 1][j]` đúng) HOẶC từ `B[j - 1]` (nếu khớp và `dp[i][j - 1]` đúng).",
+  "pseudocode": "nếu |A| + |B| != |C|: in F, kết thúc\ndp[0][0] = true\ntính hàng 0 (chỉ lấy từ B) và cột 0 (chỉ lấy từ A)\ncho i từ 1 đến |A|, j từ 1 đến |B|:\n    dp[i][j] = (A[i-1] == C[i+j-1] && dp[i-1][j]) || (B[j-1] == C[i+j-1] && dp[i][j-1])\nin T nếu dp[|A|][|B|], ngược lại F",
+  "skeleton_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    string A, B, C;\n    if (!(cin >> A >> B >> C)) return 0;\n\n    int n = (int)A.size(), m = (int)B.size(), k = (int)C.size();\n    if (n + m != k) {\n        cout << \"F\\n\";\n        return 0;\n    }\n\n    // TODO: Dùng DP 2D hoặc 1D rolling array kiểm tra ghép i ký tự A + j ký tự B thành i+j ký tự C\n    bool ok = false;\n    cout << (ok ? \"T\" : \"F\") << '\\n';\n    return 0;\n}\n"
+}

@@ -1,0 +1,31 @@
+{
+  "title": "[HUSTack] Vượt ngục tối đa (Maximum Runaway - Max Flow tách đỉnh)",
+  "track": "final",
+  "topic": "graph-special",
+  "difficulty": "Khó",
+  "exam_tags": [
+    "HUSTack Programming Advanced (max-runaway)",
+    "HUSTack: Chưa làm"
+  ],
+  "time_limit_ms": 1000,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Bản đồ nhà tù là bảng `N x M`. Mỗi ô `(i, j)` chứa giá trị `a[i][j]`:\n- `a[i][j] = -1`: ô nhà giam (điểm xuất phát duy nhất của tất cả tù nhân).\n- `a[i][j] = -2`: ô trốn thoát (có thể có nhiều ô; không có ô `-2` nào kề cạnh ô `-1`).\n- `a[i][j] >= 0`: độ an toàn của ô; mỗi tù nhân đi qua ô này làm độ an toàn giảm đi `1`, và chỉ đi được vào ô còn độ an toàn `> 0`.\n\nTù nhân di chuyển theo 4 hướng kề cạnh. Hãy tính số tù nhân tối đa có thể trốn thoát (đi từ ô `-1` đến một ô `-2` bất kỳ).",
+  "input_spec": "- Dòng 1: `N, M` (`2 <= N, M <= 20`)\n- `N` dòng tiếp theo: mỗi dòng `M` số nguyên `a[i][j]` (`0 <= a[i][j] <= 1000` với ô thường).",
+  "output_spec": "Số nguyên duy nhất là số tù nhân tối đa có thể trốn thoát.",
+  "samples": [
+    {
+      "input": "5 5\n2 5 3 3 2\n3 2 -1 3 4\n2 1 2 3 3\n4 -2 5 2 4\n3 6 2 2 1",
+      "output": "8"
+    }
+  ],
+  "theory_chapter": "chap5",
+  "mindset": "Bài toán **Luồng cực đại có giới hạn khả năng thông qua trên ĐỈNH (Vertex Capacity)**!\nKỹ thuật chuẩn mực: **Tách mỗi ô `(i, j)` thành 2 đỉnh `in(i, j)` và `out(i, j)`**:\n- Nối `in(i, j) -> out(i, j)` với dung lượng bằng `a[i][j]` (hoặc `INF` nếu là ô `-1` hay `-2`).\n- Từ `out(i, j)` nối sang `in(ni, nj)` của 4 ô kề cạnh với dung lượng `INF`.\n- Đặt nguồn `S = in(ô -1)` và nối mọi `out(ô -2)` tới đích chung `T` với dung lượng `INF`. Chạy Dinic từ `S` đến `T`!",
+  "hints": [
+    "Với `N, M <= 20`, mạng chỉ có tối đa `2 * 400 + 2 = 802` đỉnh, Dinic chạy trong tích tắc!"
+  ],
+  "complexity": "O(V^2 E) (Dinic trên tối đa 800 đỉnh)",
+  "id": "hs-max-runaway",
+  "test_count": 10
+}

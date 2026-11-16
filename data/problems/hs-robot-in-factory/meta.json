@@ -1,0 +1,31 @@
+{
+  "title": "[HUSTack] Bố trí băng chuyền trong nhà máy (Robot in Factory - OLP 2025)",
+  "track": "final",
+  "topic": "graph-special",
+  "difficulty": "Khó",
+  "exam_tags": [
+    "HUSTack Programming Advanced (robot-in-factory-olp25)",
+    "OLP 2025"
+  ],
+  "time_limit_ms": 2000,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": true,
+  "statement": "Nhà máy ViF có `N` xưởng sản xuất (`1..N`) nối với nhau bởi `M` hành lang một chiều; mỗi hành lang `(u, v)` phục vụ tối đa `c` băng chuyền.\nCó `K` yêu cầu vận chuyển `(s_i, d_i)`. Nếu phục vụ yêu cầu `i`, cần chỉ ra một đường đi có hướng từ `s_i` đến `d_i` (mỗi băng chuyền chiếm `1` đơn vị sức chứa trên mỗi hành lang nó đi qua).\n\nHãy phục vụ được **nhiều yêu cầu vận chuyển nhất có thể**.",
+  "input_spec": "- Dòng 1: `N, M, K` (`N <= 100`, `M <= 9900`, `K <= 10000`)\n- `M` dòng tiếp theo: `u, v, c`\n- `K` dòng tiếp theo: `s_i, d_i`.",
+  "output_spec": "Gồm `K` dòng: dòng `i` ghi dãy các xưởng trên đường đi từ `s_i` đến `d_i`, hoặc `-1` nếu không bố trí được băng chuyền cho yêu cầu thứ `i`.",
+  "samples": [
+    {
+      "input": "6 6 2\n1 3 1\n1 2 1\n2 5 1\n3 4 2\n4 5 3\n6 2 1\n1 5\n6 5",
+      "output": "1 3 4 5\n6 2 5"
+    }
+  ],
+  "theory_chapter": "chap5",
+  "mindset": "Bài toán **đóng gói đường đi đa cặp nguồn-đích (Maximum Disjoint Paths Packing)**:\n1. Sắp xếp hoặc ưu tiên tìm đường đi ngắn nhất (ít cạnh nhất) bằng BFS trên các cạnh còn dư sức chứa, vì đường ngắn tiêu tốn ít tài nguyên hành lang.\n2. Khi một yêu cầu `r` không tìm được đường trực tiếp, ta có thể thử **tái định tuyến (reroute)**: tìm một cạnh bị nghẽn mà yêu cầu khác đang dùng và xem yêu cầu kia có đường vòng thay thế không, rồi hoán đổi!\n*(Bài có nhiều phương án hợp lệ và được chấm bằng Checker kiểm tra đường đi + sức chứa hành lang.)*",
+  "hints": [
+    "Chú ý kiểm tra tính hợp lệ của từng đường đi (bắt đầu ở `s_i`, kết thúc ở `d_i`, mỗi cạnh liên tiếp có tồn tại và không vượt quá tổng sức chứa `c`)."
+  ],
+  "complexity": "BFS ngắn nhất + tái định tuyến cục bộ",
+  "id": "hs-robot-in-factory",
+  "test_count": 10
+}

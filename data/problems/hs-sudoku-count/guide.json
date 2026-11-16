@@ -1,0 +1,7 @@
+{
+  "pattern": "comb-constraint",
+  "recognize": "Bảng `9x9` cố định, điền số thỏa ràng buộc hàng/cột/khối `3x3` và đếm số nghiệm -> **Quay lui có đánh dấu O(1)**.",
+  "idea": "Duy trì `row[9][10]`, `col[9][10]`, `box[3][3][10]`. Với danh sách các ô `0`, hàm `Try(idx)` thử từng giá trị `v = 1..9` hợp lệ, đánh dấu, đệ quy `Try(idx + 1)` rồi hoàn tác.",
+  "pseudocode": "Try(idx):\n  if idx == empties.size(): ans++; return\n  (r, c) = empties[idx]\n  for v = 1..9:\n    if !row[r][v] && !col[c][v] && !box[r/3][c/3][v]:\n      mark(r, c, v, true)\n      Try(idx + 1)\n      mark(r, c, v, false)",
+  "skeleton_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint grid[9][9];\nbool row[9][10], col[9][10], box[3][3][10];\nvector<pair<int,int>> empties;\nlong long ans = 0;\n\nvoid Try(int idx) {\n    // TODO 1: Neu idx == empties.size() thi ans++ va return\n\n    // TODO 2: Thu cac so v = 1..9 hop le cho o (r, c), goi Try(idx+1) va hoan tac\n}\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    for (int i = 0; i < 9; i++) {\n        for (int j = 0; j < 9; j++) {\n            cin >> grid[i][j];\n            int v = grid[i][j];\n            if (v == 0) empties.push_back({i, j});\n            else { row[i][v] = col[j][v] = box[i/3][j/3][v] = true; }\n        }\n    }\n    Try(0);\n    cout << ans << '\\n';\n    return 0;\n}\n"
+}

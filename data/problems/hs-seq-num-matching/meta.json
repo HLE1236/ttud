@@ -1,0 +1,31 @@
+{
+  "title": "[HUSTack] Đếm số lần xuất hiện dãy số con (Sequence Matching - KMP)",
+  "track": "midterm",
+  "topic": "hash-prefix",
+  "difficulty": "Trung bình",
+  "exam_tags": [
+    "HUSTack Programming Advanced (SEQ_NUMBER_MATCHING)",
+    "HUSTack: Chưa làm"
+  ],
+  "time_limit_ms": 1000,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho dãy số nguyên `a = a_1, a_2, ..., a_n` và dãy mẫu `b = b_1, b_2, ..., b_m`. Hãy đếm số lần xuất hiện liên tiếp của dãy `b` trong dãy `a` (tức số vị trí `i` sao cho `a_i = b_1, a_{i+1} = b_2, ..., a_{i+m-1} = b_m`).",
+  "input_spec": "- Dòng 1: hai số nguyên dương `n, m` (`1 <= n <= 100000`, `1 <= m <= 10000`)\n- Dòng 2: `n` số nguyên `a_1, ..., a_n` (`1 <= a_i <= 10000`)\n- Dòng 3: `m` số nguyên `b_1, ..., b_m` (`1 <= b_i <= 10000`).",
+  "output_spec": "Một số nguyên duy nhất là số lần xuất hiện của `b` trong `a`.",
+  "samples": [
+    {
+      "input": "10 3\n1 2 3 4 5 1 2 3 7 8\n1 2 3",
+      "output": "2"
+    }
+  ],
+  "theory_chapter": "chap2",
+  "mindset": "Áp dụng **thuật toán KMP** (hoặc Rolling Hash) trực tiếp trên mảng số nguyên `vector<int>` hoàn toàn giống như trên xâu ký tự: dựng mảng tiền tố `pi[]` cho dãy `b` trong `O(m)` rồi đối khớp với dãy `a` trong `O(n)`.",
+  "hints": [
+    "Không nối các số thành xâu ký tự dễ gây nhầm ranh giới số (`12` vs `1 2`), hãy chạy KMP trực tiếp trên `vector<int>`."
+  ],
+  "complexity": "O(n + m)",
+  "id": "hs-seq-num-matching",
+  "test_count": 10
+}

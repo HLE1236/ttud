@@ -1,0 +1,32 @@
+{
+  "title": "[HUSTack] Phân công giảng dạy cân bằng tín chỉ có cận dưới số môn (BCA LB)",
+  "track": "midterm",
+  "topic": "backtracking",
+  "difficulty": "Khó",
+  "exam_tags": [
+    "HUSTack Project1 (BCA_CREDIT_LB_ON_NUMBER_COURSES)",
+    "HUSTack: Đã AC"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Trưởng khoa cần phân công `n` môn học `1..n` cho `m` giảng viên `1..m`:\n- Mỗi giảng viên `t` có danh sách các môn có thể dạy.\n- Mỗi môn `i` có số tín chỉ `crd(i)`.\n- Mỗi giảng viên `j` phải được giao **ít nhất `LB(j)` môn học**.\n- Có `k` cặp môn xung đột (trùng giờ) không thể giao cho cùng một giảng viên.\n\nTải (load) của một giảng viên là tổng số tín chỉ các môn được giao. Hãy tìm phương án phân công sao cho **tải lớn nhất** trong số các giảng viên là nhỏ nhất (hoặc `-1` nếu vô nghiệm).",
+  "input_spec": "- Dòng 1: `m, n` (`1 <= m <= 10`, `1 <= n <= 30`)\n- `m` dòng tiếp theo: dòng `i` ghi `k_i` và `k_i` môn mà giảng viên `i` có thể dạy\n- Dòng `m + 2`: `n` số `crd(1)..crd(n)` (`1 <= crd(i) <= 10`)\n- Dòng `m + 3`: `m` số `LB(1)..LB(m)`\n- Dòng `m + 4`: số cặp xung đột `k`\n- `k` dòng tiếp theo: mỗi dòng ghi `i, j` là hai môn xung đột.",
+  "output_spec": "Tải lớn nhất nhỏ nhất có thể, hoặc `-1` nếu không có cách phân công hợp lệ.",
+  "samples": [
+    {
+      "input": "4 12\n5 1 3 5 10 12\n5 9 3 4 8 12\n6 1 2 3 4 9 7\n7 1 2 3 5 6 10 11\n2 3 3 2 1 2 3 2 2 2 3 1\n3 1 1 1\n25\n1 2\n1 3\n1 5\n2 4\n2 5\n2 6\n3 5\n3 7\n3 10\n4 6\n4 9\n5 6\n5 7\n5 8\n6 8\n6 9\n7 8\n7 10\n7 11\n8 9\n8 11\n8 12\n9 12\n10 11\n11 12",
+      "output": "8"
+    }
+  ],
+  "theory_chapter": "chap3",
+  "mindset": "Biến thể của bài `gk-bca-credit` có thêm ràng buộc **cận dưới số môn `LB[t]`** cho từng giảng viên!\nTa giữ `cnt[t]` = số môn đã giao cho giảng viên `t` và `need = sum(max(0, LB[t] - cnt[t]))` = tổng số môn tối thiểu còn thiếu cho các giảng viên.\nHai điều kiện cắt nhánh bắt buộc để chạy cực nhanh:\n1. **Cắt nhánh theo `best`**: nếu `load[t] + crd[c] >= best` thì bỏ qua giảng viên `t`.\n2. **Cắt nhánh theo cận dưới `LB`**: nếu sau khi thử giao môn `c` cho `t`, số môn còn lại `(n - 1 - idx) < need_mới` thì không bao giờ đủ môn bù cho mọi giảng viên đạt `LB` -> cắt ngay!\nNgoài ra, sắp xếp các môn theo thứ tự **ít giảng viên dạy được nhất** giúp phát hiện ngõ cụt sớm hơn rất nhiều.",
+  "hints": [
+    "Cập nhật `need` trong `O(1)` mỗi lần giao môn `c` cho giảng viên `t`: nếu trước đó `cnt[t] < LB[t]` thì `need` giảm 1.",
+    "Kiểm tra thêm: số môn mà giảng viên `t` còn dạy được trong phần còn lại cộng `cnt[t]` phải `>= LB[t]`."
+  ],
+  "complexity": "Nhánh và Cận với cắt tỉa LB + MRV",
+  "id": "hs-bca-credit-lb",
+  "test_count": 10
+}

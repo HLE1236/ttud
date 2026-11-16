@@ -1,0 +1,7 @@
+{
+  "pattern": "comb-constraint",
+  "recognize": "Yêu cầu **liệt kê tất cả hoán vị** của `1..n` theo thứ tự từ điển (`n <= 8`).",
+  "idea": "Dùng mảng `p[0..n-1]` lưu hoán vị đang xây dựng và `used[1..n]` đánh dấu số đã dùng. Hàm `Try(k)` thử các số `v = 1..n` chưa dùng.",
+  "pseudocode": "Try(k):\n  if k == n: in p[0..n-1]; return\n  for v = 1..n:\n    if not used[v]:\n      used[v] = true; p[k] = v\n      Try(k + 1)\n      used[v] = false",
+  "skeleton_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint n;\nint p[12];\nbool used[12];\n\nvoid Try(int k) {\n    // TODO 1: Neu k == n thi in ra p[0..n-1] va return\n\n    // TODO 2: Duyet v tu 1..n, neu !used[v] thi chon v, de quy Try(k+1), roi bo danh dau\n}\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    cin >> n;\n    Try(0);\n    return 0;\n}\n"
+}

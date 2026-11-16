@@ -1,0 +1,358 @@
+230
+3777 138 77 2851 859 2315 433 2042 2509 2842 2208 1647 979 423 2394 3308 1577 2150 2708 4557 3571 3649 4561 657 365 19 438 3225 1800 3757 4499 749 1714 3564 4687 1527 1414 4649 4769 4716 3971 1360 1681 804 1543 3209 39 4473 2210 693 1012 2083 10 2750 548 602 125 1022 3256 705 4924 3682 2229 3819 499 399 1676 3273 4861 298 3760 3618 2687 2570 2366 4386 897 1822 1198 3738 224 4019 1740 3463 3694 3631 4558 3056 653 1180 4252 790 2317 3438 2329 4508 3097 2533 2301 1098 3405 56 2066 795 3844 4516 4468 4953 4324 1818 1014 728 1394 535 2340 2202 3727 4556 2998 2600 1223 324 3584 3719 1988 3167 2870 1162 614 2567 797 4496 4281 2387 4226 2198 822 1202 3485 3846 3007 3055 3002 4137 4349 2917 1612 2640 2389 3872 3286 820 232 388 2457 2306 3705 4712 8 3172 984 3305 3076 4080 3920 2101 53 4493 1353 2712 1110 1341 3767 1985 2847 3882 182 1458 775 1651 1733 2348 4851 4018 2418 22 2458 2976 2878 3519 1277 3309 4347 49 4096 3441 3265 517 1411 3296 85 385 4456 1853 4583 1371 118 1424 4891 969 3362 2337 2374 287 3074 4944 3742 4732 3557 3466 4908 1357 638 4964 3447 4812 2110 3107 1530 3853
+addbefore 815 1012
+addbefore 404 2567
+addfirst 1223
+addfirst 1231
+addfirst 1331
+addfirst 555
+addlast 145
+reverse
+addbefore 1316 4687
+addfirst 1157
+addlast 324
+addfirst 1242
+reverse
+addafter 879 438
+addfirst 972
+addafter 1368 795
+addbefore 285 19
+remove 846
+addbefore 1208 1681
+addlast 174
+reverse
+reverse
+addafter 54 2210
+addfirst 61
+addfirst 56
+addfirst 1292
+reverse
+addbefore 1171 535
+addbefore 669 4456
+reverse
+addbefore 1453 3265
+addlast 784
+addafter 282 2708
+addlast 725
+addlast 184
+addlast 1091
+addfirst 1247
+addbefore 1392 2851
+addfirst 472
+reverse
+addfirst 68
+addlast 1127
+addfirst 1406
+addfirst 852
+remove 378
+addafter 577 1223
+reverse
+addlast 202
+addfirst 1049
+addafter 668 3557
+remove 660
+addbefore 483 1647
+remove 1418
+addafter 59 2457
+addfirst 517
+addlast 185
+addbefore 233 8
+addafter 661 3225
+reverse
+remove 1010
+addafter 1356 4226
+addafter 634 77
+addbefore 614 3844
+reverse
+remove 1349
+addfirst 831
+reverse
+addbefore 495 3618
+reverse
+remove 818
+addlast 1355
+remove 316
+reverse
+addfirst 760
+addlast 841
+addlast 841
+reverse
+addbefore 1244 1162
+addafter 66 4687
+addlast 971
+remove 557
+remove 1357
+addlast 901
+addafter 856 3767
+remove 414
+addafter 580 4561
+addbefore 1365 4468
+addlast 711
+addlast 313
+reverse
+addfirst 779
+addfirst 61
+addafter 681 1198
+addfirst 835
+remove 860
+addbefore 1029 3107
+addbefore 303 4516
+addfirst 1448
+reverse
+addfirst 1023
+addafter 284 1985
+addbefore 827 1110
+remove 580
+addlast 321
+addbefore 1355 1647
+reverse
+reverse
+remove 103
+addfirst 1227
+reverse
+addafter 543 1988
+addfirst 536
+addfirst 79
+addbefore 93 797
+addafter 1382 2306
+addbefore 1091 4496
+reverse
+addfirst 26
+addlast 327
+reverse
+addafter 241 2640
+addafter 816 232
+addfirst 7
+addbefore 1391 2229
+remove 533
+addfirst 346
+addafter 220 3584
+addfirst 1437
+remove 962
+remove 1065
+addfirst 197
+addafter 317 749
+reverse
+addbefore 1067 399
+remove 871
+addbefore 265 3438
+addafter 1104 2210
+addfirst 285
+reverse
+addlast 1305
+addlast 277
+remove 1254
+reverse
+addbefore 48 1822
+reverse
+addbefore 498 1098
+addafter 1018 2110
+remove 19
+addafter 639 2458
+addafter 946 3056
+reverse
+addbefore 994 2509
+addafter 394 2917
+addbefore 1268 2042
+addafter 949 3631
+remove 1176
+reverse
+addfirst 1381
+reverse
+reverse
+addfirst 352
+reverse
+addfirst 1410
+addfirst 809
+remove 1063
+reverse
+reverse
+addfirst 1068
+remove 295
+addbefore 1109 4649
+addfirst 760
+addbefore 826 423
+reverse
+addlast 826
+reverse
+addlast 1086
+addbefore 1353 3097
+addfirst 69
+addlast 908
+addlast 1323
+addbefore 40 1012
+remove 1117
+addlast 471
+remove 8
+reverse
+remove 702
+addlast 621
+addlast 292
+addfirst 701
+reverse
+addlast 1435
+addlast 679
+remove 810
+addfirst 1471
+addbefore 638 3767
+addlast 304
+addbefore 1251 3584
+reverse
+addfirst 1399
+addfirst 625
+addfirst 1420
+addfirst 1312
+addlast 508
+addfirst 196
+addlast 1396
+addafter 456 1733
+remove 1462
+addfirst 965
+addafter 746 2340
+addafter 472 4096
+addfirst 1381
+addfirst 837
+addlast 852
+addbefore 179 385
+reverse
+reverse
+addafter 588 4019
+addfirst 670
+addfirst 253
+reverse
+addlast 435
+addafter 787 3571
+addafter 1434 1822
+addfirst 153
+remove 69
+reverse
+remove 1028
+reverse
+addafter 35 1357
+reverse
+addafter 1334 3308
+remove 758
+addlast 1006
+addafter 6 4924
+addfirst 1075
+remove 313
+addafter 922 1198
+addlast 1058
+addlast 213
+addfirst 514
+remove 96
+remove 977
+addbefore 933 388
+reverse
+reverse
+remove 859
+remove 253
+remove 1147
+addbefore 73 4583
+addbefore 1346 897
+addbefore 606 4583
+addafter 359 2570
+addbefore 920 365
+addfirst 433
+addfirst 190
+addfirst 1251
+remove 1444
+addbefore 1274 2066
+remove 72
+addbefore 1459 1180
+addafter 8 4953
+addafter 631 3265
+addlast 330
+addafter 253 4096
+remove 986
+addbefore 628 8
+addbefore 1136 2847
+addlast 19
+addafter 1330 3485
+reverse
+addlast 533
+reverse
+remove 963
+addlast 1397
+reverse
+addafter 1052 53
+addfirst 782
+remove 397
+reverse
+remove 1284
+addfirst 1093
+addlast 453
+reverse
+addbefore 253 3273
+addfirst 1343
+addlast 492
+reverse
+addbefore 1076 287
+addlast 1421
+reverse
+remove 1044
+addafter 1391 3618
+addfirst 118
+remove 75
+reverse
+addafter 176 638
+addafter 464 657
+addbefore 1140 4649
+remove 1175
+remove 1066
+addafter 1003 1411
+addlast 1162
+addbefore 1112 4499
+addbefore 896 602
+remove 1096
+addfirst 825
+addafter 152 1012
+remove 1377
+addfirst 106
+addbefore 391 3920
+addafter 638 3172
+addafter 65 4349
+reverse
+addlast 809
+reverse
+remove 1022
+addlast 249
+reverse
+remove 289
+addlast 1328
+remove 1027
+addlast 10
+addafter 719 3308
+addbefore 515 298
+addbefore 1226 499
+addbefore 637 1740
+reverse
+remove 319
+addafter 303 3309
+addfirst 493
+reverse
+addbefore 1000 85
+reverse
+addlast 954
+addfirst 994
+addfirst 1403
+reverse
+addlast 537
+addlast 237
+addfirst 423
+reverse
+addbefore 128 3694
+addbefore 865 2750
+remove 1368
+reverse
+addfirst 299
+remove 1455
+addafter 612 53
+remove 836
+addlast 417
+addbefore 1481 1853
+remove 1315
+addlast 1443
+addafter 718 2210
+addafter 1023 138
+#

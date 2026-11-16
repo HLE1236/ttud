@@ -1,0 +1,7 @@
+{
+  "pattern": "dp-1d",
+  "recognize": "Cầu thang có `n <= 70` bậc, mỗi bước đi `1, 2` hoặc `3` bậc, hỏi **số cách** lên tới bậc `n`.\n- Thấy *số cách đi tới bước n* mà mỗi bước chỉ phụ thuộc 3 bậc trước → **QHĐ 1 chiều cơ bản** (nhớ dùng `long long` vì `n = 70` vượt `int`).",
+  "idea": "Đặt `dp[i]` = số cách leo lên đến đúng bậc `i`.\n- Để bước tới bậc `i`, bước cuối cùng chỉ có thể xuất phát từ `i-1`, `i-2`, hoặc `i-3`.\n- Công thức: `dp[i] = dp[i-1] + dp[i-2] + dp[i-3]`.\n- Cơ sở: `dp[1] = 1, dp[2] = 2, dp[3] = 4`.",
+  "pseudocode": "dp[1] = 1, dp[2] = 2, dp[3] = 4\ncho i từ 4 đến n:\n    dp[i] = dp[i-1] + dp[i-2] + dp[i-3]\nin dp[n]",
+  "skeleton_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int n;\n    if (!(cin >> n)) return 0;\n\n    vector<long long> dp(max(4, n + 1), 0);\n    // TODO 1: Khởi tạo giá trị cơ sở dp[1], dp[2], dp[3]\n\n    // TODO 2: Vòng lặp từ 4 đến n tính dp[i]\n\n    cout << dp[n] << '\\n';\n    return 0;\n}\n"
+}

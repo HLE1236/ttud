@@ -1,0 +1,31 @@
+{
+  "title": "[HUSTack] Phân tích giao dịch ngân hàng (5 truy vấn - Bank Transaction)",
+  "track": "final",
+  "topic": "graph-bfs-dfs",
+  "difficulty": "Trung bình",
+  "exam_tags": [
+    "HUSTack Project1 (BANK_TRANS_BASIC)",
+    "HUSTack: Đã AC"
+  ],
+  "time_limit_ms": 2000,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Dữ liệu giao dịch ngân hàng gồm nhiều dòng `<from_account> <to_account> <money> <time_point> <atm>`, kết thúc bằng `#`.\nSau đó là khối truy vấn (kết thúc bằng `#`) gồm 5 loại:\n- `?number_transactions`: tổng số giao dịch.\n- `?total_money_transaction`: tổng số tiền tất cả giao dịch.\n- `?list_sorted_accounts`: liệt kê tất cả các tài khoản xuất hiện (trong bên chuyển hoặc bên nhận) theo thứ tự từ điển tăng dần.\n- `?total_money_transaction_from <account>`: tổng tiền chuyển đi từ `<account>`.\n- `?inspect_cycle <account> k`: trả về `1` nếu có chu trình giao dịch độ dài đúng `k` (`k` tài khoản **phân biệt** `a_1 -> a_2 -> ... -> a_k -> a_1`) bắt đầu từ `<account>`, ngược lại `0`.",
+  "input_spec": "Khối giao dịch (tối đa `10^5` dòng), `#`, khối truy vấn, `#`.",
+  "output_spec": "Kết quả từng truy vấn trên từng dòng.",
+  "samples": [
+    {
+      "input": "T000010010 T000010020 1000 10:20:30 ATM1\nT000010010 T000010030 2000 10:02:30 ATM2\nT000010010 T000010040 1500 09:23:30 ATM1\nT000010020 T000010030 3000 08:20:31 ATM1\nT000010030 T000010010 4000 12:40:00 ATM2\nT000010040 T000010010 2000 10:30:00 ATM1\nT000010020 T000010040 3000 08:20:31 ATM1\nT000010040 T000010030 2000 11:30:00 ATM1\nT000010040 T000010030 1000 18:30:00 ATM1\n#\n?number_transactions\n?total_money_transaction\n?list_sorted_accounts\n?total_money_transaction_from T000010010\n?inspect_cycle T000010010 3\n#",
+      "output": "9\n19500\nT000010010 T000010020 T000010030 T000010040\n4500\n1"
+    }
+  ],
+  "theory_chapter": "chap5",
+  "mindset": "Gom các thao tác chuẩn:\n- Dùng `set<string>` (hoặc `unordered_set` rồi sort) để lưu danh sách tài khoản không trùng.\n- Dùng `unordered_map<string, long long> outSum` cho tổng tiền chuyển đi.\n- Với `?inspect_cycle <acc> k`: ánh xạ tên tài khoản thành `0..V-1`, lọc trùng cạnh trong danh sách kề `adj[u]`, rồi DFS quay lui độ sâu `k` kiểm tra có đường quay lại `start` hay không.",
+  "hints": [
+    "Nhớ lọc cạnh trùng trong `adj[u]` để tránh DFS duyệt lặp cùng một cạnh nhiều lần."
+  ],
+  "complexity": "O(N log N + Q * DFS)",
+  "id": "hs-bank-trans-basic",
+  "test_count": 10
+}

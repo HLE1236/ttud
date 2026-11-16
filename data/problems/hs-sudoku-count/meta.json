@@ -1,0 +1,32 @@
+{
+  "title": "[HUSTack] Đếm số nghiệm bảng Sudoku 9x9 (Sudoku Count)",
+  "track": "midterm",
+  "topic": "backtracking",
+  "difficulty": "Trung bình",
+  "exam_tags": [
+    "HUSTack Project1 (SUDOKU_COUNT)",
+    "HUSTack: Đã AC"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Cho một bảng Sudoku `9 x 9` còn trống một số ô (giá trị `0`). Hãy đếm số cách điền các số từ `1` đến `9` vào các ô trống sao cho:\n- Mỗi hàng chứa đủ `1..9` không lặp.\n- Mỗi cột chứa đủ `1..9` không lặp.\n- Mỗi ô vuông con `3 x 3` chứa đủ `1..9` không lặp.",
+  "input_spec": "Gồm 9 dòng, mỗi dòng 9 số nguyên từ `0` đến `9` (`0` là ô trống).",
+  "output_spec": "Một số nguyên duy nhất là số nghiệm Sudoku hợp lệ.",
+  "samples": [
+    {
+      "input": "0 0 3 4 0 0 0 8 9\n0 0 6 7 8 9 0 2 3\n0 8 0 0 2 3 4 5 6\n0 0 4 0 6 5 0 9 7\n0 6 0 0 9 0 0 1 4\n0 0 7 2 0 4 3 6 5\n0 3 0 6 0 2 0 7 8\n0 0 0 0 0 0 0 0 0\n0 0 0 0 0 0 0 0 0",
+      "output": "64"
+    }
+  ],
+  "theory_chapter": "chap3",
+  "mindset": "Dùng 3 mảng đánh dấu (hoặc 3 mảng bitmask) `row[9]`, `col[9]`, `box[9]` để kiểm tra đặt số `d` vào ô `(r, c)` trong `O(1)` (`box_id = (r / 3) * 3 + (c / 3)`).\nĐể tăng tốc mạnh khi quay lui: lưu danh sách các ô trống rồi ở mỗi bước chọn ô có ít lựa chọn hợp lệ nhất (hoặc duyệt tuần tự ô trống cũng chạy rất nhanh với bitmask).",
+  "hints": [
+    "Kiểm tra bảng ban đầu có hợp lệ không trước khi đệ quy.",
+    "Dùng bitmask `int cand = ~ (row[r] | col[c] | box[b]) & 0x3FE;` (bit 1..9) để duyệt chỉ các số hợp lệ cực nhanh!"
+  ],
+  "complexity": "Quay lui có đánh dấu O(1) mỗi bước",
+  "id": "hs-sudoku-count",
+  "test_count": 10
+}

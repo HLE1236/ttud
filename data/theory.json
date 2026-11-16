@@ -183,7 +183,17 @@
         "hs-upper-bound-seq",
         "hs-word-freq-text",
         "hs-sort-int",
-        "hs-analyze-order-raised"
+        "hs-analyze-order-raised",
+        "hs-text-replacement",
+        "hs-parenthesis-check",
+        "hs-eval-expr-add-mul",
+        "hs-eval-expr-paren",
+        "hs-linked-list-manip",
+        "hs-hash-string",
+        "hs-set-exist",
+        "hs-store-search-string",
+        "hs-string-matching",
+        "hs-suffix-signature"
       ]
     },
     {
@@ -222,7 +232,12 @@
         "hs-sum-pair-equal-m",
         "hs-longest-bounded-maxseq",
         "hs-rmq",
-        "hs-segment-tree-sim"
+        "hs-segment-tree-sim",
+        "hs-k-subseq-even",
+        "hs-sim-fenwick-tree",
+        "hs-bst-insertion",
+        "hs-seq-num-matching",
+        "hs-triple-index-max"
       ]
     },
     {
@@ -270,7 +285,12 @@
         "hs-timetable-ict-count",
         "hs-timetable-min-max-load",
         "hs-queen-large-multi",
-        "hs-count-spanning-trees-k"
+        "hs-count-spanning-trees-k",
+        "hs-permutation-gen",
+        "hs-sudoku-count",
+        "hs-sum-int-partition",
+        "hs-knight-move-score",
+        "hs-bca-credit-lb"
       ]
     },
     {
@@ -360,7 +380,14 @@
         "hs-max-weighted-disjoint-seg",
         "hs-max-score-table",
         "hs-pick-non-adj-table",
-        "hs-multi-knapsack-large"
+        "hs-multi-knapsack-large",
+        "hs-c-k-n",
+        "hs-domino",
+        "hs-largest-black-subrect",
+        "hs-warehouse",
+        "hs-drone-pickup",
+        "hs-gold-mining",
+        "hs-k-inversion"
       ]
     },
     {
@@ -431,7 +458,20 @@
         "hs-graph-orientation",
         "hs-ham-cycle",
         "hs-ship-traverse-islands",
-        "hs-two-mode-elevator"
+        "hs-two-mode-elevator",
+        "hs-water-jug",
+        "hs-family-tree",
+        "hs-tree-manipulation",
+        "hs-all-pair-shortest-path",
+        "hs-store-search-graph",
+        "hs-max-weighted-matching",
+        "hs-task-assign-min-cost",
+        "hs-max-runaway",
+        "hs-robot-in-factory",
+        "hs-analyze-sales-order",
+        "hs-bank-trans-basic",
+        "hs-analyze-code-submission",
+        "hs-analyze-quiz-log"
       ]
     }
   ]

@@ -1,0 +1,31 @@
+{
+  "title": "[HUSTack] Chấm điểm nhật ký làm bài trắc nghiệm (Analyze Quiz Log)",
+  "track": "final",
+  "topic": "hash-prefix",
+  "difficulty": "Trung bình",
+  "exam_tags": [
+    "HUSTack Project1 (ANALYZE_QUIZ_TEST_LOG)",
+    "HUSTack: Đã AC"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Hệ thống thi trắc nghiệm có 4 khối dữ liệu:\n1. Ngân hàng câu hỏi (`<QuestionID> <Point>`), kết thúc bằng `#`.\n2. Danh sách đáp án (`<AnswerID> <QuestionID> <1 hoặc 0>`), kết thúc bằng `#` (`1` = đúng, `0` = sai; mỗi câu chỉ có 1 đáp án đúng).\n3. Nhật ký làm bài (`<UserID> <TestID> <AnswerID> <TimePoint>`), kết thúc bằng `#`. Nếu cùng một user trong cùng một bài test chọn nhiều lần cho cùng một câu hỏi, **lần chọn có thời điểm `TimePoint` (`hh:mm:ss`) mới nhất** sẽ được ghi nhận.\n4. Khối truy vấn `?point_user_of_test <UserID> <TestID>`, kết thúc bằng `###`.",
+  "input_spec": "Gồm 4 khối theo thứ tự mô tả trên (`#`, `#`, `#`, `###`).",
+  "output_spec": "Mỗi truy vấn in ra tổng điểm của `<UserID>` trong bài `<TestID>` trên một dòng.",
+  "samples": [
+    {
+      "input": "Q001 2\nQ002 3\nQ003 5\nQ004 1\nQ005 5\n#\nA00000001 Q001 1\nA00000002 Q001 0\nA00000003 Q001 0\nA00000004 Q001 0\nA00000006 Q002 0\nA00000007 Q002 0\nA00000008 Q002 1\nA00000009 Q002 0\nA00000011 Q003 0\nA00000012 Q003 0\nA00000013 Q003 1\nA00000014 Q003 0\nA00000016 Q004 0\nA00000017 Q004 1\nA00000018 Q004 0\nA00000019 Q004 0\nA00000021 Q005 1\nA00000022 Q005 0\nA00000023 Q005 0\nA00000024 Q005 0\n#\nU001 T03 A00000002 03:01:20\nU001 T03 A00000001 12:51:32\nU003 T01 A00000016 12:21:14\nU004 T03 A00000001 06:11:34\nU005 T02 A00000009 19:55:42\nU004 T01 A00000003 21:33:04\nU002 T01 A00000017 04:47:33\nU003 T01 A00000018 19:23:07\nU005 T02 A00000021 11:50:14\nU004 T02 A00000001 14:04:52\n#\n?point_user_of_test U002 T01\n?point_user_of_test U001 T01\n?point_user_of_test U001 T03\n?point_user_of_test U002 T02\n###",
+      "output": "1\n0\n2\n0"
+    }
+  ],
+  "theory_chapter": "chap5",
+  "mindset": "Cẩn thận ở bước xử lý chọn lại đáp án:\n- Từ `<AnswerID>`, tra ra `<QuestionID>` và độ đúng/sai `isCorrect`.\n- Với mỗi bộ `(UserID, TestID, QuestionID)`, chỉ giữ lại lựa chọn có `TimePoint` (`string` định dạng `hh:mm:ss` có thể so sánh từ điển trực tiếp!) lớn nhất (`>=`).\n- Sau khi đọc xong khối nhật ký, duyệt qua các lựa chọn cuối cùng đó để cộng điểm vào `score[UserID#TestID]`.",
+  "hints": [
+    "Chú ý dấu kết thúc khối truy vấn là `###` (3 dấu `#`), khác với `#` ở 3 khối đầu."
+  ],
+  "complexity": "O(Qbank + Ans + Log + Query)",
+  "id": "hs-analyze-quiz-log",
+  "test_count": 10
+}

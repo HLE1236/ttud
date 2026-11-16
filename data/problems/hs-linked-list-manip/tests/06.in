@@ -1,0 +1,186 @@
+190
+4136 570 4438 294 4490 458 2158 874 1992 2940 4030 4224 585 225 1176 4357 3804 4465 3556 262 4349 886 2038 4493 2812 1351 213 4866 3169 1980 3499 4744 3699 3731 2891 1547 4889 3388 472 2775 1318 3476 4044 1448 482 3205 1627 2193 4682 2972 1367 3316 1528 3106 1346 1897 3808 181 1920 3752 1059 4372 3069 990 3465 1754 3716 4374 4589 1366 2584 4060 4021 3679 403 1516 66 89 3261 728 1922 1587 2675 1000 1198 2651 3491 1369 3930 4897 2018 1109 248 328 2533 3835 1915 3577 1660 884 4971 2152 3822 2230 4159 772 2017 2471 2298 933 2938 4269 4604 3712 3158 2121 552 3040 2356 1470 663 4935 3411 540 534 3931 671 1856 4008 515 94 3370 4718 1327 1222 378 399 1732 2857 2233 4014 4028 129 4936 454 4524 3603 1043 2932 2174 3386 2094 2444 775 2759 214 1305 2331 4977 1039 3894 392 4567 594 2411 3693 627 3331 2684 409 3229 2981 4009 4016 354 2447 349 2606 1169 632 2339 110 3420 4655 1574 4006 664 2920 4461 2014
+addlast 704
+addbefore 532 4438
+reverse
+remove 179
+addbefore 937 3930
+reverse
+addafter 1146 4465
+remove 710
+reverse
+remove 515
+reverse
+addafter 824 66
+addlast 1277
+addlast 925
+addbefore 94 2444
+addfirst 1341
+addbefore 262 1516
+addafter 1172 4372
+addfirst 672
+addafter 990 1222
+reverse
+addafter 1052 4935
+reverse
+addfirst 7
+remove 1434
+reverse
+addlast 923
+addfirst 157
+remove 121
+remove 1474
+addfirst 892
+addfirst 754
+reverse
+remove 627
+reverse
+addbefore 1367 2940
+addfirst 361
+addfirst 108
+addafter 370 4935
+remove 136
+remove 1259
+addfirst 112
+addafter 78 671
+addfirst 1475
+remove 1036
+addfirst 227
+addfirst 1420
+addafter 447 2121
+remove 575
+addbefore 837 4866
+remove 1413
+remove 793
+addbefore 268 3804
+remove 450
+remove 1079
+addafter 647 4889
+addbefore 55 4889
+addafter 565 1992
+remove 397
+addbefore 455 1448
+addlast 1464
+addbefore 313 4935
+remove 727
+addfirst 214
+addafter 74 585
+reverse
+remove 1051
+addfirst 49
+addbefore 769 3069
+remove 566
+addbefore 949 3476
+remove 1130
+addbefore 983 2411
+addfirst 973
+addlast 946
+addbefore 48 1369
+addbefore 1318 378
+addfirst 196
+addbefore 1006 1346
+remove 501
+addfirst 817
+addbefore 1215 4372
+addbefore 76 3931
+addafter 90 4028
+addfirst 748
+addbefore 777 772
+addbefore 95 2298
+remove 204
+addbefore 777 1627
+addbefore 322 1470
+remove 349
+reverse
+addlast 126
+addfirst 1036
+addfirst 699
+remove 697
+remove 1133
+addbefore 694 4014
+addlast 871
+addbefore 976 1448
+remove 1339
+addafter 890 458
+reverse
+reverse
+reverse
+addafter 194 4718
+addlast 1448
+addfirst 267
+remove 744
+addbefore 246 4357
+addafter 318 3556
+reverse
+addafter 428 4009
+remove 201
+addfirst 155
+remove 1157
+remove 1219
+addfirst 762
+reverse
+addlast 1230
+addlast 28
+addlast 753
+addafter 627 4655
+addlast 81
+addlast 521
+addafter 1436 3386
+addafter 721 4493
+addlast 81
+addafter 1249 66
+addlast 296
+addfirst 125
+addafter 1239 1574
+reverse
+addfirst 266
+remove 672
+reverse
+reverse
+addfirst 1203
+reverse
+addbefore 177 3603
+addbefore 710 627
+addlast 108
+addbefore 131 3804
+remove 315
+reverse
+addafter 339 4006
+addbefore 1209 874
+addfirst 827
+reverse
+addlast 320
+addafter 1437 1660
+addafter 143 110
+addlast 350
+addfirst 1367
+addfirst 95
+remove 1006
+addbefore 361 1587
+reverse
+remove 1397
+addafter 1338 4897
+reverse
+remove 473
+addafter 1365 2675
+remove 1062
+addlast 239
+reverse
+remove 174
+addafter 601 1351
+addbefore 204 1169
+reverse
+addbefore 469 775
+remove 389
+addbefore 1208 4866
+addbefore 1134 1305
+remove 59
+addafter 672 1547
+addfirst 280
+addlast 187
+addafter 1405 213
+addbefore 461 886
+addbefore 1129 3752
+addfirst 975
+remove 829
+#

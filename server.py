@@ -474,7 +474,23 @@ class TTUDHandler(BaseHTTPRequestHandler):
                 roadmap = json.load(f)
             with open(os.path.join(DATA_DIR, "theory.json"), "r", encoding="utf-8") as f:
                 theory = json.load(f)
+            # Merge bai giang chi tiet (data/lessons/<chapId>.json) vao tung chuong
+            lessons_dir = os.path.join(DATA_DIR, "lessons")
+            for chap in theory.get("chapters", []):
+                lp = os.path.join(lessons_dir, chap.get("id", "") + ".json")
+                if os.path.isfile(lp):
+                    try:
+                        with open(lp, "r", encoding="utf-8") as f:
+                            chap["lesson"] = json.load(f)
+                    except Exception as e:
+                        print(f"[WARN] Loi doc {lp}: {e}")
+            rec_path = os.path.join(DATA_DIR, "recognition.json")
+            if os.path.isfile(rec_path):
+                with open(rec_path, "r", encoding="utf-8") as f:
+                    theory["recognition"] = json.load(f)
             problems = load_all_problem_summaries()
+            for p in problems:
+                p["has_guide"] = os.path.isfile(os.path.join(PROBLEMS_DIR, p["id"], "guide.json"))
 
             conn = get_db()
             cur = conn.cursor()
@@ -531,6 +547,13 @@ class TTUDHandler(BaseHTTPRequestHandler):
                 meta = json.load(f)
             ref_path = os.path.join(pdir, "ref.cpp")
             ref_cpp = open(ref_path, "r", encoding="utf-8").read() if os.path.isfile(ref_path) else ""
+            guide_path = os.path.join(pdir, "guide.json")
+            if os.path.isfile(guide_path):
+                try:
+                    with open(guide_path, "r", encoding="utf-8") as f:
+                        meta["guide"] = json.load(f)
+                except Exception as e:
+                    print(f"[WARN] Loi doc {guide_path}: {e}")
             tests_dir = os.path.join(pdir, "tests")
             test_names = sorted([os.path.splitext(f)[0] for f in os.listdir(tests_dir) if f.endswith(".in")]) if os.path.isdir(tests_dir) else []
 

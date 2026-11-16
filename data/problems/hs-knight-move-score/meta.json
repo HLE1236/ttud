@@ -1,0 +1,32 @@
+{
+  "title": "[HUSTack] Mã đi tuần thu tổng điểm lớn nhất (Knight Move Score)",
+  "track": "midterm",
+  "topic": "backtracking",
+  "difficulty": "Trung bình",
+  "exam_tags": [
+    "HUSTack Project1 (KNIGHT_MOVE_TAKE_SCORE)",
+    "HUSTack: Đã AC"
+  ],
+  "time_limit_ms": 1500,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Một quân mã xuất phát từ ô `(r, c)` trên bàn cờ kích thước `N x N` (đánh số từ `1` đến `N`). Mỗi ô `(i, j)` chứa một số nguyên `G[i][j]` (có thể âm, bằng 0 hoặc dương).\n\nQuân mã di chuyển theo luật cờ vua (`(+-1, +-2)` hoặc `(+-2, +-1)`), mỗi ô chỉ được đi qua **tối đa 1 lần** và có thể dừng lại ở bất kỳ bước nào (kể cả dừng ngay tại ô xuất phát). Hãy tìm tổng điểm lớn nhất của hành trình.",
+  "input_spec": "- Dòng 1: `N, r, c` (`1 <= N <= 5`, `1 <= r, c <= N`)\n- `N` dòng tiếp theo: mỗi dòng `N` số nguyên của ma trận `G`.",
+  "output_spec": "Tổng điểm lớn nhất đạt được.",
+  "samples": [
+    {
+      "input": "4 1 1\n3 4 8 7\n0 3 0 0\n2 0 -10 0\n0 -4 0 10",
+      "output": "31"
+    }
+  ],
+  "theory_chapter": "chap3",
+  "mindset": "Dùng **Quay lui DFS trên lưới** với 8 hướng đi của quân mã và mảng `vis[i][j]`.\nTại mỗi ô vừa đặt chân tới, cập nhật luôn `best = max(best, curSum)` (vì quân mã được phép dừng tại bất kỳ ô nào, không cần đi hết toàn bộ bàn cờ!).\nĐể tăng tốc nhánh cận: tính trước `posRem` = tổng tất cả các số **dương** ở các ô chưa thăm; nếu `curSum + posRem <= best` thì cắt nhánh ngay!",
+  "hints": [
+    "Cập nhật `best = max(best, curSum)` ngay đầu hàm `dfs(r, c, curSum)`.",
+    "Cắt nhánh `if (curSum + posRemaining <= best) return;` rất hiệu quả khi có nhiều ô âm hoặc `0`."
+  ],
+  "complexity": "Quay lui có cận trên",
+  "id": "hs-knight-move-score",
+  "test_count": 10
+}

@@ -1,0 +1,7 @@
+{
+  "pattern": "dp-1d",
+  "recognize": "Tính `C(k, n) mod 10^9+7` với `k, n <= 999` -> dùng **Tam giác Pascal (QHĐ)** hoặc **Đệ quy có nhớ**.",
+  "idea": "`dp[i][j] = (dp[i-1][j-1] + dp[i-1][j]) % MOD` là tổ hợp chập `j` của `i`.",
+  "pseudocode": "for i = 0..n:\n  dp[i][0] = dp[i][i] = 1\n  for j = 1..i-1:\n    dp[i][j] = (dp[i-1][j-1] + dp[i-1][j]) % MOD",
+  "skeleton_cpp": "#include <bits/stdc++.h>\nusing namespace std;\nconst int MOD = 1e9 + 7;\nint C[1005][1005];\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    int k, n;\n    cin >> k >> n;\n    if (k > n) { cout << 0 << '\\n'; return 0; }\n    // TODO: Tinh bang tam giac Pascal C[n][k] mod MOD\n    return 0;\n}\n"
+}

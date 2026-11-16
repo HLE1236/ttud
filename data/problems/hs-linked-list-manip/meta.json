@@ -1,0 +1,32 @@
+{
+  "title": "[HUSTack] Thao tác trên danh sách liên kết (Linked List Manipulation)",
+  "track": "midterm",
+  "topic": "array-basic",
+  "difficulty": "Cơ bản",
+  "exam_tags": [
+    "HUSTack Project1 (LINKED_LIST_MANIPULATION)",
+    "HUSTack: Đã AC"
+  ],
+  "time_limit_ms": 1000,
+  "memory_limit_mb": 256,
+  "has_official_tests": false,
+  "has_checker": false,
+  "statement": "Xây dựng danh sách liên kết đơn với các khóa ban đầu là dãy `a_1, a_2, ..., a_n`, sau đó thực hiện chuỗi thao tác kết thúc bởi `#`:\n- `addlast k`: thêm `k` vào cuối nếu `k` chưa tồn tại.\n- `addfirst k`: thêm `k` vào đầu nếu `k` chưa tồn tại.\n- `addafter u v`: thêm `u` vào ngay sau `v` nếu `v` đã tồn tại và `u` chưa tồn tại.\n- `addbefore u v`: thêm `u` vào ngay trước `v` nếu `v` đã tồn tại và `u` chưa tồn tại.\n- `remove k`: xóa phần tử có khóa `k` (nếu có).\n- `reverse`: đảo ngược danh sách (bằng cách đổi chiều con trỏ liên kết).",
+  "input_spec": "- Dòng 1: `n` (`1 <= n <= 1000`)\n- Dòng 2: `a_1, a_2, ..., a_n`\n- Các dòng tiếp theo: các lệnh thao tác, kết thúc bởi `#`.",
+  "output_spec": "In ra dãy các khóa trong danh sách sau khi thực hiện hết lệnh, cách nhau bởi dấu cách.",
+  "samples": [
+    {
+      "input": "5\n5 4 3 2 1\naddlast 3\naddlast 10\naddfirst 1\naddafter 10 4\nremove 1\n#",
+      "output": "5 4 3 2 10"
+    }
+  ],
+  "theory_chapter": "chap1",
+  "mindset": "Cài đặt `struct Node { int key; Node* next; };` kết hợp các hàm tìm kiếm `findNode(k)` (để kiểm tra trùng lặp trước khi thêm), chèn đầu/cuối/trước/sau, xóa và hàm `reverse()` 3 con trỏ (`prev`, `cur`, `nxt`). Hoặc dùng `std::list<int>` kết hợp `std::find` đều chạy cực nhanh với `n <= 1000`.",
+  "hints": [
+    "Chú ý thứ tự tham số: `addafter u v` là chèn `u` vào **sau `v`** (không phải chèn `v` sau `u`).",
+    "Đừng quên kiểm tra cả hai điều kiện: `v` phải tồn tại VÀ `u` chưa tồn tại trong danh sách."
+  ],
+  "complexity": "O(n * Q)",
+  "id": "hs-linked-list-manip",
+  "test_count": 10
+}

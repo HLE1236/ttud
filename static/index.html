@@ -21,7 +21,7 @@
     <nav class="nav-tabs" aria-label="Điều hướng chính">
       <button class="nav-tab active" data-view="roadmap">
         <svg class="ui-ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 3.5h12M2 8h8M2 12.5h10"/><circle cx="13" cy="8" r="1.5"/></svg>
-        Lộ trình 16 ngày
+        Lộ trình Giữa kỳ
       </button>
       <button class="nav-tab" data-view="theory">
         <svg class="ui-ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 2.5h8.5A1.5 1.5 0 0 1 13 4v9.5l-4.5-2-4.5 2V4A1.5 1.5 0 0 1 3 2.5z"/></svg>
@@ -54,14 +54,15 @@
         <div class="surface hero-card">
           <div class="hero-head">
             <div class="hero-title-wrap">
-              <div class="eyebrow">Kế hoạch ôn tập 13/11 – 28/11</div>
-              <h1>Lộ trình Thuật toán Ứng dụng (Giữa kỳ &amp; Cuối kỳ)</h1>
-              <p class="muted prose-lead">Cấu trúc 2 giai đoạn: <strong>Giữa kỳ (Ngày 1–7)</strong> hệ thống hóa mảng đếm, Prefix Sum, Tham lam, Quay lui và DP cơ bản; <strong>Cuối kỳ (Ngày 8–16)</strong> tập trung DP đa chiều, Đồ thị (BFS/DFS, Dijkstra, Kruskal, Tarjan) và Luồng mạng.</p>
+              <div class="eyebrow">Kế hoạch ôn Giữa kỳ · 18/11 – 28/11 (Thứ 4 tuần sau)</div>
+              <h1>Lộ trình ôn Giữa kỳ TTUD (đến hết Quy hoạch động)</h1>
+              <p class="muted prose-lead">Tập trung 100% kiến thức Giữa kỳ trong 11 ngày: <strong>Ngày 1–4</strong> củng cố STL, Cộng dồn, Hai con trỏ, Tham lam &amp; Chia để trị; <strong>Ngày 5–8</strong> luyện Quay lui &amp; Nhánh cận; <strong>Ngày 9–11</strong> làm chủ Quy hoạch động.</p>
             </div>
             <div class="track-pills" id="roadmap-track-filter" role="group" aria-label="Lọc giai đoạn lộ trình">
-              <button class="filter-pill active" data-track="all">Tất cả 16 ngày</button>
-              <button class="filter-pill" data-track="midterm">Phần 1: Giữa kỳ (1–7)</button>
-              <button class="filter-pill" data-track="final">Phần 2: Cuối kỳ (8–16)</button>
+              <button class="filter-pill active" data-track="all">Tất cả 11 ngày</button>
+              <button class="filter-pill" data-track="foundation">Nền tảng &amp; Tham lam (1–4)</button>
+              <button class="filter-pill" data-track="backtracking">Quay lui &amp; Nhánh cận (5–8)</button>
+              <button class="filter-pill" data-track="dp">Quy hoạch động (9–11)</button>
             </div>
           </div>
           <div class="progress-summary-grid" id="roadmap-summary"></div>
@@ -76,8 +77,9 @@
         <aside class="theory-sidebar surface">
           <h3>Mục lục tài liệu</h3>
           <div class="theory-nav-list" id="theory-nav-list">
+            <button class="theory-nav-item" data-chapter="path">Lộ trình học theo chương</button>
             <button class="theory-nav-item active" data-chapter="mindset">Phương pháp 4 bước</button>
-            <button class="theory-nav-item" data-chapter="cheatsheet">Đối chiếu giới hạn N</button>
+            <button class="theory-nav-item" data-chapter="cheatsheet">Sổ tay nhận dạng dạng bài</button>
           </div>
           <div class="theory-sidebar-divider">Bài giảng học phần (Slide HUST)</div>
           <div class="theory-nav-list" id="theory-chapters-nav"></div>
@@ -156,7 +158,7 @@
 
           <div class="sub-tabs" id="left-subtabs">
             <button class="sub-tab active" data-ltab="statement">Đề bài</button>
-            <button class="sub-tab" data-ltab="mindset">Phân tích &amp; Gợi ý</button>
+            <button class="sub-tab" data-ltab="mindset">Hướng dẫn giải</button>
             <button class="sub-tab" data-ltab="notes">Ghi chú</button>
             <button class="sub-tab" data-ltab="history">Lịch sử (<span id="hist-count">0</span>)</button>
             <button class="sub-tab" data-ltab="tests">Bộ Test (<span id="test-count">0</span>)</button>
@@ -185,27 +187,13 @@
 
             <!-- Mindset & Hints Tab -->
             <div class="ltab-pane" id="ltab-mindset">
-              <div class="callout callout-tip">
-                <h4>Phân tích thuật toán</h4>
-                <div class="prose" id="prob-mindset"></div>
+              <div class="callout callout-info small" style="margin-bottom:12px;">
+                Hãy tự nghĩ trước, mỗi khi bí thì <strong>mở thêm 1 tầng</strong>: Nhận dạng → Ý tưởng → Mã giả → Khung code → Lời giải đầy đủ.
               </div>
-              <div class="section-block">
-                <h4>Gợi ý từng bước</h4>
-                <div id="prob-hints"></div>
-              </div>
+              <div id="prob-guide-ladder"></div>
               <div class="callout callout-info" id="prob-complexity-box">
                 <h4>Độ phức tạp mục tiêu</h4>
                 <div id="prob-complexity"></div>
-              </div>
-              <div class="section-block">
-                <div class="ref-code-header">
-                  <h4>Lời giải C++17 tham khảo</h4>
-                  <div class="ref-actions">
-                    <button class="btn btn-sm btn-ghost" id="btn-toggle-ref">Hiện mã nguồn</button>
-                    <button class="btn btn-sm btn-ghost hidden" id="btn-load-ref">Nạp vào Editor</button>
-                  </div>
-                </div>
-                <pre class="code-box hidden" id="prob-ref-code"></pre>
               </div>
             </div>
 
@@ -259,6 +247,7 @@
               <span class="draft-indicator" id="draft-status">Đã lưu</span>
             </div>
             <div class="toolbar-group">
+              <button class="btn btn-sm btn-ghost btn-toggle-on" id="btn-autocomplete-toggle" title="Bật/tắt gợi ý cú pháp khi gõ (Ctrl+Space để mở thủ công)">Gợi ý: Bật</button>
               <button class="btn btn-sm btn-ghost" id="btn-font-dec" title="Giảm cỡ chữ">A-</button>
               <button class="btn btn-sm btn-ghost" id="btn-font-inc" title="Tăng cỡ chữ">A+</button>
               <button class="btn btn-sm btn-secondary" id="btn-run-sample" title="Phím tắt: Ctrl + Enter">Chạy thử <kbd>Ctrl+↵</kbd></button>
@@ -315,6 +304,7 @@
   <script src="vendor/clike.min.js"></script>
   <script src="vendor/matchbrackets.min.js"></script>
   <script src="vendor/closebrackets.min.js"></script>
+  <script src="cpp-autocomplete.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

@@ -1,0 +1,7 @@
+{
+  "pattern": "bnb-routing",
+  "recognize": "Bàn cờ nhỏ `N <= 5`, đi theo nước quân mã không lặp ô để tối đa tổng điểm -> **Quay lui / Nhánh cận trên bàn cờ**.",
+  "idea": "Mỗi bước thử 8 nước đi hợp lệ chưa thăm `(nr, nc)`, cập nhật `best = max(best, curSum)` tại mọi trạng thái, đồng thời cắt nhánh nếu `curSum + tong_so_duong_con_lai <= best`.",
+  "pseudocode": "dfs(r, c, sum, posRem):\n  best = max(best, sum)\n  if sum + posRem <= best: return\n  for 8 hướng (nr, nc):\n    if valid(nr, nc) && !vis[nr][nc]:\n      vis[nr][nc] = true\n      dfs(nr, nc, sum + G[nr][nc], posRem - max(0, G[nr][nc]))\n      vis[nr][nc] = false",
+  "skeleton_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint N, sr, sc;\nlong long G[12][12];\nbool vis[12][12];\nlong long best = -4e18;\nint dr[8] = {-2,-2,-1,-1,1,1,2,2};\nint dc[8] = {-1,1,-2,2,-2,2,-1,1};\n\nvoid dfs(int r, int c, long long sum, long long posRem) {\n    // TODO 1: Cap nhat best va cat nhanh neu sum + posRem <= best\n\n    // TODO 2: Thu 8 nuoc di hop le\n}\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    cin >> N >> sr >> sc;\n    long long totalPos = 0;\n    for (int i = 1; i <= N; i++)\n        for (int j = 1; j <= N; j++) {\n            cin >> G[i][j];\n            if (G[i][j] > 0) totalPos += G[i][j];\n        }\n    vis[sr][sc] = true;\n    dfs(sr, sc, G[sr][sc], totalPos - max(0LL, G[sr][sc]));\n    cout << best << '\\n';\n    return 0;\n}\n"
+}
