@@ -5,6 +5,7 @@ import json
 import glob
 import time
 import shutil
+import socket
 import sqlite3
 import tempfile
 import mimetypes
@@ -716,11 +717,35 @@ class TTUDHandler(BaseHTTPRequestHandler):
         return self.send_json({"error": "Not found"}, 404)
 
 
+def get_lan_ips():
+    ips = []
+    try:
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
+            s.connect(("8.8.8.8", 80))
+            ip = s.getsockname()[0]
+            if ip and not ip.startswith("127."):
+                ips.append(ip)
+    except OSError:
+        pass
+    try:
+        for info in socket.getaddrinfo(socket.gethostname(), None, socket.AF_INET):
+            ip = info[4][0]
+            if ip and not ip.startswith("127.") and ip not in ips:
+                ips.append(ip)
+    except OSError:
+        pass
+    return ips
+
+
 def main():
     init_db()
+    host = os.environ.get("HOST", "0.0.0.0")
     port = int(os.environ.get("PORT", sys.argv[1] if len(sys.argv) > 1 else 8765))
-    server = ThreadingHTTPServer(("127.0.0.1", port), TTUDHandler)
+    server = ThreadingHTTPServer((host, port), TTUDHandler)
     print(f"TTUD Local Judge & Learning App running at http://127.0.0.1:{port}")
+    if host == "0.0.0.0":
+        for ip in get_lan_ips():
+            print(f"LAN / Network access: http://{ip}:{port}")
     print(f"C++ Compiler: {GXX_PATH}")
     try:
         server.serve_forever()
