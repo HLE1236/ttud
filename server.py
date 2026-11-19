@@ -13,6 +13,7 @@ import subprocess
 from datetime import datetime
 from urllib.parse import urlparse, parse_qs
 from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
+import debugger
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(BASE_DIR, "data")
@@ -67,6 +68,9 @@ def get_judge_env():
     if os.path.isdir(MINGW_BIN):
         env["PATH"] = MINGW_BIN + os.pathsep + env.get("PATH", "")
     return env
+
+
+DEBUG_MANAGER = debugger.DebugManager(GXX_PATH, COMPAT_INC_DIR, get_judge_env)
 
 
 def get_db():
@@ -556,6 +560,7 @@ class TTUDHandler(BaseHTTPRequestHandler):
                 "settings": settings,
                 "stats": compute_stats(problems, status_map),
                 "gxx_path": GXX_PATH,
+                "gdb_path": debugger.GDB_PATH or "",
             })
 
         if path.startswith("/api/problem/"):
@@ -755,6 +760,43 @@ class TTUDHandler(BaseHTTPRequestHandler):
             conn.close()
             return self.send_json({"ok": True})
 
+        if path == "/api/debug/start":
+            res = DEBUG_MANAGER.start(
+                body.get("code", ""),
+                body.get("stdin", ""),
+                body.get("breakpoints", []),
+                body.get("watches", []),
+                prev_session_id=body.get("session_id"),
+            )
+            return self.send_json(res)
+
+        if path == "/api/debug/action":
+            res = DEBUG_MANAGER.action(
+                body.get("session_id", ""),
+                body.get("action", ""),
+                line=body.get("line"),
+                level=body.get("level"),
+            )
+            return self.send_json(res)
+
+        if path == "/api/debug/breakpoints":
+            res = DEBUG_MANAGER.sync_breakpoints(
+                body.get("session_id", ""),
+                body.get("breakpoints", []),
+            )
+            return self.send_json(res)
+
+        if path == "/api/debug/watches":
+            res = DEBUG_MANAGER.set_watches(
+                body.get("session_id", ""),
+                body.get("watches", []),
+            )
+            return self.send_json(res)
+
+        if path == "/api/debug/stop":
+            res = DEBUG_MANAGER.stop(body.get("session_id", ""))
+            return self.send_json(res)
+
         return self.send_json({"error": "Not found"}, 404)
 
 
@@ -788,6 +830,7 @@ def main():
         for ip in get_lan_ips():
             print(f"LAN / Network access: http://{ip}:{port}")
     print(f"C++ Compiler: {GXX_PATH}")
+    print(f"GDB Debugger: {debugger.GDB_PATH or 'Not found'}")
     try:
         server.serve_forever()
     except KeyboardInterrupt:

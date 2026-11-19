@@ -250,9 +250,49 @@
               <button class="btn btn-sm btn-ghost btn-toggle-on" id="btn-autocomplete-toggle" title="Bật/tắt gợi ý cú pháp khi gõ (Ctrl+Space để mở thủ công)">Gợi ý: Bật</button>
               <button class="btn btn-sm btn-ghost" id="btn-font-dec" title="Giảm cỡ chữ">A-</button>
               <button class="btn btn-sm btn-ghost" id="btn-font-inc" title="Tăng cỡ chữ">A+</button>
+              <button class="btn btn-sm btn-debug" id="btn-debug-launch" title="Bật thanh Debug & chạy GDB (F8)">
+                <svg class="ui-ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="8" cy="9" r="3.5"/><path d="M8 5.5V3.5M5.5 7L3 5.5M10.5 7L13 5.5M4.5 10H2.5M11.5 10h2M5.5 12l-2 1.5M10.5 12l2 1.5"/></svg>
+                Debug <kbd>F8</kbd>
+              </button>
               <button class="btn btn-sm btn-secondary" id="btn-run-sample" title="Phím tắt: Ctrl + Enter">Chạy thử <kbd>Ctrl+↵</kbd></button>
               <button class="btn btn-sm btn-primary" id="btn-submit" title="Phím tắt: Ctrl + Shift + Enter">Nộp bài <kbd>Ctrl+⇧+↵</kbd></button>
             </div>
+          </div>
+
+          <!-- Code::Blocks-style Debugger Toolbar -->
+          <div class="debug-toolbar hidden" id="debug-toolbar" aria-label="Thanh công cụ Debug">
+            <div class="dbg-btn-group">
+              <button class="dbg-btn dbg-btn-play" id="dbg-btn-start" title="Debug / Continue (F8)">
+                <svg class="ui-ico" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M4 3l9 5-9 5V3z"/></svg>
+                <span id="dbg-start-label">Start</span> <kbd>F8</kbd>
+              </button>
+              <button class="dbg-btn" id="dbg-btn-next" title="Next line / Step Over (F7)" disabled>
+                <svg class="ui-ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 10a5 5 0 0 1 9.5-1.5"/><path d="M10.5 8.5h2.5V6"/><circle cx="8" cy="12.5" r="1.4" fill="currentColor"/></svg>
+                Next <kbd>F7</kbd>
+              </button>
+              <button class="dbg-btn" id="dbg-btn-step" title="Step into (Shift+F7)" disabled>
+                <svg class="ui-ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M8 2.5v8"/><path d="M5 7.5l3 3 3-3"/><circle cx="8" cy="13" r="1.3" fill="currentColor"/></svg>
+                Step into <kbd>⇧F7</kbd>
+              </button>
+              <button class="dbg-btn" id="dbg-btn-finish" title="Step out (Ctrl+Shift+F7)" disabled>
+                <svg class="ui-ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M8 10.5v-8"/><path d="M5 5.5l3-3 3 3"/><circle cx="8" cy="13" r="1.3" fill="currentColor"/></svg>
+                Step out
+              </button>
+              <button class="dbg-btn" id="dbg-btn-until" title="Run to cursor (F4)" disabled>
+                <svg class="ui-ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 8h8"/><path d="M8 5l3 3-3 3"/><path d="M13 3.5v9"/></svg>
+                To cursor <kbd>F4</kbd>
+              </button>
+              <button class="dbg-btn dbg-btn-stop" id="dbg-btn-stop" title="Stop debugger (Shift+F8)" disabled>
+                <svg class="ui-ico" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><rect x="3.5" y="3.5" width="9" height="9" rx="1.2"/></svg>
+                Stop <kbd>⇧F8</kbd>
+              </button>
+              <span class="dbg-sep"></span>
+              <button class="dbg-btn" id="dbg-btn-bp" title="Đặt / bỏ Breakpoint tại dòng con trỏ (F5)">
+                <span class="dbg-bp-ico" aria-hidden="true"></span> BP <kbd>F5</kbd>
+              </button>
+              <button class="dbg-btn" id="dbg-btn-clear-bp" title="Xóa toàn bộ Breakpoint">Xóa BP</button>
+            </div>
+            <span class="dbg-status-pill" id="dbg-status-pill">Sẵn sàng · Click số dòng để đặt breakpoint</span>
           </div>
 
           <div class="editor-wrapper" id="editor-dropzone">
@@ -260,10 +300,11 @@
             <div class="drop-overlay hidden" id="drop-overlay">Thả tệp <code>.cpp</code> để nạp vào trình soạn thảo</div>
           </div>
 
-          <div class="judge-panel">
+          <div class="judge-panel" id="judge-panel">
             <div class="sub-tabs judge-tabs">
               <button class="sub-tab active" data-rtab="sample">Kiểm thử Input tùy chọn</button>
               <button class="sub-tab" data-rtab="verdict">Kết quả chấm bài <span id="verdict-pill-badge"></span></button>
+              <button class="sub-tab" data-rtab="debug">Debug (GDB) <span id="debug-tab-badge"></span></button>
             </div>
 
             <div class="judge-body">
@@ -293,6 +334,56 @@
                   <div class="muted center-empty">Chưa có lượt nộp trong phiên hiện tại. Nhấn <strong>Nộp bài</strong> để chấm toàn bộ bộ test.</div>
                 </div>
               </div>
+
+              <!-- Code::Blocks-style Debugger Tab -->
+              <div class="rtab-pane" id="rtab-debug">
+                <div class="dbg-layout">
+                  <div class="dbg-pane dbg-watches-pane">
+                    <div class="dbg-pane-head">
+                      <span>Watches &amp; Locals</span>
+                      <div class="dbg-watch-form">
+                        <input type="text" id="dbg-watch-input" placeholder="Thêm watch (vd: a[i], dp[i][j])..." autocomplete="off" />
+                        <button class="btn btn-sm btn-secondary" id="dbg-watch-add" type="button">+ Watch</button>
+                      </div>
+                    </div>
+                    <div class="dbg-table-wrap">
+                      <table class="dbg-table">
+                        <thead>
+                          <tr>
+                            <th style="width:32%;">Biến / Biểu thức</th>
+                            <th>Giá trị</th>
+                            <th style="width:24%;">Kiểu</th>
+                          </tr>
+                        </thead>
+                        <tbody id="dbg-watches-body">
+                          <tr><td colspan="3" class="muted dbg-empty-cell">Click vào số dòng để đặt chấm đỏ (Breakpoint), sau đó bấm <strong>Debug (F8)</strong>. Input lấy từ tab <em>Kiểm thử Input tùy chọn</em>.</td></tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <div class="dbg-pane dbg-side-pane">
+                    <div class="dbg-side-tabs">
+                      <button class="dbg-side-tab active" data-dtab="stack">Call stack</button>
+                      <button class="dbg-side-tab" data-dtab="stdout">Output (stdout)</button>
+                      <button class="dbg-side-tab" data-dtab="log">GDB Log</button>
+                    </div>
+                    <div class="dbg-side-body">
+                      <div class="dbg-side-pane-content active" id="dtab-stack">
+                        <div id="dbg-stack-list" class="dbg-stack-list">
+                          <div class="muted dbg-empty-cell">Chưa có call stack.</div>
+                        </div>
+                      </div>
+                      <div class="dbg-side-pane-content" id="dtab-stdout">
+                        <pre id="dbg-stdout-pre" class="dbg-pre">(Chưa có output)</pre>
+                      </div>
+                      <div class="dbg-side-pane-content" id="dtab-log">
+                        <pre id="dbg-log-pre" class="dbg-pre">(Nhật ký GDB sẽ hiển thị tại đây)</pre>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -305,6 +396,7 @@
   <script src="vendor/matchbrackets.min.js"></script>
   <script src="vendor/closebrackets.min.js"></script>
   <script src="cpp-autocomplete.js"></script>
+  <script src="cpp-debugger.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

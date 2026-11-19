@@ -770,6 +770,7 @@ function initEditor() {
     mode: "text/x-c++src",
     theme: state.theme === "dark" ? "dracula" : "default",
     lineNumbers: true,
+    gutters: ["CodeMirror-linenumbers", "cm-bp-gutter"],
     matchBrackets: true,
     autoCloseBrackets: true,
     indentUnit: 4,
@@ -784,6 +785,13 @@ function initEditor() {
   if (typeof window.attachCppAutocomplete === "function") {
     const enabled = localStorage.getItem("ttud_autocomplete") !== "false";
     state.autocomplete = window.attachCppAutocomplete(state.editor, { enabled });
+  }
+  if (typeof window.createCppDebugger === "function") {
+    state.debugger = window.createCppDebugger(state.editor, {
+      apiPost,
+      getStdin: () => document.getElementById("custom-input")?.value || "",
+      onShowDebugTab: () => setRightTab("debug"),
+    });
   }
   state.editor.on("change", () => {
     if (!state.currentProblem) return;
@@ -814,9 +822,11 @@ function setRightTab(tabName) {
   document.querySelectorAll(".rtab-pane").forEach((p) => {
     p.classList.toggle("active", p.id === `rtab-${tabName}`);
   });
+  if (state.debugger) state.debugger.onTabChanged(tabName);
 }
 
 window.openProblem = async function (pid) {
+  if (state.debugger) state.debugger.onProblemChanged();
   switchView("arena");
   const prob = await apiGet(`/api/problem/${encodeURIComponent(pid)}`);
   state.currentProblem = prob;
