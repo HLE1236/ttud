@@ -19,12 +19,43 @@ DATA_DIR = os.path.join(BASE_DIR, "data")
 PROBLEMS_DIR = os.path.join(DATA_DIR, "problems")
 STATIC_DIR = os.path.join(BASE_DIR, "static")
 DB_PATH = os.path.join(DATA_DIR, "ttud.db")
-LECTURE_PDF_DIR = r"D:\2026.1\TTUD\pdf-shared"
+LECTURE_PDF_DIR = os.environ.get("LECTURE_PDF_DIR", r"D:\2026.1\TTUD\pdf-shared")
+COMPAT_INC_DIR = os.path.join(BASE_DIR, "compat")
 
 MINGW_BIN = r"C:\msys64\ucrt64\bin"
-GXX_PATH = r"C:\msys64\ucrt64\bin\g++.exe"
-if not os.path.exists(GXX_PATH):
-    GXX_PATH = shutil.which("g++") or "g++"
+
+
+def find_gxx():
+    env_cxx = os.environ.get("GXX_PATH") or os.environ.get("CXX")
+    if env_cxx:
+        return shutil.which(env_cxx) or env_cxx
+
+    if os.name == "nt":
+        win_gxx = r"C:\msys64\ucrt64\bin\g++.exe"
+        if os.path.exists(win_gxx):
+            return win_gxx
+        return shutil.which("g++") or "g++"
+
+    if sys.platform == "darwin":
+        # Prefer GNU g++ from Homebrew (has native <bits/stdc++.h>) before Apple Clang
+        search_dirs = ["/opt/homebrew/bin", "/usr/local/bin"]
+        path_dirs = os.environ.get("PATH", "").split(os.pathsep)
+        all_dirs = search_dirs + [d for d in path_dirs if d and d not in search_dirs]
+        for ver in ("15", "14", "13", "12", "11"):
+            for d in all_dirs:
+                cand = os.path.join(d, f"g++-{ver}")
+                if os.path.isfile(cand) and os.access(cand, os.X_OK):
+                    return cand
+        for d in all_dirs:
+            cand = os.path.join(d, "g++")
+            if os.path.isfile(cand) and os.access(cand, os.X_OK):
+                return cand
+        return shutil.which("g++") or shutil.which("clang++") or "g++"
+
+    return shutil.which("g++") or shutil.which("clang++") or "g++"
+
+
+GXX_PATH = find_gxx()
 
 
 def now_iso():
@@ -154,18 +185,28 @@ def preview_text(s, limit=600):
 
 def compile_cpp(code, tmpdir):
     src_path = os.path.join(tmpdir, "main.cpp")
-    exe_path = os.path.join(tmpdir, "main.exe")
+    exe_name = "main.exe" if os.name == "nt" else "main"
+    exe_path = os.path.join(tmpdir, exe_name)
     with open(src_path, "w", encoding="utf-8") as f:
         f.write(code)
-    comp = subprocess.run(
-        [GXX_PATH, "-O2", "-std=c++17", "-Wall", src_path, "-o", exe_path],
-        env=get_judge_env(),
-        capture_output=True,
-        text=True,
-        encoding="utf-8",
-        errors="replace",
-        timeout=25,
-    )
+    cmd = [GXX_PATH, "-O2", "-std=c++17", "-Wall"]
+    if os.path.isdir(COMPAT_INC_DIR):
+        cmd.extend(["-idirafter", COMPAT_INC_DIR])
+    cmd.extend([src_path, "-o", exe_path])
+    try:
+        comp = subprocess.run(
+            cmd,
+            env=get_judge_env(),
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            timeout=25,
+        )
+    except FileNotFoundError:
+        return None, f"Không tìm thấy trình biên dịch C++ ({GXX_PATH}). Hãy cài g++ hoặc Xcode Command Line Tools."
+    except subprocess.TimeoutExpired:
+        return None, "Biên dịch quá thời gian (25s)."
     if comp.returncode != 0:
         return None, comp.stderr or comp.stdout or "Lỗi biên dịch không xác định"
     return exe_path, ""

@@ -15,8 +15,15 @@ Nền tảng học tập và luyện code C++ cho môn **Thuật toán ứng d�
 1. **Python 3.8 trở lên**
    - Chỉ sử dụng thư viện chuẩn của Python, **không cần `pip install`** thêm thư viện ngoài.
 2. **Trình biên dịch C++ (`g++`)** hỗ trợ `-std=c++17`
-   - Trên Windows: ưu tiên `C:\msys64\ucrt64\bin\g++.exe` (MSYS2 UCRT64), hoặc bất kỳ `g++` nào đã thêm vào biến môi trường `PATH` (MinGW-w64, TDM-GCC, Dev-C++/Code::Blocks MinGW...).
-   - Trên Linux/macOS: `g++` có sẵn trong `PATH`.
+   - **Windows**: ưu tiên `C:\msys64\ucrt64\bin\g++.exe` (MSYS2 UCRT64), hoặc bất kỳ `g++` nào đã thêm vào `PATH` (MinGW-w64, TDM-GCC, Dev-C++/Code::Blocks MinGW...).
+   - **macOS**:
+     - Cài Xcode Command Line Tools (`xcode-select --install`) là có thể chạy ngay (server đã tích hợp sẵn header dự phòng `compat/bits/stdc++.h` cho Apple Clang).
+     - Hoặc khuyên dùng Homebrew GCC để có `g++` chuẩn (hỗ trợ đầy đủ phần mở rộng GNU như `__gcd`, `<ext/pb_ds/...>`):
+       ```bash
+       brew install gcc
+       ```
+       `server.py` tự động tìm `g++-15` / `g++-14` / `g++-13` / `g++-12` trong `/opt/homebrew/bin` (Apple Silicon) và `/usr/local/bin` (Intel).
+   - **Linux**: cài `g++` (`sudo apt install g++`) và có sẵn trong `PATH`.
 
 Kiểm tra nhanh bằng Terminal / PowerShell:
 ```bash
@@ -58,6 +65,14 @@ cd ttud
   `http://127.0.0.1:8765`
 - Để tắt server, nhấn `Ctrl + C` trong cửa sổ terminal hoặc đóng cửa sổ đó lại.
 
+### Trên macOS / Linux (Nhanh nhất)
+1. Mở Terminal tại thư mục dự án và chạy:
+   ```bash
+   chmod +x start.sh start.command
+   ./start.sh
+   ```
+   *(Trên macOS, bạn cũng có thể **nhấp đúp file `start.command`** trong Finder; nếu macOS báo chặn bảo mật lần đầu, bấm **Chuột phải → Open**).*
+
 ### Chạy bằng dòng lệnh (Windows / Linux / macOS)
 ```bash
 python server.py 8765
@@ -77,6 +92,9 @@ python server.py 9000
 ```text
 ├── server.py          # Backend HTTP server (Python stdlib) + Local C++ Judge + SQLite
 ├── start.bat          # Script khởi chạy nhanh trên Windows
+├── start.sh           # Script khởi chạy nhanh trên macOS / Linux
+├── start.command      # File nhấp đúp mở nhanh trên macOS Finder
+├── compat/            # Header dự phòng <bits/stdc++.h> cho Apple Clang trên macOS
 ├── static/            # Giao diện web (HTML, CSS, JS, CodeMirror)
 └── data/
     ├── roadmap.json   # Dữ liệu lộ trình học
