@@ -11,7 +11,7 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     int T;
-    if (!(cin >> T)) return 0;
+    cin >> T;
     while (T--) {
         int L, W, H, N;
         cin >> L >> W >> H >> N;

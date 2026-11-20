@@ -21,13 +21,14 @@
       "output": "4"
     }
   ],
-  "theory_chapter": "chap6",
-  "mindset": "Đây thực chất là bài **BFS tìm đường đi ngắn nhất không trọng số** trên đồ thị ngầm có `n <= 10000` đỉnh!\nMẹo để tránh tạo `O(n^2)` cạnh làm tốn bộ nhớ/thời gian: ta sắp xếp danh sách đỉnh theo hoành độ `x` (hoặc lưu danh sách các đỉnh chưa thăm); nhưng thực tế với `n <= 10000`, trong vòng BFS dùng `long long D2 = 1LL * D * D`, nếu ta **lưu danh sách các đỉnh chưa thăm** `unvisited` (hoặc sort theo `x` dùng `lower_bound` chỉ xét các điểm trong `[x_u - D, x_u + D]`) thì mỗi đỉnh chỉ được thăm đúng 1 lần và kiểm tra tối đa `n` lần bằng phép toán số nguyên hiệu quả (`< 20ms`)!",
+  "theory_chapter": "chap5",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Đồ thị có **trọng số (chi phí / thời gian)** trên từng cạnh. Yêu cầu tìm đường đi ngắn nhất từ `S` đến `T`, hoặc nối thông tất cả các đỉnh với tổng chi phí nhỏ nhất.\n- Hướng đi: Nếu tìm đường đi ngắn nhất từ `S` đến `T` với cạnh không âm -> dùng **Dijkstra + Min-Heap**. Nếu nối thông tất cả các đỉnh rẻ nhất -> sắp xếp cạnh tăng dần và dùng **Kruskal + DSU**.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Đồ thị có **trọng số (chi phí / thời gian)** trên từng cạnh. Yêu cầu tìm đường đi ngắn nhất từ `S` đến `T`, hoặc nối thông tất cả các đỉnh với tổng chi phí nhỏ nhất.\n- Hướng đi: Nếu tìm đường đi ngắn nhất từ `S` đến `T` với cạnh không âm -> dùng **Dijkstra + Min-Heap**. Nếu nối thông tất cả các đỉnh rẻ nhất -> sắp xếp cạnh tăng dần và dùng **Kruskal + DSU**.\n\n**2. Cách suy nghĩ cho bài này:**\nĐây thực chất là bài **BFS tìm đường đi ngắn nhất không trọng số** trên đồ thị ngầm có `n <= 10000` đỉnh!\nMẹo để tránh tạo `O(n^2)` cạnh làm tốn bộ nhớ/thời gian: ta sắp xếp danh sách đỉnh theo hoành độ `x` (hoặc lưu danh sách các đỉnh chưa thăm); nhưng thực tế với `n <= 10000`, trong vòng BFS dùng `long long D2 = 1LL * D * D`, nếu ta **lưu danh sách các đỉnh chưa thăm** `unvisited` (hoặc sort theo `x` dùng `lower_bound` chỉ xét các điểm trong `[x_u - D, x_u + D]`) thì mỗi đỉnh chỉ được thăm đúng 1 lần và kiểm tra tối đa `n` lần bằng phép toán số nguyên hiệu quả (`< 20ms`)!",
   "hints": [
     "So sánh bình phương khoảng cách `(dx * dx + dy * dy <= 1LL * D * D)` để không dùng `sqrt` tránh sai số thực.",
     "Sắp xếp các đảo tăng dần theo `x` (giữ ID gốc) rồi dùng `lower_bound` nhảy thẳng tới vùng `[x_u - D, x_u + D]`.",
     "Không cần dựng danh sách kề `adj` từ trước — kiểm tra điều kiện trực tiếp trong lúc BFS."
   ],
   "complexity": "O(n^2) tối đa, thực tế cực nhanh nhờ cắt khoảng x",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1350
 }

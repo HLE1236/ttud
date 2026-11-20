@@ -1,7 +1,7 @@
 {
   "title": "[HUSTack] Thao tác và duyệt cây tổng quát (PreOrder / InOrder / PostOrder)",
   "track": "final",
-  "topic": "graph-bfs-dfs",
+  "topic": "graph-traversal",
   "difficulty": "Trung bình",
   "exam_tags": [
     "HUSTack Project1 (TREE_MANIPULATION_TRAVERSAL)",
@@ -21,11 +21,12 @@
     }
   ],
   "theory_chapter": "chap5",
-  "mindset": "Điểm quan trọng nhất của bài là hiểu đúng quy ước **InOrder trên cây tổng quát (N-phân)**:\nNếu `u` có danh sách con `c_0, c_1, ..., c_{k-1}` thì:\n- Gọi `inOrder(c_0)` (nếu `k >= 1`),\n- Thăm `u`,\n- Gọi `inOrder(c_i)` cho `i = 1..k-1`.\nLưu cây bằng `unordered_map<int, vector<int>> children` và `unordered_set<int> exists`.",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dữ liệu biểu diễn các đỉnh nối với nhau bằng các cạnh (đồ thị hoặc cây). Yêu cầu đếm cụm liên thông, kiểm tra đồ thị 2 phía, tìm đường ít bước nhất, tìm Khớp/Cầu/SCC hoặc tính toán trên Cây.\n- Hướng đi: Lưu danh sách kề `adj[u]`. Dùng BFS (`queue`) nếu tìm số bước ít nhất; dùng DFS truyền `parent` nếu là Cây; dùng Tarjan (`num`, `low`) nếu tìm Khớp/Cầu/SCC.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dữ liệu biểu diễn các đỉnh nối với nhau bằng các cạnh (đồ thị hoặc cây). Yêu cầu đếm cụm liên thông, kiểm tra đồ thị 2 phía, tìm đường ít bước nhất, tìm Khớp/Cầu/SCC hoặc tính toán trên Cây.\n- Hướng đi: Lưu danh sách kề `adj[u]`. Dùng BFS (`queue`) nếu tìm số bước ít nhất; dùng DFS truyền `parent` nếu là Cây; dùng Tarjan (`num`, `low`) nếu tìm Khớp/Cầu/SCC.\n\n**2. Cách suy nghĩ cho bài này:**\nĐiểm quan trọng nhất của bài là hiểu đúng quy ước **InOrder trên cây tổng quát (N-phân)**:\nNếu `u` có danh sách con `c_0, c_1, ..., c_{k-1}` thì:\n- Gọi `inOrder(c_0)` (nếu `k >= 1`),\n- Thăm `u`,\n- Gọi `inOrder(c_i)` cho `i = 1..k-1`.\nLưu cây bằng `unordered_map<int, vector<int>> children` và `unordered_set<int> exists`.",
   "hints": [
     "Trong `Insert u v`, nhớ kiểm tra `exists.count(v) && !exists.count(u)` trước khi chèn."
   ],
   "complexity": "O(số lệnh * số nút khi duyệt)",
   "id": "hs-tree-manipulation",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1200
 }

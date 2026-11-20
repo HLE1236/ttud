@@ -2,7 +2,7 @@
   "id": "hs-tsp",
   "title": "[HUSTack] Người du lịch (TSP - n <= 20)",
   "track": "midterm",
-  "topic": "backtracking",
+  "topic": "branch-bound",
   "difficulty": "Nâng cao",
   "exam_tags": [
     "HUSTack 2025.2 (P.04.09.01)",
@@ -22,7 +22,7 @@
     }
   ],
   "theory_chapter": "chap3",
-  "mindset": "Chú ý giới hạn **`n <= 20`**! Nếu dùng Quay lui `O((n-1)!)` sẽ bị TLE khi `n = 18..20`!\nĐây là bài chuẩn dùng **Held-Karp Bitmask DP**: `dp[mask][u]` = chi phí nhỏ nhất đi qua tập đỉnh `mask` (chứa bit `0` là thành phố 1) và đang đứng ở `u`. Với `n = 20`, dùng mảng phẳng hoặc quay lui tốt? Wait: `2^19 * 19 ~ 10^7` trạng thái x 10 bước chuyển = ~`10^8` ops (~0.15s trong C++ `-O2`!). Hoặc Branch & Bound `min_out` hiệu quả!",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Giới hạn `n` nhỏ (`n <= 12..30`), yêu cầu tìm phương án có **chi phí nhỏ nhất** hoặc **tải lớn nhất nhỏ nhất** (chia nhóm, phân công BCA/BACP, lộ trình TSP/CBUS).\n- Tại sao quay lui thuần bị chậm: Duyệt hết toàn bộ cây đệ quy sẽ vượt quá 1 giây khi `n >= 12`.\n- Hướng đi: Dùng **Nhánh và cận**: trước khi gọi `Try(k + 1)`, ước lượng cận dưới của nhánh; nếu đã `>= kỷ_lục_best` hiện có thì cắt bỏ nhánh đó ngay.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Giới hạn `n` nhỏ (`n <= 12..30`), yêu cầu tìm phương án có **chi phí nhỏ nhất** hoặc **tải lớn nhất nhỏ nhất** (chia nhóm, phân công BCA/BACP, lộ trình TSP/CBUS).\n- Tại sao quay lui thuần bị chậm: Duyệt hết toàn bộ cây đệ quy sẽ vượt quá 1 giây khi `n >= 12`.\n- Hướng đi: Dùng **Nhánh và cận**: trước khi gọi `Try(k + 1)`, ước lượng cận dưới của nhánh; nếu đã `>= kỷ_lục_best` hiện có thì cắt bỏ nhánh đó ngay.\n\n**2. Cách suy nghĩ cho bài này:**\nChú ý giới hạn **`n <= 20`**! Nếu dùng Quay lui `O((n-1)!)` sẽ bị TLE khi `n = 18..20`!\nĐây là bài chuẩn dùng **Held-Karp Bitmask DP**: `dp[mask][u]` = chi phí nhỏ nhất đi qua tập đỉnh `mask` (chứa bit `0` là thành phố 1) và đang đứng ở `u`. Với `n = 20`, dùng mảng phẳng hoặc quay lui tốt? Wait: `2^19 * 19 ~ 10^7` trạng thái x 10 bước chuyển = ~`10^8` ops (~0.15s trong C++ `-O2`!). Hoặc Branch & Bound `min_out` hiệu quả!",
   "hints": [
     "Nếu cố định xuất phát từ thành phố `1` (chỉ số 0), ta chỉ cần bitmask cho `n - 1` đỉnh còn lại (`1..n-1`) -> giảm nửa bộ nhớ & thời gian!"
   ],
@@ -30,5 +30,6 @@
     "time": "O(n^2 * 2^(n-1))",
     "space": "O(n * 2^(n-1))"
   },
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1500
 }

@@ -5,7 +5,7 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     int t;
-    if (!(cin >> t)) return 0;
+    cin >> t;
     while (t--) {
         string s;
         cin >> s;

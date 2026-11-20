@@ -1,0 +1,7 @@
+{
+  "pattern": "greedy-interval-schedule",
+  "recognize": "Đọc đề & Nhìn giới hạn: Bài toán yêu cầu chọn nhiều đoạn rời nhau nhất, chia ít phòng nhất, hoặc ghép các phần tử với `n <= 10^5`.\n- Tại sao không quay lui được: `n = 10^5` không thể thử mọi tổ hợp `2^n`.\n- Hướng đi: Sắp xếp dữ liệu theo tiêu chí cố định (điểm kết thúc sớm nhất, hoặc đưa vào Min-Heap) để ở mỗi bước luôn lấy lựa chọn có lợi nhất.",
+  "idea": "Theo lập luận tham lam hoán đổi (Exchange Argument), công việc có thời lượng lớn cần được khởi chạy trước (ở các mốc `t = 0, 1, 2, ...`). Sắp xếp dãy `d` giảm dần: công việc thứ `i` (0-based) bắt đầu tại `t = i` và kết thúc ở `i + d[i]`. Thời điểm hoàn thành toàn bộ hệ thống là `max_{i=0..n-1} (i + d[i])`.\n\n**Các điểm cần lưu ý khi code:**\n- Dùng `sort(d.rbegin(), d.rend())` và `long long` nếu cần.",
+  "pseudocode": "Bước 1: Đọc dữ liệu đầu vào (bật Fast I/O, dùng long long cho biến tổng/đáp án)\nBước 2: Dùng sort(d.rbegin(), d.rend()) và long long nếu cần.\nBước 3: In kết quả cuối cùng ra màn hình",
+  "skeleton_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    ios::sync_with_stdio(false); cin.tie(nullptr);\n    int n; cin >> n;\n    vector<long long> d(n);\n    for (int i = 0; i < n; ++i) cin >> d[i];\n    sort(d.rbegin(), d.rend());\n    long long T = 0;\n    for (int i = 0; i < n; ++i) T = max(T, i + d[i]);\n    cout << T << \"\\n\";\n\n    // TODO: Hoàn thiện thuật toán xử lý và in kết quả theo các bước hướng dẫn\n\n    return 0;\n}\n"
+}

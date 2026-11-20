@@ -5,7 +5,7 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     int n;
-    if (!(cin >> n)) return 0;
+    cin >> n;
     vector<int> d(n), v(n);
     for (int i = 0; i < n; ++i) {
         string code; cin >> code >> d[i] >> v[i];

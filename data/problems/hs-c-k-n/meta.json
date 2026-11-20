@@ -1,7 +1,7 @@
 {
   "title": "[HUSTack] Tính tổ hợp chập k của n (Compute C_k_n)",
   "track": "midterm",
-  "topic": "dp-midterm",
+  "topic": "dp-1d",
   "difficulty": "Cơ bản",
   "exam_tags": [
     "HUSTack Project1 (C_K_N)",
@@ -21,12 +21,13 @@
     }
   ],
   "theory_chapter": "chap4b",
-  "mindset": "Nếu dùng đệ quy thuần `C(k, n) = C(k-1, n-1) + C(k, n-1)` sẽ lặp lại bài toán con theo hàm mũ và TLE. Dùng **Tam giác Pascal (QHĐ 2D)** hoặc **đệ quy có nhớ** `memo[k][n]` để tính trong `O(n * k)`.",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dãy `1..n` (`n` lớn hơn 30, lên tới `10^5 - 10^6`), hỏi số cách đi hoặc tổng lớn nhất có điều kiện giữa các phần tử đứng gần nhau.\n- Tại sao không quay lui được: Khi thử đệ quy, cùng một vị trí `i` bị tính đi tính lại hàng triệu lần.\n- Hướng đi: Quy hoạch động 1 chiều — lập mảng `dp[i]` lưu kết quả tốt nhất tính đến vị trí `i`, tính `dp[i]` trực tiếp từ `dp[i-1], dp[i-2], ...` trong 1 vòng lặp.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dãy `1..n` (`n` lớn hơn 30, lên tới `10^5 - 10^6`), hỏi số cách đi hoặc tổng lớn nhất có điều kiện giữa các phần tử đứng gần nhau.\n- Tại sao không quay lui được: Khi thử đệ quy, cùng một vị trí `i` bị tính đi tính lại hàng triệu lần.\n- Hướng đi: Quy hoạch động 1 chiều — lập mảng `dp[i]` lưu kết quả tốt nhất tính đến vị trí `i`, tính `dp[i]` trực tiếp từ `dp[i-1], dp[i-2], ...` trong 1 vòng lặp.\n\n**2. Cách suy nghĩ cho bài này:**\nNếu dùng đệ quy thuần `C(k, n) = C(k-1, n-1) + C(k, n-1)` sẽ lặp lại bài toán con theo hàm mũ và TLE. Dùng **Tam giác Pascal (QHĐ 2D)** hoặc **đệ quy có nhớ** `memo[k][n]` để tính trong `O(n * k)`.",
   "hints": [
     "Chú ý thứ tự đọc input: đề cho `k` trước rồi mới đến `n` (`cin >> k >> n;`).",
     "Cơ sở: `C[i][0] = C[i][i] = 1`."
   ],
   "complexity": "O(n * k)",
   "id": "hs-c-k-n",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1000
 }

@@ -4,7 +4,7 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     int K, N;
-    if (!(cin >> K >> N)) return 0;
+    cin >> K >> N;
     long long price[24] = {0};
     for (int i = 0; i < K; ++i) {
         int s, e; long long p;

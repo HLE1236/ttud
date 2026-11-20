@@ -21,7 +21,7 @@
     }
   ],
   "theory_chapter": "chap5",
-  "mindset": "Đây chính là bài **Cây khung nhỏ nhất dừng sớm** (Kruskal thành `S` thành phần liên thông)!\nNghĩ kỹ nhé: với `S` trạm vệ tinh, ta có thể kết nối `S` **cụm** tách biệt lại với nhau thông qua vệ tinh (1 trạm vệ tinh đặt trong mỗi cụm).\nMuốn tầm phủ `D` nhỏ nhất có thể, ta chỉ cần dùng Kruskal gom `P` tiền đồn lại cho đến khi số thành phần liên thông giảm từ `P` xuống đúng `S` (tức là đã chọn đúng **`P - S` cạnh ngắn nhất** trong MST)! Cạnh thứ `P - S` được chọn chính là `D` nhỏ nhất!",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Đồ thị có **trọng số (chi phí / thời gian)** trên từng cạnh. Yêu cầu tìm đường đi ngắn nhất từ `S` đến `T`, hoặc nối thông tất cả các đỉnh với tổng chi phí nhỏ nhất.\n- Hướng đi: Nếu tìm đường đi ngắn nhất từ `S` đến `T` với cạnh không âm -> dùng **Dijkstra + Min-Heap**. Nếu nối thông tất cả các đỉnh rẻ nhất -> sắp xếp cạnh tăng dần và dùng **Kruskal + DSU**.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Đồ thị có **trọng số (chi phí / thời gian)** trên từng cạnh. Yêu cầu tìm đường đi ngắn nhất từ `S` đến `T`, hoặc nối thông tất cả các đỉnh với tổng chi phí nhỏ nhất.\n- Hướng đi: Nếu tìm đường đi ngắn nhất từ `S` đến `T` với cạnh không âm -> dùng **Dijkstra + Min-Heap**. Nếu nối thông tất cả các đỉnh rẻ nhất -> sắp xếp cạnh tăng dần và dùng **Kruskal + DSU**.\n\n**2. Cách suy nghĩ cho bài này:**\nĐây chính là bài **Cây khung nhỏ nhất dừng sớm** (Kruskal thành `S` thành phần liên thông)!\nNghĩ kỹ nhé: với `S` trạm vệ tinh, ta có thể kết nối `S` **cụm** tách biệt lại với nhau thông qua vệ tinh (1 trạm vệ tinh đặt trong mỗi cụm).\nMuốn tầm phủ `D` nhỏ nhất có thể, ta chỉ cần dùng Kruskal gom `P` tiền đồn lại cho đến khi số thành phần liên thông giảm từ `P` xuống đúng `S` (tức là đã chọn đúng **`P - S` cạnh ngắn nhất** trong MST)! Cạnh thứ `P - S` được chọn chính là `D` nhỏ nhất!",
   "hints": [
     "Nếu `S == P`, mỗi đồn có 1 trạm vệ tinh -> không cần nối vô tuyến (`D = 0`).",
     "Sắp xếp `P*(P-1)/2` cạnh theo `(x1-x2)^2 + (y1-y2)^2` tăng dần. Dùng Kruskal thêm cạnh, cứ mỗi lần gộp thành công thì giảm số thành phần `comp--`. Ngay khi `comp == S`, trọng số cạnh vừa thêm chính là đáp án!"
@@ -30,5 +30,6 @@
     "time": "O(P^2 log P)",
     "space": "O(P^2)"
   },
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1350
 }

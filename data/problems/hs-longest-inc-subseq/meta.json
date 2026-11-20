@@ -1,8 +1,8 @@
 {
   "id": "hs-longest-inc-subseq",
   "title": "[HUSTack] Dãy con tăng dài nhất (LIS O(n log n))",
-  "track": "final",
-  "topic": "dp-lis-lcs",
+  "track": "midterm",
+  "topic": "dp-subseq",
   "difficulty": "Trung bình",
   "exam_tags": [
     "HUSTack 2025.2 (P.05.09.02 & P.05.09.03)",
@@ -21,13 +21,14 @@
       "output": "3"
     }
   ],
-  "theory_chapter": "chap5",
-  "mindset": "Cách QHĐ `O(n^2)` chỉ chạy được bản `n <= 10^4`. Để đạt `O(n log n)`, ta duy trì mảng `tail`: `tail[k]` là giá trị kết thúc **nhỏ nhất có thể** của một dãy con tăng có độ dài `k + 1`. Mảng `tail` luôn tăng ngặt, nên với mỗi `x = a[i]`, ta chỉ cần dùng `lower_bound` tìm vị trí đầu tiên `>= x` để thay thế (hoặc push vào cuối nếu `x` lớn hơn mọi phần tử trong `tail`).",
+  "theory_chapter": "chap4b",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Tìm **dãy con** (được phép bỏ cách quãng, giữ nguyên thứ tự) tăng dài nhất (LIS), hoặc tìm phần chung / đối xứng trên 1-2 xâu (LCS, LPS).\n- Hướng đi: Dùng `dp[i]` = độ dài dãy tăng kết thúc tại `i` (hoặc mảng `tail[]` + `lower_bound` khi `n = 10^5`); với 2 xâu dùng bảng 2 chiều `dp[i][j]` trên `i` ký tự đầu xâu A và `j` ký tự đầu xâu B.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Tìm **dãy con** (được phép bỏ cách quãng, giữ nguyên thứ tự) tăng dài nhất (LIS), hoặc tìm phần chung / đối xứng trên 1-2 xâu (LCS, LPS).\n- Hướng đi: Dùng `dp[i]` = độ dài dãy tăng kết thúc tại `i` (hoặc mảng `tail[]` + `lower_bound` khi `n = 10^5`); với 2 xâu dùng bảng 2 chiều `dp[i][j]` trên `i` ký tự đầu xâu A và `j` ký tự đầu xâu B.\n\n**2. Cách suy nghĩ cho bài này:**\nCách QHĐ `O(n^2)` chỉ chạy được bản `n <= 10^4`. Để đạt `O(n log n)`, ta duy trì mảng `tail`: `tail[k]` là giá trị kết thúc **nhỏ nhất có thể** của một dãy con tăng có độ dài `k + 1`. Mảng `tail` luôn tăng ngặt, nên với mỗi `x = a[i]`, ta chỉ cần dùng `lower_bound` tìm vị trí đầu tiên `>= x` để thay thế (hoặc push vào cuối nếu `x` lớn hơn mọi phần tử trong `tail`).",
   "hints": [
     "Tạo `vector<long long> tail`.",
     "Với mỗi `x`: `auto it = lower_bound(tail.begin(), tail.end(), x);`. Nếu `it == tail.end()` thì `tail.push_back(x)`, ngược lại `*it = x`.",
     "Dùng `lower_bound` (chặt) vì đề yêu cầu **tăng ngặt**. Kết quả chính là `tail.size()`."
   ],
   "complexity": "O(n log n) thời gian, O(n) bộ nhớ",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1250
 }

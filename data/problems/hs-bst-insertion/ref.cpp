@@ -1,41 +1,31 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-struct Node {
-    int key;
-    Node *left, *right;
-    Node(int k) : key(k), left(nullptr), right(nullptr) {}
-};
+struct Node { int k; Node *l = nullptr, *r = nullptr; };
 
-Node* insertNode(Node* r, int k) {
-    if (!r) return new Node(k);
-    if (k < r->key) r->left = insertNode(r->left, k);
-    else if (k > r->key) r->right = insertNode(r->right, k);
-    return r;
+Node* ins(Node* u, int k) {
+    if (!u) return new Node{k};
+    if (k < u->k) u->l = ins(u->l, k);
+    else if (k > u->k) u->r = ins(u->r, k);
+    return u;
 }
 
-vector<int> ans;
-void preorder(Node* r) {
-    if (!r) return;
-    ans.push_back(r->key);
-    preorder(r->left);
-    preorder(r->right);
+void pre(Node* u, bool& first) {
+    if (!u) return;
+    cout << (first ? "" : " ") << u->k;
+    first = false;
+    pre(u->l, first);
+    pre(u->r, first);
 }
 
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     Node* root = nullptr;
-    string cmd;
-    while (cin >> cmd && cmd != "#") {
-        int k; cin >> k;
-        root = insertNode(root, k);
-    }
-    preorder(root);
-    for (size_t i = 0; i < ans.size(); i++) {
-        if (i) cout << ' ';
-        cout << ans[i];
-    }
+    string cmd; int k;
+    while (cin >> cmd && cmd != "#") cin >> k, root = ins(root, k);
+    bool first = true;
+    pre(root, first);
     cout << '\n';
     return 0;
 }

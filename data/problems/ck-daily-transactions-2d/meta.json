@@ -1,8 +1,8 @@
 {
   "id": "ck-daily-transactions-2d",
   "title": "Tổng giao dịch theo ngày và khoảng khách hàng (Prefix Sum 2D/1D)",
-  "track": "final",
-  "topic": "hash-prefix",
+  "track": "midterm",
+  "topic": "prefix-sum",
   "difficulty": "Trung bình",
   "exam_tags": [
     "Cuối kỳ 2024.2 (Bài 2)"
@@ -21,7 +21,7 @@
     }
   ],
   "theory_chapter": "chap2",
-  "mindset": "Nhận xét cực đắt giá từ giới hạn: số ngày `d <= 10000` và số khách hàng `c <= 100` -> Bảng kích thước `10001 x 101` chỉ có ~`10^6` ô (chiếm đúng ~8 MB RAM)! Ta chỉ cần cộng dồn trực tiếp `val[d][c] += a`, sau đó với mỗi ngày `d` xây dựng mảng cộng dồn 1 chiều theo cột `c`: `pref[d][c] = pref[d][c-1] + val[d][c]`. Mỗi truy vấn trả lời trong `O(1)`: `pref[d][c2] - pref[d][c1 - 1]`!",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Có nhiều truy vấn yêu cầu tính tổng (hoặc min/max) trên đoạn liên tiếp `[L..R]` (hoặc hình chữ nhật 2D) với `n, Q <= 10^5 - 10^6`.\n- Tại sao cách ngây thơ chậm: Nếu mỗi truy vấn dùng vòng `for` cộng từ `L` đến `R` sẽ mất `O(n * Q)` phép tính -> TLE.\n- Hướng đi: Tiền xử lý Mảng cộng dồn `S[i] = S[i-1] + a[i]` để trả lời tổng đoạn trong `O(1)` bằng phép trừ `S[R] - S[L-1]` (hoặc dùng Segment Tree / Fenwick / RMQ nếu hỏi Min/Max và có cập nhật).\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Có nhiều truy vấn yêu cầu tính tổng (hoặc min/max) trên đoạn liên tiếp `[L..R]` (hoặc hình chữ nhật 2D) với `n, Q <= 10^5 - 10^6`.\n- Tại sao cách ngây thơ chậm: Nếu mỗi truy vấn dùng vòng `for` cộng từ `L` đến `R` sẽ mất `O(n * Q)` phép tính -> TLE.\n- Hướng đi: Tiền xử lý Mảng cộng dồn `S[i] = S[i-1] + a[i]` để trả lời tổng đoạn trong `O(1)` bằng phép trừ `S[R] - S[L-1]` (hoặc dùng Segment Tree / Fenwick / RMQ nếu hỏi Min/Max và có cập nhật).\n\n**2. Cách suy nghĩ cho bài này:**\nNhận xét quan trọng từ giới hạn: số ngày `d <= 10000` và số khách hàng `c <= 100` -> Bảng kích thước `10001 x 101` chỉ có ~`10^6` ô (chiếm đúng ~8 MB RAM)! Ta chỉ cần cộng dồn trực tiếp `val[d][c] += a`, sau đó với mỗi ngày `d` xây dựng mảng cộng dồn 1 chiều theo cột `c`: `pref[d][c] = pref[d][c-1] + val[d][c]`. Mỗi truy vấn trả lời trong `O(1)`: `pref[d][c2] - pref[d][c1 - 1]`!",
   "hints": [
     "Với `n, m <= 10^6`, bắt buộc dùng `ios::sync_with_stdio(false); cin.tie(nullptr);` và in `'\\n'` thay cho `endl`.",
     "Cẩn thận khi truy vấn hỏi một ngày `d` không có giao dịch nào — nếu khai báo mảng tĩnh `long long pref[10005][105]` khởi tạo `0`, kết quả tự động bằng `0`."
@@ -30,5 +30,6 @@
     "time": "O(n + 10^4 * 100 + m)",
     "space": "O(10^4 * 100)"
   },
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1200
 }

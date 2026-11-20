@@ -5,7 +5,7 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     int a, b, c;
-    if (!(cin >> a >> b >> c)) return 0;
+    cin >> a >> b >> c;
     if (c > max(a, b) || c % std::gcd(a, b) != 0) {
         cout << -1 << '\n';
         return 0;

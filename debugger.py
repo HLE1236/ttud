@@ -1,4 +1,5 @@
 import os
+import re
 import sys
 import uuid
 import time
@@ -24,7 +25,41 @@ def find_gdb():
     return shutil.which("gdb")
 
 
+def find_lldb():
+    env_lldb = os.environ.get("LLDB_PATH")
+    if env_lldb:
+        return shutil.which(env_lldb) or (env_lldb if os.path.exists(env_lldb) else None)
+    if sys.platform == "darwin":
+        for cand in ("/usr/bin/lldb", "/opt/homebrew/opt/llvm/bin/lldb", "/usr/local/opt/llvm/bin/lldb"):
+            if os.path.isfile(cand) and os.access(cand, os.X_OK):
+                return cand
+    return shutil.which("lldb")
+
+
 GDB_PATH = find_gdb()
+LLDB_PATH = find_lldb()
+
+
+def resolve_debugger_backend():
+    forced = (os.environ.get("DEBUGGER_BACKEND") or "").strip().lower()
+    if forced == "lldb" and LLDB_PATH:
+        return "lldb", LLDB_PATH
+    if forced == "gdb" and GDB_PATH:
+        return "gdb", GDB_PATH
+    if sys.platform == "darwin":
+        if LLDB_PATH:
+            return "lldb", LLDB_PATH
+        if GDB_PATH:
+            return "gdb", GDB_PATH
+        return None, None
+    if GDB_PATH:
+        return "gdb", GDB_PATH
+    if LLDB_PATH:
+        return "lldb", LLDB_PATH
+    return None, None
+
+
+ACTIVE_BACKEND, ACTIVE_DEBUGGER_PATH = resolve_debugger_backend()
 
 
 # ---------------------------------------------------------------------------
@@ -624,6 +659,457 @@ class DebugSession:
             shutil.rmtree(self.tmpdir, ignore_errors=True)
 
 
+# ---------------------------------------------------------------------------
+# LLDB Debug Session (macOS native / LLVM LLDB)
+# ---------------------------------------------------------------------------
+def _parse_lldb_frame_line(line):
+    """Parse a single LLDB frame line like:
+    * frame #0: 0x0000000100003e40 main`add(x=10, y=25) at main.cpp:4:9
+    """
+    m = re.search(r"frame\s+#(\d+):\s+0x[0-9a-fA-F]+\s+(.*)", line)
+    if not m:
+        return None
+    level = int(m.group(1))
+    rest = m.group(2).strip()
+
+    file_name = ""
+    line_num = None
+    m_at = re.search(r"\s+at\s+([^:\n]+):(\d+)", rest)
+    if m_at:
+        file_name = os.path.basename(m_at.group(1).strip().replace("\\", "/"))
+        try:
+            line_num = int(m_at.group(2))
+        except ValueError:
+            line_num = None
+        rest = rest[: m_at.start()].strip()
+
+    # Strip module prefix like main`
+    if "`" in rest:
+        rest = rest.split("`", 1)[1]
+    # Strip + offset and argument list
+    func = re.sub(r"\s*\+\s*\d+.*$", "", rest).strip()
+    paren = func.find("(")
+    if paren != -1:
+        func = func[:paren].strip()
+    func = func or "??"
+    return {
+        "level": level,
+        "func": func,
+        "file": file_name,
+        "line": line_num,
+        "in_user_file": file_name.lower() == "main.cpp",
+    }
+
+
+def _parse_lldb_variables(output_text):
+    """Parse LLDB `frame variable` output into [{name, type, value}]."""
+    result = []
+    cur = None
+    top_re = re.compile(r"^\((.+?)\)\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*=\s*(.*)$")
+
+    def flush():
+        nonlocal cur
+        if not cur:
+            return
+        val = cur["value"].strip()
+        if len(val) > 300:
+            val = val[:300] + " ..."
+        result.append({"name": cur["name"], "type": cur["type"], "value": val})
+        cur = None
+
+    for raw in output_text.splitlines():
+        if raw.startswith("(lldb)") or not raw.strip():
+            continue
+        if not raw[0].isspace():
+            m = top_re.match(raw)
+            if m:
+                flush()
+                cur = {"type": m.group(1).strip(), "name": m.group(2).strip(), "value": m.group(3).strip()}
+                continue
+        if cur is not None:
+            piece = raw.strip()
+            if piece in ("{", "}"):
+                cur["value"] = (cur["value"] + " " + piece).strip()
+            else:
+                sep = ", " if (cur["value"] and not cur["value"].endswith("{")) else " "
+                cur["value"] += sep + piece
+    flush()
+    return result
+
+
+def _parse_lldb_expression(output_text):
+    """Parse LLDB `expression -- <expr>` output -> (value, error)."""
+    lines = [ln for ln in output_text.splitlines() if ln.strip() and not ln.startswith("(lldb)")]
+    errs = [ln for ln in lines if ln.startswith("error:") or "error:" in ln[:20]]
+    if errs:
+        return "", errs[0].replace("error:", "").strip()
+    if not lines:
+        return "", "Không có giá trị trả về"
+    first = lines[0]
+    m = re.match(r"^\(.+?\)\s+\$\d+\s*=\s*(.*)$", first)
+    val = m.group(1).strip() if m else first.strip()
+    if len(lines) > 1:
+        extra = " ".join(ln.strip() for ln in lines[1:])
+        val = (val + " " + extra).strip()
+    if len(val) > 300:
+        val = val[:300] + " ..."
+    return val, ""
+
+
+class LldbDebugSession:
+    def __init__(self, gxx_path, compat_inc_dir, judge_env):
+        self.id = uuid.uuid4().hex
+        self.gxx_path = gxx_path
+        self.compat_inc_dir = compat_inc_dir
+        self.judge_env = judge_env
+        self.tmpdir = tempfile.mkdtemp(prefix="ttud_dbg_")
+        self.src_path = os.path.join(self.tmpdir, "main.cpp")
+        self.exe_path = os.path.join(self.tmpdir, "main.exe" if os.name == "nt" else "main")
+        self.in_path = os.path.join(self.tmpdir, "in.txt")
+        self.out_path = os.path.join(self.tmpdir, "out.txt")
+
+        self.proc = None
+        self.lock = threading.Lock()
+        self.line_queue = queue.Queue()
+        self.reader_thread = None
+
+        self.breakpoints = {}  # line (int) -> bkpt id (str)
+        self.watches = []
+        self.logs = []
+        self.status = "idle"
+        self.reason = ""
+        self.signal_name = ""
+        self.current_line = None
+        self.current_func = ""
+        self.in_user_file = False
+        self.last_active = time.time()
+
+    def _log(self, msg):
+        for ln in str(msg).splitlines():
+            s = ln.rstrip("\r\n")
+            if s and not s.startswith("(lldb)"):
+                self.logs.append(s)
+        if len(self.logs) > 200:
+            self.logs = self.logs[-200:]
+
+    def _reader_loop(self):
+        try:
+            for raw in self.proc.stdout:
+                self.line_queue.put(raw.rstrip("\r\n"))
+        except Exception:
+            pass
+        finally:
+            self.line_queue.put(None)
+
+    def _run_cmd(self, cmd, timeout=10.0):
+        """Send an LLDB command followed by a unique sentinel and collect output."""
+        if not self.proc or self.proc.poll() is not None:
+            raise RuntimeError("Phiên LLDB đã kết thúc.")
+        tok = f"__TTUD_MARK_{uuid.uuid4().hex[:10]}__"
+        self.proc.stdin.write(f"{cmd}\nhelp {tok}\n")
+        self.proc.stdin.flush()
+
+        deadline = time.time() + timeout
+        out_lines = []
+        while True:
+            rem = deadline - time.time()
+            if rem <= 0:
+                self.close()
+                self.status = "exited"
+                self.reason = "timeout"
+                raise TimeoutError("Chương trình chạy quá 10 giây (có thể bị vòng lặp vô hạn) — đã dừng phiên debug.")
+            try:
+                line = self.line_queue.get(timeout=min(rem, 0.2))
+            except queue.Empty:
+                continue
+            if line is None:
+                break
+            if tok in line:
+                break
+            if line.startswith("(lldb) "):
+                continue
+            out_lines.append(line)
+        return "\n".join(out_lines)
+
+    def _read_stdout(self):
+        if not os.path.exists(self.out_path):
+            return ""
+        try:
+            with open(self.out_path, "r", encoding="utf-8", errors="replace") as f:
+                return f.read(32768)
+        except OSError:
+            return ""
+
+    def _update_status_from_output(self, out_text):
+        self._log(out_text)
+        self.signal_name = ""
+        m_exit = re.search(r"Process\s+\d+\s+exited\s+with\s+status\s*=\s*(-?\d+)", out_text)
+        if m_exit:
+            self.status = "exited"
+            self.reason = "exited-normally"
+            self.current_line = None
+            self.current_func = ""
+            self.in_user_file = False
+            return
+
+        if "stop reason =" in out_text or "Process " in out_text and "stopped" in out_text:
+            self.status = "paused"
+            m_reason = re.search(r"stop reason\s*=\s*(.+)", out_text)
+            if m_reason:
+                r = m_reason.group(1).strip()
+                self.reason = r
+                if any(sig in r for sig in ("EXC_", "SIG", "signal")):
+                    self.signal_name = r.split()[0]
+        else:
+            # Query process status directly if output was terse
+            st = self._run_cmd("process status", timeout=4.0)
+            if "exited with status" in st or "No process" in st:
+                self.status = "exited"
+                self.reason = "exited-normally"
+                self.current_line = None
+                self.current_func = ""
+                self.in_user_file = False
+                return
+            self.status = "paused"
+
+        # Determine active frame
+        fr_out = self._run_cmd("frame info", timeout=4.0)
+        parsed = None
+        for ln in fr_out.splitlines():
+            parsed = _parse_lldb_frame_line(ln)
+            if parsed:
+                break
+        if parsed:
+            self.current_func = parsed["func"]
+            self.current_line = parsed["line"]
+            self.in_user_file = parsed["in_user_file"]
+
+    def _collect_state(self, error_msg=None):
+        self.last_active = time.time()
+        locals_list = []
+        frames_list = []
+        watches_list = []
+
+        if self.status == "paused" and self.proc and self.proc.poll() is None:
+            try:
+                var_out = self._run_cmd("frame variable", timeout=4.0)
+                locals_list = _parse_lldb_variables(var_out)
+
+                bt_out = self._run_cmd("thread backtrace -c 25", timeout=4.0)
+                for ln in bt_out.splitlines():
+                    fr = _parse_lldb_frame_line(ln)
+                    if fr:
+                        frames_list.append(fr)
+
+                for expr in self.watches:
+                    e = expr.strip()
+                    if not e:
+                        continue
+                    w_out = self._run_cmd(f"expression -- {e}", timeout=4.0)
+                    val, err = _parse_lldb_expression(w_out)
+                    watches_list.append({"expr": e, "value": val, "error": err})
+            except Exception as e:
+                error_msg = error_msg or str(e)
+
+        return {
+            "ok": error_msg is None,
+            "error": error_msg or "",
+            "session_id": self.id,
+            "status": self.status,
+            "reason": self.reason,
+            "signal": self.signal_name,
+            "line": self.current_line if self.in_user_file else None,
+            "raw_line": self.current_line,
+            "func": self.current_func,
+            "in_user_file": self.in_user_file,
+            "locals": locals_list,
+            "watches": watches_list,
+            "frames": frames_list,
+            "breakpoints": sorted(self.breakpoints.keys()),
+            "stdout": self._read_stdout(),
+            "logs": self.logs[-60:],
+        }
+
+    def start(self, code, stdin_text, breakpoints, watches):
+        if not LLDB_PATH:
+            return {
+                "ok": False,
+                "error": "Không tìm thấy LLDB trên máy. Trên macOS, hãy chạy: xcode-select --install",
+            }
+
+        with open(self.src_path, "w", encoding="utf-8") as f:
+            f.write(code)
+        with open(self.in_path, "w", encoding="utf-8") as f:
+            f.write(stdin_text or "")
+        with open(self.out_path, "w", encoding="utf-8") as f:
+            f.write("")
+
+        cmd = [self.gxx_path, "-g", "-O0", "-std=c++17", "-Wall"]
+        if self.compat_inc_dir and os.path.isdir(self.compat_inc_dir):
+            cmd.extend(["-idirafter", self.compat_inc_dir])
+        cmd.extend([self.src_path, "-o", self.exe_path])
+
+        try:
+            comp = subprocess.run(
+                cmd,
+                env=self.judge_env,
+                capture_output=True,
+                text=True,
+                encoding="utf-8",
+                errors="replace",
+                timeout=25,
+            )
+        except FileNotFoundError:
+            self.close()
+            return {"ok": False, "error": f"Không tìm thấy trình biên dịch C++ ({self.gxx_path})."}
+        except subprocess.TimeoutExpired:
+            self.close()
+            return {"ok": False, "error": "Biên dịch quá thời gian (25s)."}
+
+        if comp.returncode != 0:
+            self.close()
+            return {
+                "ok": False,
+                "compile_error": comp.stderr or comp.stdout or "Lỗi biên dịch",
+                "error": "Lỗi biên dịch (-g -O0)",
+            }
+
+        self.watches = [w for w in (watches or []) if isinstance(w, str) and w.strip()]
+
+        try:
+            self.proc = subprocess.Popen(
+                [LLDB_PATH, "--no-lldbinit", self.exe_path],
+                stdin=subprocess.PIPE,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                text=True,
+                encoding="utf-8",
+                errors="replace",
+                env=self.judge_env,
+                cwd=self.tmpdir,
+                bufsize=1,
+            )
+        except Exception as e:
+            self.close()
+            return {"ok": False, "error": f"Không khởi chạy được LLDB: {e}"}
+
+        self.reader_thread = threading.Thread(target=self._reader_loop, daemon=True)
+        self.reader_thread.start()
+
+        try:
+            self._run_cmd("settings set use-color false", timeout=5.0)
+            self._run_cmd("settings set auto-confirm true", timeout=4.0)
+            self._run_cmd("settings set stop-line-count-before 0", timeout=4.0)
+            self._run_cmd("settings set stop-line-count-after 0", timeout=4.0)
+            self._run_cmd("settings set target.max-children-count 40", timeout=4.0)
+
+            valid_bps = sorted({int(ln) for ln in (breakpoints or []) if isinstance(ln, int) and ln > 0})
+            for ln in valid_bps:
+                bp_out = self._run_cmd(f"breakpoint set --file main.cpp --line {ln}", timeout=4.0)
+                m = re.search(r"Breakpoint\s+(\d+):", bp_out)
+                if m:
+                    m_ln = re.search(r"main\.cpp:(\d+)", bp_out)
+                    actual_ln = int(m_ln.group(1)) if m_ln else ln
+                    self.breakpoints[actual_ln] = m.group(1)
+
+            if not self.breakpoints:
+                self._run_cmd("breakpoint set --one-shot true --name main", timeout=4.0)
+
+            run_out = self._run_cmd("process launch -i in.txt -o out.txt", timeout=10.0)
+            self._update_status_from_output(run_out)
+            return self._collect_state()
+        except TimeoutError as e:
+            return self._collect_state(error_msg=str(e))
+        except Exception as e:
+            self.close()
+            return {"ok": False, "error": f"Lỗi LLDB: {e}"}
+
+    def action(self, act, line=None, level=None):
+        with self.lock:
+            if self.status != "paused":
+                return self._collect_state(error_msg="Phiên debug không ở trạng thái tạm dừng.")
+            try:
+                if act == "frame" and level is not None:
+                    self._run_cmd(f"frame select {int(level)}", timeout=4.0)
+                    fr_out = self._run_cmd("frame info", timeout=4.0)
+                    for ln in fr_out.splitlines():
+                        parsed = _parse_lldb_frame_line(ln)
+                        if parsed:
+                            self.current_func = parsed["func"]
+                            self.current_line = parsed["line"]
+                            self.in_user_file = parsed["in_user_file"]
+                            break
+                    return self._collect_state()
+
+                if act == "next":
+                    out = self._run_cmd("thread step-over", timeout=10.0)
+                elif act == "step":
+                    out = self._run_cmd("thread step-in", timeout=10.0)
+                elif act == "finish":
+                    out = self._run_cmd("thread step-out", timeout=10.0)
+                elif act == "continue":
+                    out = self._run_cmd("process continue", timeout=10.0)
+                elif act == "until" and line:
+                    self._run_cmd(f"breakpoint set --one-shot true --file main.cpp --line {int(line)}", timeout=4.0)
+                    out = self._run_cmd("process continue", timeout=10.0)
+                else:
+                    return self._collect_state(error_msg=f"Hành động debug không hợp lệ: {act}")
+
+                self._update_status_from_output(out)
+                return self._collect_state()
+            except TimeoutError as e:
+                return self._collect_state(error_msg=str(e))
+            except Exception as e:
+                return self._collect_state(error_msg=f"Lỗi LLDB: {e}")
+
+    def sync_breakpoints(self, lines):
+        with self.lock:
+            if self.status != "paused":
+                return self._collect_state()
+            desired = {int(ln) for ln in (lines or []) if isinstance(ln, int) and ln > 0}
+            for ln in list(self.breakpoints.keys()):
+                if ln not in desired:
+                    self._run_cmd(f"breakpoint delete {self.breakpoints[ln]}", timeout=4.0)
+                    del self.breakpoints[ln]
+            for ln in sorted(desired):
+                if ln not in self.breakpoints:
+                    bp_out = self._run_cmd(f"breakpoint set --file main.cpp --line {ln}", timeout=4.0)
+                    m = re.search(r"Breakpoint\s+(\d+):", bp_out)
+                    if m:
+                        m_ln = re.search(r"main\.cpp:(\d+)", bp_out)
+                        actual_ln = int(m_ln.group(1)) if m_ln else ln
+                        self.breakpoints[actual_ln] = m.group(1)
+            return self._collect_state()
+
+    def set_watches(self, watches):
+        with self.lock:
+            self.watches = [w for w in (watches or []) if isinstance(w, str) and w.strip()]
+            return self._collect_state()
+
+    def close(self):
+        proc = self.proc
+        self.proc = None
+        if proc is not None:
+            try:
+                if proc.poll() is None:
+                    try:
+                        proc.stdin.write("quit\n")
+                        proc.stdin.flush()
+                    except Exception:
+                        pass
+                    try:
+                        proc.wait(timeout=1.0)
+                    except subprocess.TimeoutExpired:
+                        proc.kill()
+            except Exception:
+                try:
+                    proc.kill()
+                except Exception:
+                    pass
+        if self.tmpdir and os.path.isdir(self.tmpdir):
+            shutil.rmtree(self.tmpdir, ignore_errors=True)
+
+
 class DebugManager:
     def __init__(self, gxx_path, compat_inc_dir, judge_env_fn):
         self.gxx_path = gxx_path
@@ -651,7 +1137,11 @@ class DebugManager:
                 oldest_id = min(self.sessions, key=lambda k: self.sessions[k].last_active)
                 self.sessions.pop(oldest_id).close()
 
-        sess = DebugSession(self.gxx_path, self.compat_inc_dir, self.judge_env_fn())
+        backend, _ = resolve_debugger_backend()
+        if backend == "lldb":
+            sess = LldbDebugSession(self.gxx_path, self.compat_inc_dir, self.judge_env_fn())
+        else:
+            sess = DebugSession(self.gxx_path, self.compat_inc_dir, self.judge_env_fn())
         res = sess.start(code, stdin_text, breakpoints, watches)
         if res.get("ok") and sess.status == "paused":
             with self.lock:

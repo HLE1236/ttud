@@ -2,7 +2,7 @@
   "id": "hs-timetable-ict-count",
   "title": "[HUSTack] Đếm cách xếp lịch học ICT (Timetable Count)",
   "track": "midterm",
-  "topic": "backtracking",
+  "topic": "backtrack-gen",
   "difficulty": "Trung bình",
   "exam_tags": [
     "HUSTack 2025.2 (Timetable-ICT-Count)",
@@ -25,13 +25,14 @@
       "output": "66880"
     }
   ],
-  "theory_chapter": "chap2",
-  "mindset": "Điểm mấu chốt để tối ưu quay lui bài này là **tách riêng việc chọn tiết `t` và chọn phòng `r`**: tính hợp lệ về mặt **thời gian** của lớp `i` chỉ phụ thuộc vào đoạn tiết `[t, t + d_i - 1]` có trùng với các lớp đã xếp hay không, chứ không phụ thuộc vào phòng `r`! Vì vậy với mỗi cặp `(i, t)`, ta đếm trước xem có bao nhiêu phòng `r` đủ sức chứa (`c_r >= v_i`) và rảnh trọn vẹn đoạn `[t, t + d_i - 1]` — gọi số phòng này là `ways[i][t]`. Khi quay lui xếp lớp `i` vào khung `[t, t + d_i - 1]`, chỉ cần nhân tích với `ways[i][t]` mà không phải lặp thử từng phòng!",
+  "theory_chapter": "chap3",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Giới hạn `n` nhỏ (`n <= 20..30`), yêu cầu liệt kê hoặc đếm số cấu hình (nhị phân, tập con, tổ hợp `k` phần tử, đặt vào lưới).\n- Vì `n` nhỏ, ta dùng hàm đệ quy Quay lui `Try(k)`: tại bước `k`, thử các lựa chọn hợp lệ, ghi nhận trạng thái, gọi `Try(k + 1)` rồi hoàn tác trạng thái.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Giới hạn `n` nhỏ (`n <= 20..30`), yêu cầu liệt kê hoặc đếm số cấu hình (nhị phân, tập con, tổ hợp `k` phần tử, đặt vào lưới).\n- Vì `n` nhỏ, ta dùng hàm đệ quy Quay lui `Try(k)`: tại bước `k`, thử các lựa chọn hợp lệ, ghi nhận trạng thái, gọi `Try(k + 1)` rồi hoàn tác trạng thái.\n\n**2. Cách suy nghĩ cho bài này:**\nĐiểm mấu chốt để tối ưu quay lui bài này là **tách riêng việc chọn tiết `t` và chọn phòng `r`**: tính hợp lệ về mặt **thời gian** của lớp `i` chỉ phụ thuộc vào đoạn tiết `[t, t + d_i - 1]` có trùng với các lớp đã xếp hay không, chứ không phụ thuộc vào phòng `r`! Vì vậy với mỗi cặp `(i, t)`, ta đếm trước xem có bao nhiêu phòng `r` đủ sức chứa (`c_r >= v_i`) và rảnh trọn vẹn đoạn `[t, t + d_i - 1]` — gọi số phòng này là `ways[i][t]`. Khi quay lui xếp lớp `i` vào khung `[t, t + d_i - 1]`, chỉ cần nhân tích với `ways[i][t]` mà không phải lặp thử từng phòng!",
   "hints": [
     "Tìm `max_slot = max(s + l)` trên tất cả phòng. Tiền xử lý `ways[i][t]` = số phòng chứa trọn `[t, t + d[i] - 1]` và có `cap >= v[i]`.",
     "Sắp xếp thứ tự xét các lớp tăng dần theo số lựa chọn hợp lệ để giảm hệ số nhánh.",
     "Dùng mảng đánh dấu `used_slot[t..t+d[i]-1]` trong lúc quay lui; khi tiến tới `idx == n`, cộng `cur_prod` vào kết quả."
   ],
   "complexity": "Quay lui kết hợp gộp nhóm phòng O(tổng lựa chọn thời gian rời nhau)",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1400
 }

@@ -4,9 +4,9 @@
   "exam_tags": [
     "GK 20221 (Kíp 2)"
   ],
-  "topic": "backtracking",
+  "topic": "backtrack-gen",
   "theory_chapter": "chap3",
-  "difficulty": "Cơ bản",
+  "difficulty": "Trung bình",
   "day": 4,
   "time_limit_ms": 1000,
   "tc_source": "Official Zip (GK 20221) + 6 generated",
@@ -20,7 +20,7 @@
       "explanation": "2 cách: {1,4,5} và {2,3,5}."
     }
   ],
-  "mindset": "Giống hệt bài quay lui tập con, chỉ thêm một tham số `cnt` để đếm xem mình đã chọn được bao nhiêu số:\n- Hàm `Try(idx, cnt, sum)`.\n- Nếu `cnt == k`: kiểm tra `sum == m` rồi dừng nhánh.\n- Cắt tỉa: nếu số phần tử còn lại `(n - idx)` không đủ để bù cho đủ `k` (`cnt + (n - idx) < k`) hoặc `sum > m` thì quay đầu ngay!",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Giới hạn `n` nhỏ (`n <= 20..30`), yêu cầu liệt kê hoặc đếm số cấu hình (nhị phân, tập con, tổ hợp `k` phần tử, đặt vào lưới).\n- Vì `n` nhỏ, ta dùng hàm đệ quy Quay lui `Try(k)`: tại bước `k`, thử các lựa chọn hợp lệ, ghi nhận trạng thái, gọi `Try(k + 1)` rồi hoàn tác trạng thái.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Giới hạn `n` nhỏ (`n <= 20..30`), yêu cầu liệt kê hoặc đếm số cấu hình (nhị phân, tập con, tổ hợp `k` phần tử, đặt vào lưới).\n- Vì `n` nhỏ, ta dùng hàm đệ quy Quay lui `Try(k)`: tại bước `k`, thử các lựa chọn hợp lệ, ghi nhận trạng thái, gọi `Try(k + 1)` rồi hoàn tác trạng thái.\n\n**2. Cách suy nghĩ cho bài này:**\nGiống hệt bài quay lui tập con, chỉ thêm một tham số `cnt` để đếm xem mình đã chọn được bao nhiêu số:\n- Hàm `Try(idx, cnt, sum)`.\n- Nếu `cnt == k`: kiểm tra `sum == m` rồi dừng nhánh.\n- Cắt tỉa: nếu số phần tử còn lại `(n - idx)` không đủ để bù cho đủ `k` (`cnt + (n - idx) < k`) hoặc `sum > m` thì quay đầu ngay!",
   "hints": [
     "Thêm biến `cnt` vào hàm `Try(idx, cnt, sum)`.",
     "Điều kiện dừng sớm: `if (cnt == k) { if (sum == m) ans++; return; }`.",
@@ -28,7 +28,8 @@
   ],
   "complexity": "Time: O(C(n, k)) <= O(2^n) | Space: O(n)",
   "starter_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    \n    return 0;\n}",
-  "reference_cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint n, k, m, a[25], ans = 0;\nvoid Try(int idx, int cnt, int sum) {\n    if (cnt == k) {\n        if (sum == m) ans++;\n        return;\n    }\n    if (idx == n || cnt + (n - idx) < k) return;\n    Try(idx + 1, cnt, sum);\n    if (sum + a[idx] <= m) Try(idx + 1, cnt + 1, sum + a[idx]);\n}\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    cin >> n >> k >> m;\n    for (int i = 0; i < n; i++) cin >> a[i];\n    Try(0, 0, 0);\n    cout << ans << \"\\n\";\n    return 0;\n}",
+  "reference_cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint n, k, m, a[25], ans = 0;\nvoid Try(int idx, int cnt, int sum) {\n    if (cnt == k) {\n        if (sum == m) ans++;\n        return;\n    }\n    if (idx == n || cnt + (n - idx) < k) return;\n    Try(idx + 1, cnt, sum);\n    if (sum + a[idx] <= m) Try(idx + 1, cnt + 1, sum + a[idx]);\n}\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    cin >> n >> k >> m;\n    for (int i = 0; i < n; i++) cin >> a[i];\n    Try(0, 0, 0);\n    cout << ans << \"\\n\";\n    return 0;\n}\n",
   "id": "gk-k-comb-sum-m",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1150
 }

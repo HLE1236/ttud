@@ -1,15 +1,18 @@
 const TOPIC_LABELS = {
-  "array-basic": "Mảng cơ bản & Mô phỏng",
-  "hash-prefix": "Mảng đếm & Cộng dồn (Prefix Sum)",
-  "backtracking": "Quay lui & Nhánh cận",
-  "greedy-2ptr": "Tham lam, 2 Con trỏ & Chia để trị",
-  "dp-midterm": "QHĐ Cơ bản (Giữa kỳ)",
-  "dp-lis-lcs": "QHĐ Dãy con & Xâu (LIS/LPS)",
-  "dp-knapsack-stock": "QHĐ Ba lô, Chứng khoán & Đếm cách",
-  "dp-grid-3d": "QHĐ Đa chiều & Chia khoảng",
-  "graph-bfs-dfs": "Đồ thị BFS / DFS & Cây",
-  "graph-shortest-mst": "Đường đi ngắn nhất & Cây khung (MST)",
-  "graph-special": "Bitmask DP & Đồ thị tổng hợp"
+  "stl-basic": "Mảng, STL & Xử lý chuỗi / Log",
+  "prefix-sum": "Mảng cộng dồn 1D/2D & Cấu trúc đoạn (RMQ, SegTree)",
+  "two-pointers": "Hai con trỏ & Cửa sổ trượt (Sliding Window)",
+  "greedy": "Tham lam (Greedy)",
+  "divide-conquer": "Chia để trị & Chặt nhị phân kết quả",
+  "backtrack-gen": "Quay lui: Sinh cấu hình, Tập con & Tổ hợp",
+  "branch-bound": "Nhánh và cận: Phân công, Chia nhóm & Hành trình",
+  "dp-1d": "QHĐ Tuyến tính 1 chiều (Cầu thang, Không kề)",
+  "dp-knapsack": "QHĐ Ba lô (Knapsack), Đổi tiền & Chứng khoán",
+  "dp-subseq": "QHĐ Dãy con & Xâu (LIS, LCS, Đối xứng)",
+  "dp-grid": "QHĐ Lưới 2D/3D & Bitmask trên bảng",
+  "graph-traversal": "Đồ thị: BFS, DFS, Cây & Tarjan (Khớp/Cầu/SCC)",
+  "graph-shortest-mst": "Đồ thị: Đường đi ngắn nhất (Dijkstra) & Cây khung (MST)",
+  "graph-advanced": "Đồ thị nâng cao: Luồng, Cặp ghép & Bitmask DP"
 };
 
 const STARTER_CPP = `#include <bits/stdc++.h>
@@ -38,6 +41,10 @@ const state = {
   draftTimer: null,
   noteTimer: null,
   busyJudge: false,
+  examFilterTrack: "midterm",
+  activeExam: null,
+  lastFinishedExam: null,
+  examTimerInterval: null,
 };
 
 function esc(str) {
@@ -108,6 +115,9 @@ function switchView(view) {
   if (view === "arena" && state.editor) {
     setTimeout(() => state.editor.refresh(), 25);
   }
+  if (view === "exam" && typeof renderExamView === "function") {
+    renderExamView();
+  }
 }
 
 function getProblemMap() {
@@ -168,7 +178,7 @@ function renderRoadmap() {
       <div class="progress-bar"><div class="progress-fill" style="width:${pctCore}%"></div></div>
     </div>
     <div class="sum-box">
-      <div class="sum-box-label">Quay lui &amp; QHĐ (Ngày 5–11)</div>
+      <div class="sum-box-label">Quay lui &amp; QHĐ (Chặng 6–11)</div>
       <div class="sum-box-val">${btDpSolved} / ${btDpIds.length} bài (${pctBtDp}%)</div>
       <div class="progress-bar"><div class="progress-fill" style="width:${pctBtDp}%"></div></div>
     </div>
@@ -178,8 +188,8 @@ function renderRoadmap() {
       <div class="progress-bar"><div class="progress-fill" style="width:${pctAll}%"></div></div>
     </div>
     <div class="sum-box">
-      <div class="sum-box-label">Số ngày đã hoàn thành</div>
-      <div class="sum-box-val">${checkedDays} / ${roadmap.days.length} ngày</div>
+      <div class="sum-box-label">Số chặng đã hoàn thành</div>
+      <div class="sum-box-val">${checkedDays} / ${roadmap.days.length} chặng</div>
       <div class="progress-bar"><div class="progress-fill" style="width:${roadmap.days.length ? Math.round((checkedDays * 100) / roadmap.days.length) : 0}%"></div></div>
     </div>
   `;
@@ -213,6 +223,7 @@ function renderRoadmap() {
           : tried
           ? `<span class="badge verdict-WA">${esc(p.status.last_verdict)}</span>`
           : `<span class="badge ${diffBadgeClass(p.difficulty)}">${esc(p.difficulty)}</span>`;
+        const eloBadge = p.elo ? `<span class="badge badge-elo">Elo ${p.elo}</span>` : "";
         return `
           <div class="day-prob-item" onclick="openProblem('${pid}')">
             <div class="day-prob-left">
@@ -221,6 +232,7 @@ function renderRoadmap() {
             </div>
             <div style="display:flex;gap:6px;align-items:center;">
               <span class="muted small">${p.exam_tags.length ? esc(p.exam_tags[0]) : ""}</span>
+              ${eloBadge}
               ${vBadge}
             </div>
           </div>
@@ -756,7 +768,12 @@ function renderProblemTable() {
             <div class="muted small" style="margin-top:3px;">${esc(TOPIC_LABELS[p.topic] || p.topic)}</div>
           </td>
           <td><div class="tag-list">${tagsHtml}</div></td>
-          <td><span class="badge ${diffBadgeClass(p.difficulty)}">${esc(p.difficulty)}</span></td>
+          <td>
+            <div style="display:flex;gap:5px;align-items:center;flex-wrap:wrap;">
+              ${p.elo ? `<span class="badge badge-elo">${p.elo}</span>` : ""}
+              <span class="badge ${diffBadgeClass(p.difficulty)}">${esc(p.difficulty)}</span>
+            </div>
+          </td>
           <td>${testBadge}</td>
           <td style="text-align:right;"><button class="btn btn-sm btn-ghost" onclick="openProblem('${p.id}')">Mở bài</button></td>
         </tr>`;
@@ -834,6 +851,7 @@ window.openProblem = async function (pid) {
   document.getElementById("arena-title").textContent = prob.title;
   document.getElementById("arena-badges").innerHTML = `
     <span class="badge ${prob.track === "midterm" ? "badge-midterm" : "badge-final"}">${prob.track === "midterm" ? "Giữa kỳ" : "Cuối kỳ"}</span>
+    ${prob.elo ? `<span class="badge badge-elo">Elo ${prob.elo}</span>` : ""}
     <span class="badge ${diffBadgeClass(prob.difficulty)}">${esc(prob.difficulty)}</span>
     ${prob.status?.solved ? `<span class="badge verdict-AC">Đã AC</span>` : ""}
     ${prob.has_checker ? `<span class="badge badge-official">Multi-Answer Checker</span>` : ""}
@@ -889,8 +907,9 @@ window.openProblem = async function (pid) {
     .map((tn) => `<button class="test-chip" onclick="previewTest('${esc(tn)}', this)">Test #${esc(tn)}</button>`)
     .join("");
 
-  // Load draft, else guided skeleton, else starter
-  const skeleton = prob.guide?.skeleton_cpp;
+  // Load draft, else guided skeleton (unless in active exam), else starter
+  const inActiveExam = Boolean(state.activeExam);
+  const skeleton = !inActiveExam ? prob.guide?.skeleton_cpp : null;
   if (prob.draft && prob.draft.trim()) {
     state.editor.setValue(prob.draft);
     document.getElementById("draft-status").textContent = "Đã nạp bản nháp";
@@ -899,9 +918,24 @@ window.openProblem = async function (pid) {
     document.getElementById("draft-status").textContent = "Khung code có sẵn — điền vào các chỗ TODO";
   } else {
     state.editor.setValue(STARTER_CPP);
-    document.getElementById("draft-status").textContent = "Template mới";
+    document.getElementById("draft-status").textContent = inActiveExam ? "Chế độ Thi thử (Không gợi ý)" : "Template mới";
   }
   setTimeout(() => state.editor.refresh(), 20);
+
+  // Lock mindset/hints/tests tabs during active exam
+  const mindsetTabBtn = document.querySelector('#left-subtabs .sub-tab[data-ltab="mindset"]');
+  const testsTabBtn = document.querySelector('#left-subtabs .sub-tab[data-ltab="tests"]');
+  const theoryBtn = document.getElementById("btn-open-theory");
+  if (inActiveExam) {
+    if (mindsetTabBtn) mindsetTabBtn.innerHTML = "Hướng dẫn giải 🔒";
+    if (testsTabBtn) testsTabBtn.classList.add("hidden");
+    if (theoryBtn) theoryBtn.classList.add("hidden");
+  } else {
+    if (mindsetTabBtn) mindsetTabBtn.innerHTML = "Hướng dẫn giải";
+    if (testsTabBtn) testsTabBtn.classList.remove("hidden");
+    if (theoryBtn) theoryBtn.classList.remove("hidden");
+  }
+  renderArenaExamStrip();
 
   // Preload Sample #1 into custom runner
   if (prob.samples && prob.samples.length > 0) {
@@ -975,6 +1009,17 @@ function renderGuideLadder(prob) {
 
 function drawGuideLadder() {
   const el = document.getElementById("prob-guide-ladder");
+  const compBox = document.getElementById("prob-complexity-box");
+  if (state.activeExam) {
+    if (compBox) compBox.classList.add("hidden");
+    el.innerHTML = `
+      <div class="callout callout-warn">
+        <h4>🔒 Đang trong thời gian Thi thử (120 phút)</h4>
+        <p style="margin:6px 0 0;">Toàn bộ Nhận dạng dạng bài, Gợi ý, Mã giả, Khung code và Lời giải mẫu được khóa lại để bạn rèn khả năng tự phân tích đề như trong phòng thi thật. Sau khi bấm <strong>Nộp đề &amp; Kết thúc thi</strong>, toàn bộ hướng dẫn sẽ mở lại kèm nhận xét chi tiết cho từng câu.</p>
+      </div>`;
+    return;
+  }
+  if (compBox) compBox.classList.remove("hidden");
   const steps = state.guideSteps || [];
   el.innerHTML = state.guidePatternLink + steps
     .map((s, i) => {
@@ -1194,6 +1239,7 @@ async function submitSolution() {
     if (res.stats) state.bootstrap.stats = res.stats;
     const p = state.bootstrap.problems.find((x) => x.id === pid);
     if (p && res.problem_status) p.status = res.problem_status;
+    onExamProblemSubmitted(pid, res);
     updateTopStats();
     renderRoadmap();
     renderProblemBankFilters();
@@ -1343,17 +1389,637 @@ function bindEvents() {
   });
 }
 
+// ============================================================================
+// MOCK EXAM (THI THỬ 5 CÂU / 120 PHÚT THEO ELO & CẤU TRÚC ĐỀ CHUẨN)
+// ============================================================================
+const EXAM_STORAGE_KEY = "ttud_active_exam_v1";
+
+function formatMMSS(sec) {
+  const s = Math.max(0, Math.floor(sec));
+  const m = Math.floor(s / 60);
+  const r = s % 60;
+  return `${String(m).padStart(2, "0")}:${String(r).padStart(2, "0")}`;
+}
+
+function saveActiveExam() {
+  if (state.activeExam) {
+    localStorage.setItem(EXAM_STORAGE_KEY, JSON.stringify(state.activeExam));
+  } else {
+    localStorage.removeItem(EXAM_STORAGE_KEY);
+  }
+}
+
+function restoreActiveExam() {
+  try {
+    const raw = localStorage.getItem(EXAM_STORAGE_KEY);
+    if (!raw) return;
+    const ex = JSON.parse(raw);
+    if (ex && ex.endTimeMs && Array.isArray(ex.problemIds) && ex.problemIds.length === 5) {
+      if (Date.now() >= ex.endTimeMs) {
+        state.activeExam = ex;
+        finishExam(true);
+      } else {
+        state.activeExam = ex;
+        startExamTimerLoop();
+      }
+    }
+  } catch (e) {
+    localStorage.removeItem(EXAM_STORAGE_KEY);
+  }
+}
+
+function startExamTimerLoop() {
+  if (state.examTimerInterval) clearInterval(state.examTimerInterval);
+  const pill = document.getElementById("nav-exam-timer-pill");
+  const tick = () => {
+    if (!state.activeExam) {
+      if (pill) pill.classList.add("hidden");
+      clearInterval(state.examTimerInterval);
+      return;
+    }
+    const remSec = Math.max(0, Math.floor((state.activeExam.endTimeMs - Date.now()) / 1000));
+    if (pill) {
+      pill.classList.remove("hidden");
+      pill.textContent = formatMMSS(remSec);
+    }
+    const bigTimers = document.querySelectorAll(".js-exam-timer");
+    bigTimers.forEach((el) => {
+      el.textContent = formatMMSS(remSec);
+      el.classList.toggle("urgent", remSec <= 600);
+    });
+    if (remSec <= 0) {
+      finishExam(true);
+    }
+  };
+  tick();
+  state.examTimerInterval = setInterval(tick, 1000);
+}
+
+function computeExamCurrentTotal(ex) {
+  if (!ex || !ex.results) return 0;
+  return Object.values(ex.results).reduce((acc, r) => acc + (r.bestScore || 0), 0);
+}
+
+function onExamProblemSubmitted(pid, res) {
+  if (!state.activeExam) return;
+  if (!state.activeExam.problemIds.includes(pid)) return;
+  const total = Math.max(1, res.total || 1);
+  const passed = res.passed || 0;
+  const score = Math.round((2.0 * passed / total) * 100) / 100;
+  const cur = state.activeExam.results[pid] || {
+    bestScore: 0,
+    passed: 0,
+    total: total,
+    verdict: "",
+    attempts: 0,
+  };
+  cur.attempts += 1;
+  if (score > cur.bestScore || (score === cur.bestScore && res.verdict === "AC") || cur.verdict === "") {
+    cur.bestScore = score;
+    cur.passed = passed;
+    cur.total = total;
+    cur.verdict = res.verdict;
+  }
+  state.activeExam.results[pid] = cur;
+  saveActiveExam();
+  renderArenaExamStrip();
+  if (state.currentView === "exam") renderExamView();
+}
+
+function renderArenaExamStrip() {
+  const strip = document.getElementById("arena-exam-strip");
+  if (!strip) return;
+  const ex = state.activeExam;
+  if (!ex) {
+    strip.classList.add("hidden");
+    strip.innerHTML = "";
+    return;
+  }
+  strip.classList.remove("hidden");
+  const remSec = Math.max(0, Math.floor((ex.endTimeMs - Date.now()) / 1000));
+  const totalScore = computeExamCurrentTotal(ex).toFixed(2);
+  const pillsHtml = ex.problemIds
+    .map((pid, idx) => {
+      const r = ex.results[pid] || { bestScore: 0, verdict: "" };
+      const isCur = state.currentProblem?.id === pid;
+      const stCls = r.bestScore >= 1.99 ? "solved" : r.bestScore > 0 ? "partial" : "";
+      return `<button class="exam-prob-pill ${isCur ? "active" : ""} ${stCls}" onclick="openProblem('${pid}')">
+        Câu ${idx + 1} (${(r.bestScore || 0).toFixed(1)}/2.0đ)
+      </button>`;
+    })
+    .join("");
+
+  strip.innerHTML = `
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+      <span class="badge ${ex.track === "midterm" ? "badge-midterm" : "badge-final"}">${ex.track === "midterm" ? "Thi thử Giữa kỳ" : "Thi thử Cuối kỳ"}</span>
+      <strong>${esc(ex.title)}</strong>
+      <div class="exam-prob-pills">${pillsHtml}</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span>Điểm tạm tính: <strong>${totalScore} / 10.0</strong></span>
+      <span class="exam-timer-big js-exam-timer ${remSec <= 600 ? "urgent" : ""}">${formatMMSS(remSec)}</span>
+      <button class="btn btn-sm btn-ghost" onclick="switchView('exam'); renderExamView();">Bảng đề</button>
+      <button class="btn btn-sm btn-primary" onclick="confirmFinishExam()">Nộp đề &amp; Kết thúc</button>
+    </div>
+  `;
+}
+
+window.startPresetExam = function (presetId) {
+  if (state.activeExam && !confirm("Bạn đang có một bài thi thử chưa nộp. Bắt đầu đề mới sẽ hủy đề đang làm. Tiếp tục?")) {
+    return;
+  }
+  const presets = state.bootstrap?.mock_exams?.presets || [];
+  const p = presets.find((x) => x.id === presetId);
+  if (!p) return;
+  launchExamSession(p.id, p.title, p.track, p.problems, p.teacher_intro);
+};
+
+window.startRandomExam = function (track) {
+  if (state.activeExam && !confirm("Bạn đang có một bài thi thử chưa nộp. Bắt đầu đề mới sẽ hủy đề đang làm. Tiếp tục?")) {
+    return;
+  }
+  const allProbs = state.bootstrap?.problems || [];
+  // Strict rule: Midterm ONLY has track === 'midterm' (Chapters 1 to 4B, NEVER Graph)
+  const pool = track === "midterm"
+    ? allProbs.filter((p) => p.track === "midterm" && p.theory_chapter !== "chap5" && !p.topic.startsWith("graph"))
+    : allProbs;
+
+  const picked = new Set();
+  const pickOne = (filterFn, fallbackFn) => {
+    let cands = pool.filter((p) => !picked.has(p.id) && filterFn(p));
+    if (!cands.length && fallbackFn) cands = pool.filter((p) => !picked.has(p.id) && fallbackFn(p));
+    if (!cands.length) cands = pool.filter((p) => !picked.has(p.id));
+    const unsolved = cands.filter((p) => !p.status?.solved);
+    const usePool = unsolved.length ? unsolved : cands;
+    const chosen = usePool[Math.floor(Math.random() * usePool.length)];
+    if (chosen) picked.add(chosen.id);
+    return chosen?.id;
+  };
+
+  // Slot 1: Easy warm-up (Elo 800..1050)
+  const q1 = pickOne(
+    (p) => p.elo <= 1050 && ["stl-basic", "prefix-sum", "two-pointers"].includes(p.topic),
+    (p) => p.elo <= 1100
+  );
+  // Slot 2: Easy-Medium Data structures / Prefix sum / Two pointers / Greedy / Basic Graph (if final)
+  const q2 = pickOne(
+    (p) => p.elo >= 950 && p.elo <= 1300 && (track === "midterm"
+      ? ["prefix-sum", "two-pointers", "greedy", "stl-basic"].includes(p.topic)
+      : ["prefix-sum", "two-pointers", "stl-basic", "graph-traversal", "graph-shortest-mst"].includes(p.topic)),
+    (p) => p.elo >= 950 && p.elo <= 1350
+  );
+  // Slot 3: Backtracking (Elo 1050..1550)
+  const q3 = pickOne(
+    (p) => ["backtrack-gen", "branch-bound"].includes(p.topic) && p.elo >= 1050 && p.elo <= 1550,
+    (p) => ["backtrack-gen", "branch-bound"].includes(p.topic)
+  );
+  // Slot 4: Dynamic Programming (Elo 1100..1650)
+  const q4 = pickOne(
+    (p) => ["dp-1d", "dp-knapsack", "dp-subseq", "dp-grid"].includes(p.topic) && p.elo >= 1100 && p.elo <= 1650,
+    (p) => p.theory_chapter === "chap4b"
+  );
+  // Slot 5: Super Hard (Elo >= 1550)
+  const q5 = pickOne(
+    (p) => track === "midterm"
+      ? p.elo >= 1550 && ["branch-bound", "dp-knapsack", "dp-grid", "dp-subseq", "dp-1d", "divide-conquer"].includes(p.topic)
+      : p.elo >= 1600 && ["graph-advanced", "graph-traversal", "graph-shortest-mst", "dp-grid", "dp-knapsack"].includes(p.topic),
+    (p) => p.elo >= 1500
+  );
+
+  const pids = [q1, q2, q3, q4, q5].filter(Boolean);
+  const pmap = getProblemMap();
+  const avgElo = Math.round(pids.reduce((s, id) => s + (pmap[id]?.elo || 1200), 0) / pids.length);
+  const title = track === "midterm"
+    ? `Đề Giữa kỳ Ngẫu nhiên theo Elo (TB Elo ${avgElo})`
+    : `Đề Cuối kỳ Ngẫu nhiên theo Elo (TB Elo ${avgElo})`;
+  const intro = track === "midterm"
+    ? "Đề sinh tự động đúng chuẩn Giữa kỳ (Chương 1 đến hết Quy hoạch động, không có Đồ thị): 2 câu đầu khởi động & cấu trúc dữ liệu, câu 3 Quay lui, câu 4 Quy hoạch động, câu 5 phân loại điểm 9–10."
+    : "Đề sinh tự động đúng chuẩn Cuối kỳ: 2 câu đầu ăn điểm nền tảng/đồ thị cơ bản, câu 3 Quay lui/Nhánh cận, câu 4 Quy hoạch động, câu 5 Đồ thị nâng cao / Bitmask DP.";
+  launchExamSession(`rand-${track}-${Date.now()}`, title, track, pids, intro);
+};
+
+function launchExamSession(examId, title, track, problemIds, teacherIntro) {
+  const now = Date.now();
+  const durationSec = 7200; // 120 minutes
+  const results = {};
+  problemIds.forEach((pid) => {
+    results[pid] = { bestScore: 0, passed: 0, total: 0, verdict: "", attempts: 0 };
+  });
+  state.activeExam = {
+    examId,
+    title,
+    track,
+    teacherIntro: teacherIntro || "",
+    problemIds,
+    startTimeMs: now,
+    endTimeMs: now + durationSec * 1000,
+    durationSec,
+    results,
+  };
+  state.lastFinishedExam = null;
+  saveActiveExam();
+  startExamTimerLoop();
+  renderExamView();
+  if (problemIds[0]) {
+    openProblem(problemIds[0]);
+  }
+}
+
+window.confirmFinishExam = function () {
+  if (!state.activeExam) return;
+  const total = computeExamCurrentTotal(state.activeExam).toFixed(2);
+  if (confirm(`Nộp đề thi thử ngay bây giờ? Điểm hiện tại của bạn là ${total} / 10.0 điểm.`)) {
+    finishExam(false);
+  }
+};
+
+function buildTeacherFeedback(ex, totalScore, pmap) {
+  const lines = [];
+  const rList = ex.problemIds.map((pid, idx) => ({
+    slot: idx + 1,
+    prob: pmap[pid],
+    res: ex.results[pid] || { bestScore: 0, passed: 0, total: 0, verdict: "" },
+  }));
+
+  const easyScore = (rList[0]?.res.bestScore || 0) + (rList[1]?.res.bestScore || 0);
+  const btScore = rList[2]?.res.bestScore || 0;
+  const dpScore = rList[3]?.res.bestScore || 0;
+  const hardScore = rList[4]?.res.bestScore || 0;
+
+  if (totalScore >= 8.5) {
+    lines.push("- **Đánh giá tổng quan (Mức A / A+)**: Bạn xử lý trọn vẹn 4 câu đầu và ăn được điểm ở câu 5 phân loại. Tốc độ nhận diện dạng bài và độ chính xác khi cài đặt C++ của bạn đã sẵn sàng cho phòng thi thật.");
+  } else if (totalScore >= 6.0) {
+    lines.push("- **Đánh giá tổng quan (Mức B / B+)**: Bạn đã nắm được nền tảng nhưng vẫn đánh rơi điểm ở các câu trụ cột (Quay lui hoặc Quy hoạch động) hoặc bị mất test biên.");
+  } else if (totalScore >= 4.0) {
+    lines.push("- **Đánh giá tổng quan (Mức C / Đạt ngưỡng qua môn)**: Bạn mới ăn được điểm ở nhóm câu dễ hoặc một phần test nhỏ. Cần củng cố ngay khung Quay lui `Try(k)` và 5 bước Quy hoạch động.");
+  } else {
+    lines.push("- **Đánh giá tổng quan (Cần báo động)**: Bạn đang mất điểm ngay từ 2 câu đầu tiên. Đừng vội học câu khó, hãy quay lại Chặng 1–4 để nắm chắc Fast I/O, `unordered_map`, Mảng cộng dồn và Hai con trỏ trước.");
+  }
+
+  if (easyScore < 3.5) {
+    lines.push("- **Câu 1 & Câu 2 (Nhóm lấy 4 điểm đầu trong 30 phút)**: Bạn mới đạt **" + easyScore.toFixed(2) + "/4.0đ**. Khi đi thi, 2 câu này bắt buộc phải AC 100% để giữ tâm lý. Hãy kiểm tra xem bạn bị TLE do dùng 2 vòng `for` (quên dùng Mảng cộng dồn / `unordered_map` / Hai con trỏ) hay bị WA do quên `long long`.");
+  } else {
+    lines.push("- **Câu 1 & Câu 2**: Đạt **" + easyScore.toFixed(2) + "/4.0đ** — phản xạ tốt với nhóm bài cơ bản và cấu trúc dữ liệu.");
+  }
+
+  if (btScore < 1.5) {
+    lines.push(`- **Câu 3 — Quay lui (${rList[2]?.prob?.title || ""})**: Đạt **${btScore.toFixed(2)}/2.0đ**. Hãy mở lại bài giảng **Chương 3**, xem kỹ khung \`Try(k)\`, điều kiện dừng và nhớ hoàn tác trạng thái ngay sau lời gọi đệ quy.`);
+  } else {
+    lines.push(`- **Câu 3 — Quay lui**: Đạt **${btScore.toFixed(2)}/2.0đ** — nắm vững khung duyệt đệ quy và cắt nhánh.`);
+  }
+
+  if (dpScore < 1.5) {
+    lines.push(`- **Câu 4 — Quy hoạch động (${rList[3]?.prob?.title || ""})**: Đạt **${dpScore.toFixed(2)}/2.0đ**. Hãy mở tab **Hướng dẫn giải** của bài này, tự viết lại ý nghĩa của mảng \`dp[...]\` ra giấy và kiểm tra giá trị khởi tạo cơ sở.`);
+  } else {
+    lines.push(`- **Câu 4 — Quy hoạch động**: Đạt **${dpScore.toFixed(2)}/2.0đ** — xây dựng đúng công thức chuyển trạng thái.`);
+  }
+
+  if (hardScore < 1.0) {
+    lines.push(`- **Câu 5 — Phân loại điểm 9–10 (${rList[4]?.prob?.title || ""})**: Đạt **${hardScore.toFixed(2)}/2.0đ**. Với câu siêu khó trong phòng thi, nếu chưa nghĩ ra thuật toán tối ưu hoàn toàn, hãy luôn viết nhánh cận hoặc vét cạn cho \`n\` nhỏ để lấy 30%–50% số test.`);
+  } else {
+    lines.push(`- **Câu 5 — Phân loại điểm 9–10**: Đạt **${hardScore.toFixed(2)}/2.0đ** — ăn được điểm ở câu khó nhất đề.`);
+  }
+
+  return lines.join("\n");
+}
+
+async function finishExam(autoTimeout = false) {
+  const ex = state.activeExam;
+  if (!ex) return;
+  const pmap = getProblemMap();
+  const usedSec = Math.min(ex.durationSec, Math.max(1, Math.floor((Date.now() - ex.startTimeMs) / 1000)));
+  const totalScore = Math.round(computeExamCurrentTotal(ex) * 100) / 100;
+  const feedback = buildTeacherFeedback(ex, totalScore, pmap);
+  const probDetails = ex.problemIds.map((pid, idx) => {
+    const r = ex.results[pid] || { bestScore: 0, passed: 0, total: 0, verdict: "", attempts: 0 };
+    return {
+      slot: idx + 1,
+      id: pid,
+      title: pmap[pid]?.title || pid,
+      elo: pmap[pid]?.elo || 1200,
+      topic: pmap[pid]?.topic || "",
+      score: r.bestScore || 0,
+      passed: r.passed || 0,
+      total: r.total || pmap[pid]?.test_count || 0,
+      verdict: r.verdict || "Chưa nộp",
+      attempts: r.attempts || 0,
+    };
+  });
+
+  state.activeExam = null;
+  saveActiveExam();
+  if (state.examTimerInterval) clearInterval(state.examTimerInterval);
+  const pill = document.getElementById("nav-exam-timer-pill");
+  if (pill) pill.classList.add("hidden");
+  renderArenaExamStrip();
+
+  // Re-unlock guide in arena if a problem is open
+  if (state.currentProblem) {
+    const mindsetTabBtn = document.querySelector('#left-subtabs .sub-tab[data-ltab="mindset"]');
+    const testsTabBtn = document.querySelector('#left-subtabs .sub-tab[data-ltab="tests"]');
+    const theoryBtn = document.getElementById("btn-open-theory");
+    if (mindsetTabBtn) mindsetTabBtn.innerHTML = "Hướng dẫn giải";
+    if (testsTabBtn) testsTabBtn.classList.remove("hidden");
+    if (theoryBtn) theoryBtn.classList.remove("hidden");
+    drawGuideLadder();
+  }
+
+  try {
+    const saved = await apiPost("/api/exam/finish", {
+      exam_id: ex.examId,
+      title: ex.title,
+      track: ex.track,
+      total_score: totalScore,
+      duration_used_sec: usedSec,
+      problems: probDetails,
+      feedback,
+    });
+    if (saved.record) {
+      state.bootstrap.exam_history = [saved.record, ...(state.bootstrap.exam_history || [])];
+      state.lastFinishedExam = saved.record;
+    }
+  } catch (e) {
+    state.lastFinishedExam = {
+      title: ex.title,
+      track: ex.track,
+      total_score: totalScore,
+      duration_used_sec: usedSec,
+      problems: probDetails,
+      feedback,
+      created_at: "Vừa xong",
+    };
+  }
+
+  if (autoTimeout) {
+    alert("Đã hết 120 phút làm bài! Hệ thống tự động thu bài và mở khóa lời giải chi tiết.");
+  }
+  switchView("exam");
+  renderExamView();
+}
+
+window.viewExamHistoryRecord = function (idx) {
+  const rec = state.bootstrap?.exam_history?.[idx];
+  if (!rec) return;
+  state.lastFinishedExam = rec;
+  renderExamView();
+  document.getElementById("exam-root")?.scrollIntoView({ behavior: "smooth", block: "start" });
+};
+
+function renderExamView() {
+  const root = document.getElementById("exam-root");
+  if (!root || !state.bootstrap) return;
+  const pmap = getProblemMap();
+  const mockData = state.bootstrap.mock_exams || {};
+  const rules = mockData.exam_rules || {};
+  const presets = mockData.presets || [];
+  const history = state.bootstrap.exam_history || [];
+
+  // 1. Active Exam Banner if currently in an exam
+  let activeHtml = "";
+  if (state.activeExam) {
+    const ex = state.activeExam;
+    const remSec = Math.max(0, Math.floor((ex.endTimeMs - Date.now()) / 1000));
+    const totalScore = computeExamCurrentTotal(ex).toFixed(2);
+    const rowsHtml = ex.problemIds
+      .map((pid, idx) => {
+        const p = pmap[pid] || { id: pid, title: pid, elo: 1200, topic: "" };
+        const r = ex.results[pid] || { bestScore: 0, passed: 0, total: p.test_count || 0, verdict: "", attempts: 0 };
+        const slotMeta = rules.slots?.[idx] || { label: `Câu ${idx + 1}` };
+        const vBadge = r.verdict
+          ? `<span class="badge verdict-${esc(r.verdict)}">${esc(r.verdict)} (${r.passed}/${r.total})</span>`
+          : `<span class="muted">Chưa nộp</span>`;
+        return `
+          <tr>
+            <td><strong>Câu ${idx + 1}</strong><div class="muted small">${esc(slotMeta.label.split("·")[1] || "")}</div></td>
+            <td>
+              <div style="font-weight:600;cursor:pointer;" onclick="openProblem('${pid}')">${esc(p.title)}</div>
+              <div class="muted small"><code>${esc(pid)}</code> · ${p.time_limit_ms || 1000} ms</div>
+            </td>
+            <td><span class="badge badge-elo">Elo ${p.elo || 1200}</span></td>
+            <td>${vBadge}</td>
+            <td><strong>${(r.bestScore || 0).toFixed(2)} / 2.00</strong></td>
+            <td style="text-align:right;"><button class="btn btn-sm btn-primary" onclick="openProblem('${pid}')">Làm Câu ${idx + 1} →</button></td>
+          </tr>`;
+      })
+      .join("");
+
+    activeHtml = `
+      <div class="surface hero-card" style="border-color:var(--amber-border);margin-bottom:18px;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;">
+          <div>
+            <span class="badge ${ex.track === "midterm" ? "badge-midterm" : "badge-final"}">${ex.track === "midterm" ? "Đang thi Giữa kỳ (Không Graph)" : "Đang thi Cuối kỳ"}</span>
+            <h2 style="margin:6px 0 4px;">${esc(ex.title)}</h2>
+            <p class="muted small-prose" style="margin:0;">${esc(ex.teacherIntro)}</p>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="text-align:right;">
+              <div class="muted small">Điểm hiện tại</div>
+              <strong style="font-size:18px;">${totalScore} / 10.0</strong>
+            </div>
+            <div class="exam-timer-big js-exam-timer ${remSec <= 600 ? "urgent" : ""}">${formatMMSS(remSec)}</div>
+            <button class="btn btn-primary" onclick="confirmFinishExam()">Nộp đề &amp; Kết thúc</button>
+          </div>
+        </div>
+        <div class="problem-table-wrap" style="margin-top:14px;">
+          <table class="problem-table">
+            <thead>
+              <tr>
+                <th>Vị trí</th>
+                <th>Đề bài</th>
+                <th>Mức Elo</th>
+                <th>Trạng thái chấm</th>
+                <th>Điểm (Thang 10)</th>
+                <th style="text-align:right;">Vào phòng code</th>
+              </tr>
+            </thead>
+            <tbody>${rowsHtml}</tbody>
+          </table>
+        </div>
+      </div>`;
+  }
+
+  // 2. Post-Exam Review Card if just finished or viewing history
+  let reviewHtml = "";
+  if (state.lastFinishedExam) {
+    const rec = state.lastFinishedExam;
+    const mins = Math.max(1, Math.round((rec.duration_used_sec || 0) / 60));
+    const probRows = (rec.problems || [])
+      .map((item, idx) => {
+        const p = pmap[item.id] || item;
+        const vCls = item.verdict === "AC" ? "verdict-AC" : item.score > 0 ? "verdict-TLE" : "verdict-WA";
+        return `
+          <tr>
+            <td><strong>Câu ${item.slot || idx + 1}</strong></td>
+            <td>
+              <div style="font-weight:600;cursor:pointer;" onclick="openProblem('${item.id}')">${esc(item.title)}</div>
+              <div class="muted small">${esc(TOPIC_LABELS[p.topic] || item.topic || "")}</div>
+            </td>
+            <td><span class="badge badge-elo">Elo ${item.elo || p.elo || 1200}</span></td>
+            <td><span class="badge ${vCls}">${esc(item.verdict)} (${item.passed}/${item.total})</span></td>
+            <td><strong>${Number(item.score || 0).toFixed(2)} / 2.00</strong></td>
+            <td style="text-align:right;">
+              <button class="btn btn-sm btn-ghost" onclick="openProblem('${item.id}')">Xem Hướng dẫn &amp; Code mẫu →</button>
+            </td>
+          </tr>`;
+      })
+      .join("");
+
+    reviewHtml = `
+      <div class="surface hero-card" style="border-color:var(--green-border);margin-bottom:18px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+          <div>
+            <span class="badge verdict-AC">Kết quả &amp; Nhận xét của Thầy</span>
+            <h2 style="margin:6px 0 2px;">${esc(rec.title)} — Đạt ${Number(rec.total_score).toFixed(2)} / 10.0 điểm</h2>
+            <div class="muted small">Thời gian làm bài: ${mins} phút · Ngày nộp: ${esc(rec.created_at || "")}</div>
+          </div>
+          <button class="btn btn-sm btn-ghost" onclick="state.lastFinishedExam = null; renderExamView();">Đóng bảng kết quả</button>
+        </div>
+        <div class="callout callout-tip" style="margin-top:12px;">
+          <h4>Nhận xét &amp; Hướng khắc phục sau bài thi</h4>
+          <div class="prose">${renderProse(rec.feedback)}</div>
+        </div>
+        <div class="problem-table-wrap" style="margin-top:12px;">
+          <table class="problem-table">
+            <thead>
+              <tr>
+                <th>Câu</th>
+                <th>Bài toán &amp; Dạng bài</th>
+                <th>Elo</th>
+                <th>Kết quả</th>
+                <th>Điểm</th>
+                <th style="text-align:right;">Chữa bài (Đã mở khóa lời giải)</th>
+              </tr>
+            </thead>
+            <tbody>${probRows}</tbody>
+          </table>
+        </div>
+      </div>`;
+  }
+
+  // 3. Exam selection & Random generator
+  const filteredPresets = presets.filter((p) => state.examFilterTrack === "all" || p.track === state.examFilterTrack);
+  const slotsHtml = (rules.slots || [])
+    .map(
+      (s) => `
+      <div class="exam-slot-card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+          <span class="badge badge-elo">Elo ${esc(s.elo_range)}</span>
+          <span class="muted small">~${s.target_minutes} phút</span>
+        </div>
+        <h4>${esc(s.label)}</h4>
+        <div class="muted small">${esc(s.desc)}</div>
+      </div>`
+    )
+    .join("");
+
+  const presetsHtml = filteredPresets
+    .map((pr) => {
+      const probList = pr.problems
+        .map((pid, idx) => {
+          const p = pmap[pid];
+          if (!p) return "";
+          return `<div class="small" style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px dashed var(--border-subtle);">
+            <span><strong>Câu ${idx + 1}:</strong> ${esc(p.title)}</span>
+            <span class="muted mono-meta">Elo ${p.elo || 1200}</span>
+          </div>`;
+        })
+        .join("");
+
+      return `
+        <div class="exam-preset-card">
+          <div>
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;">
+              <span class="badge ${pr.track === "midterm" ? "badge-midterm" : "badge-final"}">${pr.track === "midterm" ? "Giữa kỳ (Không Graph)" : "Cuối kỳ"}</span>
+              <span class="badge badge-elo">Elo TB ~${pr.avg_elo}</span>
+            </div>
+            <h3 style="margin:0 0 6px;font-size:15.5px;">${esc(pr.title)}</h3>
+            <p class="muted small" style="margin:0 0 10px;">${esc(pr.teacher_intro)}</p>
+            <div style="margin-bottom:14px;">${probList}</div>
+          </div>
+          <button class="btn btn-primary" style="width:100%;" onclick="startPresetExam('${pr.id}')">Bắt đầu làm đề này (120 phút)</button>
+        </div>`;
+    })
+    .join("");
+
+  const historyRows = history.length
+    ? history
+        .map(
+          (h, idx) => `
+        <tr>
+          <td><span class="badge ${h.track === "midterm" ? "badge-midterm" : "badge-final"}">${h.track === "midterm" ? "Giữa kỳ" : "Cuối kỳ"}</span></td>
+          <td><strong>${esc(h.title)}</strong></td>
+          <td><strong style="color:var(--green);">${Number(h.total_score).toFixed(2)} / 10.0</strong></td>
+          <td>${Math.max(1, Math.round((h.duration_used_sec || 0) / 60))} phút</td>
+          <td class="muted small">${esc(h.created_at)}</td>
+          <td style="text-align:right;"><button class="btn btn-sm btn-ghost" onclick="viewExamHistoryRecord(${idx})">Xem nhận xét &amp; Chữa bài</button></td>
+        </tr>`
+        )
+        .join("")
+    : `<tr><td colspan="6" class="muted center-empty">Bạn chưa hoàn thành đề thi thử nào. Hãy chọn một đề chuẩn bên trên hoặc bấm Sinh đề ngẫu nhiên!</td></tr>`;
+
+  root.innerHTML = `
+    ${activeHtml}
+    ${reviewHtml}
+    <div class="surface hero-card">
+      <div class="hero-head">
+        <div class="hero-title-wrap">
+          <div class="eyebrow">Phòng Thi thử 120 Phút · Chấm điểm thành phần theo Test Case (Thang 10)</div>
+          <h1>Đề Thi thử Giữa kỳ &amp; Cuối kỳ theo Cấu trúc Elo</h1>
+          <p class="muted prose-lead">Mỗi đề thi gồm đúng <strong>5 câu làm trong 120 phút</strong> (mỗi câu 2.0 điểm, tính điểm theo tỷ lệ test case đúng): <strong>2 câu đầu dễ</strong> để lấy chắc 4 điểm trong 30 phút đầu, <strong>Câu 3 Quay lui</strong>, <strong>Câu 4 Quy hoạch động</strong>, và <strong>Câu 5 Siêu khó</strong> để phân loại điểm 9–10. Trong lúc thi, toàn bộ gợi ý và lời giải bị khóa. Đặc biệt: <strong>Đề Giữa kỳ chỉ giới hạn đến hết Quy hoạch động, tuyệt đối không có Đồ thị (Graph)</strong>.</p>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn btn-primary" onclick="startRandomExam('midterm')">🎲 Sinh đề Giữa kỳ ngẫu nhiên (Không Graph)</button>
+          <button class="btn btn-secondary" onclick="startRandomExam('final')">🎲 Sinh đề Cuối kỳ ngẫu nhiên</button>
+        </div>
+      </div>
+
+      <div class="exam-slot-grid">${slotsHtml}</div>
+
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-top:20px;">
+        <h3 style="margin:0;">Bộ 12 Đề Chuẩn do Thầy biên soạn (Cân đối Elo &amp; Thời lượng 120 phút)</h3>
+        <div class="track-pills">
+          <button class="filter-pill ${state.examFilterTrack === "midterm" ? "active" : ""}" onclick="state.examFilterTrack='midterm'; renderExamView();">Đề Giữa kỳ (6 đề · Không Graph)</button>
+          <button class="filter-pill ${state.examFilterTrack === "final" ? "active" : ""}" onclick="state.examFilterTrack='final'; renderExamView();">Đề Cuối kỳ (6 đề)</button>
+          <button class="filter-pill ${state.examFilterTrack === "all" ? "active" : ""}" onclick="state.examFilterTrack='all'; renderExamView();">Tất cả (12 đề)</button>
+        </div>
+      </div>
+      <div class="exam-presets-grid">${presetsHtml}</div>
+    </div>
+
+    <div class="surface hero-card" style="margin-top:18px;">
+      <h3 style="margin:0 0 12px;">Lịch sử các lần Thi thử của bạn</h3>
+      <div class="problem-table-wrap">
+        <table class="problem-table">
+          <thead>
+            <tr>
+              <th>Kỳ thi</th>
+              <th>Tên đề</th>
+              <th>Điểm đạt được</th>
+              <th>Thời gian làm</th>
+              <th>Thời điểm nộp</th>
+              <th style="text-align:right;">Chi tiết</th>
+            </tr>
+          </thead>
+          <tbody>${historyRows}</tbody>
+        </table>
+      </div>
+    </div>
+  `;
+}
+
 async function boot() {
   initEditor();
   bindEvents();
   state.bootstrap = await apiGet("/api/bootstrap");
   applyTheme(state.bootstrap.settings?.theme || "dark");
+  restoreActiveExam();
   updateTopStats();
   renderRoadmap();
   renderTheorySidebar();
   renderTheoryContent();
   renderProblemBankFilters();
   renderProblemTable();
+  renderExamView();
 
   // Preload Day 1 first problem cleanly in Arena background
   const firstPid = state.bootstrap.roadmap.days[0]?.problems[0];

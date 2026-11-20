@@ -10,7 +10,7 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     int n, m, K;
-    if (!(cin >> n >> m >> K)) return 0;
+    cin >> n >> m >> K;
     int S = 0, T = n + m + 1, V = T + 1;
     vector<vector<Edge>> g(V);
     auto addEdge = [&](int u, int v, int cap, long long cost) {

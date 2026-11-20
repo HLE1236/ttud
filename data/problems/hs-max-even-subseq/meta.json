@@ -2,7 +2,7 @@
   "id": "hs-max-even-subseq",
   "title": "[HUSTack] Đoạn con liên tiếp tổng chẵn lớn nhất (Max Even Subsequence)",
   "track": "midterm",
-  "topic": "dp-midterm",
+  "topic": "dp-1d",
   "difficulty": "Trung bình",
   "exam_tags": [
     "HUSTack 2025.2 (P.04.08.01)",
@@ -21,13 +21,14 @@
       "output": "4"
     }
   ],
-  "theory_chapter": "chap4",
-  "mindset": "Tổng đoạn `[l..r]` bằng `pref[r] - pref[l-1]`. Hiệu này là **số chẵn** khi và chỉ khi `pref[r]` và `pref[l-1]` **cùng tính chẵn/lẻ**! Để tối đa hóa `pref[r] - pref[l-1]`, ta chỉ cần nhớ giá trị `min_pref[0]` (tổng tiền tố nhỏ nhất có tính chẵn) và `min_pref[1]` (tổng tiền tố nhỏ nhất có tính lẻ) tính đến trước vị trí `r`.",
+  "theory_chapter": "chap4b",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dãy `1..n` (`n` lớn hơn 30, lên tới `10^5 - 10^6`), hỏi số cách đi hoặc tổng lớn nhất có điều kiện giữa các phần tử đứng gần nhau.\n- Tại sao không quay lui được: Khi thử đệ quy, cùng một vị trí `i` bị tính đi tính lại hàng triệu lần.\n- Hướng đi: Quy hoạch động 1 chiều — lập mảng `dp[i]` lưu kết quả tốt nhất tính đến vị trí `i`, tính `dp[i]` trực tiếp từ `dp[i-1], dp[i-2], ...` trong 1 vòng lặp.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dãy `1..n` (`n` lớn hơn 30, lên tới `10^5 - 10^6`), hỏi số cách đi hoặc tổng lớn nhất có điều kiện giữa các phần tử đứng gần nhau.\n- Tại sao không quay lui được: Khi thử đệ quy, cùng một vị trí `i` bị tính đi tính lại hàng triệu lần.\n- Hướng đi: Quy hoạch động 1 chiều — lập mảng `dp[i]` lưu kết quả tốt nhất tính đến vị trí `i`, tính `dp[i]` trực tiếp từ `dp[i-1], dp[i-2], ...` trong 1 vòng lặp.\n\n**2. Cách suy nghĩ cho bài này:**\nTổng đoạn `[l..r]` bằng `pref[r] - pref[l-1]`. Hiệu này là **số chẵn** khi và chỉ khi `pref[r]` và `pref[l-1]` **cùng tính chẵn/lẻ**! Để tối đa hóa `pref[r] - pref[l-1]`, ta chỉ cần nhớ giá trị `min_pref[0]` (tổng tiền tố nhỏ nhất có tính chẵn) và `min_pref[1]` (tổng tiền tố nhỏ nhất có tính lẻ) tính đến trước vị trí `r`.",
   "hints": [
     "Khởi tạo `min_pref[0] = 0` (ứng với tiền tố rỗng tổng 0 - chẵn) và `min_pref[1] = +INF` (chưa có tiền tố lẻ).",
     "Khi đọc `a_i`, cộng vào `pref`. Cẩn thận phép chia dư số âm trong C++: dùng `int p = ((pref % 2) + 2) % 2;`!",
     "Nếu `min_pref[p] != INF` thì cập nhật `ans = max(ans, pref - min_pref[p])`. Sau đó mới cập nhật `min_pref[p] = min(min_pref[p], pref)` (vì đoạn phải khác rỗng!)."
   ],
   "complexity": "O(n) thời gian, O(1) bộ nhớ",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1200
 }

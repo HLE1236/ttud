@@ -4,7 +4,7 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     int n, m;
-    if (!(cin >> n >> m)) return 0;
+    cin >> n >> m;
     vector<vector<pair<int, int>>> adj(n + 1);
     for (int i = 0; i < m; ++i) {
         int u, v, w; cin >> u >> v >> w;

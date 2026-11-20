@@ -2,8 +2,8 @@
   "id": "hs-queue-sim",
   "title": "[HUSTack] Mô phỏng hàng đợi (Simulation Queue)",
   "track": "midterm",
-  "topic": "array-basic",
-  "difficulty": "Trung bình",
+  "topic": "stl-basic",
+  "difficulty": "Cơ bản",
   "exam_tags": [
     "HUSTack 2025.2 (P.01.02.03)",
     "HUSTack: Đã AC"
@@ -22,7 +22,7 @@
     }
   ],
   "theory_chapter": "chap1",
-  "mindset": "Dùng trực tiếp `std::queue<int>` trong STL C++. Đọc từng token `cmd` bằng `while (cin >> cmd && cmd != \"#\")` rất gọn.",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dữ liệu có tới `10^5 - 10^6` phần tử hoặc các dòng log truy vấn.\n- Với kích thước này, nếu dùng 2 vòng lặp lồng nhau `O(n^2)` tìm kiếm sẽ bị quá thời gian (TLE).\n- Hướng đi: Duyệt 1 vòng `O(n)` kết hợp cấu trúc STL (`unordered_map`, `set`, `stack`, `queue`, `priority_queue`) hoặc quy đổi thời gian `HH:MM:SS` ra số giây `0..86399`.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dữ liệu có tới `10^5 - 10^6` phần tử hoặc các dòng log truy vấn.\n- Với kích thước này, nếu dùng 2 vòng lặp lồng nhau `O(n^2)` tìm kiếm sẽ bị quá thời gian (TLE).\n- Hướng đi: Duyệt 1 vòng `O(n)` kết hợp cấu trúc STL (`unordered_map`, `set`, `stack`, `queue`, `priority_queue`) hoặc quy đổi thời gian `HH:MM:SS` ra số giây `0..86399`.\n\n**2. Cách suy nghĩ cho bài này:**\nDùng trực tiếp `std::queue<int>` trong STL C++. Đọc từng token `cmd` bằng `while (cin >> cmd && cmd != \"#\")` rất gọn.",
   "hints": [
     "Nếu `cmd == \"PUSH\"`, đọc `int v; cin >> v; q.push(v);`.",
     "Nếu `cmd == \"POP\"`, kiểm tra `q.empty()` trước khi gọi `q.front(); q.pop();`."
@@ -31,5 +31,6 @@
     "time": "O(Q)",
     "space": "O(Q)"
   },
-  "test_count": 10
+  "test_count": 10,
+  "elo": 950
 }

@@ -8,7 +8,7 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     int k, n;
-    if (!(cin >> k >> n)) return 0;
+    cin >> k >> n;
     if (k > n) { cout << 0 << '\n'; return 0; }
     for (int i = 0; i <= n; i++) {
         C[i][0] = C[i][i] = 1;

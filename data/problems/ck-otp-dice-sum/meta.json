@@ -1,8 +1,8 @@
 {
   "id": "ck-otp-dice-sum",
   "title": "Đếm cách sinh tổng OTP từ n xúc xắc m mặt",
-  "track": "final",
-  "topic": "dp-knapsack-stock",
+  "track": "midterm",
+  "topic": "dp-knapsack",
   "difficulty": "Trung bình",
   "exam_tags": [
     "Cuối kỳ 2024.2 (Bài 3)"
@@ -25,7 +25,7 @@
     }
   ],
   "theory_chapter": "chap4b",
-  "mindset": "Bài toán **Xúc xắc kinh điển**! Gọi `dp[i][s]` là số cách gieo `i` thiết bị đầu tiên được tổng `s` (`dp[0][0] = 1`).\nTừ `dp[i-1]`, thiết bị thứ `i` có thể ra `k = 1..m`, dẫn tới `dp[i][s] = sum_{k=1..min(m, s)} dp[i-1][s-k]`.\n- Dùng **3 vòng lặp**: `n * x * m <= 100 * 10000 * 100 = 10^8` -> hơi nặng nếu chưa tối ưu.\n- **Tối ưu thành `O(n * x)` nhờ Cộng dồn / Cửa sổ trượt**: Khi biết `dp[i-1]`, ta tính ngay tổng trên đoạn `[s - m .. s - 1]` trong `O(1)` bằng cách cộng phần tử mới `dp[i-1][s-1]` và trừ phần tử trượt ra ngoài `dp[i-1][s-m-1]`! Hoặc tính `pref[s]` của hàng `i-1`!",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Chọn các món đồ / mệnh giá tiền / lần giao dịch với **tổng trọng lượng / ngân sách giới hạn `W <= 10^5`**.\n- Hướng đi: Quy hoạch động theo dung lượng `dp[w]`. Nếu mỗi món được chọn nhiều lần thì duyệt `w` tăng dần (`cost -> W`); nếu mỗi món chỉ chọn tối đa 1 lần thì duyệt `w` giảm dần (`W -> cost`).\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Chọn các món đồ / mệnh giá tiền / lần giao dịch với **tổng trọng lượng / ngân sách giới hạn `W <= 10^5`**.\n- Hướng đi: Quy hoạch động theo dung lượng `dp[w]`. Nếu mỗi món được chọn nhiều lần thì duyệt `w` tăng dần (`cost -> W`); nếu mỗi món chỉ chọn tối đa 1 lần thì duyệt `w` giảm dần (`W -> cost`).\n\n**2. Cách suy nghĩ cho bài này:**\nBài toán thuộc dạng **Xúc xắc**. Gọi `dp[i][s]` là số cách gieo `i` thiết bị đầu tiên được tổng `s` (`dp[0][0] = 1`).\nTừ `dp[i-1]`, thiết bị thứ `i` có thể ra `k = 1..m`, dẫn tới `dp[i][s] = sum_{k=1..min(m, s)} dp[i-1][s-k]`.\n- Dùng **3 vòng lặp**: `n * x * m <= 100 * 10000 * 100 = 10^8` -> hơi nặng nếu chưa tối ưu.\n- **Tối ưu thành `O(n * x)` nhờ Cộng dồn / Cửa sổ trượt**: Khi biết `dp[i-1]`, ta tính ngay tổng trên đoạn `[s - m .. s - 1]` trong `O(1)` bằng cách cộng phần tử mới `dp[i-1][s-1]` và trừ phần tử trượt ra ngoài `dp[i-1][s-m-1]`! Hoặc tính `pref[s]` của hàng `i-1`!",
   "hints": [
     "Nếu `x < n` hoặc `x > n * m` thì chắc chắn đáp án là `0`.",
     "Tính `pref[s]` của `dp[i-1]`: khi đó `dp[i][s] = pref[s - 1] - (s - m - 1 >= 0 ? pref[s - m - 1] : 0)` (nhớ `+ MOD` trước khi `% MOD` khi làm phép trừ!)."
@@ -34,5 +34,6 @@
     "time": "O(n * x)",
     "space": "O(x)"
   },
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1350
 }

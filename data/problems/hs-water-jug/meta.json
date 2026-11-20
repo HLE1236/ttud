@@ -1,7 +1,7 @@
 {
   "title": "[HUSTack] Bài toán đong nước (WATER JUGS - BFS)",
   "track": "final",
-  "topic": "graph-bfs-dfs",
+  "topic": "graph-traversal",
   "difficulty": "Trung bình",
   "exam_tags": [
     "HUSTack Project1 (WATERJUG)",
@@ -21,11 +21,12 @@
     }
   ],
   "theory_chapter": "chap5",
-  "mindset": "Mô hình hóa trạng thái lượng nước trong hai bình thành đỉnh `(x, y)` trên đồ thị không trọng số (`0 <= x <= a`, `0 <= y <= b`).\nDùng **BFS** xuất phát từ `(0, 0)` với mảng đánh dấu `dist[905][905]` để tìm đường đi ngắn nhất tới bất kỳ trạng thái nào có `x == c || y == c`.\n(Điều kiện cần và đủ để có nghiệm là `c <= max(a, b)` và `c % gcd(a, b) == 0`.)",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dữ liệu biểu diễn các đỉnh nối với nhau bằng các cạnh (đồ thị hoặc cây). Yêu cầu đếm cụm liên thông, kiểm tra đồ thị 2 phía, tìm đường ít bước nhất, tìm Khớp/Cầu/SCC hoặc tính toán trên Cây.\n- Hướng đi: Lưu danh sách kề `adj[u]`. Dùng BFS (`queue`) nếu tìm số bước ít nhất; dùng DFS truyền `parent` nếu là Cây; dùng Tarjan (`num`, `low`) nếu tìm Khớp/Cầu/SCC.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dữ liệu biểu diễn các đỉnh nối với nhau bằng các cạnh (đồ thị hoặc cây). Yêu cầu đếm cụm liên thông, kiểm tra đồ thị 2 phía, tìm đường ít bước nhất, tìm Khớp/Cầu/SCC hoặc tính toán trên Cây.\n- Hướng đi: Lưu danh sách kề `adj[u]`. Dùng BFS (`queue`) nếu tìm số bước ít nhất; dùng DFS truyền `parent` nếu là Cây; dùng Tarjan (`num`, `low`) nếu tìm Khớp/Cầu/SCC.\n\n**2. Cách suy nghĩ cho bài này:**\nMô hình hóa trạng thái lượng nước trong hai bình thành đỉnh `(x, y)` trên đồ thị không trọng số (`0 <= x <= a`, `0 <= y <= b`).\nDùng **BFS** xuất phát từ `(0, 0)` với mảng đánh dấu `dist[905][905]` để tìm đường đi ngắn nhất tới bất kỳ trạng thái nào có `x == c || y == c`.\n(Điều kiện cần và đủ để có nghiệm là `c <= max(a, b)` và `c % gcd(a, b) == 0`.)",
   "hints": [
     "Nếu `c > max(a, b)` hoặc `c % std::gcd(a, b) != 0` có thể trả ngay `-1`."
   ],
   "complexity": "O(a * b)",
   "id": "hs-water-jug",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1200
 }

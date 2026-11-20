@@ -5,7 +5,7 @@ int main() {
     cin.tie(nullptr);
     int m, n;
     long long P;
-    if (!(cin >> m >> n >> P)) return 0;
+    cin >> m >> n >> P;
     vector<long long> r(n);
     for (int i = 0; i < n; ++i) cin >> r[i];
     vector<long long> q(m), c(m);

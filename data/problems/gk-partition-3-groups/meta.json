@@ -2,8 +2,8 @@
   "id": "gk-partition-3-groups",
   "title": "Chia n phần tử thành 3 nhóm cân bằng nhất",
   "track": "midterm",
-  "topic": "backtracking",
-  "difficulty": "Nâng cao",
+  "topic": "branch-bound",
+  "difficulty": "Trung bình",
   "exam_tags": [
     "Cuối kỳ 2022.2 (Bài 4)"
   ],
@@ -24,8 +24,8 @@
       "output": "0"
     }
   ],
-  "theory_chapter": "chap2",
-  "mindset": "Nếu quay lui ngây thơ `3^20` (~3.4 tỷ) sẽ TLE chắc chắn! Làm sao giảm mạnh không gian tìm kiếm?\n1. **Sắp xếp giảm dần**: Xếp số lớn trước giúp nhánh cận chạm giới hạn sớm hơn rất nhiều.\n2. **Phá đối xứng (Symmetry Breaking)**: Ba nhóm có vai trò như nhau! Nếu nhóm nào hiện đang trống (tức số phần tử = 0), ta chỉ cần thử đặt `a[idx]` vào **nhóm trống đầu tiên**, KHÔNG cần thử các nhóm trống phía sau vì chúng hoàn toàn đối xứng!\n3. **Nhánh cận (Branch & Bound)**: Gọi `suf[idx]` là tổng các phần tử còn lại. Tổng lớn nhất hiện tại chắc chắn `>= curMax`; tổng nhỏ nhất có thể đạt tối đa là `curMin + suf[idx]` (thậm chí chặt hơn: `(total - max_cur)` chia cho các nhóm còn lại). Nếu `curMax - (curMin + suf[idx]) >= best` -> CẮT!",
+  "theory_chapter": "chap3",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Giới hạn `n` nhỏ (`n <= 12..30`), yêu cầu tìm phương án có **chi phí nhỏ nhất** hoặc **tải lớn nhất nhỏ nhất** (chia nhóm, phân công BCA/BACP, lộ trình TSP/CBUS).\n- Tại sao quay lui thuần bị chậm: Duyệt hết toàn bộ cây đệ quy sẽ vượt quá 1 giây khi `n >= 12`.\n- Hướng đi: Dùng **Nhánh và cận**: trước khi gọi `Try(k + 1)`, ước lượng cận dưới của nhánh; nếu đã `>= kỷ_lục_best` hiện có thì cắt bỏ nhánh đó ngay.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Giới hạn `n` nhỏ (`n <= 12..30`), yêu cầu tìm phương án có **chi phí nhỏ nhất** hoặc **tải lớn nhất nhỏ nhất** (chia nhóm, phân công BCA/BACP, lộ trình TSP/CBUS).\n- Tại sao quay lui thuần bị chậm: Duyệt hết toàn bộ cây đệ quy sẽ vượt quá 1 giây khi `n >= 12`.\n- Hướng đi: Dùng **Nhánh và cận**: trước khi gọi `Try(k + 1)`, ước lượng cận dưới của nhánh; nếu đã `>= kỷ_lục_best` hiện có thì cắt bỏ nhánh đó ngay.\n\n**2. Cách suy nghĩ cho bài này:**\nNếu quay lui ngây thơ `3^20` (~3.4 tỷ) sẽ TLE chắc chắn! Làm sao giảm mạnh không gian tìm kiếm?\n1. **Sắp xếp giảm dần**: Xếp số lớn trước giúp nhánh cận chạm giới hạn sớm hơn rất nhiều.\n2. **Phá đối xứng (Symmetry Breaking)**: Ba nhóm có vai trò như nhau! Nếu nhóm nào hiện đang trống (tức số phần tử = 0), ta chỉ cần thử đặt `a[idx]` vào **nhóm trống đầu tiên**, KHÔNG cần thử các nhóm trống phía sau vì chúng hoàn toàn đối xứng!\n3. **Nhánh cận (Branch & Bound)**: Gọi `suf[idx]` là tổng các phần tử còn lại. Tổng lớn nhất hiện tại chắc chắn `>= curMax`; tổng nhỏ nhất có thể đạt tối đa là `curMin + suf[idx]` (thậm chí chặt hơn: `(total - max_cur)` chia cho các nhóm còn lại). Nếu `curMax - (curMin + suf[idx]) >= best` -> CẮT!",
   "hints": [
     "Để buộc 3 nhóm khác rỗng: ở mỗi bước, đếm xem còn bao nhiêu nhóm chưa có phần tử (`empty_cnt`). Nếu số phần tử còn lại (`n - idx`) bằng đúng `empty_cnt` thì chỉ được phép bỏ vào nhóm trống!",
     "Phá đối xứng mạnh hơn: nếu `cnt[g] == 0`, thử gán `a[idx]` vào nhóm `g` rồi `break` (không gán vào nhóm trống tiếp theo `g+1, ...` nữa). Cách này giảm gần 6 lần số trạng thái!"
@@ -34,5 +34,6 @@
     "time": "O(3^n / 6) với cắt tỉa mạnh",
     "space": "O(n)"
   },
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1450
 }

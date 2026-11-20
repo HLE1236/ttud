@@ -5,7 +5,7 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     int N, T, D;
-    if (!(cin >> N >> T >> D)) return 0;
+    cin >> N >> T >> D;
     vector<int> a(N + 1), t(N + 1);
     for (int i = 1; i <= N; i++) cin >> a[i];
     for (int i = 1; i <= N; i++) cin >> t[i];

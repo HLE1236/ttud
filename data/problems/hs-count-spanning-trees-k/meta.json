@@ -2,7 +2,7 @@
   "id": "hs-count-spanning-trees-k",
   "title": "[HUSTack] Đếm cây khung có tổng trọng số <= K",
   "track": "midterm",
-  "topic": "backtracking",
+  "topic": "backtrack-gen",
   "difficulty": "Trung bình",
   "exam_tags": [
     "HUSTack 2025.2 (CountSpanningTree-K)",
@@ -21,13 +21,14 @@
       "output": "2"
     }
   ],
-  "theory_chapter": "chap2",
-  "mindset": "Vì `n, m <= 20` rất nhỏ, ta dùng **Quay lui chọn `n - 1` cạnh từ `m` cạnh** (như bài toán đếm cây khung cơ bản), kết hợp:\n1. **Sắp xếp các cạnh tăng dần theo trọng số `w`** trước khi quay lui! Nhờ vậy ta biết được cận dưới tổng trọng số của `(n - 1 - picked)` cạnh nhỏ nhất còn lại để cắt nhánh sớm nếu `cur_w + min_rem_w > K`!\n2. Khi thử chọn cạnh thứ `idx` (`u, v`): dùng DSU hoàn tác (hoặc truyền mảng cha nhỏ `parent[21]`) — chỉ được phép chọn cạnh `(u, v)` nếu `find(u) != find(v)` (không tạo chu trình!).",
+  "theory_chapter": "chap3",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Giới hạn `n` nhỏ (`n <= 20..30`), yêu cầu liệt kê hoặc đếm số cấu hình (nhị phân, tập con, tổ hợp `k` phần tử, đặt vào lưới).\n- Vì `n` nhỏ, ta dùng hàm đệ quy Quay lui `Try(k)`: tại bước `k`, thử các lựa chọn hợp lệ, ghi nhận trạng thái, gọi `Try(k + 1)` rồi hoàn tác trạng thái.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Giới hạn `n` nhỏ (`n <= 20..30`), yêu cầu liệt kê hoặc đếm số cấu hình (nhị phân, tập con, tổ hợp `k` phần tử, đặt vào lưới).\n- Vì `n` nhỏ, ta dùng hàm đệ quy Quay lui `Try(k)`: tại bước `k`, thử các lựa chọn hợp lệ, ghi nhận trạng thái, gọi `Try(k + 1)` rồi hoàn tác trạng thái.\n\n**2. Cách suy nghĩ cho bài này:**\nVì `n, m <= 20` rất nhỏ, ta dùng **Quay lui chọn `n - 1` cạnh từ `m` cạnh** (như bài toán đếm cây khung cơ bản), kết hợp:\n1. **Sắp xếp các cạnh tăng dần theo trọng số `w`** trước khi quay lui! Nhờ vậy ta biết được cận dưới tổng trọng số của `(n - 1 - picked)` cạnh nhỏ nhất còn lại để cắt nhánh sớm nếu `cur_w + min_rem_w > K`!\n2. Khi thử chọn cạnh thứ `idx` (`u, v`): dùng DSU hoàn tác (hoặc truyền mảng cha nhỏ `parent[21]`) — chỉ được phép chọn cạnh `(u, v)` nếu `find(u) != find(v)` (không tạo chu trình!).",
   "hints": [
     "Cắt nhánh 1: `if (cur_w > K) return;` (tốt hơn nữa: cộng `n - 1 - taken` cạnh nhẹ nhất ngay tiếp theo `idx`, nếu vượt `K` thì dừng!).",
     "Cắt nhánh 2: nếu `m - idx < (n - 1) - taken` (không đủ cạnh còn lại để đủ `n - 1` cạnh) thì dừng.",
     "Khi `taken == n - 1` (và mọi cạnh thêm vào đều không tạo chu trình + `cur_w <= K`), chắc chắn thu được 1 cây khung hợp lệ!"
   ],
   "complexity": "Quay lui + Cắt nhánh theo trọng số (m <= 20)",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1450
 }

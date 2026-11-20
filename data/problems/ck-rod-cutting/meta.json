@@ -1,9 +1,9 @@
 {
   "id": "ck-rod-cutting",
   "title": "Cắt thanh kim loại thu lợi nhuận tối đa (Rod Cutting)",
-  "track": "final",
-  "topic": "dp-knapsack-stock",
-  "difficulty": "Cơ bản",
+  "track": "midterm",
+  "topic": "dp-knapsack",
+  "difficulty": "Trung bình",
   "exam_tags": [
     "Cuối kỳ 2023.2 Kíp 3 (Bài 4)",
     "HUSTack 2025.2 (CutRod)",
@@ -27,7 +27,7 @@
     }
   ],
   "theory_chapter": "chap4b",
-  "mindset": "Đây là bài toán **Cắt thanh (Rod Cutting)** kinh điển trong sách CLRS và thực chất đồng nhất với **Unbounded Knapsack** (túi sức chứa `n`, có `n` món hàng trọng lượng `i` và giá trị `p[i]`).\nGọi `dp[len]` là doanh thu lớn nhất cho thanh độ dài `len` (`dp[0] = 0`).\nNếu nhát cắt đầu tiên lấy đoạn độ dài `i` (`1 <= i <= len`), phần còn lại độ dài `len - i` bán tối ưu được `dp[len - i]` -> `dp[len] = max_{1 <= i <= len} (p[i] + dp[len - i])`.",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Chọn các món đồ / mệnh giá tiền / lần giao dịch với **tổng trọng lượng / ngân sách giới hạn `W <= 10^5`**.\n- Hướng đi: Quy hoạch động theo dung lượng `dp[w]`. Nếu mỗi món được chọn nhiều lần thì duyệt `w` tăng dần (`cost -> W`); nếu mỗi món chỉ chọn tối đa 1 lần thì duyệt `w` giảm dần (`W -> cost`).\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Chọn các món đồ / mệnh giá tiền / lần giao dịch với **tổng trọng lượng / ngân sách giới hạn `W <= 10^5`**.\n- Hướng đi: Quy hoạch động theo dung lượng `dp[w]`. Nếu mỗi món được chọn nhiều lần thì duyệt `w` tăng dần (`cost -> W`); nếu mỗi món chỉ chọn tối đa 1 lần thì duyệt `w` giảm dần (`W -> cost`).\n\n**2. Cách suy nghĩ cho bài này:**\nĐây là bài toán **Cắt thanh (Rod Cutting)** thực chất đồng nhất với **Unbounded Knapsack** (túi sức chứa `n`, có `n` món hàng trọng lượng `i` và giá trị `p[i]`).\nGọi `dp[len]` là doanh thu lớn nhất cho thanh độ dài `len` (`dp[0] = 0`).\nNếu nhát cắt đầu tiên lấy đoạn độ dài `i` (`1 <= i <= len`), phần còn lại độ dài `len - i` bán tối ưu được `dp[len - i]` -> `dp[len] = max_{1 <= i <= len} (p[i] + dp[len - i])`.",
   "hints": [
     "Chú ý đề có thể có giá `p[i] <= 10^9`, tổng doanh thu lên tới `1000 * 10^9 = 10^12` -> dùng `long long`!",
     "Với ví dụ 1 (`n = 8`): cắt thành `2 + 6` cho `5 + 17 = 22`. Với ví dụ 2: cắt thành 8 đoạn dài 1 cho `8 * 3 = 24`."
@@ -36,5 +36,6 @@
     "time": "O(n^2)",
     "space": "O(n)"
   },
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1150
 }

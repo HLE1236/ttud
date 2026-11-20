@@ -1,34 +1,23 @@
 #include <bits/stdc++.h>
 using namespace std;
-int m, n;
-vector<int> D[35];
-int credits[35], load[15], x[35];
-bool conflict[35][35];
-int best = 1e9;
 
-bool check(int v, int k) {
-    for (int i = 1; i < k; i++) {
-        if (conflict[i][k] && x[i] == v) return false;
-    }
-    return true;
-}
+int m, n, crd[35], load_gv[15], x[35], best = 1e9;
+vector<int> teach[35];
+bool conf[35][35];
 
-void Try(int k) {
-    for (int v : D[k]) {
-        if (check(v, k)) {
-            x[k] = v;
-            load[v] += credits[k];
-            if (load[v] < best) {
-                if (k == n) {
-                    int mx = 0;
-                    for (int i = 1; i <= m; i++) mx = max(mx, load[i]);
-                    best = min(best, mx);
-                } else {
-                    Try(k + 1);
-                }
-            }
-            load[v] -= credits[k];
-        }
+void Try(int k, int cur_max) {
+    if (cur_max >= best) return;
+    if (k > n) { best = cur_max; return; }
+    for (int v : teach[k]) {
+        bool ok = (load_gv[v] + crd[k] < best);
+        for (int i = 1; i < k && ok; i++)
+            if (conf[i][k] && x[i] == v) ok = false;
+        if (!ok) continue;
+
+        x[k] = v;
+        load_gv[v] += crd[k];
+        Try(k + 1, max(cur_max, load_gv[v]));
+        load_gv[v] -= crd[k];
     }
 }
 
@@ -37,19 +26,13 @@ int main() {
     cin.tie(nullptr);
     cin >> m >> n;
     for (int i = 1; i <= m; i++) {
-        int k; cin >> k;
-        while (k--) {
-            int c; cin >> c;
-            D[c].push_back(i);
-        }
+        int k, c; cin >> k;
+        while (k--) cin >> c, teach[c].push_back(i);
     }
-    for (int i = 1; i <= n; i++) cin >> credits[i];
-    int K; cin >> K;
-    while (K--) {
-        int u, v; cin >> u >> v;
-        conflict[u][v] = conflict[v][u] = true;
-    }
-    Try(1);
-    cout << (best == 1e9 ? -1 : best) << "\n";
+    for (int i = 1; i <= n; i++) cin >> crd[i];
+    int K, u, v; cin >> K;
+    while (K--) cin >> u >> v, conf[u][v] = conf[v][u] = true;
+    Try(1, 0);
+    cout << (best == 1e9 ? -1 : best) << '\n';
     return 0;
 }

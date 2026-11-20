@@ -7,7 +7,7 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     int N, M;
-    if (!(cin >> N >> M)) return 0;
+    cin >> N >> M;
     vector<vector<int>> a(N, vector<int>(M));
     int S = -1, T = 2 * N * M;
     for (int i = 0; i < N; i++)

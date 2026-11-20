@@ -2,7 +2,7 @@
   "id": "hs-sim-prefix-sum-2d",
   "title": "[HUSTack] Truy vấn tổng hình chữ nhật trên bảng 2D (2D Prefix Sum)",
   "track": "midterm",
-  "topic": "hash-prefix",
+  "topic": "prefix-sum",
   "difficulty": "Trung bình",
   "exam_tags": [
     "HUSTack 2025.2 (P.02.02.02)",
@@ -22,7 +22,7 @@
     }
   ],
   "theory_chapter": "chap2",
-  "mindset": "Áp dụng **Mảng cộng dồn 2 chiều (Inclusion-Exclusion)**:\n- Xây bảng: `pref[i][j] = a[i][j] + pref[i-1][j] + pref[i][j-1] - pref[i-1][j-1]`.\n- Truy vấn `(r1, c1, r2, c2)`: `pref[r2][c2] - pref[r1-1][c2] - pref[r2][c1-1] + pref[r1-1][c1-1]`.\nMỗi truy vấn trả lời trong `O(1)`!",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Có nhiều truy vấn yêu cầu tính tổng (hoặc min/max) trên đoạn liên tiếp `[L..R]` (hoặc hình chữ nhật 2D) với `n, Q <= 10^5 - 10^6`.\n- Tại sao cách ngây thơ chậm: Nếu mỗi truy vấn dùng vòng `for` cộng từ `L` đến `R` sẽ mất `O(n * Q)` phép tính -> TLE.\n- Hướng đi: Tiền xử lý Mảng cộng dồn `S[i] = S[i-1] + a[i]` để trả lời tổng đoạn trong `O(1)` bằng phép trừ `S[R] - S[L-1]` (hoặc dùng Segment Tree / Fenwick / RMQ nếu hỏi Min/Max và có cập nhật).\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Có nhiều truy vấn yêu cầu tính tổng (hoặc min/max) trên đoạn liên tiếp `[L..R]` (hoặc hình chữ nhật 2D) với `n, Q <= 10^5 - 10^6`.\n- Tại sao cách ngây thơ chậm: Nếu mỗi truy vấn dùng vòng `for` cộng từ `L` đến `R` sẽ mất `O(n * Q)` phép tính -> TLE.\n- Hướng đi: Tiền xử lý Mảng cộng dồn `S[i] = S[i-1] + a[i]` để trả lời tổng đoạn trong `O(1)` bằng phép trừ `S[R] - S[L-1]` (hoặc dùng Segment Tree / Fenwick / RMQ nếu hỏi Min/Max và có cập nhật).\n\n**2. Cách suy nghĩ cho bài này:**\nÁp dụng **Mảng cộng dồn 2 chiều (Inclusion-Exclusion)**:\n- Xây bảng: `pref[i][j] = a[i][j] + pref[i-1][j] + pref[i][j-1] - pref[i-1][j-1]`.\n- Truy vấn `(r1, c1, r2, c2)`: `pref[r2][c2] - pref[r1-1][c2] - pref[r2][c1-1] + pref[r1-1][c1-1]`.\nMỗi truy vấn trả lời trong `O(1)`!",
   "hints": [
     "Vẽ 4 hình chữ nhật lồng nhau ra giấy để không bao giờ nhầm dấu `+ / -` công thức bù trừ!"
   ],
@@ -30,5 +30,6 @@
     "time": "O(n * m + Q)",
     "space": "O(n * m)"
   },
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1100
 }

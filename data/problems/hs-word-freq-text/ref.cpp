@@ -5,7 +5,7 @@ int main() {
     map<string, int> mp;
     string cur; char ch;
     while (cin.get(ch)) {
-        if (isalnum((unsigned char)ch)) cur.push_back(ch);
+        if (isalnum(ch)) cur.push_back(ch);
         else if (!cur.empty()) { mp[cur]++; cur.clear(); }
     }
     if (!cur.empty()) mp[cur]++;

@@ -21,7 +21,7 @@
     }
   ],
   "theory_chapter": "chap5",
-  "mindset": "Đây là bài **Cây khung nhỏ nhất (MST - Kruskal)** cực hay gặp!\nCác đường hầm đã có sẵn tức là những cạnh có **chi phí 0** (hay đơn giản là ta gọi `dsu.unite(u, v)` TRƯỚC KHI chạy Kruskal!).\nSau khi gộp hết `m` cặp có sẵn vào DSU, sinh toàn bộ `n*(n-1)/2` cạnh tiềm năng (`<= 280,000` cạnh với `n <= 750`), sắp xếp tăng dần theo bình phương khoảng cách rồi chạy Kruskal bình thường!",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Đồ thị có **trọng số (chi phí / thời gian)** trên từng cạnh. Yêu cầu tìm đường đi ngắn nhất từ `S` đến `T`, hoặc nối thông tất cả các đỉnh với tổng chi phí nhỏ nhất.\n- Hướng đi: Nếu tìm đường đi ngắn nhất từ `S` đến `T` với cạnh không âm -> dùng **Dijkstra + Min-Heap**. Nếu nối thông tất cả các đỉnh rẻ nhất -> sắp xếp cạnh tăng dần và dùng **Kruskal + DSU**.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Đồ thị có **trọng số (chi phí / thời gian)** trên từng cạnh. Yêu cầu tìm đường đi ngắn nhất từ `S` đến `T`, hoặc nối thông tất cả các đỉnh với tổng chi phí nhỏ nhất.\n- Hướng đi: Nếu tìm đường đi ngắn nhất từ `S` đến `T` với cạnh không âm -> dùng **Dijkstra + Min-Heap**. Nếu nối thông tất cả các đỉnh rẻ nhất -> sắp xếp cạnh tăng dần và dùng **Kruskal + DSU**.\n\n**2. Cách suy nghĩ cho bài này:**\nĐây là bài **Cây khung nhỏ nhất (MST - Kruskal)** thường gặp!\nCác đường hầm đã có sẵn tức là những cạnh có **chi phí 0** (hay đơn giản là ta gọi `dsu.unite(u, v)` TRƯỚC KHI chạy Kruskal!).\nSau khi gộp hết `m` cặp có sẵn vào DSU, sinh toàn bộ `n*(n-1)/2` cạnh tiềm năng (`<= 280,000` cạnh với `n <= 750`), sắp xếp tăng dần theo bình phương khoảng cách rồi chạy Kruskal bình thường!",
   "hints": [
     "Nhớ dùng `long long` cho chi phí bình phương khoảng cách `(dx*dx + dy*dy)` và tổng kết quả (tổng có thể vượt `2 * 10^9`).",
     "Có tối đa `750 * 749 / 2 = 280,875` cạnh — thuật toán Kruskal sắp xếp mảng `Edge` mất chưa tới `30ms`."
@@ -30,5 +30,6 @@
     "time": "O(n^2 log n)",
     "space": "O(n^2)"
   },
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1300
 }

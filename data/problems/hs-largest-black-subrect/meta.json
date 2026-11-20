@@ -1,8 +1,8 @@
 {
   "title": "[HUSTack] Hình chữ nhật con toàn số 1 lớn nhất (Largest Black Subrectangle)",
-  "track": "final",
-  "topic": "dp-grid-3d",
-  "difficulty": "Khó",
+  "track": "midterm",
+  "topic": "dp-grid",
+  "difficulty": "Nâng cao",
   "exam_tags": [
     "HUSTack Programming Advanced (LARGEST_1_SUB_RECTANGLE)",
     "HUSTack: Chưa làm"
@@ -21,11 +21,12 @@
     }
   ],
   "theory_chapter": "chap4b",
-  "mindset": "Quy về bài toán **Largest Rectangle in Histogram** cho từng hàng!\n- Với mỗi hàng `i` từ `1` đến `n`, cập nhật mảng chiều cao cột liên tiếp toàn số `1` kết thúc tại hàng `i`: nếu `a[i][j] == 1` thì `h[j]++`, ngược lại `h[j] = 0`.\n- Trên mảng `h[1..m]`, dùng **Ngăn xếp đơn điệu (Monotonic Stack)** để tìm cột đầu tiên nhỏ hơn `h[j]` ở bên trái `L[j]` và bên phải `R[j]` trong `O(m)`, cập nhật `ans = max(ans, h[j] * (R[j] - L[j] - 1))`.",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Đi trên bảng 2D `n x m` theo hướng tiến (xuống, sang phải, chéo xuống), hoặc chọn hình chữ nhật / cắt khối 3D.\n- Hướng đi: Quy hoạch động trên bảng `dp[i][j]`. Mỗi ô `(i, j)` chỉ lấy kết quả tốt nhất từ các ô liền trước (trên, trái, chéo trên-trái) cộng với `a[i][j]`. Lưu ý khởi tạo `INF` / `-INF` thay vì `-1` nếu bảng có số âm.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Đi trên bảng 2D `n x m` theo hướng tiến (xuống, sang phải, chéo xuống), hoặc chọn hình chữ nhật / cắt khối 3D.\n- Hướng đi: Quy hoạch động trên bảng `dp[i][j]`. Mỗi ô `(i, j)` chỉ lấy kết quả tốt nhất từ các ô liền trước (trên, trái, chéo trên-trái) cộng với `a[i][j]`. Lưu ý khởi tạo `INF` / `-INF` thay vì `-1` nếu bảng có số âm.\n\n**2. Cách suy nghĩ cho bài này:**\nQuy về bài toán **Largest Rectangle in Histogram** cho từng hàng!\n- Với mỗi hàng `i` từ `1` đến `n`, cập nhật mảng chiều cao cột liên tiếp toàn số `1` kết thúc tại hàng `i`: nếu `a[i][j] == 1` thì `h[j]++`, ngược lại `h[j] = 0`.\n- Trên mảng `h[1..m]`, dùng **Ngăn xếp đơn điệu (Monotonic Stack)** để tìm cột đầu tiên nhỏ hơn `h[j]` ở bên trái `L[j]` và bên phải `R[j]` trong `O(m)`, cập nhật `ans = max(ans, h[j] * (R[j] - L[j] - 1))`.",
   "hints": [
     "Mẹo viết gọn bằng 1 vòng stack: đẩy chỉ số các cột có chiều cao tăng dần vào stack; thêm một cột giả `h[m] = 0` ở cuối để tự động pop hết toàn bộ stack."
   ],
   "complexity": "O(n * m)",
   "id": "hs-largest-black-subrect",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1600
 }

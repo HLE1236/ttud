@@ -6,7 +6,7 @@ vector<int> cur;
 
 void Try(int rem, int minVal) {
     if (rem == 0) {
-        for (size_t i = 0; i < cur.size(); i++) {
+        for (int i = 0; i < cur.size(); i++) {
             if (i) cout << ' ';
             cout << cur[i];
         }
@@ -23,7 +23,7 @@ void Try(int rem, int minVal) {
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    if (!(cin >> N)) return 0;
+    cin >> N;
     Try(N, 1);
     return 0;
 }

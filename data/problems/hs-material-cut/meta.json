@@ -2,7 +2,7 @@
   "id": "hs-material-cut",
   "title": "[HUSTack] Cắt tấm chữ nhật thành n mảnh (Cut Material)",
   "track": "midterm",
-  "topic": "backtracking",
+  "topic": "backtrack-gen",
   "difficulty": "Nâng cao",
   "exam_tags": [
     "HUSTack 2025.2 (P.03.04.01)",
@@ -22,7 +22,7 @@
     }
   ],
   "theory_chapter": "chap3",
-  "mindset": "Vì `H, W <= 10` và `n <= 10`, ta mô phỏng trực tiếp lưới `mark[H][W]`!\n- Kiểm tra nhanh tổng diện tích: nếu `sum(h_i * w_i) > H * W` -> chắc chắn in `0`!\n- Mẹo quay lui nhanh: ở mỗi bước, luôn tìm **ô trống đầu tiên (trên cùng, trái nhất)** hoặc gán mảnh `k` vào vị trí `(r, c)` hợp lệ. Thực tế đặt từng mảnh `k` theo thứ tự diện tích giảm dần + chọn góc `(r, c)` là rất nhanh (`n <= 10`)!",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Giới hạn `n` nhỏ (`n <= 20..30`), yêu cầu liệt kê hoặc đếm số cấu hình (nhị phân, tập con, tổ hợp `k` phần tử, đặt vào lưới).\n- Vì `n` nhỏ, ta dùng hàm đệ quy Quay lui `Try(k)`: tại bước `k`, thử các lựa chọn hợp lệ, ghi nhận trạng thái, gọi `Try(k + 1)` rồi hoàn tác trạng thái.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Giới hạn `n` nhỏ (`n <= 20..30`), yêu cầu liệt kê hoặc đếm số cấu hình (nhị phân, tập con, tổ hợp `k` phần tử, đặt vào lưới).\n- Vì `n` nhỏ, ta dùng hàm đệ quy Quay lui `Try(k)`: tại bước `k`, thử các lựa chọn hợp lệ, ghi nhận trạng thái, gọi `Try(k + 1)` rồi hoàn tác trạng thái.\n\n**2. Cách suy nghĩ cho bài này:**\nVì `H, W <= 10` và `n <= 10`, ta mô phỏng trực tiếp lưới `mark[H][W]`!\n- Kiểm tra nhanh tổng diện tích: nếu `sum(h_i * w_i) > H * W` -> chắc chắn in `0`!\n- Mẹo quay lui nhanh: ở mỗi bước, luôn tìm **ô trống đầu tiên (trên cùng, trái nhất)** hoặc gán mảnh `k` vào vị trí `(r, c)` hợp lệ. Thực tế đặt từng mảnh `k` theo thứ tự diện tích giảm dần + chọn góc `(r, c)` là rất nhanh (`n <= 10`)!",
   "hints": [
     "Đừng quên thử **cả 2 hướng xoay**: `(h[k], w[k])` và `(w[k], h[k])` (nếu `h[k] != w[k]`)."
   ],
@@ -30,5 +30,6 @@
     "time": "Quay lui + Cắt diện tích",
     "space": "O(H * W)"
   },
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1500
 }

@@ -9,7 +9,7 @@ void dfs(int i, int c1, bool has) {
 }
 int main() {
     ios::sync_with_stdio(false); cin.tie(nullptr);
-    if (!(cin >> n)) return 0;
+    cin >> n;
     s.assign(n, '0'); dfs(0, 0, false);
     return 0;
 }

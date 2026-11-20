@@ -1,8 +1,8 @@
 {
   "id": "ck-stone-castle-3d",
   "title": "Xây dựng pháo đài (Cắt khối đá 3D - DP 3 chiều)",
-  "track": "final",
-  "topic": "dp-grid-3d",
+  "track": "midterm",
+  "topic": "dp-grid",
   "difficulty": "Nâng cao",
   "exam_tags": [
     "Cuối kỳ 2023.1 Kíp 5 (Bài 2)"
@@ -21,7 +21,7 @@
     }
   ],
   "theory_chapter": "chap4b",
-  "mindset": "Gọi `dp[a][b][c]` là thể tích lãng phí nhỏ nhất cho khối kích thước `a x b x c`.\n**Mẹo tối ưu vàng giúp chạy `100 x 100 x 100` trong ~20ms**:\nVì khối được phép xoay tự do 6 hướng nên `dp[a][b][c]` hoàn toàn đối xứng theo mọi hoán vị của `(a, b, c)`! Ta chỉ cần tính và lưu cho bộ **đã sắp xếp `1 <= a <= b <= c <= 100`**!\n- Khởi tạo mặc định: `dp[a][b][c] = a * b * c` (nếu vứt bỏ hết cả khối).\n- Nếu bộ ba `(a, b, c)` đã sắp xếp nằm trong danh sách mong muốn -> `dp[a][b][c] = 0`.\n- Thử cắt theo chiều `a` (chỉ cần `1 <= x <= a / 2`), chiều `b` (`1 <= y <= b / 2`), và chiều `c` (`1 <= z <= c / 2`), mỗi nửa lại sắp xếp 3 cạnh lại để tra bảng `dp`!",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Đi trên bảng 2D `n x m` theo hướng tiến (xuống, sang phải, chéo xuống), hoặc chọn hình chữ nhật / cắt khối 3D.\n- Hướng đi: Quy hoạch động trên bảng `dp[i][j]`. Mỗi ô `(i, j)` chỉ lấy kết quả tốt nhất từ các ô liền trước (trên, trái, chéo trên-trái) cộng với `a[i][j]`. Lưu ý khởi tạo `INF` / `-INF` thay vì `-1` nếu bảng có số âm.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Đi trên bảng 2D `n x m` theo hướng tiến (xuống, sang phải, chéo xuống), hoặc chọn hình chữ nhật / cắt khối 3D.\n- Hướng đi: Quy hoạch động trên bảng `dp[i][j]`. Mỗi ô `(i, j)` chỉ lấy kết quả tốt nhất từ các ô liền trước (trên, trái, chéo trên-trái) cộng với `a[i][j]`. Lưu ý khởi tạo `INF` / `-INF` thay vì `-1` nếu bảng có số âm.\n\n**2. Cách suy nghĩ cho bài này:**\nGọi `dp[a][b][c]` là thể tích lãng phí nhỏ nhất cho khối kích thước `a x b x c`.\n**Mẹo tối ưu vàng giúp chạy `100 x 100 x 100` trong ~20ms**:\nVì khối được phép xoay tự do 6 hướng nên `dp[a][b][c]` hoàn toàn đối xứng theo mọi hoán vị của `(a, b, c)`! Ta chỉ cần tính và lưu cho bộ **đã sắp xếp `1 <= a <= b <= c <= 100`**!\n- Khởi tạo mặc định: `dp[a][b][c] = a * b * c` (nếu vứt bỏ hết cả khối).\n- Nếu bộ ba `(a, b, c)` đã sắp xếp nằm trong danh sách mong muốn -> `dp[a][b][c] = 0`.\n- Thử cắt theo chiều `a` (chỉ cần `1 <= x <= a / 2`), chiều `b` (`1 <= y <= b / 2`), và chiều `c` (`1 <= z <= c / 2`), mỗi nửa lại sắp xếp 3 cạnh lại để tra bảng `dp`!",
   "hints": [
     "Viết hàm `get_dp(int x, int y, int z)` tự sắp xếp `x <= y <= z` rồi trả về `dp[x][y][z]`.",
     "Chú ý giới hạn trên test: chiều cắt chỉ cần chạy tới `dim / 2` vì cắt `(x, dim - x)` giống `(dim - x, x)`. Giảm một nửa thời gian chạy!"
@@ -30,5 +30,6 @@
     "time": "O(T * L * W * H * (L+W+H) / 12)",
     "space": "O(L * W * H)"
   },
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1750
 }

@@ -1,8 +1,8 @@
 {
   "id": "ck-matrix-max-reward",
   "title": "Đường đi phần thưởng lớn nhất trên ma trận (Quay lui đơn đường)",
-  "track": "final",
-  "topic": "graph-bfs-dfs",
+  "track": "midterm",
+  "topic": "backtrack-gen",
   "difficulty": "Trung bình",
   "exam_tags": [
     "Giữa kỳ 2025.1 (Bài 3)",
@@ -22,7 +22,7 @@
     }
   ],
   "theory_chapter": "chap3",
-  "mindset": "Khác với bài đi xuống/phải trên lưới là DAG làm được bằng DP, ở đây robot đi được **cả 4 hướng** (có thể vòng lên/sang trái) nên bài toán thành tìm đường đi đơn dài nhất -> dùng **DFS + Quay lui (Backtracking)** kết hợp **cắt nhánh (Branch & Bound)**:\nNếu cộng tất cả các ô có giá trị > 0 còn chưa đi qua vẫn nhỏ hơn hoặc bằng `best`, hoặc nếu từ `(x, y)` không thể đi tới `(xt, yt)` (kiểm tra nhanh bằng BFS hoặc DFS nếu cần), ta cắt nhánh ngay!",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Giới hạn `n` nhỏ (`n <= 20..30`), yêu cầu liệt kê hoặc đếm số cấu hình (nhị phân, tập con, tổ hợp `k` phần tử, đặt vào lưới).\n- Vì `n` nhỏ, ta dùng hàm đệ quy Quay lui `Try(k)`: tại bước `k`, thử các lựa chọn hợp lệ, ghi nhận trạng thái, gọi `Try(k + 1)` rồi hoàn tác trạng thái.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Giới hạn `n` nhỏ (`n <= 20..30`), yêu cầu liệt kê hoặc đếm số cấu hình (nhị phân, tập con, tổ hợp `k` phần tử, đặt vào lưới).\n- Vì `n` nhỏ, ta dùng hàm đệ quy Quay lui `Try(k)`: tại bước `k`, thử các lựa chọn hợp lệ, ghi nhận trạng thái, gọi `Try(k + 1)` rồi hoàn tác trạng thái.\n\n**2. Cách suy nghĩ cho bài này:**\nKhác với bài đi xuống/phải trên lưới là DAG làm được bằng DP, ở đây robot đi được **cả 4 hướng** (có thể vòng lên/sang trái) nên bài toán thành tìm đường đi đơn dài nhất -> dùng **DFS + Quay lui (Backtracking)** kết hợp **cắt nhánh (Branch & Bound)**:\nNếu cộng tất cả các ô có giá trị > 0 còn chưa đi qua vẫn nhỏ hơn hoặc bằng `best`, hoặc nếu từ `(x, y)` không thể đi tới `(xt, yt)` (kiểm tra nhanh bằng BFS hoặc DFS nếu cần), ta cắt nhánh ngay!",
   "hints": [
     "Nhớ đánh dấu `vis[xs][ys] = true` trước khi gọi `dfs(xs, ys, w[xs][ys])`.",
     "Cắt nhánh hiệu quả: gọi `rem_sum` là tổng tất cả các ô còn lại chưa thăm có `w > 0`. Nếu `cur_sum + rem_sum <= best` thì quay lui luôn!"
@@ -31,5 +31,6 @@
     "time": "Quay lui + nhánh cận O(4^(M*N))",
     "space": "O(M * N)"
   },
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1350
 }

@@ -2,8 +2,8 @@
   "id": "hs-check-bipartite",
   "title": "[HUSTack] Kiểm tra đồ thị hai phía (Bipartite Graph)",
   "track": "final",
-  "topic": "graph-bfs-dfs",
-  "difficulty": "Cơ bản",
+  "topic": "graph-traversal",
+  "difficulty": "Trung bình",
   "exam_tags": [
     "HUSTack 2025.2 (P.06.12.01)",
     "HUSTack: Chưa làm"
@@ -21,13 +21,14 @@
       "output": "1"
     }
   ],
-  "theory_chapter": "chap6",
-  "mindset": "Dùng **tô 2 màu bằng BFS**: duyệt mọi thành phần liên thông, tô đỉnh gốc màu `0`, mỗi khi đi qua cạnh `(u, v)`: nếu `v` chưa tô màu thì tô màu `1 - color[u]`; nếu `v` đã tô màu mà `color[v] == color[u]` -> phát hiện chu trình độ dài lẻ -> KHÔNG phải đồ thị hai phía (in `0`).",
+  "theory_chapter": "chap5",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dữ liệu biểu diễn các đỉnh nối với nhau bằng các cạnh (đồ thị hoặc cây). Yêu cầu đếm cụm liên thông, kiểm tra đồ thị 2 phía, tìm đường ít bước nhất, tìm Khớp/Cầu/SCC hoặc tính toán trên Cây.\n- Hướng đi: Lưu danh sách kề `adj[u]`. Dùng BFS (`queue`) nếu tìm số bước ít nhất; dùng DFS truyền `parent` nếu là Cây; dùng Tarjan (`num`, `low`) nếu tìm Khớp/Cầu/SCC.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dữ liệu biểu diễn các đỉnh nối với nhau bằng các cạnh (đồ thị hoặc cây). Yêu cầu đếm cụm liên thông, kiểm tra đồ thị 2 phía, tìm đường ít bước nhất, tìm Khớp/Cầu/SCC hoặc tính toán trên Cây.\n- Hướng đi: Lưu danh sách kề `adj[u]`. Dùng BFS (`queue`) nếu tìm số bước ít nhất; dùng DFS truyền `parent` nếu là Cây; dùng Tarjan (`num`, `low`) nếu tìm Khớp/Cầu/SCC.\n\n**2. Cách suy nghĩ cho bài này:**\nDùng **tô 2 màu bằng BFS**: duyệt mọi thành phần liên thông, tô đỉnh gốc màu `0`, mỗi khi đi qua cạnh `(u, v)`: nếu `v` chưa tô màu thì tô màu `1 - color[u]`; nếu `v` đã tô màu mà `color[v] == color[u]` -> phát hiện chu trình độ dài lẻ -> KHÔNG phải đồ thị hai phía (in `0`).",
   "hints": [
     "Khởi tạo mảng `color(N + 1, -1)` (`-1` là chưa tô).",
     "Chạy vòng lặp `s = 1..N` để tô màu toàn bộ các thành phần liên thông rời nhau.",
     "Cũng chú ý khuyên tự nối `(u, u)` nếu có: `color[u] == color[u]` -> lập tức trả `0`."
   ],
   "complexity": "O(N + M)",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1150
 }

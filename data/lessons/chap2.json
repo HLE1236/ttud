@@ -1,0 +1,314 @@
+{
+  "chapter": "chap2",
+  "intro": "Chương 2 dạy cách xử lý các bài toán trên **đoạn con liên tiếp** `[L..R]` của mảng và đếm các cặp/bộ ba chỉ số khi `n` lớn (`10^5` đến `10^6`).\n\nNếu bạn dùng 2 vòng lặp lồng nhau để tính tổng từng đoạn con, chương trình mất `O(n^2)` phép tính và chắc chắn bị TLE. Chương này đưa ra 4 kỹ thuật để giảm từ 2 vòng lặp xuống còn 1 vòng lặp `O(n)` hoặc `O(log n)` mỗi truy vấn.",
+  "learning_path": {
+    "guided": [
+      "gk-range-sum-queries",
+      "gk-k-subseq-weight",
+      "hs-sum-pair-equal-m"
+    ],
+    "practice": [
+      "hs-sim-prefix-sum-1d",
+      "gk-max-positive-subarray",
+      "hs-k-subseq-even",
+      "hs-max-common-subset",
+      "hs-sim-prefix-sum-2d",
+      "hs-longest-bounded-maxseq",
+      "hs-triple-index-max",
+      "hs-rmq",
+      "hs-sim-fenwick-tree",
+      "hs-segment-tree-sim"
+    ],
+    "exam": [
+      "gk-resource-allocation",
+      "gk-k-subseq-bounded",
+      "gk-even-subarrays",
+      "ck-daily-transactions-2d",
+      "ck-triple-sum-q"
+    ]
+  },
+  "patterns": [
+    {
+      "id": "prefix-sum-1d-2d",
+      "name": "Dạng 1: Mảng cộng dồn 1D, 2D & Đếm đoạn con chia hết",
+      "when": [
+        "Đề bài cho mảng `n` phần tử (`n <= 10^6`) hoặc bảng `n x m`, sau đó có `Q` câu hỏi (`Q <= 10^5`), mỗi câu yêu cầu tính tổng từ vị trí `L` đến vị trí `R` (hoặc tổng một hình chữ nhật con).",
+        "Đề bài yêu cầu đếm số đoạn con liên tiếp có tổng là **số chẵn** (hoặc chia hết cho `K`)."
+      ],
+      "idea": "Tại sao cách ngây thơ chạy chậm?\nVới mỗi truy vấn `[L, R]`, nếu bạn chạy vòng `for` từ `L` đến `R` để cộng từng số, mỗi truy vấn mất tới `n` bước. Có `Q` truy vấn thì tổng số bước là `Q * n = 10^{10}` -> quá thời gian.\n\nCách sửa bằng Mảng cộng dồn 1D:\nTrước khi trả lời câu hỏi nào, ta tính sẵn mảng `S` mà `S[i]` là tổng từ đầu mảng (`a[1]`) đến `a[i]`:\n`S[0] = 0`, `S[1] = a[1]`, `S[2] = a[1] + a[2]`, ..., `S[i] = S[i - 1] + a[i]`.\nLúc này, muốn lấy tổng đoạn `a[L] + ... + a[R]`, ta chỉ việc lấy tổng từ `1..R` trừ đi phần thừa từ `1..(L-1)`:\n**`Tổng[L..R] = S[R] - S[L - 1]`** (chỉ tốn đúng 1 phép trừ).\n\nMở rộng 1 — Đếm số đoạn con có tổng chẵn:\nTổng đoạn `[L..R]` là `S[R] - S[L - 1]`. Hiệu hai số là số chẵn khi và chỉ khi **hai số đó cùng chẵn hoặc cùng lẻ**. Vậy ta chỉ cần đếm trong mảng `S[0..n]` (nhớ tính cả `S[0] = 0`) có bao nhiêu số chẵn (`c0`) và bao nhiêu số lẻ (`c1`). Số cặp chọn ra được là `c0 * (c0 - 1) / 2 + c1 * (c1 - 1) / 2`.\n\nMở rộng 2 — Mảng cộng dồn 2D trên bảng:\n`S[i][j]` là tổng hình chữ nhật từ góc `(1, 1)` đến `(i, j)`:\n- Lúc dựng bảng: `S[i][j] = S[i-1][j] + S[i][j-1] - S[i-1][j-1] + a[i][j]`.\n- Lúc lấy tổng hình chữ nhật từ `(r1, c1)` đến `(r2, c2)`:\n  `Tổng = S[r2][c2] - S[r1-1][c2] - S[r2][c1-1] + S[r1-1][c1-1]`.",
+      "steps": [
+        "Bước 1: Luôn đánh chỉ số mảng từ `1` đến `n` (khai báo `vector<long long> S(n + 1, 0)`) để khi `L = 1` thì `S[L - 1]` là `S[0] = 0`, không bị lỗi âm chỉ số.",
+        "Bước 2: Chạy vòng lặp `i = 1..n` tính `S[i] = S[i - 1] + a[i]`.",
+        "Bước 3: Với mỗi truy vấn `(L, R)`, in ra `S[R] - S[L - 1]`."
+      ],
+      "template_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int n, q;\n    cin >> n >> q;\n\n    // Khai bao mang cong don S co kich thuoc n + 1, S[0] = 0\n    vector<long long> S(n + 1, 0);\n    for (int i = 1; i <= n; i++) {\n        long long x;\n        cin >> x;\n        S[i] = S[i - 1] + x;\n    }\n\n    while (q--) {\n        int l, r;\n        cin >> l >> r;\n        // Tong tu a[l] den a[r] tinh trong O(1)\n        cout << S[r] - S[l - 1] << '\\n';\n    }\n    return 0;\n}",
+      "trace": {
+        "title": "Chạy tay Mảng cộng dồn 1D",
+        "input": "a = [3, 1, 4, 2, 5] (1-based). Truy vấn đoạn [2, 4] và [1, 5]",
+        "headers": [
+          "Chỉ số i",
+          "a[i]",
+          "S[i] = S[i-1] + a[i]",
+          "Giải thích"
+        ],
+        "rows": [
+          [
+            "0",
+            "-",
+            "0",
+            "Mốc rỗng ban đầu S[0] = 0"
+          ],
+          [
+            "1",
+            "3",
+            "3",
+            "a[1]"
+          ],
+          [
+            "2",
+            "1",
+            "4",
+            "a[1] + a[2] = 3 + 1"
+          ],
+          [
+            "3",
+            "4",
+            "8",
+            "4 + 4"
+          ],
+          [
+            "4",
+            "2",
+            "10",
+            "8 + 2 -> Hỏi [2, 4]: S[4] - S[1] = 10 - 3 = 7 (1+4+2)"
+          ],
+          [
+            "5",
+            "5",
+            "15",
+            "10 + 5 -> Hỏi [1, 5]: S[5] - S[0] = 15 - 0 = 15"
+          ]
+        ],
+        "note": "Nhờ có `S[0] = 0`, truy vấn bắt đầu từ `L = 1` vẫn dùng chung công thức `S[R] - S[0]` mà không cần viết `if (L == 1)`."
+      },
+      "pitfalls": [
+        "Nếu đề bài đánh chỉ số `L, R` từ `0` đến `n - 1`, hãy cộng thêm `1` (`l++, r++`) sau khi đọc vào để vẫn dùng được mảng cộng dồn `1..n` an toàn.",
+        "Ở bài đếm đoạn con tổng chẵn (`gk-even-subarrays`), quên không tính `S[0] = 0` là một số chẵn ban đầu (`c0 = 1, c1 = 0`) sẽ làm thiếu mất tất cả các đoạn con bắt đầu từ vị trí đầu tiên."
+      ],
+      "problems": [
+        "gk-range-sum-queries",
+        "hs-sim-prefix-sum-1d",
+        "gk-even-subarrays",
+        "hs-sim-prefix-sum-2d",
+        "ck-daily-transactions-2d"
+      ]
+    },
+    {
+      "id": "sliding-window",
+      "name": "Dạng 2: Cửa sổ trượt cố định độ dài K & Đoạn liên tiếp cùng tính chất",
+      "when": [
+        "Đề yêu cầu xét mọi **đoạn con gồm đúng `k` phần tử liên tiếp** (ví dụ: đếm xem có bao nhiêu đoạn `k` phần tử liên tiếp có tổng bằng `m`, tổng chẵn, hoặc tổng nằm trong `[A, B]`).",
+        "Tìm đoạn liên tiếp dài nhất gồm toàn số dương, hoặc tìm đoạn có `k` số `0` liên tiếp để cấp phát tài nguyên."
+      ],
+      "idea": "Khi xét một cửa sổ độ dài `k` trượt từ trái sang phải:\n- Cửa sổ đầu tiên gồm `a[0], a[1], ..., a[k-1]`.\n- Khi dịch cửa sổ sang phải 1 bước để kết thúc tại `a[i]`, phần tử mới `a[i]` đi vào cửa sổ, còn phần tử cũ nhất ở đầu trái `a[i - k]` rơi ra khỏi cửa sổ.\n- Do đó: **`sum_mới = sum_cũ + a[i] - a[i - k]`**.\nTa không bao giờ phải cộng lại `k` phần tử từ đầu.\n\nCòn với bài chỉ xét đoạn liên tiếp toàn số dương (hoặc toàn số `0`): dùng một biến tích lũy `cur`. Hễ gặp phần tử thỏa điều kiện thì cộng thêm vào `cur` và cập nhật kỷ lục `best = max(best, cur)`; hễ gặp phần tử vi phạm thì đặt lại `cur = 0`.",
+      "steps": [
+        "Bước 1: Tính tổng `win` của `k` phần tử đầu tiên (`i` từ `0` đến `k - 1`). Kiểm tra xem cửa sổ đầu tiên này có thỏa điều kiện không.",
+        "Bước 2: Chạy `i` từ `k` đến `n - 1`, mỗi bước cập nhật `win += a[i] - a[i - k]` rồi kiểm tra điều kiện.",
+        "Bước 3: In biến đếm."
+      ],
+      "template_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int n, k;\n    long long A, B;\n    cin >> n >> k >> A >> B;\n    vector<long long> a(n);\n    for (int i = 0; i < n; i++) cin >> a[i];\n\n    // 1. Tinh tong cua so dau tien [0 .. k-1]\n    long long win = 0;\n    for (int i = 0; i < k; i++) win += a[i];\n\n    long long ans = 0;\n    if (win >= A && win <= B) ans++;\n\n    // 2. Truot cua so sang phai: them a[i], bot a[i - k]\n    for (int i = k; i < n; i++) {\n        win += a[i] - a[i - k];\n        if (win >= A && win <= B) ans++;\n    }\n\n    cout << ans << '\\n';\n    return 0;\n}",
+      "trace": {
+        "title": "Chạy tay Cửa sổ trượt k = 3, tìm tổng trong [10, 15]",
+        "input": "n = 5, k = 3, A = 10, B = 15, a = [4, 2, 5, 1, 8]",
+        "headers": [
+          "Cửa sổ",
+          "Các phần tử",
+          "Phép cập nhật",
+          "Tổng win",
+          "Thuộc [10, 15]?"
+        ],
+        "rows": [
+          [
+            "[0..2]",
+            "4, 2, 5",
+            "4 + 2 + 5",
+            "11",
+            "Có (ans = 1)"
+          ],
+          [
+            "[1..3]",
+            "2, 5, 1",
+            "11 + a[3](1) - a[0](4)",
+            "8",
+            "Không (< 10)"
+          ],
+          [
+            "[2..4]",
+            "5, 1, 8",
+            "8 + a[4](8) - a[1](2)",
+            "14",
+            "Có (ans = 2)"
+          ]
+        ],
+        "note": "Mỗi bước trượt chỉ làm 1 phép cộng và 1 phép trừ."
+      },
+      "pitfalls": [
+        "Quên kiểm tra cửa sổ đầu tiên `[0 .. k-1]` trước khi vào vòng lặp thứ hai `for (int i = k; i < n; i++)`.",
+        "Trường hợp `k > n`: cần kiểm tra `if (k > n) { cout << 0; return 0; }` để tránh truy cập ngoài mảng."
+      ],
+      "problems": [
+        "gk-max-positive-subarray",
+        "gk-resource-allocation",
+        "hs-k-subseq-even",
+        "gk-k-subseq-weight",
+        "gk-k-subseq-bounded"
+      ]
+    },
+    {
+      "id": "two-pointers",
+      "name": "Dạng 3: Hai con trỏ (Two Pointers) — Co giãn đoạn & Đếm cặp/bộ ba tổng M",
+      "when": [
+        "Tìm **đoạn con liên tiếp dài nhất** của mảng số nguyên dương sao cho tổng không vượt quá `Q`.",
+        "Đếm số cặp `(i, j)` có `a[i] + a[j] == M` hoặc số bộ ba `(i, j, k)` có `a[i] + a[j] + a[k] == Q`."
+      ],
+      "idea": "Có 2 kiểu dùng hai con trỏ `L` và `R`:\n\n**Kiểu 1 — Hai con trỏ cùng chiều (Cửa sổ co giãn trên mảng số dương):**\nTa giữ một đoạn `[L..R]` có tổng `sum`. Khi mở rộng `R` sang phải (`sum += a[R]`), nếu `sum > Q` thì đoạn bị quá tải, ta kéo `L` nhích sang phải (`sum -= a[L]; L++`) cho tới khi `sum <= Q` trở lại. Vì cả `L` và `R` chỉ đi từ trái sang phải, mỗi phần tử vào 1 lần và ra tối đa 1 lần -> tổng số bước là `2n = O(n)`.\n\n**Kiểu 2 — Hai con trỏ ngược chiều (Đếm cặp tổng bằng M):**\nBước đầu tiên là **sắp xếp mảng tăng dần**. Đặt `L` ở đầu mảng (`0`), `R` ở cuối mảng (`n - 1`):\n- Nếu `a[L] + a[R] == M`: tìm được 1 cặp! Tăng `ans`, đồng thời dịch `L++` và `R--`.\n- Nếu `a[L] + a[R] < M`: tổng đang bị thiếu -> cần số lớn hơn -> phải tăng `L++`.\n- Nếu `a[L] + a[R] > M`: tổng đang bị thừa -> cần số nhỏ hơn -> phải giảm `R--`.\nVới bài **bộ ba tổng bằng Q (`3-SUM`)**: cố định phần tử thứ nhất `a[i]` bằng 1 vòng lặp, rồi dùng 2 con trỏ `L = i + 1, R = n - 1` tìm cặp có tổng bằng `Q - a[i]` trong `O(n^2)`.",
+      "steps": [
+        "Bước 1: Xác định bài toán có được phép sắp xếp lại mảng hay không:\n  - Nếu bài hỏi *cặp/bộ ba phần tử bất kỳ*: **ĐƯỢC sắp xếp** `sort(a.begin(), a.end())` rồi dùng 2 con trỏ ngược chiều `L = 0, R = n - 1`.\n  - Nếu bài hỏi *đoạn con liên tiếp*: **KHÔNG được sắp xếp** (vì làm hỏng thứ tự gốc), dùng 2 con trỏ cùng chiều `L = 0, R = 0..n-1`.",
+        "Bước 2: Viết vòng lặp di chuyển `L` và `R`, cập nhật đáp án ở mỗi bước hợp lệ."
+      ],
+      "template_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    // Mau 1: Doan con lien tiep dai nhat co tong <= Q (mang so duong)\n    int n;\n    long long Q;\n    cin >> n >> Q;\n    vector<long long> a(n);\n    for (int i = 0; i < n; i++) cin >> a[i];\n\n    long long sum = 0;\n    int L = 0, best_len = 0;\n    for (int R = 0; R < n; R++) {\n        sum += a[R];                  // Mo rong bien phai R\n        while (sum > Q && L <= R) {   // Neu vuot Q thi thu hep bien trai L\n            sum -= a[L];\n            L++;\n        }\n        best_len = max(best_len, R - L + 1);\n    }\n    cout << (best_len == 0 ? -1 : best_len) << '\\n';\n    return 0;\n}",
+      "trace": {
+        "title": "Chạy tay Hai con trỏ tìm đoạn dài nhất tổng <= 7",
+        "input": "n = 5, Q = 7, a = [2, 4, 3, 1, 5]",
+        "headers": [
+          "R",
+          "Thêm a[R]",
+          "Tổng trước khi co L",
+          "Thu hẹp L (while sum > 7)",
+          "Đoạn [L..R] còn lại",
+          "Độ dài R-L+1"
+        ],
+        "rows": [
+          [
+            "0",
+            "a[0]=2",
+            "2",
+            "Không cần (2 <= 7)",
+            "[0..0] (tổng 2)",
+            "1"
+          ],
+          [
+            "1",
+            "a[1]=4",
+            "6",
+            "Không cần (6 <= 7)",
+            "[0..1] (tổng 6)",
+            "2"
+          ],
+          [
+            "2",
+            "a[2]=3",
+            "9",
+            "Trừ a[0]=2 -> L=1, sum=7",
+            "[1..2] (tổng 7)",
+            "2"
+          ],
+          [
+            "3",
+            "a[3]=1",
+            "8",
+            "Trừ a[1]=4 -> L=2, sum=4",
+            "[2..3] (tổng 4)",
+            "2"
+          ],
+          [
+            "4",
+            "a[4]=5",
+            "9",
+            "Trừ a[2]=3 -> L=3, sum=6",
+            "[3..4] (tổng 6)",
+            "2"
+          ]
+        ],
+        "note": "Con trỏ `L` chỉ tăng từ `0` lên `3`, không bao giờ quay lui về `0`."
+      },
+      "pitfalls": [
+        "Kỹ thuật cửa sổ co giãn `while (sum > Q) { sum -= a[L++]; }` **chỉ đúng khi mọi phần tử `a[i] >= 0`**. Nếu mảng có số âm, việc bỏ `a[L]` âm đi lại làm `sum` tăng lên!",
+        "Trong bài 2-SUM / 3-SUM nếu mảng có các phần tử **trùng nhau**, trước khi dịch `L++, R--` phải đếm số lượng phần tử bằng `a[L]` và bằng `a[R]` để nhân số cặp."
+      ],
+      "problems": [
+        "hs-sum-pair-equal-m",
+        "hs-max-common-subset",
+        "hs-longest-bounded-maxseq",
+        "ck-triple-sum-q",
+        "hs-triple-index-max"
+      ]
+    },
+    {
+      "id": "range-trees-rmq",
+      "name": "Dạng 4: Truy vấn Min/Max đoạn (RMQ) & Cập nhật động (Segment Tree / Fenwick)",
+      "when": [
+        "Có `Q` truy vấn hỏi **giá trị nhỏ nhất (hoặc lớn nhất)** trên đoạn `[L..R]` (không dùng mảng cộng dồn được vì phép `min`/`max` không có phép trừ ngược như phép cộng).",
+        "Vừa có truy vấn tính tổng/max trên đoạn `[L..R]`, vừa có lệnh **thay đổi giá trị một phần tử** `a[i] = v` xen kẽ nhau."
+      ],
+      "idea": "Tại sao Mảng cộng dồn không dùng được ở đây?\n1. Với phép `min`/`max`: biết `min(1..R)` và `min(1..L-1)` không thể trừ nhau để suy ra `min(L..R)`.\n2. Khi có lệnh sửa `a[i] = v`: nếu dùng mảng cộng dồn, mỗi lần sửa 1 phần tử bạn phải cập nhật lại toàn bộ `S[i..n]` mất `O(n)` bước.\n\nBa công cụ chuyên dụng:\n1. **Sparse Table (Bảng thưa - cho bài RMQ tĩnh không sửa mảng)**: Tiền xử lý `st[j][i]` = giá trị nhỏ nhất của đoạn độ dài `2^j` bắt đầu từ `i`. Khi hỏi đoạn `[L, R]`, ta phủ kín `[L, R]` bằng hai đoạn độ dài `2^k` gối lên nhau: một đoạn bắt đầu từ `L`, một đoạn kết thúc tại `R`. Trả lời mỗi truy vấn trong `O(1)`.\n2. **Cây Fenwick (Binary Indexed Tree - BIT)**: Dùng cho bài **vừa cộng thêm vào `a[i]`, vừa hỏi tổng đoạn `[1..i]`**, mỗi thao tác chỉ `O(log n)` và code chỉ dài 10 dòng dựa vào phép bit `i += i & -i`.\n3. **Cây phân đoạn (Segment Tree)**: Một cây nhị phân mà mỗi nút quản lý một đoạn `[l, r]`, nút cha lưu `max`/`sum` của hai nút con `[l, mid]` và `[mid+1, r]`. Khi sửa 1 phần tử, chỉ cần cập nhật dọc theo nhánh từ lá lên gốc (`O(log n)`). Khi hỏi đoạn `[u, v]`, ghép kết quả từ tối đa `O(log n)` nút.",
+      "steps": [
+        "Bước 1: Nếu đề hỏi `min`/`max` đoạn mà **không có lệnh update**: dùng Sparse Table (hoặc Segment Tree).",
+        "Bước 2: Nếu đề hỏi **tổng đoạn** và **cộng thêm vào 1 vị trí**: dùng Fenwick Tree (BIT).",
+        "Bước 3: Nếu đề hỏi **min/max đoạn** và **có lệnh update 1 vị trí**: dùng Segment Tree với mảng `tree[4 * n]`."
+      ],
+      "template_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint n;\nvector<int> a, tree_max;\n\n// Xay cay Segment Tree quan ly doan [l, r] tai nut id\nvoid build(int id, int l, int r) {\n    if (l == r) {\n        tree_max[id] = a[l];\n        return;\n    }\n    int mid = (l + r) / 2;\n    build(id * 2, l, mid);\n    build(id * 2 + 1, mid + 1, r);\n    tree_max[id] = max(tree_max[id * 2], tree_max[id * 2 + 1]);\n}\n\n// Cap nhat a[pos] = val trong O(log n)\nvoid update(int id, int l, int r, int pos, int val) {\n    if (l == r) {\n        tree_max[id] = val;\n        return;\n    }\n    int mid = (l + r) / 2;\n    if (pos <= mid) update(id * 2, l, mid, pos, val);\n    else update(id * 2 + 1, mid + 1, r, pos, val);\n    tree_max[id] = max(tree_max[id * 2], tree_max[id * 2 + 1]);\n}\n\n// Lay max tren doan [u, v] trong O(log n)\nint query(int id, int l, int r, int u, int v) {\n    if (v < l || r < u) return INT_MIN; // Ngoai doan can hoi\n    if (u <= l && r <= v) return tree_max[id]; // Nam gon ben trong\n    int mid = (l + r) / 2;\n    return max(query(id * 2, l, mid, u, v), query(id * 2 + 1, mid + 1, r, u, v));\n}\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    cin >> n;\n    a.resize(n + 1);\n    tree_max.resize(4 * n + 5);\n    for (int i = 1; i <= n; i++) cin >> a[i];\n    build(1, 1, n);\n    return 0;\n}",
+      "trace": {
+        "title": "Chạy tay Segment Tree trên mảng n = 4: a = [2, 7, 1, 5]",
+        "input": "build(1, 1, 4) -> update(pos=3, val=9) -> query(2, 4)",
+        "headers": [
+          "Nút id",
+          "Đoạn [l, r]",
+          "Giá trị ban đầu",
+          "Sau update(a[3] = 9)",
+          "Khi gọi query(2, 4)"
+        ],
+        "rows": [
+          [
+            "id = 1 (Gốc)",
+            "[1, 4]",
+            "max(7, 5) = 7",
+            "max(7, 9) = 9",
+            "Tách 2 nhánh [1,2] và [3,4]"
+          ],
+          [
+            "id = 2",
+            "[1, 2]",
+            "max(2, 7) = 7",
+            "7 (không đổi)",
+            "Tách tiếp lấy lá [2,2] = 7"
+          ],
+          [
+            "id = 3",
+            "[3, 4]",
+            "max(1, 5) = 5",
+            "max(9, 5) = 9",
+            "Nằm gọn trong [2,4] -> trả về 9 ngay"
+          ],
+          [
+            "id = 6 (Lá)",
+            "[3, 3]",
+            "a[3] = 1",
+            "Đổi thành 9",
+            "Không cần xuống tới lá này"
+          ]
+        ],
+        "note": "Khi `query(2, 4)` đi xuống nút `[3, 4]`, vì cả đoạn `[3, 4]` nằm trọn trong `[2, 4]` nên hàm lấy ngay giá trị `9` mà không cần đi xuống từng phần tử `3` và `4`."
+      },
+      "pitfalls": [
+        "Khai báo mảng Segment Tree chỉ có kích thước `2 * n` sẽ bị tràn bộ nhớ (Out of Bounds) — bắt buộc phải khai báo **`4 * n`**.",
+        "Giá trị trả về khi đoạn nằm ngoài vùng truy vấn (`v < l || r < u`) phải là phần tử trung hòa: bài tìm `max` trả về `INT_MIN` (hoặc `-1e18`), bài tìm `min` trả về `INT_MAX`, bài tính `sum` trả về `0`."
+      ],
+      "problems": [
+        "hs-rmq",
+        "hs-sim-fenwick-tree",
+        "hs-segment-tree-sim"
+      ]
+    }
+  ]
+}

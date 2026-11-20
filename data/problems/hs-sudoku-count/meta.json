@@ -1,7 +1,7 @@
 {
   "title": "[HUSTack] Đếm số nghiệm bảng Sudoku 9x9 (Sudoku Count)",
   "track": "midterm",
-  "topic": "backtracking",
+  "topic": "backtrack-gen",
   "difficulty": "Trung bình",
   "exam_tags": [
     "HUSTack Project1 (SUDOKU_COUNT)",
@@ -21,12 +21,13 @@
     }
   ],
   "theory_chapter": "chap3",
-  "mindset": "Dùng 3 mảng đánh dấu (hoặc 3 mảng bitmask) `row[9]`, `col[9]`, `box[9]` để kiểm tra đặt số `d` vào ô `(r, c)` trong `O(1)` (`box_id = (r / 3) * 3 + (c / 3)`).\nĐể tăng tốc mạnh khi quay lui: lưu danh sách các ô trống rồi ở mỗi bước chọn ô có ít lựa chọn hợp lệ nhất (hoặc duyệt tuần tự ô trống cũng chạy rất nhanh với bitmask).",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Giới hạn `n` nhỏ (`n <= 20..30`), yêu cầu liệt kê hoặc đếm số cấu hình (nhị phân, tập con, tổ hợp `k` phần tử, đặt vào lưới).\n- Vì `n` nhỏ, ta dùng hàm đệ quy Quay lui `Try(k)`: tại bước `k`, thử các lựa chọn hợp lệ, ghi nhận trạng thái, gọi `Try(k + 1)` rồi hoàn tác trạng thái.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Giới hạn `n` nhỏ (`n <= 20..30`), yêu cầu liệt kê hoặc đếm số cấu hình (nhị phân, tập con, tổ hợp `k` phần tử, đặt vào lưới).\n- Vì `n` nhỏ, ta dùng hàm đệ quy Quay lui `Try(k)`: tại bước `k`, thử các lựa chọn hợp lệ, ghi nhận trạng thái, gọi `Try(k + 1)` rồi hoàn tác trạng thái.\n\n**2. Cách suy nghĩ cho bài này:**\nDùng 3 mảng đánh dấu (hoặc 3 mảng bitmask) `row[9]`, `col[9]`, `box[9]` để kiểm tra đặt số `d` vào ô `(r, c)` trong `O(1)` (`box_id = (r / 3) * 3 + (c / 3)`).\nĐể tăng tốc mạnh khi quay lui: lưu danh sách các ô trống rồi ở mỗi bước chọn ô có ít lựa chọn hợp lệ nhất (hoặc duyệt tuần tự ô trống cũng chạy rất nhanh với bitmask).",
   "hints": [
     "Kiểm tra bảng ban đầu có hợp lệ không trước khi đệ quy.",
-    "Dùng bitmask `int cand = ~ (row[r] | col[c] | box[b]) & 0x3FE;` (bit 1..9) để duyệt chỉ các số hợp lệ cực nhanh!"
+    "Dùng bitmask `int cand = ~ (row[r] | col[c] | box[b]) & 0x3FE;` (bit 1..9) để duyệt chỉ các số hợp lệ nhanh!"
   ],
   "complexity": "Quay lui có đánh dấu O(1) mỗi bước",
   "id": "hs-sudoku-count",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1300
 }

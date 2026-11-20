@@ -18,7 +18,7 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     int S, P;
-    if (!(cin >> S >> P)) return 0;
+    cin >> S >> P;
     vector<long long> x(P), y(P);
     for (int i = 0; i < P; ++i) cin >> x[i] >> y[i];
     if (S >= P) {
@@ -26,7 +26,6 @@ int main() {
         return 0;
     }
     vector<Edge> edges;
-    edges.reserve((size_t)P * (P - 1) / 2);
     for (int i = 0; i < P; ++i)
         for (int j = i + 1; j < P; ++j) {
             long long dx = x[i] - x[j], dy = y[i] - y[j];

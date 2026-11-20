@@ -1,0 +1,7 @@
+{
+  "pattern": "bfs-dfs-components",
+  "recognize": "Đọc đề & Nhìn giới hạn: Dữ liệu biểu diễn các đỉnh nối với nhau bằng các cạnh (đồ thị hoặc cây). Yêu cầu đếm cụm liên thông, kiểm tra đồ thị 2 phía, tìm đường ít bước nhất, tìm Khớp/Cầu/SCC hoặc tính toán trên Cây.\n- Hướng đi: Lưu danh sách kề `adj[u]`. Dùng BFS (`queue`) nếu tìm số bước ít nhất; dùng DFS truyền `parent` nếu là Cây; dùng Tarjan (`num`, `low`) nếu tìm Khớp/Cầu/SCC.",
+  "idea": "Mô hình hóa trạng thái lượng nước trong hai bình thành đỉnh `(x, y)` trên đồ thị không trọng số (`0 <= x <= a`, `0 <= y <= b`).\nDùng **BFS** xuất phát từ `(0, 0)` với mảng đánh dấu `dist[905][905]` để tìm đường đi ngắn nhất tới bất kỳ trạng thái nào có `x == c || y == c`.\n(Điều kiện cần và đủ để có nghiệm là `c <= max(a, b)` và `c % gcd(a, b) == 0`.)\n\n**Các điểm cần lưu ý khi code:**\n- Nếu `c > max(a, b)` hoặc `c % std::gcd(a, b) != 0` có thể trả ngay `-1`.",
+  "pseudocode": "Bước 1: Đọc dữ liệu đầu vào (bật Fast I/O, dùng long long cho biến tổng/đáp án)\nBước 2: Nếu c > max(a, b) hoặc c % std::gcd(a, b) != 0 có thể trả ngay -1.\nBước 3: In kết quả cuối cùng ra màn hình",
+  "skeleton_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int a, b, c;\n    cin >> a >> b >> c;\n        cout << -1 << '\\n';\n\n    // TODO: Hoàn thiện thuật toán xử lý và in kết quả theo các bước hướng dẫn\n\n    return 0;\n}\n"
+}

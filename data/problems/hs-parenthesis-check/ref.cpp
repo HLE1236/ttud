@@ -5,9 +5,8 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     string s;
-    if (!(cin >> s)) return 0;
+    cin >> s;
     vector<char> st;
-    st.reserve(s.size());
     for (char c : s) {
         if (c == '(' || c == '[' || c == '{') {
             st.push_back(c);

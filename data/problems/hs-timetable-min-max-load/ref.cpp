@@ -38,7 +38,7 @@ void dfs(int idx, int cur_max) {
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    if (!(cin >> n)) return 0;
+    cin >> n;
     cls.resize(n);
     int sum_d = 0, max_d = 0;
     for (int i = 0; i < n; ++i) {

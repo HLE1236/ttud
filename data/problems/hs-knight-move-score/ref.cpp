@@ -25,7 +25,7 @@ void dfs(int r, int c, long long sum, long long posRem) {
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    if (!(cin >> N >> sr >> sc)) return 0;
+    cin >> N >> sr >> sc;
     long long totalPos = 0;
     for (int i = 1; i <= N; i++)
         for (int j = 1; j <= N; j++) {

@@ -2,8 +2,8 @@
   "id": "hs-two-mode-elevator",
   "title": "[HUSTack] Thang máy hai chế độ (Two-Mode Elevator)",
   "track": "final",
-  "topic": "graph-bfs-dfs",
-  "difficulty": "Cơ bản",
+  "topic": "graph-traversal",
+  "difficulty": "Trung bình",
   "exam_tags": [
     "HUSTack 2025.2 (TwoModeElevator)",
     "HUSTack: Chưa làm"
@@ -25,13 +25,14 @@
       "output": "-1"
     }
   ],
-  "theory_chapter": "chap6",
-  "mindset": "Mô hình hóa mỗi tầng `1..n` là **một đỉnh của đồ thị**, mỗi nút bấm UP (`u -> u + a`) và DOWN (`u -> u - b`) là **một cung có hướng chi phí 1 bước**. Tìm đường đi ngắn nhất từ `X` tới `Y` bằng **BFS chuẩn `O(n)`**!",
+  "theory_chapter": "chap5",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dữ liệu biểu diễn các đỉnh nối với nhau bằng các cạnh (đồ thị hoặc cây). Yêu cầu đếm cụm liên thông, kiểm tra đồ thị 2 phía, tìm đường ít bước nhất, tìm Khớp/Cầu/SCC hoặc tính toán trên Cây.\n- Hướng đi: Lưu danh sách kề `adj[u]`. Dùng BFS (`queue`) nếu tìm số bước ít nhất; dùng DFS truyền `parent` nếu là Cây; dùng Tarjan (`num`, `low`) nếu tìm Khớp/Cầu/SCC.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dữ liệu biểu diễn các đỉnh nối với nhau bằng các cạnh (đồ thị hoặc cây). Yêu cầu đếm cụm liên thông, kiểm tra đồ thị 2 phía, tìm đường ít bước nhất, tìm Khớp/Cầu/SCC hoặc tính toán trên Cây.\n- Hướng đi: Lưu danh sách kề `adj[u]`. Dùng BFS (`queue`) nếu tìm số bước ít nhất; dùng DFS truyền `parent` nếu là Cây; dùng Tarjan (`num`, `low`) nếu tìm Khớp/Cầu/SCC.\n\n**2. Cách suy nghĩ cho bài này:**\nMô hình hóa mỗi tầng `1..n` là **một đỉnh của đồ thị**, mỗi nút bấm UP (`u -> u + a`) và DOWN (`u -> u - b`) là **một cung có hướng chi phí 1 bước**. Tìm đường đi ngắn nhất từ `X` tới `Y` bằng **BFS chuẩn `O(n)`**!",
   "hints": [
     "Khởi tạo mảng `dist(n + 1, -1)` với `dist[X] = 0`.",
     "Cẩn thận điều kiện biên hợp lệ: `1 <= nxt && nxt <= n` — không được đi ra ngoài `[1..n]`!",
     "Nếu `X == Y` đáp án là `0`; nếu hàng đợi rỗng mà chưa gặp `Y` thì in `-1`."
   ],
   "complexity": "O(n)",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1150
 }

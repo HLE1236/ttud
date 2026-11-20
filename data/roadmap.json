@@ -1,177 +1,181 @@
 {
-  "title": "Lộ trình ôn Giữa kỳ TTUD (18/11 – 28/11 · Đến hết Quy hoạch động)",
+  "title": "Lộ trình Học theo Bản chất Tư duy (Từ Số 0 đến Thi thật · 14 Chặng)",
   "target_date": "2026-11-29",
   "days": [
     {
       "day": 1,
-      "date": "2026-11-18 (Thứ 4)",
+      "date": "Chặng 1 · Nền tảng C++ & STL (Elo 800 – 1050)",
       "track": "midterm",
       "phase": "foundation",
-      "title": "Ngày 1: Chuẩn hóa I/O nhanh, STL & Mảng đếm cơ bản",
-      "goal": "Làm quen lại C++17 (Fast I/O, `long long`), dùng `unordered_map` / mảng đánh dấu đếm tần suất và luyện các cấu trúc STL cơ bản.",
+      "title": "Chặng 1: Đọc dữ liệu lớn, Đếm tần suất (Map/Set) & Chống tràn số",
+      "goal": "Làm quen với Fast I/O (`ios::sync_with_stdio(false)`), biết khi nào phải dùng `long long` để không bị tràn số âm, và dùng `unordered_map` / `set` để đếm cặp bằng nhau trong 1 vòng lặp `O(n)`.",
       "theory_chapters": [
         "chap1"
       ],
       "problems": [
         "gk-count-gt-c",
-        "gk-count-group",
         "gk-count-positive",
+        "ck-electricity-bill",
+        "gk-count-group",
         "gk-equal-pairs"
       ],
       "extra_hustack": [
         "hs-add-two-integers",
-        "hs-queue-sim",
-        "hs-stack-sim",
         "hs-sort-int",
+        "hs-set-exist",
+        "hs-store-search-string",
         "hs-word-freq-text",
         "hs-text-replacement",
-        "hs-parenthesis-check",
-        "hs-eval-expr-add-mul",
-        "hs-eval-expr-paren",
-        "hs-linked-list-manip",
-        "hs-hash-string",
-        "hs-set-exist",
-        "hs-store-search-string"
+        "hs-hash-string"
       ]
     },
     {
       "day": 2,
-      "date": "2026-11-19 (Thứ 5)",
+      "date": "Chặng 2 · Cấu trúc STL Động & Truy vấn Log (Elo 950 – 1350)",
       "track": "midterm",
       "phase": "foundation",
-      "title": "Ngày 2: Priority Queue, Set & Mảng cộng dồn 1D (Prefix Sum)",
-      "goal": "Dùng `priority_queue` / `set` cho truy vấn động và dựng mảng cộng dồn `S[R] - S[L-1]` để tính tổng đoạn trong `O(1)`.",
+      "title": "Chặng 2: Stack, Queue, Heap (Priority Queue) & Đổi giờ ra giây",
+      "goal": "Biết chọn đúng cấu trúc lấy phần tử: `priority_queue` khi cần lấy Max/Min liên tục, `set::lower_bound` khi tìm số sát trên/dưới, `stack` khi kiểm tra ngoặc, và đổi `HH:MM:SS` ra số giây `0..86399` cho bài xử lý log.",
       "theory_chapters": [
-        "chap1",
-        "chap2"
+        "chap1"
       ],
       "problems": [
         "gk-insert-delete-max",
-        "gk-max-positive-subarray",
-        "gk-range-sum-queries",
-        "gk-resource-allocation"
+        "hs-parenthesis-check",
+        "hs-set-lower-upper",
+        "hs-analyze-order-raised"
       ],
       "extra_hustack": [
+        "hs-queue-sim",
+        "hs-stack-sim",
         "hs-sim-priority-queue",
-        "hs-set-lower-upper",
         "hs-upper-bound-seq",
-        "hs-sim-prefix-sum-1d",
-        "hs-sim-prefix-sum-2d",
+        "hs-linked-list-manip",
+        "hs-bst-insertion",
+        "hs-eval-expr-add-mul",
+        "hs-eval-expr-paren",
         "hs-string-matching",
-        "hs-suffix-signature",
-        "hs-bst-insertion"
+        "hs-seq-num-matching",
+        "hs-suffix-signature"
       ]
     },
     {
       "day": 3,
-      "date": "2026-11-20 (Thứ 6)",
+      "date": "Chặng 3 · Truy vấn Đoạn tĩnh & Động (Elo 900 – 1400)",
       "track": "midterm",
       "phase": "foundation",
-      "title": "Ngày 3: Cửa sổ trượt (Sliding Window) & Hai con trỏ",
-      "goal": "Luyện kỹ thuật hai con trỏ và cửa sổ trượt cho các bài đếm dãy con/cặp phần tử trong `O(n)` hoặc `O(n log n)`.",
+      "title": "Chặng 3: Mảng cộng dồn 1D / 2D & Cây phân đoạn (RMQ / Segment Tree)",
+      "goal": "Hiểu tại sao lưu tổng tích lũy `S[i] = S[i-1] + a[i]` giúp lấy tổng đoạn `[L..R]` bất kỳ chỉ bằng 1 phép trừ `S[R] - S[L-1]`, mở rộng lên bảng 2D và dùng Segment Tree khi cần hỏi Max kèm sửa phần tử.",
       "theory_chapters": [
         "chap2"
       ],
       "problems": [
-        "gk-k-subseq-weight",
-        "gk-k-subseq-bounded",
+        "gk-range-sum-queries",
         "gk-even-subarrays",
-        "hs-sum-pair-equal-m"
+        "hs-sim-prefix-sum-2d",
+        "ck-daily-transactions-2d"
       ],
       "extra_hustack": [
-        "hs-longest-bounded-maxseq",
+        "hs-sim-prefix-sum-1d",
         "hs-rmq",
-        "hs-segment-tree-sim",
-        "hs-analyze-order-raised",
-        "hs-k-subseq-even",
         "hs-sim-fenwick-tree",
-        "hs-seq-num-matching",
-        "hs-triple-index-max"
+        "hs-segment-tree-sim"
       ]
     },
     {
       "day": 4,
-      "date": "2026-11-21 (Thứ 7)",
+      "date": "Chặng 4 · Cửa sổ trượt & Hai con trỏ (Elo 900 – 1300)",
       "track": "midterm",
       "phase": "foundation",
-      "title": "Ngày 4: Tham lam (Greedy) & Chia để trị (Divide & Conquer)",
-      "goal": "Nhận diện bài Tham lam (sắp xếp + chọn đầu mút / min-heap) và Chia để trị (lũy thừa nhanh, đếm nghịch thế, chặt nhị phân trên đáp án).",
+      "title": "Chặng 4: Cửa sổ trượt độ dài K & Hai con trỏ co giãn / ngược chiều",
+      "goal": "Thay thế 2 vòng lặp lồng nhau `O(n^2)` bằng kỹ thuật trượt cửa sổ (`win += a[i] - a[i-k]`), co giãn biên trái `L` khi tổng vượt `Q`, và cho 2 con trỏ đi ngược chiều trên mảng đã sắp xếp để đếm cặp/bộ ba tổng bằng `M`.",
       "theory_chapters": [
-        "chap4a"
+        "chap2"
       ],
       "problems": [
-        "gk-robot-merge",
-        "gk-meeting-rooms",
-        "gk-fib-string",
-        "gk-jump-game"
+        "gk-max-positive-subarray",
+        "gk-resource-allocation",
+        "gk-k-subseq-weight",
+        "gk-k-subseq-bounded",
+        "ck-triple-sum-q"
       ],
       "extra_hustack": [
-        "hs-disjoint-segment",
-        "hs-parallel-job-execution",
-        "hs-job-selection-planning",
-        "hs-expmod",
-        "hs-inversion",
-        "hs-max-distance-subseq",
-        "hs-closest-pair"
+        "hs-k-subseq-even",
+        "hs-sum-pair-equal-m",
+        "hs-max-common-subset",
+        "hs-longest-bounded-maxseq",
+        "hs-triple-index-max"
       ]
     },
     {
       "day": 5,
-      "date": "2026-11-22 (Chủ nhật)",
+      "date": "Chặng 5 · Tham lam, Chia để trị & Chặt nhị phân (Elo 1100 – 1650)",
+      "track": "midterm",
+      "phase": "foundation",
+      "title": "Chặng 5: Tham lam lập lịch, Ghép Heap & Chặt nhị phân trên kết quả",
+      "goal": "Phân biệt sắp xếp theo điểm kết thúc (chọn đoạn rời nhau) với điểm bắt đầu + Min-Heap (chia phòng họp), dùng Min-Heap gộp 2 khối nhỏ nhất, và chặt nhị phân tìm khoảng cách lớn nhất.",
+      "theory_chapters": [
+        "chap4a"
+      ],
+      "problems": [
+        "hs-disjoint-segment",
+        "gk-meeting-rooms",
+        "gk-robot-merge",
+        "gk-jump-game",
+        "gk-fib-string"
+      ],
+      "extra_hustack": [
+        "hs-parallel-job-execution",
+        "hs-job-selection-planning",
+        "hs-expmod",
+        "hs-max-distance-subseq",
+        "hs-inversion",
+        "hs-closest-pair"
+      ]
+    },
+    {
+      "day": 6,
+      "date": "Chặng 6 · Quay lui Vét cạn & Tổ hợp (Elo 950 – 1500)",
       "track": "midterm",
       "phase": "backtracking",
-      "title": "Ngày 5: Quay lui cơ bản — Sinh nhị phân & Tập con (O(2^n))",
-      "goal": "Nắm chắc khung `Try(i)` 2 nhánh (chọn / không chọn) với `n <= 20` qua các bài mẫu có hướng dẫn 5 tầng.",
+      "title": "Chặng 6: Quay lui Sinh nhị phân, Tập con, Tổ hợp K phần tử & Lưới",
+      "goal": "Nắm chắc khung đệ quy `Try(i)` 2 nhánh (Chọn / Không chọn) khi `n <= 20`, biết viết lệnh hoàn tác trạng thái sau đệ quy và cắt nhánh khi số phần tử còn lại không đủ bù cho đủ `k`.",
       "theory_chapters": [
         "chap3"
       ],
       "problems": [
         "hs-binary-seq-gen",
         "gk-subset-sum-ab",
-        "hs-binary-no-11",
-        "gk-partition-2-groups"
+        "gk-k-comb-sum-m",
+        "gk-insert-plus-minus",
+        "ck-matrix-max-reward"
       ],
       "extra_hustack": [
+        "hs-binary-no-11",
+        "hs-permutation-gen",
+        "hs-sum-int-partition",
         "hs-binary-contains-111",
         "hs-binary-no-substr",
-        "gk-insert-plus-minus",
-        "hs-max-common-subset",
-        "hs-sum-int-partition"
-      ]
-    },
-    {
-      "day": 6,
-      "date": "2026-11-23 (Thứ 2)",
-      "track": "midterm",
-      "phase": "backtracking",
-      "title": "Ngày 6: Quay lui Tổ hợp & Ràng buộc (Try(k))",
-      "goal": "Thành thạo quay lui tổ hợp `k` phần tử, cắt nhánh khi không đủ phần tử bù, và hoàn tác trạng thái trên lưới/lịch.",
-      "theory_chapters": [
-        "chap3"
-      ],
-      "problems": [
-        "gk-k-comb-sum-m",
-        "hs-material-cut",
+        "hs-sudoku-count",
+        "hs-knight-move-score",
         "hs-timetable-ict-count",
-        "hs-count-spanning-trees-k"
-      ],
-      "extra_hustack": [
-        "hs-queen-large-multi",
-        "hs-permutation-gen",
-        "hs-sudoku-count"
+        "hs-count-spanning-trees-k",
+        "hs-material-cut",
+        "hs-queen-large-multi"
       ]
     },
     {
       "day": 7,
-      "date": "2026-11-24 (Thứ 3)",
+      "date": "Chặng 7 · Nhánh và Cận Phân công & Chia nhóm (Elo 1250 – 1850)",
       "track": "midterm",
       "phase": "backtracking",
-      "title": "Ngày 7: Nhánh và Cận — Chia nhóm & Phân công cân bằng tải",
-      "goal": "Áp dụng sắp xếp giảm dần, phá đối xứng nhóm rỗng và cắt nhánh theo kỷ lục `best` cho BCA, BACP, chia 3 nhóm.",
+      "title": "Chặng 7: Nhánh và Cận — Chia nhóm cân bằng & Phân công giảng dạy (BCA, BACP)",
+      "goal": "Hiểu cách cắt nhánh ngay khi `load[v] + w[k] >= best`, sắp xếp phần tử giảm dần để sớm tìm được kỷ lục `best` nhỏ, và phá đối xứng khi các nhóm đang rỗng.",
       "theory_chapters": [
         "chap3"
       ],
       "problems": [
+        "gk-partition-2-groups",
         "gk-partition-3-groups",
         "gk-task-assignment",
         "gk-bca-credit",
@@ -179,106 +183,199 @@
       ],
       "extra_hustack": [
         "hs-timetable-min-max-load",
-        "hs-balanced-set-partition",
-        "hs-bca-credit-lb"
+        "hs-bca-credit-lb",
+        "hs-balanced-set-partition"
       ]
     },
     {
       "day": 8,
-      "date": "2026-11-25 (Thứ 4)",
+      "date": "Chặng 8 · Nhánh và Cận Hành trình (Elo 1500 – 1950)",
       "track": "midterm",
       "phase": "backtracking",
-      "title": "Ngày 8: Nhánh và Cận hành trình — CBUS, TSP & Robot 4 hướng",
-      "goal": "Thuần thục công thức cận dưới `f + (còn_lại) * cmin < f_best` và xử lý điều kiện đón-trả khách trong đề thi Giữa kỳ.",
+      "title": "Chặng 8: Nhánh và Cận Lộ trình — Người du lịch (TSP), Xe buýt (CBUS) & Xe tải (CVRP)",
+      "goal": "Thuần thục công thức ước lượng cận dưới `chi_phí_hiện_tại + (số_chặng_còn_lại) * cmin < f_best` và cách kiểm tra điều kiện đón khách (`v <= n`) / trả khách (`v > n`) trong đề thi Giữa kỳ.",
       "theory_chapters": [
         "chap3"
       ],
       "problems": [
+        "hs-tsp",
         "hs-cbus",
         "gk-cbus-stops",
-        "ck-matrix-max-reward",
-        "hs-tsp"
+        "hs-cvrp"
       ],
       "extra_hustack": [
-        "hs-cvrp",
-        "hs-tsp-large",
-        "hs-knight-move-score"
+        "hs-tsp-large"
       ]
     },
     {
       "day": 9,
-      "date": "2026-11-26 (Thứ 5)",
+      "date": "Chặng 9 · Quy hoạch động Tuyến tính 1D (Elo 900 – 1650)",
       "track": "midterm",
       "phase": "dp",
-      "title": "Ngày 9: Quy hoạch động 1 chiều — Cầu thang, Không kề & Đoạn con",
-      "goal": "Luyện tư duy 5 bước QHĐ (`dp[i]` nghĩa là gì → công thức → cơ sở → thứ tự → đáp án) trên các bài 1D nền tảng.",
+      "title": "Chặng 9: QHĐ 1 chiều — Leo cầu thang, Không chọn phần tử kề nhau & Chia hết",
+      "goal": "Thực hành 5 bước xây dựng bảng `dp[i]` từ con số 0: định nghĩa ý nghĩa `dp[i]`, tìm công thức nối từ `dp[i-1], dp[i-2]`, gán giá trị cơ sở `dp[0], dp[1]` và chọn kiểu `long long`.",
       "theory_chapters": [
         "chap4b"
       ],
       "problems": [
-        "gk-climbing-stairs",
         "gk-stock-increasing",
+        "gk-climbing-stairs",
         "gk-no-2-adjacent",
-        "gk-no-3-adjacent"
+        "gk-no-3-adjacent",
+        "hs-nurse"
       ],
       "extra_hustack": [
-        "hs-max-even-subseq",
-        "hs-max-subseq-div-k",
-        "hs-nurse",
         "hs-c-k-n",
         "hs-domino",
+        "hs-max-even-subseq",
+        "hs-max-subseq-div-k",
         "hs-gold-mining"
       ]
     },
     {
       "day": 10,
-      "date": "2026-11-27 (Thứ 6)",
+      "date": "Chặng 10 · Quy hoạch động Ba lô & Đổi tiền (Elo 1150 – 1900)",
       "track": "midterm",
       "phase": "dp",
-      "title": "Ngày 10: QHĐ Ba lô (Knapsack), Đổi tiền & Dãy con (LIS, LCS)",
-      "goal": "Phân biệt chiều vòng lặp Unbounded vs 0/1 Knapsack, nắm vững LIS `O(n log n)` và LCS mảng lăn.",
+      "title": "Chặng 10: QHĐ Ba lô (Knapsack), Đổi tiền, Xúc xắc & Mua bán chứng khoán",
+      "goal": "Hiểu bản chất tại sao chọn vô hạn lần thì duyệt trọng lượng `w` tăng dần (`cost -> W`), còn mỗi món chỉ chọn 1 lần thì phải duyệt `w` giảm dần (`W -> cost`).",
       "theory_chapters": [
         "chap4b"
       ],
       "problems": [
+        "ck-rod-cutting",
         "gk-supermarket-knapsack",
         "hs-coin-exchange-dp",
-        "hs-longest-inc-subseq",
-        "hs-lcs"
+        "ck-otp-dice-sum",
+        "ck-stock-k-transactions"
       ],
       "extra_hustack": [
-        "ck-rod-cutting",
-        "ck-d-increasing-subseq",
-        "ck-longest-palindrome-subseq",
-        "ck-otp-dice-sum",
-        "hs-k-inversion"
+        "hs-warehouse",
+        "hs-drone-pickup",
+        "ck-equal-freq-binning",
+        "hs-multi-knapsack-large"
       ]
     },
     {
       "day": 11,
-      "date": "2026-11-28 (Thứ 7)",
+      "date": "Chặng 11 · Quy hoạch động Dãy con, Xâu & Lưới 2D/3D (Elo 1150 – 1800)",
       "track": "midterm",
       "phase": "dp",
-      "title": "Ngày 11: QHĐ Lưới 2D & Tổng ôn đề thi Giữa kỳ",
-      "goal": "Hoàn thiện dạng DP trên bảng (`INF` cho bài có số âm), ôn lại Sổ tay nhận dạng dạng bài và giải thử các câu khó trong đề.",
+      "title": "Chặng 11: QHĐ Dãy con tăng (LIS), Xâu chung (LCS/LPS) & Đường đi trên Bảng 2D/3D",
+      "goal": "Nắm vững LIS `O(n^2)` và `O(n log n)`, bảng 2 chiều `dp[i][j]` trên 2 xâu và lưới 2D có vật cản/số âm. Hoàn tất toàn bộ kiến thức thi Giữa kỳ.",
       "theory_chapters": [
-        "chap4b",
-        "chap3"
+        "chap4b"
       ],
       "problems": [
+        "hs-longest-inc-subseq",
+        "ck-d-increasing-subseq",
+        "ck-longest-palindrome-subseq",
         "gk-treasure-grid",
-        "hs-max-score-table",
-        "ck-treasure-2d-lis",
-        "ck-interleaving-strings"
+        "ck-treasure-2d-lis"
       ],
       "extra_hustack": [
-        "ck-stock-k-transactions",
-        "ck-stone-castle-3d",
+        "hs-lcs",
+        "ck-interleaving-strings",
         "hs-max-weighted-disjoint-seg",
-        "hs-pick-non-adj-table",
+        "hs-k-inversion",
+        "hs-max-score-table",
         "hs-largest-black-subrect",
-        "hs-warehouse",
-        "hs-drone-pickup"
+        "ck-stone-castle-3d",
+        "hs-pick-non-adj-table"
+      ]
+    },
+    {
+      "day": 12,
+      "date": "Chặng 12 · [Cuối kỳ] Duyệt Đồ thị, Cây & Tarjan (Elo 1050 – 1800)",
+      "track": "final",
+      "phase": "graph",
+      "title": "Chặng 12: [Cuối kỳ] BFS / DFS, Quy hoạch động trên Cây, Tarjan (Khớp/Cầu/SCC) & Log Đồ thị",
+      "goal": "Biểu diễn đồ thị bằng danh sách kề `adj[u]`, dùng BFS tìm đường ít bước nhất, DFS trên cây truyền `parent`, thuật toán Tarjan `num/low`, và giải các bài truy vấn dữ liệu ngân hàng/đơn hàng lớn.",
+      "theory_chapters": [
+        "chap5",
+        "chap1"
+      ],
+      "problems": [
+        "hs-connected-component",
+        "ck-bank-transactions",
+        "hs-bridges-arti-points",
+        "hs-max-independent-set-tree",
+        "ck-tree-edge-partition"
+      ],
+      "extra_hustack": [
+        "hs-bfs-lex",
+        "hs-dfs-lex",
+        "hs-check-bipartite",
+        "hs-check-cyclic",
+        "hs-two-mode-elevator",
+        "hs-water-jug",
+        "hs-tree-manipulation",
+        "hs-family-tree",
+        "hs-longest-path-tree",
+        "hs-bank-trans-basic",
+        "hs-strongly-connected-comp",
+        "hs-sum-path-on-tree",
+        "hs-k-longest-path-tree",
+        "hs-analyze-sales-order",
+        "hs-analyze-code-submission",
+        "hs-analyze-quiz-log",
+        "ck-delivery-trips"
+      ]
+    },
+    {
+      "day": 13,
+      "date": "Chặng 13 · [Cuối kỳ] Đường đi ngắn nhất & Cây khung (Elo 1150 – 1750)",
+      "track": "final",
+      "phase": "graph",
+      "title": "Chặng 13: [Cuối kỳ] Dijkstra, Thứ tự Topo trên DAG & Cây khung nhỏ nhất (Kruskal + DSU)",
+      "goal": "Viết thuộc lòng khung Dijkstra với Min-Heap và khung DSU + Kruskal. Xử lý biến thể đồ thị có sẵn một số cạnh (`ck-urban-mst`) hoặc giữ lại `S` trạm vệ tinh (`ck-border-comm`).",
+      "theory_chapters": [
+        "chap5"
+      ],
+      "problems": [
+        "hs-shortest-path-dijkstra",
+        "ck-delivery-dijkstra",
+        "hs-mst-kruskal",
+        "ck-urban-mst",
+        "ck-border-comm"
+      ],
+      "extra_hustack": [
+        "hs-all-pair-shortest-path",
+        "hs-longest-path-dag",
+        "hs-make-span-schedule",
+        "hs-ship-traverse-islands",
+        "hs-ic-bus",
+        "ck-travel-time-window"
+      ]
+    },
+    {
+      "day": 14,
+      "date": "Chặng 14 · [Cuối kỳ] Luồng, Cặp ghép & Bitmask DP trên Đồ thị (Elo 1350 – 2100)",
+      "track": "final",
+      "phase": "graph",
+      "title": "Chặng 14: [Cuối kỳ - Câu 5] Cặp ghép 2 phía, Luồng Dinic & Bitmask DP (Held-Karp, Steiner Tree)",
+      "goal": "Chinh phục câu 5 phân loại điểm 9–10 trong đề Cuối kỳ: ghép cặp 2 phía Kuhn/Hopcroft-Karp (kể cả truy vấn tập độc lập trong `ck-citizen-data`), Luồng cực đại Dinic và Bitmask DP `dp[mask][u]`.",
+      "theory_chapters": [
+        "chap5"
+      ],
+      "problems": [
+        "ck-citizen-data",
+        "ck-min-vertex-cover",
+        "ck-tsp-precedence",
+        "ck-max-simple-path",
+        "ck-steiner-tree"
+      ],
+      "extra_hustack": [
+        "hs-ham-cycle",
+        "hs-euler-cycle",
+        "hs-max-matching-bipartite",
+        "hs-max-flow",
+        "hs-graph-orientation",
+        "hs-task-assign-min-cost",
+        "hs-max-weighted-matching",
+        "hs-max-runaway",
+        "hs-store-search-graph",
+        "hs-robot-in-factory"
       ]
     }
   ]

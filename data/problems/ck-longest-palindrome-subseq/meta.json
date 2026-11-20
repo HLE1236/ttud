@@ -1,8 +1,8 @@
 {
   "id": "ck-longest-palindrome-subseq",
   "title": "Xâu con đối xứng dài nhất (Longest Palindromic Subsequence)",
-  "track": "final",
-  "topic": "dp-lis-lcs",
+  "track": "midterm",
+  "topic": "dp-subseq",
   "difficulty": "Trung bình",
   "exam_tags": [
     "Cuối kỳ 2025.1 (Câu 4)",
@@ -22,7 +22,7 @@
     }
   ],
   "theory_chapter": "chap4b",
-  "mindset": "Hai cách nghĩ đều cho công thức DP `O(n^2)` rõ ràng:\n- **Cách 1 (Interval DP trên đoạn `[i..j]`)**: Gọi `dp[i][j]` là độ dài LPS trong đoạn `S[i..j]`.\n  - Nếu `S[i] == S[j]`: hai đầu khớp nhau -> `dp[i][j] = dp[i+1][j-1] + 2` (với `i == j` là `1`).\n  - Nếu `S[i] != S[j]`: bỏ trái hoặc bỏ phải -> `dp[i][j] = max(dp[i+1][j], dp[i][j-1])`.\n- **Cách 2 (Mẹo quy về LCS)**: Đảo ngược `S` thành `R = reverse(S)`, khi đó `LPS(S) == LCS(S, R)`!",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Tìm **dãy con** (được phép bỏ cách quãng, giữ nguyên thứ tự) tăng dài nhất (LIS), hoặc tìm phần chung / đối xứng trên 1-2 xâu (LCS, LPS).\n- Hướng đi: Dùng `dp[i]` = độ dài dãy tăng kết thúc tại `i` (hoặc mảng `tail[]` + `lower_bound` khi `n = 10^5`); với 2 xâu dùng bảng 2 chiều `dp[i][j]` trên `i` ký tự đầu xâu A và `j` ký tự đầu xâu B.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Tìm **dãy con** (được phép bỏ cách quãng, giữ nguyên thứ tự) tăng dài nhất (LIS), hoặc tìm phần chung / đối xứng trên 1-2 xâu (LCS, LPS).\n- Hướng đi: Dùng `dp[i]` = độ dài dãy tăng kết thúc tại `i` (hoặc mảng `tail[]` + `lower_bound` khi `n = 10^5`); với 2 xâu dùng bảng 2 chiều `dp[i][j]` trên `i` ký tự đầu xâu A và `j` ký tự đầu xâu B.\n\n**2. Cách suy nghĩ cho bài này:**\nHai cách nghĩ đều cho công thức DP `O(n^2)` rõ ràng:\n- **Cách 1 (Interval DP trên đoạn `[i..j]`)**: Gọi `dp[i][j]` là độ dài LPS trong đoạn `S[i..j]`.\n  - Nếu `S[i] == S[j]`: hai đầu khớp nhau -> `dp[i][j] = dp[i+1][j-1] + 2` (với `i == j` là `1`).\n  - Nếu `S[i] != S[j]`: bỏ trái hoặc bỏ phải -> `dp[i][j] = max(dp[i+1][j], dp[i][j-1])`.\n- **Cách 2 (Mẹo quy về LCS)**: Đảo ngược `S` thành `R = reverse(S)`, khi đó `LPS(S) == LCS(S, R)`!",
   "hints": [
     "Với Interval DP: duyệt độ dài đoạn `len` tăng dần từ `1` đến `n` (hoặc `i` giảm dần từ `n-1` về `0`, `j` tăng dần từ `i+1` đến `n-1`).",
     "Kiểm tra ví dụ `bbabcbcab`: `babcbab` có độ dài `7`."
@@ -31,5 +31,6 @@
     "time": "O(n^2)",
     "space": "O(n^2) hoặc O(n)"
   },
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1350
 }

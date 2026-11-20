@@ -1,8 +1,8 @@
 {
   "title": "[HUSTack] Khai thác vàng có ràng buộc khoảng cách [L1, L2] (Gold Mining)",
-  "track": "final",
-  "topic": "dp-midterm",
-  "difficulty": "Khó",
+  "track": "midterm",
+  "topic": "dp-1d",
+  "difficulty": "Nâng cao",
   "exam_tags": [
     "HUSTack Programming Advanced (GOLD)",
     "TTUD Codeforces A.05"
@@ -22,11 +22,12 @@
     }
   ],
   "theory_chapter": "chap4b",
-  "mindset": "Gọi `dp[i]` là tổng vàng lớn nhất nếu **bắt buộc chọn siêu thị `i` làm siêu thị cuối cùng**.\nCông thức: `dp[i] = a[i] + max(0, max_{i - L2 <= j <= i - L1} dp[j])`.\nNếu duyệt trực tiếp `j` trong `[i - L2, i - L1]` sẽ mất `O(n * (L2 - L1)) = O(n^2)` và bị TLE khi `n = 10^5`.\nTối ưu xuống `O(n)` bằng **Hàng đợi hai đầu đơn điệu (Monotonic Deque)**: khi `i` tăng lên 1, chỉ số `j = i - L1` được thêm vào cửa sổ trượt và chỉ số `< i - L2` bị đẩy khỏi đầu deque!",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dãy `1..n` (`n` lớn hơn 30, lên tới `10^5 - 10^6`), hỏi số cách đi hoặc tổng lớn nhất có điều kiện giữa các phần tử đứng gần nhau.\n- Tại sao không quay lui được: Khi thử đệ quy, cùng một vị trí `i` bị tính đi tính lại hàng triệu lần.\n- Hướng đi: Quy hoạch động 1 chiều — lập mảng `dp[i]` lưu kết quả tốt nhất tính đến vị trí `i`, tính `dp[i]` trực tiếp từ `dp[i-1], dp[i-2], ...` trong 1 vòng lặp.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dãy `1..n` (`n` lớn hơn 30, lên tới `10^5 - 10^6`), hỏi số cách đi hoặc tổng lớn nhất có điều kiện giữa các phần tử đứng gần nhau.\n- Tại sao không quay lui được: Khi thử đệ quy, cùng một vị trí `i` bị tính đi tính lại hàng triệu lần.\n- Hướng đi: Quy hoạch động 1 chiều — lập mảng `dp[i]` lưu kết quả tốt nhất tính đến vị trí `i`, tính `dp[i]` trực tiếp từ `dp[i-1], dp[i-2], ...` trong 1 vòng lặp.\n\n**2. Cách suy nghĩ cho bài này:**\nGọi `dp[i]` là tổng vàng lớn nhất nếu **bắt buộc chọn siêu thị `i` làm siêu thị cuối cùng**.\nCông thức: `dp[i] = a[i] + max(0, max_{i - L2 <= j <= i - L1} dp[j])`.\nNếu duyệt trực tiếp `j` trong `[i - L2, i - L1]` sẽ mất `O(n * (L2 - L1)) = O(n^2)` và bị TLE khi `n = 10^5`.\nTối ưu xuống `O(n)` bằng **Hàng đợi hai đầu đơn điệu (Monotonic Deque)**: khi `i` tăng lên 1, chỉ số `j = i - L1` được thêm vào cửa sổ trượt và chỉ số `< i - L2` bị đẩy khỏi đầu deque!",
   "hints": [
     "Dùng `deque<int> dq` lưu các chỉ số `j` có `dp[j]` giảm dần; phần tử đầu `dq.front()` luôn giữ `max dp[j]` trong `[i - L2, i - L1]`."
   ],
   "complexity": "O(n) thời gian, O(n) bộ nhớ",
   "id": "hs-gold-mining",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1650
 }

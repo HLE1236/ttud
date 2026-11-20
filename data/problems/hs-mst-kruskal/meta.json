@@ -3,7 +3,7 @@
   "title": "[HUSTack] Cây khung nhỏ nhất Kruskal (Minimum Spanning Tree)",
   "track": "final",
   "topic": "graph-shortest-mst",
-  "difficulty": "Cơ bản",
+  "difficulty": "Trung bình",
   "exam_tags": [
     "HUSTack 2025.2 (P.05.11.03)",
     "HUSTack: Chưa làm"
@@ -21,12 +21,13 @@
       "output": "7"
     }
   ],
-  "theory_chapter": "chap6",
-  "mindset": "Thuật toán **Kruskal + DSU**: Sắp xếp toàn bộ `M` cạnh theo trọng số `w` tăng dần, lần lượt xét từng cạnh `(u, v, w)` — nếu `find(u) != find(v)` thì hợp nhất hai thành phần và cộng `w` vào kết quả.",
+  "theory_chapter": "chap5",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Đồ thị có **trọng số (chi phí / thời gian)** trên từng cạnh. Yêu cầu tìm đường đi ngắn nhất từ `S` đến `T`, hoặc nối thông tất cả các đỉnh với tổng chi phí nhỏ nhất.\n- Hướng đi: Nếu tìm đường đi ngắn nhất từ `S` đến `T` với cạnh không âm -> dùng **Dijkstra + Min-Heap**. Nếu nối thông tất cả các đỉnh rẻ nhất -> sắp xếp cạnh tăng dần và dùng **Kruskal + DSU**.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Đồ thị có **trọng số (chi phí / thời gian)** trên từng cạnh. Yêu cầu tìm đường đi ngắn nhất từ `S` đến `T`, hoặc nối thông tất cả các đỉnh với tổng chi phí nhỏ nhất.\n- Hướng đi: Nếu tìm đường đi ngắn nhất từ `S` đến `T` với cạnh không âm -> dùng **Dijkstra + Min-Heap**. Nếu nối thông tất cả các đỉnh rẻ nhất -> sắp xếp cạnh tăng dần và dùng **Kruskal + DSU**.\n\n**2. Cách suy nghĩ cho bài này:**\nThuật toán **Kruskal + DSU**: Sắp xếp toàn bộ `M` cạnh theo trọng số `w` tăng dần, lần lượt xét từng cạnh `(u, v, w)` — nếu `find(u) != find(v)` thì hợp nhất hai thành phần và cộng `w` vào kết quả.",
   "hints": [
     "Lưu `vector<tuple<int, int, int>> edges` rồi `sort(edges.begin(), edges.end())`.",
     "Cẩn thận tổng trọng số MST có thể lớn tới `~10^11` khi `N = 10^5, w <= 10^6` -> dùng `long long`!"
   ],
   "complexity": "O(M log M)",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1150
 }

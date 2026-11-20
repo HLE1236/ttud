@@ -4,7 +4,7 @@ static int st[20][1000005];
 static int lg2[1000005];
 int main() {
     ios::sync_with_stdio(false); cin.tie(nullptr);
-    int n; if (!(cin >> n)) return 0;
+    int n; cin >> n;
     for (int i = 0; i < n; ++i) cin >> st[0][i];
     for (int i = 2; i <= n; ++i) lg2[i] = lg2[i >> 1] + 1;
     for (int k = 1; (1 << k) <= n; ++k) {

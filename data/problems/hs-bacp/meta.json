@@ -2,7 +2,7 @@
   "id": "hs-bacp",
   "title": "[HUSTack] Xếp chương trình đào tạo cân bằng (BACP)",
   "track": "midterm",
-  "topic": "backtracking",
+  "topic": "branch-bound",
   "difficulty": "Nâng cao",
   "exam_tags": [
     "HUSTack 2025.2 (P.02.05.01)",
@@ -22,7 +22,7 @@
     }
   ],
   "theory_chapter": "chap3",
-  "mindset": "Quay lui kết hợp nhánh cận (Branch & Bound) hoặc **Bitmask DP**:\n- Với Quay lui: với mỗi môn `u`, tính sẵn ràng buộc `period[u]` phải `> max(period[p])` của các môn tiên quyết `p` trước nó, VÀ `<= M - độ sâu hậu duệ`. Ngoài ra, nếu `max_load` hiện tại đã `>= best`, cắt nhánh ngay!",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Giới hạn `n` nhỏ (`n <= 12..30`), yêu cầu tìm phương án có **chi phí nhỏ nhất** hoặc **tải lớn nhất nhỏ nhất** (chia nhóm, phân công BCA/BACP, lộ trình TSP/CBUS).\n- Tại sao quay lui thuần bị chậm: Duyệt hết toàn bộ cây đệ quy sẽ vượt quá 1 giây khi `n >= 12`.\n- Hướng đi: Dùng **Nhánh và cận**: trước khi gọi `Try(k + 1)`, ước lượng cận dưới của nhánh; nếu đã `>= kỷ_lục_best` hiện có thì cắt bỏ nhánh đó ngay.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Giới hạn `n` nhỏ (`n <= 12..30`), yêu cầu tìm phương án có **chi phí nhỏ nhất** hoặc **tải lớn nhất nhỏ nhất** (chia nhóm, phân công BCA/BACP, lộ trình TSP/CBUS).\n- Tại sao quay lui thuần bị chậm: Duyệt hết toàn bộ cây đệ quy sẽ vượt quá 1 giây khi `n >= 12`.\n- Hướng đi: Dùng **Nhánh và cận**: trước khi gọi `Try(k + 1)`, ước lượng cận dưới của nhánh; nếu đã `>= kỷ_lục_best` hiện có thì cắt bỏ nhánh đó ngay.\n\n**2. Cách suy nghĩ cho bài này:**\nQuay lui kết hợp nhánh cận (Branch & Bound) hoặc **Bitmask DP**:\n- Với Quay lui: với mỗi môn `u`, tính sẵn ràng buộc `period[u]` phải `> max(period[p])` của các môn tiên quyết `p` trước nó, VÀ `<= M - độ sâu hậu duệ`. Ngoài ra, nếu `max_load` hiện tại đã `>= best`, cắt nhánh ngay!",
   "hints": [
     "Thứ tự xét môn theo **Topological Sort** (hết môn tiên quyết rồi mới tới môn sau) giúp kiểm tra `period[u] > period[p]` ngay lập tức!"
   ],
@@ -30,5 +30,6 @@
     "time": "Quay lui Topo + Nhánh cận",
     "space": "O(N * M)"
   },
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1600
 }

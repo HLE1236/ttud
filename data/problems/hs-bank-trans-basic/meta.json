@@ -1,7 +1,7 @@
 {
   "title": "[HUSTack] Phân tích giao dịch ngân hàng (5 truy vấn - Bank Transaction)",
   "track": "final",
-  "topic": "graph-bfs-dfs",
+  "topic": "graph-traversal",
   "difficulty": "Trung bình",
   "exam_tags": [
     "HUSTack Project1 (BANK_TRANS_BASIC)",
@@ -21,11 +21,12 @@
     }
   ],
   "theory_chapter": "chap5",
-  "mindset": "Gom các thao tác chuẩn:\n- Dùng `set<string>` (hoặc `unordered_set` rồi sort) để lưu danh sách tài khoản không trùng.\n- Dùng `unordered_map<string, long long> outSum` cho tổng tiền chuyển đi.\n- Với `?inspect_cycle <acc> k`: ánh xạ tên tài khoản thành `0..V-1`, lọc trùng cạnh trong danh sách kề `adj[u]`, rồi DFS quay lui độ sâu `k` kiểm tra có đường quay lại `start` hay không.",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dữ liệu biểu diễn các đỉnh nối với nhau bằng các cạnh (đồ thị hoặc cây). Yêu cầu đếm cụm liên thông, kiểm tra đồ thị 2 phía, tìm đường ít bước nhất, tìm Khớp/Cầu/SCC hoặc tính toán trên Cây.\n- Hướng đi: Lưu danh sách kề `adj[u]`. Dùng BFS (`queue`) nếu tìm số bước ít nhất; dùng DFS truyền `parent` nếu là Cây; dùng Tarjan (`num`, `low`) nếu tìm Khớp/Cầu/SCC.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dữ liệu biểu diễn các đỉnh nối với nhau bằng các cạnh (đồ thị hoặc cây). Yêu cầu đếm cụm liên thông, kiểm tra đồ thị 2 phía, tìm đường ít bước nhất, tìm Khớp/Cầu/SCC hoặc tính toán trên Cây.\n- Hướng đi: Lưu danh sách kề `adj[u]`. Dùng BFS (`queue`) nếu tìm số bước ít nhất; dùng DFS truyền `parent` nếu là Cây; dùng Tarjan (`num`, `low`) nếu tìm Khớp/Cầu/SCC.\n\n**2. Cách suy nghĩ cho bài này:**\nGom các thao tác chuẩn:\n- Dùng `set<string>` (hoặc `unordered_set` rồi sort) để lưu danh sách tài khoản không trùng.\n- Dùng `unordered_map<string, long long> outSum` cho tổng tiền chuyển đi.\n- Với `?inspect_cycle <acc> k`: ánh xạ tên tài khoản thành `0..V-1`, lọc trùng cạnh trong danh sách kề `adj[u]`, rồi DFS quay lui độ sâu `k` kiểm tra có đường quay lại `start` hay không.",
   "hints": [
     "Nhớ lọc cạnh trùng trong `adj[u]` để tránh DFS duyệt lặp cùng một cạnh nhiều lần."
   ],
   "complexity": "O(N log N + Q * DFS)",
   "id": "hs-bank-trans-basic",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1400
 }

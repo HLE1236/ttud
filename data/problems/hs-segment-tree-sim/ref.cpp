@@ -22,7 +22,7 @@ int qry(int id, int l, int r, int u, int v) {
 }
 int main() {
     ios::sync_with_stdio(false); cin.tie(nullptr);
-    if (!(cin >> n)) return 0;
+    cin >> n;
     a.resize(n + 1); st.resize(4 * n + 5);
     for (int i = 1; i <= n; ++i) cin >> a[i];
     build(1, 1, n);

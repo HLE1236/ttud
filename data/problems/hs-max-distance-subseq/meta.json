@@ -2,8 +2,8 @@
   "id": "hs-max-distance-subseq",
   "title": "[HUSTack] Chọn C phần tử có khoảng cách nhỏ nhất lớn nhất (Binary Search)",
   "track": "midterm",
-  "topic": "greedy-2ptr",
-  "difficulty": "Nâng cao",
+  "topic": "divide-conquer",
+  "difficulty": "Trung bình",
   "exam_tags": [
     "HUSTack 2025.2 (P.04.07.02)",
     "HUSTack: Chưa làm"
@@ -22,7 +22,7 @@
     }
   ],
   "theory_chapter": "chap4a",
-  "mindset": "**Chặt nhị phân trên đáp án (Binary Search on Answer)**!\n1. Sắp xếp `x` tăng dần.\n2. Để kiểm tra xem có thể đạt khoảng cách `D` hay không: đặt tham lam phần tử đầu tại `x[0]`, sau đó cứ gặp vị trí `x[i] - last >= D` thì chọn thêm 1 cái -> nếu chọn được `>= C` phần tử là đạt!\n3. Chặt nhị phân `D` trong `[0 .. x[N-1] - x[0]]` mất `30` bước!",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Kích thước số mũ/độ dài lên tới `10^{18}`, hoặc cần tìm \"khoảng cách nhỏ nhất lớn nhất\" / đếm nghịch thế với `n <= 10^5`.\n- Tại sao cách ngây thơ chậm: Không thể nhân từng bước `10^{18}` lần hay dựng chuỗi thật trong bộ nhớ.\n- Hướng đi: Chia đôi bài toán sau mỗi bước (Chia để trị / Chặt nhị phân kết quả) để giảm độ phức tạp xuống `O(log n)` hoặc `O(n log n)`.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Kích thước số mũ/độ dài lên tới `10^{18}`, hoặc cần tìm \"khoảng cách nhỏ nhất lớn nhất\" / đếm nghịch thế với `n <= 10^5`.\n- Tại sao cách ngây thơ chậm: Không thể nhân từng bước `10^{18}` lần hay dựng chuỗi thật trong bộ nhớ.\n- Hướng đi: Chia đôi bài toán sau mỗi bước (Chia để trị / Chặt nhị phân kết quả) để giảm độ phức tạp xuống `O(log n)` hoặc `O(n log n)`.\n\n**2. Cách suy nghĩ cho bài này:**\n**Chặt nhị phân trên đáp án (Binary Search on Answer)**!\n1. Sắp xếp `x` tăng dần.\n2. Để kiểm tra xem có thể đạt khoảng cách `D` hay không: đặt tham lam phần tử đầu tại `x[0]`, sau đó cứ gặp vị trí `x[i] - last >= D` thì chọn thêm 1 cái -> nếu chọn được `>= C` phần tử là đạt!\n3. Chặt nhị phân `D` trong `[0 .. x[N-1] - x[0]]` mất `30` bước!",
   "hints": [
     "Nếu sắp `x` tăng dần rồi đặt từ `x[0]` luôn tối ưu."
   ],
@@ -30,5 +30,6 @@
     "time": "O(T * N log(maxX))",
     "space": "O(N)"
   },
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1350
 }

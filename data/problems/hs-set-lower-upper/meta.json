@@ -2,7 +2,7 @@
   "id": "hs-set-lower-upper",
   "title": "[HUSTack] Tập hợp động: lower_bound / upper_bound / insert / remove",
   "track": "midterm",
-  "topic": "array-basic",
+  "topic": "stl-basic",
   "difficulty": "Trung bình",
   "exam_tags": [
     "HUSTack 2025.2 (P.01.01.05)",
@@ -22,7 +22,7 @@
     }
   ],
   "theory_chapter": "chap1",
-  "mindset": "Sử dụng cấu trúc cây đỏ-đen `std::set<int> s` hỗ trợ cả 4 truy vấn trong `O(log n)`:\n- `s.lower_bound(v)` trả về iterator tới phần tử đầu tiên `>= v`.\n- `s.upper_bound(v)` trả về iterator tới phần tử đầu tiên `> v`.\n- `insert` và `remove` tương ứng `s.insert(v)` và `s.erase(v)`.",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dữ liệu có tới `10^5 - 10^6` phần tử hoặc các dòng log truy vấn.\n- Với kích thước này, nếu dùng 2 vòng lặp lồng nhau `O(n^2)` tìm kiếm sẽ bị quá thời gian (TLE).\n- Hướng đi: Duyệt 1 vòng `O(n)` kết hợp cấu trúc STL (`unordered_map`, `set`, `stack`, `queue`, `priority_queue`) hoặc quy đổi thời gian `HH:MM:SS` ra số giây `0..86399`.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dữ liệu có tới `10^5 - 10^6` phần tử hoặc các dòng log truy vấn.\n- Với kích thước này, nếu dùng 2 vòng lặp lồng nhau `O(n^2)` tìm kiếm sẽ bị quá thời gian (TLE).\n- Hướng đi: Duyệt 1 vòng `O(n)` kết hợp cấu trúc STL (`unordered_map`, `set`, `stack`, `queue`, `priority_queue`) hoặc quy đổi thời gian `HH:MM:SS` ra số giây `0..86399`.\n\n**2. Cách suy nghĩ cho bài này:**\nSử dụng cấu trúc cây đỏ-đen `std::set<int> s` hỗ trợ cả 4 truy vấn trong `O(log n)`:\n- `s.lower_bound(v)` trả về iterator tới phần tử đầu tiên `>= v`.\n- `s.upper_bound(v)` trả về iterator tới phần tử đầu tiên `> v`.\n- `insert` và `remove` tương ứng `s.insert(v)` và `s.erase(v)`.",
   "hints": [
     "Kiểm tra `if (it == s.end()) cout << \"NULL\\n\"; else cout << *it << \"\\n\";`."
   ],
@@ -30,5 +30,6 @@
     "time": "O((n + Q) log n)",
     "space": "O(n + Q)"
   },
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1100
 }

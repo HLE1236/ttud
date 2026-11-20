@@ -2,7 +2,7 @@
   "id": "hs-longest-path-tree",
   "title": "[HUSTack] Đường đi dài nhất trên cây (Tree Diameter)",
   "track": "final",
-  "topic": "graph-bfs-dfs",
+  "topic": "graph-traversal",
   "difficulty": "Trung bình",
   "exam_tags": [
     "HUSTack 2025.2 (P.05.11.01)",
@@ -21,12 +21,13 @@
       "output": "10"
     }
   ],
-  "theory_chapter": "chap6",
-  "mindset": "Thuật toán **2 lần BFS/DFS tìm Đường kính cây (`O(N)`)**:\n1. Bắt đầu từ đỉnh `1`, chạy BFS tìm đỉnh `A` xa đỉnh `1` nhất (tổng trọng số lớn nhất).\n2. Bắt đầu từ đỉnh `A`, chạy BFS lần 2 tìm đỉnh `B` xa `A` nhất. Khoảng cách `A -> B` chắc chắn là đường kính của cây!",
+  "theory_chapter": "chap5",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dữ liệu biểu diễn các đỉnh nối với nhau bằng các cạnh (đồ thị hoặc cây). Yêu cầu đếm cụm liên thông, kiểm tra đồ thị 2 phía, tìm đường ít bước nhất, tìm Khớp/Cầu/SCC hoặc tính toán trên Cây.\n- Hướng đi: Lưu danh sách kề `adj[u]`. Dùng BFS (`queue`) nếu tìm số bước ít nhất; dùng DFS truyền `parent` nếu là Cây; dùng Tarjan (`num`, `low`) nếu tìm Khớp/Cầu/SCC.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dữ liệu biểu diễn các đỉnh nối với nhau bằng các cạnh (đồ thị hoặc cây). Yêu cầu đếm cụm liên thông, kiểm tra đồ thị 2 phía, tìm đường ít bước nhất, tìm Khớp/Cầu/SCC hoặc tính toán trên Cây.\n- Hướng đi: Lưu danh sách kề `adj[u]`. Dùng BFS (`queue`) nếu tìm số bước ít nhất; dùng DFS truyền `parent` nếu là Cây; dùng Tarjan (`num`, `low`) nếu tìm Khớp/Cầu/SCC.\n\n**2. Cách suy nghĩ cho bài này:**\nThuật toán **2 lần BFS/DFS tìm Đường kính cây (`O(N)`)**:\n1. Bắt đầu từ đỉnh `1`, chạy BFS tìm đỉnh `A` xa đỉnh `1` nhất (tổng trọng số lớn nhất).\n2. Bắt đầu từ đỉnh `A`, chạy BFS lần 2 tìm đỉnh `B` xa `A` nhất. Khoảng cách `A -> B` chắc chắn là đường kính của cây!",
   "hints": [
     "Dùng BFS lặp thay vì DFS đệ quy để không bị tràn stack nếu cây là một dây xích `10^5` đỉnh.",
     "Cẩn thận tổng trọng số có thể lớn hơn `2^31 - 1` -> dùng `long long`."
   ],
   "complexity": "O(N)",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1300
 }

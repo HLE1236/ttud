@@ -5,7 +5,7 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     int n;
-    if (!(cin >> n)) return 0;
+    cin >> n;
     vector<int> cnt(1000001, 0);
     long long ans = 0;
     for (int i = 0; i < n; ++i) {

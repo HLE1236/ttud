@@ -21,13 +21,14 @@
       "output": "18"
     }
   ],
-  "theory_chapter": "chap6",
-  "mindset": "Bài toán **Đường găng (Critical Path)** trên DAG! Dùng **Sắp xếp Topo (thuật toán Kahn dùng Queue)**:\n- Công việc `u` có `indeg[u] == 0` có thể bắt đầu ngay lúc `0`, hoàn thành lúc `finish[u] = d[u]`.\n- Khi xử lý xong `u` và đi tới công việc kề `v`: cập nhật `start[v] = max(start[v], finish[u])`. Khi `indeg[v]` về `0`, `finish[v] = start[v] + d[v]` và đẩy vào hàng đợi!",
+  "theory_chapter": "chap5",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Đồ thị có **trọng số (chi phí / thời gian)** trên từng cạnh. Yêu cầu tìm đường đi ngắn nhất từ `S` đến `T`, hoặc nối thông tất cả các đỉnh với tổng chi phí nhỏ nhất.\n- Hướng đi: Nếu tìm đường đi ngắn nhất từ `S` đến `T` với cạnh không âm -> dùng **Dijkstra + Min-Heap**. Nếu nối thông tất cả các đỉnh rẻ nhất -> sắp xếp cạnh tăng dần và dùng **Kruskal + DSU**.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Đồ thị có **trọng số (chi phí / thời gian)** trên từng cạnh. Yêu cầu tìm đường đi ngắn nhất từ `S` đến `T`, hoặc nối thông tất cả các đỉnh với tổng chi phí nhỏ nhất.\n- Hướng đi: Nếu tìm đường đi ngắn nhất từ `S` đến `T` với cạnh không âm -> dùng **Dijkstra + Min-Heap**. Nếu nối thông tất cả các đỉnh rẻ nhất -> sắp xếp cạnh tăng dần và dùng **Kruskal + DSU**.\n\n**2. Cách suy nghĩ cho bài này:**\nBài toán **Đường găng (Critical Path)** trên DAG! Dùng **Sắp xếp Topo (thuật toán Kahn dùng Queue)**:\n- Công việc `u` có `indeg[u] == 0` có thể bắt đầu ngay lúc `0`, hoàn thành lúc `finish[u] = d[u]`.\n- Khi xử lý xong `u` và đi tới công việc kề `v`: cập nhật `start[v] = max(start[v], finish[u])`. Khi `indeg[v]` về `0`, `finish[v] = start[v] + d[v]` và đẩy vào hàng đợi!",
   "hints": [
     "Khởi tạo `start[1..n] = 0`, đẩy tất cả đỉnh `indeg == 0` vào queue với `finish[u] = d[u]`.",
     "Với mỗi cung `u -> v`: `start[v] = max(start[v], finish[u])`, giảm `indeg[v]`; khi `indeg[v] == 0` thì `finish[v] = start[v] + d[v]` và push `v`.",
     "Đáp án là `max(finish[1..n])`."
   ],
   "complexity": "O(n + m)",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1300
 }

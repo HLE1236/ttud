@@ -4,7 +4,7 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     int n;
-    if (!(cin >> n)) return 0;
+    cin >> n;
     vector<long long> p(n + 1);
     for (int i = 1; i <= n; ++i) cin >> p[i];
     vector<long long> dp(n + 1, 0);

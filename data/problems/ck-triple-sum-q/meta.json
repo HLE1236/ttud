@@ -1,8 +1,8 @@
 {
   "id": "ck-triple-sum-q",
   "title": "Đếm bộ 3 có tổng bằng Q (3-SUM Two Pointers)",
-  "track": "final",
-  "topic": "greedy-2ptr",
+  "track": "midterm",
+  "topic": "two-pointers",
   "difficulty": "Trung bình",
   "exam_tags": [
     "Cuối kỳ 2023.1 Kíp 5 (Bài 1)",
@@ -21,8 +21,8 @@
       "output": "2"
     }
   ],
-  "theory_chapter": "chap5",
-  "mindset": "Nếu dùng 3 vòng `for` `O(n^3)` với `n = 5000` -> `1.25 * 10^11` phép tính -> TLE chắc chắn!\nCách tối ưu xuống `O(n^2)`:\n1. **Sắp xếp mảng `a` tăng dần** (vì bài toán đếm tập hợp 3 chỉ số không phụ thuộc thứ tự ban đầu).\n2. **Cố định phần tử nhỏ nhất `a[i]`** (`i` từ `0` đến `n - 3`), bài toán trở thành đếm số cặp `(l, r)` trong `[i+1 .. n-1]` có `a[l] + a[r] == Q - a[i]`!\n3. Dùng **Hai con trỏ (Two Pointers)** `l = i + 1, r = n - 1`: nếu tổng `< target` thì `l++`, `> target` thì `r--`, nếu `== target` thì đếm được 1 cặp (vì các số đôi một khác nhau!) rồi `l++, r--`!",
+  "theory_chapter": "chap2",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Cần tìm/đếm đoạn con liên tiếp hoặc cặp/bộ ba phần tử thỏa điều kiện tổng với `n <= 10^5 - 10^6`.\n- Tại sao cách ngây thơ chậm: Xét mọi cặp `(L, R)` bằng 2 vòng `for` tốn `O(n^2)` bước.\n- Hướng đi: Dùng Cửa sổ trượt cố định độ dài `k` (`win += a[i] - a[i-k]`) hoặc Hai con trỏ `L, R` dịch chuyển một chiều để tổng số bước giảm xuống `O(n)`.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Cần tìm/đếm đoạn con liên tiếp hoặc cặp/bộ ba phần tử thỏa điều kiện tổng với `n <= 10^5 - 10^6`.\n- Tại sao cách ngây thơ chậm: Xét mọi cặp `(L, R)` bằng 2 vòng `for` tốn `O(n^2)` bước.\n- Hướng đi: Dùng Cửa sổ trượt cố định độ dài `k` (`win += a[i] - a[i-k]`) hoặc Hai con trỏ `L, R` dịch chuyển một chiều để tổng số bước giảm xuống `O(n)`.\n\n**2. Cách suy nghĩ cho bài này:**\nNếu dùng 3 vòng `for` `O(n^3)` với `n = 5000` -> `1.25 * 10^11` phép tính -> TLE chắc chắn!\nCách tối ưu xuống `O(n^2)`:\n1. **Sắp xếp mảng `a` tăng dần** (vì bài toán đếm tập hợp 3 chỉ số không phụ thuộc thứ tự ban đầu).\n2. **Cố định phần tử nhỏ nhất `a[i]`** (`i` từ `0` đến `n - 3`), bài toán trở thành đếm số cặp `(l, r)` trong `[i+1 .. n-1]` có `a[l] + a[r] == Q - a[i]`!\n3. Dùng **Hai con trỏ (Two Pointers)** `l = i + 1, r = n - 1`: nếu tổng `< target` thì `l++`, `> target` thì `r--`, nếu `== target` thì đếm được 1 cặp (vì các số đôi một khác nhau!) rồi `l++, r--`!",
   "hints": [
     "Chú ý: nếu `a[i] * 3 > Q`, có thể `break` sớm vòng `i`.",
     "Vì các phần tử đôi một phân biệt nên khi `a[l] + a[r] == target`, không có giá trị trùng ở cạnh nên chỉ cần tăng `ans` lên 1 rồi `l++; r--;`."
@@ -31,5 +31,6 @@
     "time": "O(n^2)",
     "space": "O(n)"
   },
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1250
 }

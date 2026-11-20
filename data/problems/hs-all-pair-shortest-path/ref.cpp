@@ -5,7 +5,7 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     int n, m;
-    if (!(cin >> n >> m)) return 0;
+    cin >> n >> m;
     const long long INF = 1e15;
     vector<vector<long long>> d(n + 1, vector<long long>(n + 1, INF));
     for (int i = 1; i <= n; i++) d[i][i] = 0;

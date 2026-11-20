@@ -2,8 +2,8 @@
   "id": "hs-binary-no-11",
   "title": "[HUSTack] Sinh xâu nhị phân không có '11' liên tiếp",
   "track": "midterm",
-  "topic": "backtracking",
-  "difficulty": "Trung bình",
+  "topic": "backtrack-gen",
+  "difficulty": "Cơ bản",
   "exam_tags": [
     "HUSTack 2025.2 (P.02.04.01)",
     "HUSTack: Đã AC"
@@ -22,7 +22,7 @@
     }
   ],
   "theory_chapter": "chap3",
-  "mindset": "Trong hàm quay lui `dfs(i)`: luôn thử `'0'`; chỉ thử `'1'` nếu `i == 0 || s[i - 1] == '0'`!",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Giới hạn `n` nhỏ (`n <= 20..30`), yêu cầu liệt kê hoặc đếm số cấu hình (nhị phân, tập con, tổ hợp `k` phần tử, đặt vào lưới).\n- Vì `n` nhỏ, ta dùng hàm đệ quy Quay lui `Try(k)`: tại bước `k`, thử các lựa chọn hợp lệ, ghi nhận trạng thái, gọi `Try(k + 1)` rồi hoàn tác trạng thái.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Giới hạn `n` nhỏ (`n <= 20..30`), yêu cầu liệt kê hoặc đếm số cấu hình (nhị phân, tập con, tổ hợp `k` phần tử, đặt vào lưới).\n- Vì `n` nhỏ, ta dùng hàm đệ quy Quay lui `Try(k)`: tại bước `k`, thử các lựa chọn hợp lệ, ghi nhận trạng thái, gọi `Try(k + 1)` rồi hoàn tác trạng thái.\n\n**2. Cách suy nghĩ cho bài này:**\nTrong hàm quay lui `dfs(i)`: luôn thử `'0'`; chỉ thử `'1'` nếu `i == 0 || s[i - 1] == '0'`!",
   "hints": [
     "Đặt `'0'` trước `'1'` giúp output tự động đúng thứ tự từ điển."
   ],
@@ -30,5 +30,6 @@
     "time": "O(n * Fib(n+2))",
     "space": "O(n)"
   },
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1000
 }

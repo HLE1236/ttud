@@ -1,8 +1,8 @@
 {
   "title": "[HUSTack] Thu gom hàng tại các trạm kho (Warehouse)",
-  "track": "final",
-  "topic": "dp-grid-3d",
-  "difficulty": "Khó",
+  "track": "midterm",
+  "topic": "dp-knapsack",
+  "difficulty": "Trung bình",
   "exam_tags": [
     "HUSTack Programming Advanced (WAREHOUSE)",
     "TTUD Lab 4"
@@ -21,11 +21,12 @@
     }
   ],
   "theory_chapter": "chap4b",
-  "mindset": "Gọi `dp[i][t]` là tổng lượng hàng lớn nhất thu được khi **kết thúc tại trạm `i`** và đã tiêu tốn đúng `t` đơn vị thời gian (`t <= T`).\n- Cơ sở: có thể bắt đầu trực tiếp từ trạm `i` (nếu `t_i <= T`): `dp[i][t_i] = a_i`.\n- Chuyển trạng thái: để đi tới `i` với thời gian `t >= t_i`, trạm trước đó `j` phải thỏa `max(1, i - D) <= j < i`, khi đó `dp[i][t] = max(dp[i][t], dp[j][t - t_i] + a_i)`.\n- Đáp án: `max(dp[i][t])` với mọi `1 <= i <= N, 0 <= t <= T`.",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Chọn các món đồ / mệnh giá tiền / lần giao dịch với **tổng trọng lượng / ngân sách giới hạn `W <= 10^5`**.\n- Hướng đi: Quy hoạch động theo dung lượng `dp[w]`. Nếu mỗi món được chọn nhiều lần thì duyệt `w` tăng dần (`cost -> W`); nếu mỗi món chỉ chọn tối đa 1 lần thì duyệt `w` giảm dần (`W -> cost`).\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Chọn các món đồ / mệnh giá tiền / lần giao dịch với **tổng trọng lượng / ngân sách giới hạn `W <= 10^5`**.\n- Hướng đi: Quy hoạch động theo dung lượng `dp[w]`. Nếu mỗi món được chọn nhiều lần thì duyệt `w` tăng dần (`cost -> W`); nếu mỗi món chỉ chọn tối đa 1 lần thì duyệt `w` giảm dần (`W -> cost`).\n\n**2. Cách suy nghĩ cho bài này:**\nGọi `dp[i][t]` là tổng lượng hàng lớn nhất thu được khi **kết thúc tại trạm `i`** và đã tiêu tốn đúng `t` đơn vị thời gian (`t <= T`).\n- Cơ sở: có thể bắt đầu trực tiếp từ trạm `i` (nếu `t_i <= T`): `dp[i][t_i] = a_i`.\n- Chuyển trạng thái: để đi tới `i` với thời gian `t >= t_i`, trạm trước đó `j` phải thỏa `max(1, i - D) <= j < i`, khi đó `dp[i][t] = max(dp[i][t], dp[j][t - t_i] + a_i)`.\n- Đáp án: `max(dp[i][t])` với mọi `1 <= i <= N, 0 <= t <= T`.",
   "hints": [
     "Chú ý trạm đầu tiên của hành trình có thể là BẤT KỲ trạm `i` nào (không nhất thiết là trạm 1), và trạm cuối cũng là bất kỳ trạm nào."
   ],
   "complexity": "O(N * T * D)",
   "id": "hs-warehouse",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1450
 }

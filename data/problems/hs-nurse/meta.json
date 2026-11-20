@@ -2,7 +2,7 @@
   "id": "hs-nurse",
   "title": "[HUSTack] Lập lịch trực y tá (Nurse)",
   "track": "midterm",
-  "topic": "dp-midterm",
+  "topic": "dp-1d",
   "difficulty": "Trung bình",
   "exam_tags": [
     "HUSTack 2025.2 (P.04.08.02)",
@@ -21,13 +21,14 @@
       "output": "4"
     }
   ],
-  "theory_chapter": "chap4",
-  "mindset": "Chia trạng thái tại ngày `i` dựa theo hành động **kết thúc đúng ở ngày `i`**:\n- `dp0[i]`: số cách lập lịch `1..i` mà ngày `i` là ngày nghỉ (`0`).\n- `dp1[i]`: số cách lập lịch `1..i` mà ngày `i` kết thúc một đợt làm việc (`1`).\nDo không có hai số `0` cạnh nhau, trước một ngày `0` bắt buộc là kết thúc một đợt làm việc (`dp0[i] = dp1[i-1]`). Và để kết thúc một đợt làm việc độ dài `k in [K1, K2]` tại ngày `i`, ngày `i - k` phải là ngày nghỉ `0` (hoặc `i - k == 0`).",
+  "theory_chapter": "chap4b",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dãy `1..n` (`n` lớn hơn 30, lên tới `10^5 - 10^6`), hỏi số cách đi hoặc tổng lớn nhất có điều kiện giữa các phần tử đứng gần nhau.\n- Tại sao không quay lui được: Khi thử đệ quy, cùng một vị trí `i` bị tính đi tính lại hàng triệu lần.\n- Hướng đi: Quy hoạch động 1 chiều — lập mảng `dp[i]` lưu kết quả tốt nhất tính đến vị trí `i`, tính `dp[i]` trực tiếp từ `dp[i-1], dp[i-2], ...` trong 1 vòng lặp.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dãy `1..n` (`n` lớn hơn 30, lên tới `10^5 - 10^6`), hỏi số cách đi hoặc tổng lớn nhất có điều kiện giữa các phần tử đứng gần nhau.\n- Tại sao không quay lui được: Khi thử đệ quy, cùng một vị trí `i` bị tính đi tính lại hàng triệu lần.\n- Hướng đi: Quy hoạch động 1 chiều — lập mảng `dp[i]` lưu kết quả tốt nhất tính đến vị trí `i`, tính `dp[i]` trực tiếp từ `dp[i-1], dp[i-2], ...` trong 1 vòng lặp.\n\n**2. Cách suy nghĩ cho bài này:**\nChia trạng thái tại ngày `i` dựa theo hành động **kết thúc đúng ở ngày `i`**:\n- `dp0[i]`: số cách lập lịch `1..i` mà ngày `i` là ngày nghỉ (`0`).\n- `dp1[i]`: số cách lập lịch `1..i` mà ngày `i` kết thúc một đợt làm việc (`1`).\nDo không có hai số `0` cạnh nhau, trước một ngày `0` bắt buộc là kết thúc một đợt làm việc (`dp0[i] = dp1[i-1]`). Và để kết thúc một đợt làm việc độ dài `k in [K1, K2]` tại ngày `i`, ngày `i - k` phải là ngày nghỉ `0` (hoặc `i - k == 0`).",
   "hints": [
     "Khởi tạo `dp0[0] = 1, dp1[0] = 1` (biểu diễn trạng thái trước ngày 1 cho phép bắt đầu bằng `0` hoặc một đợt `1`).",
     "Với `i = 1..N`: `dp0[i] = dp1[i - 1]`.",
     "`dp1[i] = sum(dp0[i - k])` với mọi `k` từ `K1` tới `K2` sao cho `i - k >= 0`. Kết quả là `(dp0[N] + dp1[N]) % MOD`."
   ],
   "complexity": "O(N * (K2 - K1)) thời gian, O(N) bộ nhớ",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1350
 }

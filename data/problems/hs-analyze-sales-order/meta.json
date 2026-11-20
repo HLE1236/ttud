@@ -1,7 +1,7 @@
 {
   "title": "[HUSTack] Phân tích đơn hàng thương mại điện tử (Analyze Sales Order)",
   "track": "final",
-  "topic": "hash-prefix",
+  "topic": "stl-basic",
   "difficulty": "Trung bình",
   "exam_tags": [
     "HUSTack Project1 (ANALYZE_SALES_ORDER_E_COMMERCE)",
@@ -20,12 +20,13 @@
       "output": "6\n450\n170\n40\n370"
     }
   ],
-  "theory_chapter": "chap5",
-  "mindset": "Chuẩn bài **Xử lý dữ liệu + Bảng băm + Mảng cộng dồn theo giây** của Cuối kỳ HUST:\n1. Đổi `HH:MM:SS` thành giây nguyên `s = h*3600 + m*60 + sec` trong `[0..86399]`.\n2. Cộng dồn doanh thu từng giây vào `revSec[s]`, rồi dựng mảng cộng dồn `pref[0..86400]` để trả lời `?total_revenue_in_period` trong `O(1)`!\n3. Dùng `unordered_map<string, long long>` cho `shopRev[shop]` và `custShop[cust + \"#\" + shop]`.",
+  "theory_chapter": "chap1",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dữ liệu có tới `10^5 - 10^6` phần tử hoặc các dòng log truy vấn.\n- Với kích thước này, nếu dùng 2 vòng lặp lồng nhau `O(n^2)` tìm kiếm sẽ bị quá thời gian (TLE).\n- Hướng đi: Duyệt 1 vòng `O(n)` kết hợp cấu trúc STL (`unordered_map`, `set`, `stack`, `queue`, `priority_queue`) hoặc quy đổi thời gian `HH:MM:SS` ra số giây `0..86399`.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dữ liệu có tới `10^5 - 10^6` phần tử hoặc các dòng log truy vấn.\n- Với kích thước này, nếu dùng 2 vòng lặp lồng nhau `O(n^2)` tìm kiếm sẽ bị quá thời gian (TLE).\n- Hướng đi: Duyệt 1 vòng `O(n)` kết hợp cấu trúc STL (`unordered_map`, `set`, `stack`, `queue`, `priority_queue`) hoặc quy đổi thời gian `HH:MM:SS` ra số giây `0..86399`.\n\n**2. Cách suy nghĩ cho bài này:**\nChuẩn bài **Xử lý dữ liệu + Bảng băm + Mảng cộng dồn theo giây** của Cuối kỳ HUST:\n1. Đổi `HH:MM:SS` thành giây nguyên `s = h*3600 + m*60 + sec` trong `[0..86399]`.\n2. Cộng dồn doanh thu từng giây vào `revSec[s]`, rồi dựng mảng cộng dồn `pref[0..86400]` để trả lời `?total_revenue_in_period` trong `O(1)`!\n3. Dùng `unordered_map<string, long long>` cho `shopRev[shop]` và `custShop[cust + \"#\" + shop]`.",
   "hints": [
     "Nếu chưa có dữ liệu về một `<ShopID>` hoặc cặp `<CustomerID, ShopID>`, giá trị mặc định trong map là `0`."
   ],
   "complexity": "O(N + Q + 86400)",
   "id": "hs-analyze-sales-order",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1250
 }

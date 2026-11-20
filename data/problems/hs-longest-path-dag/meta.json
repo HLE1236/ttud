@@ -3,7 +3,7 @@
   "title": "[HUSTack] Đường đi dài nhất trên đồ thị DAG (Longest Path DAG)",
   "track": "final",
   "topic": "graph-shortest-mst",
-  "difficulty": "Cơ bản",
+  "difficulty": "Trung bình",
   "exam_tags": [
     "HUSTack 2025.2 (P.06.12.03)",
     "HUSTack: Chưa làm"
@@ -21,13 +21,14 @@
       "output": "30"
     }
   ],
-  "theory_chapter": "chap6",
-  "mindset": "Vì mọi cung đều thỏa `i < j`, đồ thị đã được **sắp xếp Topo sẵn theo thứ tự `1, 2, ..., n`**! Do đó chỉ cần QHĐ tuyến tính `dp[u]` (độ dài dài nhất từ `1` tới `u`): duyệt `u = 1..n`, đẩy sang mọi đỉnh kề `v` của `u`: `dp[v] = max(dp[v], dp[u] + w)`.",
+  "theory_chapter": "chap5",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Đồ thị có **trọng số (chi phí / thời gian)** trên từng cạnh. Yêu cầu tìm đường đi ngắn nhất từ `S` đến `T`, hoặc nối thông tất cả các đỉnh với tổng chi phí nhỏ nhất.\n- Hướng đi: Nếu tìm đường đi ngắn nhất từ `S` đến `T` với cạnh không âm -> dùng **Dijkstra + Min-Heap**. Nếu nối thông tất cả các đỉnh rẻ nhất -> sắp xếp cạnh tăng dần và dùng **Kruskal + DSU**.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Đồ thị có **trọng số (chi phí / thời gian)** trên từng cạnh. Yêu cầu tìm đường đi ngắn nhất từ `S` đến `T`, hoặc nối thông tất cả các đỉnh với tổng chi phí nhỏ nhất.\n- Hướng đi: Nếu tìm đường đi ngắn nhất từ `S` đến `T` với cạnh không âm -> dùng **Dijkstra + Min-Heap**. Nếu nối thông tất cả các đỉnh rẻ nhất -> sắp xếp cạnh tăng dần và dùng **Kruskal + DSU**.\n\n**2. Cách suy nghĩ cho bài này:**\nVì mọi cung đều thỏa `i < j`, đồ thị đã được **sắp xếp Topo sẵn theo thứ tự `1, 2, ..., n`**! Do đó chỉ cần QHĐ tuyến tính `dp[u]` (độ dài dài nhất từ `1` tới `u`): duyệt `u = 1..n`, đẩy sang mọi đỉnh kề `v` của `u`: `dp[v] = max(dp[v], dp[u] + w)`.",
   "hints": [
     "Khởi tạo `dp[1] = 0` và `dp[2..n] = -INF`.",
     "Cẩn thận bỏ qua cạnh có chỉ số vượt ngoài `[1..n]` (trong đề gốc HUSTack ví dụ có 2 dòng thử nhiễu vượt `n=5`).",
     "Nếu `dp[u] > -INF/2` thì mới cập nhật qua các cung đi ra từ `u` để đảm bảo đường đi thực sự bắt đầu từ `1`."
   ],
   "complexity": "O(n + m)",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1250
 }

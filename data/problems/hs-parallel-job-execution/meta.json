@@ -2,7 +2,7 @@
   "id": "hs-parallel-job-execution",
   "title": "[HUSTack] Lập lịch thực hiện công việc song song (Parallel Job)",
   "track": "midterm",
-  "topic": "greedy-2ptr",
+  "topic": "greedy",
   "difficulty": "Trung bình",
   "exam_tags": [
     "HUSTack 2025.2 (P.04.06.01)",
@@ -22,7 +22,7 @@
     }
   ],
   "theory_chapter": "chap4a",
-  "mindset": "Theo lập luận tham lam hoán đổi (Exchange Argument), công việc có thời lượng lớn cần được khởi chạy trước (ở các mốc `t = 0, 1, 2, ...`). Sắp xếp dãy `d` giảm dần: công việc thứ `i` (0-based) bắt đầu tại `t = i` và kết thúc ở `i + d[i]`. Thời điểm hoàn thành toàn bộ hệ thống là `max_{i=0..n-1} (i + d[i])`.",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Bài toán yêu cầu chọn nhiều đoạn rời nhau nhất, chia ít phòng nhất, hoặc ghép các phần tử với `n <= 10^5`.\n- Tại sao không quay lui được: `n = 10^5` không thể thử mọi tổ hợp `2^n`.\n- Hướng đi: Sắp xếp dữ liệu theo tiêu chí cố định (điểm kết thúc sớm nhất, hoặc đưa vào Min-Heap) để ở mỗi bước luôn lấy lựa chọn có lợi nhất.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Bài toán yêu cầu chọn nhiều đoạn rời nhau nhất, chia ít phòng nhất, hoặc ghép các phần tử với `n <= 10^5`.\n- Tại sao không quay lui được: `n = 10^5` không thể thử mọi tổ hợp `2^n`.\n- Hướng đi: Sắp xếp dữ liệu theo tiêu chí cố định (điểm kết thúc sớm nhất, hoặc đưa vào Min-Heap) để ở mỗi bước luôn lấy lựa chọn có lợi nhất.\n\n**2. Cách suy nghĩ cho bài này:**\nTheo lập luận tham lam hoán đổi (Exchange Argument), công việc có thời lượng lớn cần được khởi chạy trước (ở các mốc `t = 0, 1, 2, ...`). Sắp xếp dãy `d` giảm dần: công việc thứ `i` (0-based) bắt đầu tại `t = i` và kết thúc ở `i + d[i]`. Thời điểm hoàn thành toàn bộ hệ thống là `max_{i=0..n-1} (i + d[i])`.",
   "hints": [
     "Dùng `sort(d.rbegin(), d.rend())` và `long long` nếu cần."
   ],
@@ -30,5 +30,6 @@
     "time": "O(n log n)",
     "space": "O(n)"
   },
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1100
 }

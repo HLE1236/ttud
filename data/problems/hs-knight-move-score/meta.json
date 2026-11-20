@@ -1,7 +1,7 @@
 {
   "title": "[HUSTack] Mã đi tuần thu tổng điểm lớn nhất (Knight Move Score)",
   "track": "midterm",
-  "topic": "backtracking",
+  "topic": "backtrack-gen",
   "difficulty": "Trung bình",
   "exam_tags": [
     "HUSTack Project1 (KNIGHT_MOVE_TAKE_SCORE)",
@@ -21,12 +21,13 @@
     }
   ],
   "theory_chapter": "chap3",
-  "mindset": "Dùng **Quay lui DFS trên lưới** với 8 hướng đi của quân mã và mảng `vis[i][j]`.\nTại mỗi ô vừa đặt chân tới, cập nhật luôn `best = max(best, curSum)` (vì quân mã được phép dừng tại bất kỳ ô nào, không cần đi hết toàn bộ bàn cờ!).\nĐể tăng tốc nhánh cận: tính trước `posRem` = tổng tất cả các số **dương** ở các ô chưa thăm; nếu `curSum + posRem <= best` thì cắt nhánh ngay!",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Giới hạn `n` nhỏ (`n <= 20..30`), yêu cầu liệt kê hoặc đếm số cấu hình (nhị phân, tập con, tổ hợp `k` phần tử, đặt vào lưới).\n- Vì `n` nhỏ, ta dùng hàm đệ quy Quay lui `Try(k)`: tại bước `k`, thử các lựa chọn hợp lệ, ghi nhận trạng thái, gọi `Try(k + 1)` rồi hoàn tác trạng thái.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Giới hạn `n` nhỏ (`n <= 20..30`), yêu cầu liệt kê hoặc đếm số cấu hình (nhị phân, tập con, tổ hợp `k` phần tử, đặt vào lưới).\n- Vì `n` nhỏ, ta dùng hàm đệ quy Quay lui `Try(k)`: tại bước `k`, thử các lựa chọn hợp lệ, ghi nhận trạng thái, gọi `Try(k + 1)` rồi hoàn tác trạng thái.\n\n**2. Cách suy nghĩ cho bài này:**\nDùng **Quay lui DFS trên lưới** với 8 hướng đi của quân mã và mảng `vis[i][j]`.\nTại mỗi ô vừa đặt chân tới, cập nhật luôn `best = max(best, curSum)` (vì quân mã được phép dừng tại bất kỳ ô nào, không cần đi hết toàn bộ bàn cờ!).\nĐể tăng tốc nhánh cận: tính trước `posRem` = tổng tất cả các số **dương** ở các ô chưa thăm; nếu `curSum + posRem <= best` thì cắt nhánh ngay!",
   "hints": [
     "Cập nhật `best = max(best, curSum)` ngay đầu hàm `dfs(r, c, curSum)`.",
     "Cắt nhánh `if (curSum + posRemaining <= best) return;` rất hiệu quả khi có nhiều ô âm hoặc `0`."
   ],
   "complexity": "Quay lui có cận trên",
   "id": "hs-knight-move-score",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1350
 }

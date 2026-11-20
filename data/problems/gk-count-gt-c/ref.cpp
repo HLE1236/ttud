@@ -5,7 +5,7 @@ int main() {
     cin.tie(nullptr);
     int n;
     long long c;
-    if (!(cin >> n >> c)) return 0;
+    cin >> n >> c;
     long long x, ans = 0;
     for (int i = 0; i < n; ++i) {
         cin >> x;

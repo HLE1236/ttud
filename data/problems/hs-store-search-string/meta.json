@@ -1,7 +1,7 @@
 {
   "title": "[HUSTack] Lưu trữ và tìm kiếm xâu ký tự (Store & Search String)",
   "track": "midterm",
-  "topic": "hash-prefix",
+  "topic": "stl-basic",
   "difficulty": "Cơ bản",
   "exam_tags": [
     "HUSTack Project1 (STORE_SEARCH_STRING)",
@@ -21,11 +21,12 @@
     }
   ],
   "theory_chapter": "chap1",
-  "mindset": "Dùng `unordered_set<string> db` (hoặc `set<string>`). Lưu ý phương thức `db.insert(k).second` trong C++ trả về trực tiếp `true` nếu chèn mới thành công và `false` nếu đã tồn tại!",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dữ liệu có tới `10^5 - 10^6` phần tử hoặc các dòng log truy vấn.\n- Với kích thước này, nếu dùng 2 vòng lặp lồng nhau `O(n^2)` tìm kiếm sẽ bị quá thời gian (TLE).\n- Hướng đi: Duyệt 1 vòng `O(n)` kết hợp cấu trúc STL (`unordered_map`, `set`, `stack`, `queue`, `priority_queue`) hoặc quy đổi thời gian `HH:MM:SS` ra số giây `0..86399`.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dữ liệu có tới `10^5 - 10^6` phần tử hoặc các dòng log truy vấn.\n- Với kích thước này, nếu dùng 2 vòng lặp lồng nhau `O(n^2)` tìm kiếm sẽ bị quá thời gian (TLE).\n- Hướng đi: Duyệt 1 vòng `O(n)` kết hợp cấu trúc STL (`unordered_map`, `set`, `stack`, `queue`, `priority_queue`) hoặc quy đổi thời gian `HH:MM:SS` ra số giây `0..86399`.\n\n**2. Cách suy nghĩ cho bài này:**\nDùng `unordered_set<string> db` (hoặc `set<string>`). Lưu ý phương thức `db.insert(k).second` trong C++ trả về trực tiếp `true` nếu chèn mới thành công và `false` nếu đã tồn tại!",
   "hints": [
     "Dùng `while (cin >> s && s != \"*\")` cho khối 1 và `while (cin >> cmd && cmd != \"***\")` cho khối 2."
   ],
   "complexity": "O((N + Q) * |key|)",
   "id": "hs-store-search-string",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 950
 }

@@ -1,7 +1,7 @@
 {
   "title": "[HUSTack] Truy vấn cây gia phả (Family Tree - DFS)",
   "track": "final",
-  "topic": "graph-bfs-dfs",
+  "topic": "graph-traversal",
   "difficulty": "Trung bình",
   "exam_tags": [
     "HUSTack Project1 (FAMILY_TREE)",
@@ -21,11 +21,12 @@
     }
   ],
   "theory_chapter": "chap5",
-  "mindset": "Ánh xạ mỗi tên người sang chỉ số nguyên (hoặc dùng `unordered_map<string, vector<string>> adj` lưu danh sách con trực tiếp). Dùng DFS tính một lần hoặc memoize cho từng nút:\n- `subSize[u] = 1 + sum(subSize[v])` -> `descendants(u) = subSize[u] - 1`.\n- `height[u] = max(1 + height[v])` (hoặc `0` nếu `u` không có con) -> `generation(u) = height[u]`.",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dữ liệu biểu diễn các đỉnh nối với nhau bằng các cạnh (đồ thị hoặc cây). Yêu cầu đếm cụm liên thông, kiểm tra đồ thị 2 phía, tìm đường ít bước nhất, tìm Khớp/Cầu/SCC hoặc tính toán trên Cây.\n- Hướng đi: Lưu danh sách kề `adj[u]`. Dùng BFS (`queue`) nếu tìm số bước ít nhất; dùng DFS truyền `parent` nếu là Cây; dùng Tarjan (`num`, `low`) nếu tìm Khớp/Cầu/SCC.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dữ liệu biểu diễn các đỉnh nối với nhau bằng các cạnh (đồ thị hoặc cây). Yêu cầu đếm cụm liên thông, kiểm tra đồ thị 2 phía, tìm đường ít bước nhất, tìm Khớp/Cầu/SCC hoặc tính toán trên Cây.\n- Hướng đi: Lưu danh sách kề `adj[u]`. Dùng BFS (`queue`) nếu tìm số bước ít nhất; dùng DFS truyền `parent` nếu là Cây; dùng Tarjan (`num`, `low`) nếu tìm Khớp/Cầu/SCC.\n\n**2. Cách suy nghĩ cho bài này:**\nÁnh xạ mỗi tên người sang chỉ số nguyên (hoặc dùng `unordered_map<string, vector<string>> adj` lưu danh sách con trực tiếp). Dùng DFS tính một lần hoặc memoize cho từng nút:\n- `subSize[u] = 1 + sum(subSize[v])` -> `descendants(u) = subSize[u] - 1`.\n- `height[u] = max(1 + height[v])` (hoặc `0` nếu `u` không có con) -> `generation(u) = height[u]`.",
   "hints": [
     "Nếu có nhiều thành phần (rừng cây), chỉ cần memoize `desc[u]` và `gen[u]` khi truy vấn hoặc DFS từ các nút không có cha."
   ],
   "complexity": "O(N + Q)",
   "id": "hs-family-tree",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1250
 }

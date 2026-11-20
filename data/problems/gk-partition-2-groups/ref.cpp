@@ -14,7 +14,7 @@ void dfs(int idx, long long s1) {
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    if (!(cin >> n)) return 0;
+    cin >> n;
     a.resize(n);
     for (int i = 0; i < n; ++i) {
         cin >> a[i];

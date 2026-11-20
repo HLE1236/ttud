@@ -1284,3 +1284,115 @@ kbd {
 @media (max-width: 900px) {
   .dbg-layout { grid-template-columns: 1fr; }
 }
+
+/* MOCK EXAM (THI THU 5 CAU / 120 PHUT) & ELO BADGES */
+.badge-elo {
+  background: var(--violet-soft);
+  color: var(--violet);
+  border: 1px solid var(--violet-border);
+  font-family: var(--font-mono);
+  font-weight: 700;
+}
+
+.exam-slot-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.exam-slot-card {
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+}
+.exam-slot-card h4 {
+  margin: 0 0 4px 0;
+  font-size: 13.5px;
+}
+
+.exam-presets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.exam-preset-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-surface);
+  transition: border-color 0.15s;
+}
+.exam-preset-card:hover {
+  border-color: var(--primary);
+}
+
+.exam-arena-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 10px 16px;
+  margin-bottom: 12px;
+  border: 1px solid var(--amber-border);
+  background: var(--amber-soft);
+}
+
+.exam-prob-pills {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.exam-prob-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 11px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg-surface);
+  color: var(--text);
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.exam-prob-pill.active {
+  border-color: var(--primary);
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+.exam-prob-pill.solved {
+  border-color: var(--green-border);
+  background: var(--green-soft);
+  color: var(--green);
+}
+.exam-prob-pill.partial {
+  border-color: var(--amber-border);
+  background: var(--amber-soft);
+  color: var(--amber);
+}
+
+.exam-timer-big {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  padding: 4px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+}
+.exam-timer-big.urgent {
+  color: var(--red);
+  border-color: var(--red-border);
+  background: var(--red-soft);
+}
+

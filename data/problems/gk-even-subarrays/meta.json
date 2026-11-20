@@ -4,7 +4,7 @@
   "exam_tags": [
     "GK 20212"
   ],
-  "topic": "hash-prefix",
+  "topic": "prefix-sum",
   "theory_chapter": "chap2",
   "difficulty": "Trung bình",
   "day": 2,
@@ -20,7 +20,7 @@
       "explanation": "Tính tổng tiền tố S[0..n], đếm số tiền tố chẵn (E) và lẻ (O), kết quả là E*(E-1)/2 + O*(O-1)/2."
     }
   ],
-  "mindset": "Gọi `S[i] = a[1] + ... + a[i]` (`S[0] = 0`).\nTổng đoạn `a[L..R]` là `S[R] - S[L-1]`.\nKhi nào hiệu hai số là số chẵn? Khi **chúng cùng chẵn hoặc cùng lẻ**!\n- Đếm số vị trí từ `0..n` có `S[i]` chẵn (`even`, nhớ tính `S[0]=0` nên `even` bắt đầu = 1) và số vị trí lẻ (`odd`).\n- Chọn 2 vị trí bất kỳ cùng nhóm đều tạo ra 1 đoạn tổng chẵn → `even*(even-1)/2 + odd*(odd-1)/2`!",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Có nhiều truy vấn yêu cầu tính tổng (hoặc min/max) trên đoạn liên tiếp `[L..R]` (hoặc hình chữ nhật 2D) với `n, Q <= 10^5 - 10^6`.\n- Tại sao cách ngây thơ chậm: Nếu mỗi truy vấn dùng vòng `for` cộng từ `L` đến `R` sẽ mất `O(n * Q)` phép tính -> TLE.\n- Hướng đi: Tiền xử lý Mảng cộng dồn `S[i] = S[i-1] + a[i]` để trả lời tổng đoạn trong `O(1)` bằng phép trừ `S[R] - S[L-1]` (hoặc dùng Segment Tree / Fenwick / RMQ nếu hỏi Min/Max và có cập nhật).\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Có nhiều truy vấn yêu cầu tính tổng (hoặc min/max) trên đoạn liên tiếp `[L..R]` (hoặc hình chữ nhật 2D) với `n, Q <= 10^5 - 10^6`.\n- Tại sao cách ngây thơ chậm: Nếu mỗi truy vấn dùng vòng `for` cộng từ `L` đến `R` sẽ mất `O(n * Q)` phép tính -> TLE.\n- Hướng đi: Tiền xử lý Mảng cộng dồn `S[i] = S[i-1] + a[i]` để trả lời tổng đoạn trong `O(1)` bằng phép trừ `S[R] - S[L-1]` (hoặc dùng Segment Tree / Fenwick / RMQ nếu hỏi Min/Max và có cập nhật).\n\n**2. Cách suy nghĩ cho bài này:**\nGọi `S[i] = a[1] + ... + a[i]` (`S[0] = 0`).\nTổng đoạn `a[L..R]` là `S[R] - S[L-1]`.\nKhi nào hiệu hai số là số chẵn? Khi **chúng cùng chẵn hoặc cùng lẻ**!\n- Đếm số vị trí từ `0..n` có `S[i]` chẵn (`even`, nhớ tính `S[0]=0` nên `even` bắt đầu = 1) và số vị trí lẻ (`odd`).\n- Chọn 2 vị trí bất kỳ cùng nhóm đều tạo ra 1 đoạn tổng chẵn → `even*(even-1)/2 + odd*(odd-1)/2`!",
   "hints": [
     "Tính tổng tiền tố `sum` từ trái sang phải, chỉ quan tâm `sum % 2`.",
     "Khởi tạo `even_cnt = 1` (ứng với `S[0] = 0`), `odd_cnt = 0`.",
@@ -28,7 +28,8 @@
   ],
   "complexity": "Time: O(n) | Space: O(1)",
   "starter_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    \n    return 0;\n}",
-  "reference_cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    int n;\n    cin >> n;\n    long long even_cnt = 1, odd_cnt = 0, sum = 0;\n    const long long MOD = 1000000007LL;\n    for (int i = 0; i < n; i++) {\n        long long x; cin >> x;\n        sum += x;\n        if (sum % 2 == 0) even_cnt++;\n        else odd_cnt++;\n    }\n    long long ans = (even_cnt * (even_cnt - 1) / 2 + odd_cnt * (odd_cnt - 1) / 2) % MOD;\n    cout << ans << \"\\n\";\n    return 0;\n}",
+  "reference_cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    int n;\n    cin >> n;\n    long long even_cnt = 1, odd_cnt = 0, sum = 0;\n    const long long MOD = 1000000007LL;\n    for (int i = 0; i < n; i++) {\n        long long x; cin >> x;\n        sum += x;\n        if (sum % 2 == 0) even_cnt++;\n        else odd_cnt++;\n    }\n    long long ans = (even_cnt * (even_cnt - 1) / 2 + odd_cnt * (odd_cnt - 1) / 2) % MOD;\n    cout << ans << \"\\n\";\n    return 0;\n}\n",
   "id": "gk-even-subarrays",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1150
 }

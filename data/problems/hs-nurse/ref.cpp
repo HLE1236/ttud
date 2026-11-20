@@ -4,7 +4,7 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     int N, K1, K2;
-    if (!(cin >> N >> K1 >> K2)) return 0;
+    cin >> N >> K1 >> K2;
     const long long MOD = 1000000007LL;
     vector<long long> dp0(N + 1, 0), dp1(N + 1, 0);
     dp0[0] = 1;

@@ -1,0 +1,300 @@
+{
+  "chapter": "chap4a",
+  "intro": "Chương 4A gồm hai kỹ thuật dùng cho dữ liệu lớn (`n >= 10^5`):\n1. **Tham lam (Greedy)**: Sắp xếp dữ liệu theo một tiêu chí cố định rồi đưa ra quyết định có lợi nhất ở từng bước mà không cần quay lui.\n2. **Chia để trị (Divide & Conquer) & Chặt nhị phân trên đáp án**: Chia đôi không gian tìm kiếm hoặc chia đôi mảng để giảm thời gian từ `O(n^2)` xuống `O(n log n)` hoặc `O(log n)`.",
+  "learning_path": {
+    "guided": [
+      "hs-disjoint-segment",
+      "gk-robot-merge",
+      "hs-max-distance-subseq"
+    ],
+    "practice": [
+      "hs-parallel-job-execution",
+      "hs-job-selection-planning",
+      "hs-expmod",
+      "hs-inversion",
+      "hs-closest-pair"
+    ],
+    "exam": [
+      "gk-meeting-rooms",
+      "gk-jump-game",
+      "gk-fib-string"
+    ]
+  },
+  "patterns": [
+    {
+      "id": "greedy-interval-schedule",
+      "name": "Dạng 1: Tham lam lập lịch đoạn thẳng & Nhảy xa nhất",
+      "when": [
+        "Cho `n` đoạn thẳng / cuộc họp `[start, end]` (`n <= 10^5`), yêu cầu **chọn được nhiều đoạn không giao nhau nhất**, hoặc **dùng ít phòng họp nhất** để xếp hết các cuộc họp.",
+        "Cho các công việc có thời gian xử lý hoặc thời hạn (deadline), yêu cầu hoàn thành sớm nhất hoặc thu lợi nhuận lớn nhất.",
+        "Đứng ở ô `i` nhảy được tối đa `a[i]` bước, tìm **số bước nhảy ít nhất** tới cuối mảng."
+      ],
+      "idea": "Tại sao không thể chọn bừa đoạn ngắn nhất hoặc đoạn bắt đầu sớm nhất?\n- Nếu chọn cuộc họp bắt đầu sớm nhất (ví dụ `[1, 100]`), nó có thể kéo dài cả ngày và chặn mất 5 cuộc họp ngắn `[2, 3], [4, 5]...` bên trong.\n- Quy tắc đúng cho bài **Chọn nhiều đoạn rời nhau nhất**: **Ai kết thúc sớm nhất thì ưu tiên chọn trước** (vì trả phòng sớm nhất sẽ nhường nhiều thời gian nhất cho các cuộc họp phía sau).\n\nQuy tắc cho 3 bài toán khác cùng nhóm:\n1. **Số phòng họp ít nhất (`gk-meeting-rooms`)**: Sắp xếp theo giờ **bắt đầu** tăng dần. Dùng một Min-Heap lưu **giờ kết thúc** của các phòng đang bận. Khi có cuộc họp mới `[s, e]`, xem phòng kết thúc sớm nhất (`pq.top()`): nếu `pq.top() <= s` thì tái sử dụng luôn phòng đó (`pq.pop()`, rồi `pq.push(e)`); ngược lại phải mở thêm phòng mới (`pq.push(e)`).\n2. **Thực hiện việc song song (`hs-parallel-job-execution`)**: Việc nào tốn thời gian chạy lâu nhất thì phải cho khởi động sớm nhất -> sắp xếp giảm dần theo thời gian chạy.\n3. **Nhảy ít bước nhất (`gk-jump-game`)**: Lưu `cur_end` là tầm xa nhất của bước nhảy hiện tại, `farthest` là tầm xa nhất có thể vươn tới nếu nhảy thêm 1 bước từ các ô đã đi qua (`farthest = max(farthest, i + a[i])`). Khi `i` chạm tới `cur_end`, bắt buộc cộng 1 bước nhảy và đặt `cur_end = farthest`.",
+      "steps": [
+        "Bước 1: Lưu các đoạn vào `vector<pair<int, int>> segs`.",
+        "Bước 2: Nếu là bài **chọn nhiều đoạn rời nhau nhất**, sắp xếp tăng dần theo **điểm kết thúc** `end`. Nếu là bài **chia phòng họp**, sắp xếp tăng dần theo **điểm bắt đầu** `start`.",
+        "Bước 3: Duyệt qua danh sách đã sắp xếp, giữ biến `last_end` (thời điểm kết thúc của đoạn vừa chọn) để kiểm tra đoạn tiếp theo có `start > last_end` (hoặc `>=` tùy đề) hay không."
+      ],
+      "template_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nstruct Seg {\n    int s, e;\n};\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int n;\n    cin >> n;\n    vector<Seg> a(n);\n    for (int i = 0; i < n; i++) cin >> a[i].s >> a[i].e;\n\n    // Sap xep tang dan theo diem KET THUC (e)\n    sort(a.begin(), a.end(), [](const Seg& x, const Seg& y) {\n        if (x.e != y.e) return x.e < y.e;\n        return x.s < y.s;\n    });\n\n    int ans = 0;\n    int last_end = -1; // Thoi diem ket thuc cua doan vua chon\n    for (int i = 0; i < n; i++) {\n        if (a[i].s > last_end) { // Khong giao voi doan truoc\n            ans++;\n            last_end = a[i].e;\n        }\n    }\n\n    cout << ans << '\\n';\n    return 0;\n}",
+      "trace": {
+        "title": "Chạy tay Chọn đoạn rời nhau (hs-disjoint-segment)",
+        "input": "4 đoạn: [1, 8], [2, 4], [5, 7], [6, 9]",
+        "headers": [
+          "Sau khi sort theo end",
+          "Đoạn đang xét",
+          "So sánh s > last_end",
+          "Hành động",
+          "last_end mới"
+        ],
+        "rows": [
+          [
+            "1",
+            "[2, 4]",
+            "2 > -1 (Đúng)",
+            "Chọn [2, 4] (ans = 1)",
+            "4"
+          ],
+          [
+            "2",
+            "[5, 7]",
+            "5 > 4 (Đúng)",
+            "Chọn [5, 7] (ans = 2)",
+            "7"
+          ],
+          [
+            "3",
+            "[1, 8]",
+            "1 > 7 (Sai - đè lên [2,4] và [5,7])",
+            "Bỏ qua",
+            "7"
+          ],
+          [
+            "4",
+            "[6, 9]",
+            "6 > 7 (Sai - giao với [5,7])",
+            "Bỏ qua",
+            "7"
+          ]
+        ],
+        "note": "Nếu không sort theo `end` mà chọn `[1, 8]` đầu tiên, ta chỉ lấy được 1 đoạn thay vì 2 đoạn `[2, 4]` và `[5, 7]`."
+      },
+      "pitfalls": [
+        "Đọc kỹ đề xem hai đoạn chạm đầu mút (`a[i].s == last_end`) có được tính là rời nhau hay không để dùng `>` hay `>=`.",
+        "Nhầm giữa bài *Chọn nhiều đoạn rời nhau nhất* (sort theo `end`) và bài *Số phòng họp tối thiểu để xếp tất cả các đoạn* (sort theo `start` + dùng Min-Heap)."
+      ],
+      "problems": [
+        "hs-disjoint-segment",
+        "hs-parallel-job-execution",
+        "gk-meeting-rooms",
+        "gk-jump-game"
+      ]
+    },
+    {
+      "id": "greedy-heap",
+      "name": "Dạng 2: Tham lam kết hợp Hàng đợi ưu tiên (Heap)",
+      "when": [
+        "Mỗi bước phải ghép 2 phần tử lại với chi phí bằng tổng của chúng, sau đó đưa tổng mới vào tập hợp và lặp lại cho đến khi còn 1 phần tử (bài Robot gom hàng / mã Huffman).",
+        "Chọn các công việc có `(deadline, profit)` sao cho mỗi đơn vị thời gian làm 1 việc và tổng lợi nhuận lớn nhất."
+      ],
+      "idea": "Trong bài **Gộp 2 phần tử chi phí nhỏ nhất (`gk-robot-merge`)**:\nPhần tử nào được gộp ở bước đầu tiên sẽ bị cộng lặp lại vào tổng chi phí ở tất cả các bước gộp tiếp theo. Vì vậy, ở mỗi bước ta luôn phải lấy ra **2 phần tử nhỏ nhất hiện có** để gộp lại.\n\nLàm sao lấy ra 2 số nhỏ nhất rồi nhét tổng của chúng trở lại nhanh nhất?\nNếu sau mỗi lần gộp bạn lại gọi `sort()` toàn bộ mảng, chương trình sẽ mất `O(n^2 log n)` -> quá thời gian với `n = 10^5`.\nThay vào đó, đẩy tất cả vào một **Min-Heap** (`priority_queue<long long, vector<long long>, greater<long long>>`). Mỗi bước `pop()` 2 số nhỏ nhất ở đỉnh, cộng vào tổng chi phí, rồi `push()` tổng của 2 số đó trở lại Heap. Mỗi bước chỉ mất `O(log n)`.",
+      "steps": [
+        "Bước 1: Khai báo Min-Heap kiểu `long long`.",
+        "Bước 2: Đọc `n` số đẩy hết vào Min-Heap.",
+        "Bước 3: Chạy `while (pq.size() > 1)`: lấy 2 số đầu `x` và `y`, tính `s = x + y`, cộng `s` vào `total_cost`, rồi đẩy `s` vào lại `pq`."
+      ],
+      "template_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int n;\n    cin >> n;\n    // Min-Heap: phan tu nho nhat luon o dinh pq.top()\n    priority_queue<long long, vector<long long>, greater<long long>> pq;\n    for (int i = 0; i < n; i++) {\n        long long x;\n        cin >> x;\n        pq.push(x);\n    }\n\n    long long total_cost = 0;\n    while (pq.size() > 1) {\n        long long x = pq.top(); pq.pop(); // So nho nhat thu 1\n        long long y = pq.top(); pq.pop(); // So nho nhat thu 2\n        long long merged = x + y;\n        total_cost += merged;\n        pq.push(merged);                  // Dua khoi da gop vao lai Heap\n    }\n\n    cout << total_cost << '\\n';\n    return 0;\n}",
+      "trace": {
+        "title": "Chạy tay Robot gom hàng (gk-robot-merge)",
+        "input": "n = 4, các khối hàng: [8, 4, 6, 12]",
+        "headers": [
+          "Bước",
+          "Min-Heap hiện tại",
+          "Lấy 2 số nhỏ nhất",
+          "Chi phí bước này",
+          "Tổng chi phí tích lũy"
+        ],
+        "rows": [
+          [
+            "Khởi tạo",
+            "{4, 6, 8, 12}",
+            "-",
+            "-",
+            "0"
+          ],
+          [
+            "Gộp lần 1",
+            "{8, 10, 12}",
+            "4 + 6 = 10",
+            "10",
+            "10"
+          ],
+          [
+            "Gộp lần 2",
+            "{12, 18}",
+            "8 + 10 = 18",
+            "18",
+            "10 + 18 = 28"
+          ],
+          [
+            "Gộp lần 3",
+            "{30}",
+            "12 + 18 = 30",
+            "30",
+            "28 + 30 = 58"
+          ]
+        ],
+        "note": "Sau lần 1, tổng `10` lớn hơn `8` nên bước 2 Heap tự động chọn `8` và `10` để gộp chứ không gộp `10` với `12`."
+      },
+      "pitfalls": [
+        "Quên `greater<long long>` khiến `priority_queue` trở thành Max-Heap (luôn gộp 2 số lớn nhất, ra kết quả sai hoàn toàn).",
+        "Tổng chi phí sau `n` lần gộp có thể lên tới `n * max_val * log2(n)` vượt xa giới hạn `int`, phải dùng `long long`."
+      ],
+      "problems": [
+        "gk-robot-merge",
+        "hs-job-selection-planning"
+      ]
+    },
+    {
+      "id": "binary-search-answer",
+      "name": "Dạng 3: Chặt nhị phân trên kết quả (Binary Search on Answer)",
+      "when": [
+        "Đề bài có cụm từ đặc trưng: **\"Tìm khoảng cách nhỏ nhất lớn nhất\"** (Maximize the minimum) hoặc **\"Tìm tải trọng lớn nhất nhỏ nhất\"** (Minimize the maximum).",
+        "Ví dụ: Chọn `C` điểm trong `N` điểm trên trục số sao cho khoảng cách giữa 2 điểm gần nhau nhất là lớn nhất (`hs-max-distance-subseq`)."
+      ],
+      "idea": "Tại sao tìm trực tiếp đáp án `D` rất khó, nhưng **đoán một số `D` rồi kiểm tra đúng/sai** lại rất dễ?\nGiả sử ta đoán khoảng cách tối thiểu giữa 2 điểm là `D`:\n- Để kiểm tra xem có chọn được `C` điểm cách nhau ít nhất `D` hay không (`check(D)`), ta chỉ cần sắp xếp mảng tọa độ tăng dần, chọn điểm đầu tiên `x[0]`, rồi cứ đi sang phải: hễ gặp điểm `x[i]` nào cách điểm vừa chọn `>= D` thì chọn luôn. Nếu đếm đủ `>= C` điểm thì `check(D) = true`, ngược lại `false`.\n- Nhận xét quan trọng: Nếu khoảng cách `D` xếp đủ `C` điểm (`true`), thì mọi khoảng cách nhỏ hơn `D` chắc chắn cũng xếp đủ (`true`). Nếu `D` không xếp đủ (`false`), thì mọi khoảng cách lớn hơn `D` càng không thể xếp đủ (`false`).\n- Dãy kết quả có dạng: `True, True, ..., True, False, False...`. Ta dùng **Chặt nhị phân** đoạn `[lo, hi]` để tìm chữ `True` cuối cùng trong `O(n log(max_coord))`.",
+      "steps": [
+        "Bước 1: Sắp xếp mảng đầu vào nếu bài toán liên quan đến tọa độ điểm.",
+        "Bước 2: Viết hàm `bool check(long long D)` trả về `true` nếu thực hiện được với ngưỡng `D`.",
+        "Bước 3: Đặt `lo = 0` (hoặc `1`), `hi = giá_trị_tối_đa`. Chạy `while (lo <= hi)`: tính `mid = (lo + hi) / 2`. Nếu `check(mid)` đúng, lưu `ans = mid` rồi thử tìm số lớn hơn (`lo = mid + 1`); nếu sai, phải giảm xuống (`hi = mid - 1`)."
+      ],
+      "template_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\n// Kiem tra co chon duoc >= C phan tu ma 2 phan tu bat ky cach nhau >= D khong\nbool canPlace(const vector<long long>& x, int C, long long D) {\n    int cnt = 1;               // Luon chon phan tu dau tien x[0] la co loi nhat\n    long long last = x[0];\n    for (int i = 1; i < x.size(); i++) {\n        if (x[i] - last >= D) {\n            cnt++;\n            last = x[i];\n            if (cnt >= C) return true;\n        }\n    }\n    return false;\n}\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int t;\n    cin >> t;\n    while (t--) {\n        int n, C;\n        cin >> n >> C;\n        vector<long long> x(n);\n        for (int i = 0; i < n; i++) cin >> x[i];\n        sort(x.begin(), x.end());\n\n        long long lo = 0, hi = x.back() - x.front(), ans = 0;\n        while (lo <= hi) {\n            long long mid = lo + (hi - lo) / 2;\n            if (canPlace(x, C, mid)) {\n                ans = mid;      // mid thoa man -> luu lai va thu tang len\n                lo = mid + 1;\n            } else {\n                hi = mid - 1;   // mid qua lon -> phai giam xuong\n            }\n        }\n        cout << ans << '\\n';\n    }\n    return 0;\n}",
+      "trace": {
+        "title": "Chạy tay Chặt nhị phân khoảng cách (C = 3 điểm trên [1, 2, 4, 8, 9])",
+        "input": "x = [1, 2, 4, 8, 9], C = 3. Ban đầu lo = 0, hi = 8",
+        "headers": [
+          "Vòng lặp",
+          "lo, hi",
+          "mid",
+          "Thử đặt với khoảng cách >= mid",
+          "Đủ 3 điểm?",
+          "Cập nhật"
+        ],
+        "rows": [
+          [
+            "1",
+            "0, 8",
+            "4",
+            "Chọn 1 -> tiếp theo >=5 là 8 -> hết (chỉ được {1, 8})",
+            "Sai (2 < 3)",
+            "hi = 3"
+          ],
+          [
+            "2",
+            "0, 3",
+            "1",
+            "Chọn 1 -> 2 -> 4 (được {1, 2, 4})",
+            "Đúng (3 >= 3)",
+            "ans = 1, lo = 2"
+          ],
+          [
+            "3",
+            "2, 3",
+            "2",
+            "Chọn 1 -> >=3 là 4 -> >=6 là 8 (được {1, 4, 8})",
+            "Đúng (3 >= 3)",
+            "ans = 2, lo = 3"
+          ],
+          [
+            "4",
+            "3, 3",
+            "3",
+            "Chọn 1 -> >=4 là 4 -> >=7 là 8 (được {1, 4, 8})",
+            "Đúng (3 >= 3)",
+            "ans = 3, lo = 4 (Dừng)"
+          ]
+        ],
+        "note": "Thay vì thử từng khoảng cách 1, 2, 3... tới `10^9`, chặt nhị phân chỉ cần thử tối đa 30 lần."
+      },
+      "pitfalls": [
+        "Quên `sort(x.begin(), x.end())` trước khi chạy chặt nhị phân trên tọa độ.",
+        "Trong hàm `canPlace`, việc chọn điểm đầu tiên `x[0]` luôn luôn tối ưu vì đẩy điểm đầu càng sang trái thì phần đất còn lại bên phải càng rộng."
+      ],
+      "problems": [
+        "hs-max-distance-subseq"
+      ]
+    },
+    {
+      "id": "divide-and-conquer",
+      "name": "Dạng 4: Chia để trị — Lũy thừa nhanh, Chuỗi Fibonacci & Đếm nghịch thế",
+      "when": [
+        "Tính `a^b mod M` với số mũ `b` cực lớn (lên tới `10^{18}`).",
+        "Tìm ký tự thứ `k` trong xâu Fibonacci `F[n] = F[n-2] + F[n-1]` có độ dài lên tới `10^{18}`.",
+        "Đếm số cặp nghịch thế (`i < j` mà `a[i] > a[j]`) với `n <= 10^6`, hoặc tìm cặp điểm gần nhất trên mặt phẳng `n <= 10^5`."
+      ],
+      "idea": "Ý tưởng chung của Chia để trị là không bao giờ làm từng bước một khi kích thước dữ liệu lớn, mà **chia bài toán thành nửa trái / nửa phải**:\n1. **Lũy thừa nhanh (`hs-expmod`)**: Muốn tính `a^b`, ta tính `t = a^(b/2)`. Nếu `b` chẵn thì `a^b = t * t`; nếu `b` lẻ thì `a^b = t * t * a`. Số bước giảm từ `b` (`10^{18}`) xuống còn `log2(b)` (~60 bước).\n2. **Ký tự thứ `k` trên xâu Fibonacci (`gk-fib-string`)**: Xâu `F[n]` được ghép từ `F[n-2]` (độ dài `len[n-2]`) ở bên trái và `F[n-1]` ở bên phải. Không được nối chuỗi `string` thật vì độ dài `10^{18}` sẽ tràn bộ nhớ! Chỉ cần tính trước mảng độ dài `len[]`: nếu `k < len[n-2]` thì ký tự cần tìm nằm ở nửa trái `F[n-2]` tại vị trí `k`; ngược lại nó nằm ở nửa phải `F[n-1]` tại vị trí `k - len[n-2]`.\n3. **Đếm nghịch thế bằng Merge Sort (`hs-inversion`)**: Chia đôi mảng `[l..mid]` và `[mid+1..r]`, đệ quy đếm nghịch thế ở mỗi nửa và sắp xếp mỗi nửa tăng dần. Khi trộn 2 nửa đã tăng dần: nếu phần tử bên trái `a[i]` lớn hơn phần tử bên phải `a[j]`, thì **tất cả các phần tử từ `i` đến `mid`** ở nửa trái đều lớn hơn `a[j]` -> cộng thêm `(mid - i + 1)` cặp nghịch thế trong 1 phép tính!",
+      "steps": [
+        "Bước 1: Xác định cách chia bài toán kích thước `N` về kích thước `N / 2` (hoặc `n - 1, n - 2`).",
+        "Bước 2: Viết điều kiện dừng cho bài toán nhỏ nhất (`b == 0`, `n == 0 || n == 1`, hoặc `l >= r`).",
+        "Bước 3: Kết hợp kết quả từ bài toán con (nhân bình phương lấy dư, hoặc trộn 2 mảng con đã sắp xếp)."
+      ],
+      "template_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nconst long long MOD = 1000000007;\n\n// Tinh a^b % MOD trong O(log b)\nlong long power_mod(unsigned long long a, unsigned long long b) {\n    a %= MOD;\n    long long res = 1;\n    while (b > 0) {\n        if (b & 1) res = (res * a) % MOD; // Neu bit cuoi cua b la 1\n        a = (a * a) % MOD;                // Binh phuong co so\n        b >>= 1;                          // Chia doi so mu b\n    }\n    return res;\n}\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    unsigned long long a, b;\n    if (cin >> a >> b) {\n        cout << power_mod(a, b) << '\\n';\n    }\n    return 0;\n}",
+      "trace": {
+        "title": "Chạy tay Tìm ký tự thứ k (0-based) trên xâu Fibonacci (gk-fib-string)",
+        "input": "F[0] = \"a\" (len 1), F[1] = \"b\" (len 1), F[n] = F[n-2] + F[n-1]. Tìm ký tự k = 3 của F[4] (\"babab\", len 5)",
+        "headers": [
+          "Bước đệ quy",
+          "Đang xét F[n]",
+          "Vị trí k",
+          "Độ dài nửa trái len[n-2]",
+          "So sánh k với len[n-2]",
+          "Bước nhảy tiếp theo"
+        ],
+        "rows": [
+          [
+            "1",
+            "F[4] (len 5)",
+            "k = 3",
+            "len[2] = 2",
+            "3 >= 2 (Nằm ở nửa phải F[3])",
+            "Tìm tại F[3] với k = 3 - 2 = 1"
+          ],
+          [
+            "2",
+            "F[3] (len 3)",
+            "k = 1",
+            "len[1] = 1",
+            "1 >= 1 (Nằm ở nửa phải F[2])",
+            "Tìm tại F[2] với k = 1 - 1 = 0"
+          ],
+          [
+            "3",
+            "F[2] (len 2)",
+            "k = 0",
+            "len[0] = 1",
+            "0 < 1 (Nằm ở nửa trái F[0])",
+            "Tìm tại F[0] với k = 0"
+          ],
+          [
+            "4",
+            "F[0] = \"a\"",
+            "k = 0",
+            "-",
+            "Chạm cơ sở n = 0",
+            "Trả về 'a'"
+          ]
+        ],
+        "note": "Ta tìm ra ký tự thứ 3 của `\"babab\"` là `'a'` mà không hề tạo ra chuỗi `\"babab\"` trong bộ nhớ."
+      },
+      "pitfalls": [
+        "Trong `hs-expmod`, cơ số `a` đầu vào có thể lên tới `10^{19}` (vượt `long long`), nên cần đọc vào `unsigned long long` và lấy `a %= MOD` ngay dòng đầu tiên trước khi nhân `a * a`.",
+        "Trong `gk-fib-string`, cần kiểm tra đúng thứ tự ghép xâu của đề bài: `F[n] = F[n-2] + F[n-1]` hay `F[n-1] + F[n-2]` để so sánh `k` với độ dài nửa trái tương ứng."
+      ],
+      "problems": [
+        "hs-expmod",
+        "gk-fib-string",
+        "hs-inversion",
+        "hs-closest-pair"
+      ]
+    }
+  ]
+}

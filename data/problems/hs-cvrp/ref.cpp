@@ -2,7 +2,7 @@
 using namespace std;
 int main() {
     ios::sync_with_stdio(false); cin.tie(nullptr);
-    int n, K, Q; if (!(cin >> n >> K >> Q)) return 0;
+    int n, K, Q; cin >> n >> K >> Q;
     vector<int> d(n + 1, 0);
     for (int i = 1; i <= n; ++i) cin >> d[i];
     vector<vector<int>> c(n + 1, vector<int>(n + 1));

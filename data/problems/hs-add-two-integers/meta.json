@@ -2,7 +2,7 @@
   "id": "hs-add-two-integers",
   "title": "[HUSTack] Cộng hai số nguyên lớn (Add Two Integers)",
   "track": "midterm",
-  "topic": "array-basic",
+  "topic": "stl-basic",
   "difficulty": "Cơ bản",
   "exam_tags": [
     "HUSTack 2025.2 (P.01.01.01)",
@@ -22,7 +22,7 @@
     }
   ],
   "theory_chapter": "chap1",
-  "mindset": "Bài khởi động kinh điển của HUST nhằm kiểm tra bạn có đọc kỹ giới hạn `10^19` không: `long long` tối đa ~`9.2 * 10^18`, `unsigned long long` tối đa ~`1.84 * 10^19`, còn `10^19 + 10^19 = 2 * 10^19` nên cộng bằng chuỗi (hoặc tách phần cao/thấp, hoặc `__uint128_t`) mới an toàn 100%!",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dữ liệu có tới `10^5 - 10^6` phần tử hoặc các dòng log truy vấn.\n- Với kích thước này, nếu dùng 2 vòng lặp lồng nhau `O(n^2)` tìm kiếm sẽ bị quá thời gian (TLE).\n- Hướng đi: Duyệt 1 vòng `O(n)` kết hợp cấu trúc STL (`unordered_map`, `set`, `stack`, `queue`, `priority_queue`) hoặc quy đổi thời gian `HH:MM:SS` ra số giây `0..86399`.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dữ liệu có tới `10^5 - 10^6` phần tử hoặc các dòng log truy vấn.\n- Với kích thước này, nếu dùng 2 vòng lặp lồng nhau `O(n^2)` tìm kiếm sẽ bị quá thời gian (TLE).\n- Hướng đi: Duyệt 1 vòng `O(n)` kết hợp cấu trúc STL (`unordered_map`, `set`, `stack`, `queue`, `priority_queue`) hoặc quy đổi thời gian `HH:MM:SS` ra số giây `0..86399`.\n\n**2. Cách suy nghĩ cho bài này:**\nBài khởi động cơ bản của HUST nhằm kiểm tra bạn có đọc kỹ giới hạn `10^19` không: `long long` tối đa ~`9.2 * 10^18`, `unsigned long long` tối đa ~`1.84 * 10^19`, còn `10^19 + 10^19 = 2 * 10^19` nên cộng bằng chuỗi (hoặc tách phần cao/thấp, hoặc `__uint128_t`) mới an toàn 100%!",
   "hints": [
     "Đọc hai số dưới dạng `string a, b`, cộng từ phải sang trái kèm biến nhớ `carry`."
   ],
@@ -30,5 +30,6 @@
     "time": "O(|a| + |b|)",
     "space": "O(|a| + |b|)"
   },
-  "test_count": 10
+  "test_count": 10,
+  "elo": 800
 }

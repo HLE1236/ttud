@@ -3,7 +3,7 @@
   "title": "Tối ưu thời gian giao hàng (Dijkstra có đường 1/2 chiều)",
   "track": "final",
   "topic": "graph-shortest-mst",
-  "difficulty": "Cơ bản",
+  "difficulty": "Trung bình",
   "exam_tags": [
     "Cuối kỳ 2024.2 (Bài 4)"
   ],
@@ -21,7 +21,7 @@
     }
   ],
   "theory_chapter": "chap5",
-  "mindset": "Đây là bài **Dijkstra tìm đường đi ngắn nhất** cơ bản trên đồ thị có trọng số không âm!\nChỉ cần cẩn thận hai chi tiết khi đọc đề:\n1. Các đỉnh đánh số từ **`0` đến `N - 1`** (0-based).\n2. Trọng số cạnh là `w = d * t`, và nhớ thêm cạnh ngược `(v -> u)` nếu `type == 2`.",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Đồ thị có **trọng số (chi phí / thời gian)** trên từng cạnh. Yêu cầu tìm đường đi ngắn nhất từ `S` đến `T`, hoặc nối thông tất cả các đỉnh với tổng chi phí nhỏ nhất.\n- Hướng đi: Nếu tìm đường đi ngắn nhất từ `S` đến `T` với cạnh không âm -> dùng **Dijkstra + Min-Heap**. Nếu nối thông tất cả các đỉnh rẻ nhất -> sắp xếp cạnh tăng dần và dùng **Kruskal + DSU**.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Đồ thị có **trọng số (chi phí / thời gian)** trên từng cạnh. Yêu cầu tìm đường đi ngắn nhất từ `S` đến `T`, hoặc nối thông tất cả các đỉnh với tổng chi phí nhỏ nhất.\n- Hướng đi: Nếu tìm đường đi ngắn nhất từ `S` đến `T` với cạnh không âm -> dùng **Dijkstra + Min-Heap**. Nếu nối thông tất cả các đỉnh rẻ nhất -> sắp xếp cạnh tăng dần và dùng **Kruskal + DSU**.\n\n**2. Cách suy nghĩ cho bài này:**\nĐây là bài **Dijkstra tìm đường đi ngắn nhất** cơ bản trên đồ thị có trọng số không âm!\nChỉ cần cẩn thận hai chi tiết khi đọc đề:\n1. Các đỉnh đánh số từ **`0` đến `N - 1`** (0-based).\n2. Trọng số cạnh là `w = d * t`, và nhớ thêm cạnh ngược `(v -> u)` nếu `type == 2`.",
   "hints": [
     "Dùng hàng đợi ưu tiên `priority_queue<pair<long long, int>, vector<pair<long long, int>>, greater<>> pq`.",
     "Nhớ kiểm tra `if (cur_d > dist[u]) continue;` để bỏ qua các trạng thái cũ trong heap."
@@ -30,5 +30,6 @@
     "time": "O((N + M) log N)",
     "space": "O(N + M)"
   },
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1200
 }

@@ -2,7 +2,7 @@
   "id": "gk-treasure-grid",
   "title": "Tìm đường đến kho báu trên lưới (Grid DP)",
   "track": "midterm",
-  "topic": "dp-midterm",
+  "topic": "dp-grid",
   "difficulty": "Trung bình",
   "exam_tags": [
     "Giữa kỳ 2023.1 (Bài 3 - Kho báu)"
@@ -24,8 +24,8 @@
       "output": "-31"
     }
   ],
-  "theory_chapter": "chap4a",
-  "mindset": "Do chỉ đi sang phải, xuống dưới, hoặc chéo xuống phải nên đồ thị lưới là DAG (không có chu trình). Ta áp dụng DP trên bảng 2D!\n- Gọi `dp[i][j]` là chi phí nhỏ nhất để tới ô `(i, j)` (`dp[i][j] = +INF` nếu không tới được).\n- Nếu `a[i][j] == 0`: ô này bị chặn -> `dp[i][j] = +INF`.\n- Ngược lại: `dp[i][j] = min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]) + a[i][j]`.\n- Cẩn thận bẫy ở đề: giá trị đường đi CÓ THỂ ÂM (như ví dụ `-31`), và kết quả `-1` là không tới được -> KHÔNG dùng `-1` để đánh dấu rất! Hãy dùng một giá trị `INF = 4e18` riêng biệt.",
+  "theory_chapter": "chap4b",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Đi trên bảng 2D `n x m` theo hướng tiến (xuống, sang phải, chéo xuống), hoặc chọn hình chữ nhật / cắt khối 3D.\n- Hướng đi: Quy hoạch động trên bảng `dp[i][j]`. Mỗi ô `(i, j)` chỉ lấy kết quả tốt nhất từ các ô liền trước (trên, trái, chéo trên-trái) cộng với `a[i][j]`. Lưu ý khởi tạo `INF` / `-INF` thay vì `-1` nếu bảng có số âm.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Đi trên bảng 2D `n x m` theo hướng tiến (xuống, sang phải, chéo xuống), hoặc chọn hình chữ nhật / cắt khối 3D.\n- Hướng đi: Quy hoạch động trên bảng `dp[i][j]`. Mỗi ô `(i, j)` chỉ lấy kết quả tốt nhất từ các ô liền trước (trên, trái, chéo trên-trái) cộng với `a[i][j]`. Lưu ý khởi tạo `INF` / `-INF` thay vì `-1` nếu bảng có số âm.\n\n**2. Cách suy nghĩ cho bài này:**\nDo chỉ đi sang phải, xuống dưới, hoặc chéo xuống phải nên đồ thị lưới là DAG (không có chu trình). Ta áp dụng DP trên bảng 2D!\n- Gọi `dp[i][j]` là chi phí nhỏ nhất để tới ô `(i, j)` (`dp[i][j] = +INF` nếu không tới được).\n- Nếu `a[i][j] == 0`: ô này bị chặn -> `dp[i][j] = +INF`.\n- Ngược lại: `dp[i][j] = min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]) + a[i][j]`.\n- Cẩn thận bẫy ở đề: giá trị đường đi CÓ THỂ ÂM (như ví dụ `-31`), và kết quả `-1` là không tới được -> KHÔNG dùng `-1` để đánh dấu rất! Hãy dùng một giá trị `INF = 4e18` riêng biệt.",
   "hints": [
     "Nhớ kiểm tra cả ô `(1, 1)` và `(n, m)`: nếu một trong hai ô có `a == 0` thì chắc chắn in `-1`.",
     "Coi chừng: chi phí hợp lệ của một đường đi CÓ THỂ tình cờ bằng `-1` không? Trên thực tế trong đề chuẩn dùng `dp[n][m] >= INF / 2` để kết luận không có đường đi (tránh nhầm với tổng đường đi âm)."
@@ -34,5 +34,6 @@
     "time": "O(n * m)",
     "space": "O(n * m)"
   },
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1250
 }

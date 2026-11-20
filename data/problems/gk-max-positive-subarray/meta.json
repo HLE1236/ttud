@@ -4,7 +4,7 @@
   "exam_tags": [
     "GK 20242 (Kíp 2)"
   ],
-  "topic": "hash-prefix",
+  "topic": "two-pointers",
   "theory_chapter": "chap2",
   "difficulty": "Cơ bản",
   "day": 2,
@@ -20,7 +20,7 @@
       "explanation": "Đoạn [4, 6, 7] toàn dương có tổng 4 + 6 + 7 = 17 là lớn nhất."
     }
   ],
-  "mindset": "Duyệt dãy từ trái sang phải, duy trì biến `cur` lưu tổng đoạn toàn dương liên tiếp kết thúc tại phần tử hiện tại:\n- Nếu `a[i] > 0`: cập nhật `cur += a[i]` và `max_sum = max(max_sum, cur)`.\n- Nếu `a[i] <= 0`: chuỗi phần tử dương bị ngắt, đặt lại `cur = 0`.\n- Với `n <= 10^5` và `a[i] <= 10^4`, tổng tối đa ~`10^9`, nên dùng kiểu `long long` để tránh tràn số.",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Cần tìm/đếm đoạn con liên tiếp hoặc cặp/bộ ba phần tử thỏa điều kiện tổng với `n <= 10^5 - 10^6`.\n- Tại sao cách ngây thơ chậm: Xét mọi cặp `(L, R)` bằng 2 vòng `for` tốn `O(n^2)` bước.\n- Hướng đi: Dùng Cửa sổ trượt cố định độ dài `k` (`win += a[i] - a[i-k]`) hoặc Hai con trỏ `L, R` dịch chuyển một chiều để tổng số bước giảm xuống `O(n)`.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Cần tìm/đếm đoạn con liên tiếp hoặc cặp/bộ ba phần tử thỏa điều kiện tổng với `n <= 10^5 - 10^6`.\n- Tại sao cách ngây thơ chậm: Xét mọi cặp `(L, R)` bằng 2 vòng `for` tốn `O(n^2)` bước.\n- Hướng đi: Dùng Cửa sổ trượt cố định độ dài `k` (`win += a[i] - a[i-k]`) hoặc Hai con trỏ `L, R` dịch chuyển một chiều để tổng số bước giảm xuống `O(n)`.\n\n**2. Cách suy nghĩ cho bài này:**\nDuyệt dãy từ trái sang phải, duy trì biến `cur` lưu tổng đoạn toàn dương liên tiếp kết thúc tại phần tử hiện tại:\n- Nếu `a[i] > 0`: cập nhật `cur += a[i]` và `max_sum = max(max_sum, cur)`.\n- Nếu `a[i] <= 0`: chuỗi phần tử dương bị ngắt, đặt lại `cur = 0`.\n- Với `n <= 10^5` và `a[i] <= 10^4`, tổng tối đa ~`10^9`, nên dùng kiểu `long long` để tránh tràn số.",
   "hints": [
     "Giữ biến `cur` lưu tổng đoạn dương đang xét kết thúc tại ngày hiện tại.",
     "Gặp số `<= 0` thì reset `cur = 0`.",
@@ -28,7 +28,8 @@
   ],
   "complexity": "Time: O(n) | Space: O(1)",
   "starter_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    \n    return 0;\n}",
-  "reference_cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    int n;\n    cin >> n;\n    long long max_sum = 0, cur = 0;\n    for (int i = 0; i < n; i++) {\n        long long a;\n        cin >> a;\n        if (a > 0) {\n            cur += a;\n            max_sum = max(max_sum, cur);\n        } else {\n            cur = 0;\n        }\n    }\n    cout << max_sum << \"\\n\";\n    return 0;\n}",
+  "reference_cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    int n;\n    cin >> n;\n    long long max_sum = 0, cur = 0;\n    for (int i = 0; i < n; i++) {\n        long long a;\n        cin >> a;\n        if (a > 0) {\n            cur += a;\n            max_sum = max(max_sum, cur);\n        } else {\n            cur = 0;\n        }\n    }\n    cout << max_sum << \"\\n\";\n    return 0;\n}\n",
   "id": "gk-max-positive-subarray",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 900
 }

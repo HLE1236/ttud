@@ -2,7 +2,7 @@
 using namespace std;
 int main() {
     string a, b;
-    if (!(cin >> a >> b)) return 0;
+    cin >> a >> b;
     string res;
     int i = (int)a.size() - 1, j = (int)b.size() - 1, carry = 0;
     while (i >= 0 || j >= 0 || carry) {

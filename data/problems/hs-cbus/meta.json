@@ -2,7 +2,7 @@
   "id": "hs-cbus",
   "title": "[HUSTack] Tuyến xe buýt CBUS chuẩn (Đón-trả n hành khách)",
   "track": "midterm",
-  "topic": "backtracking",
+  "topic": "branch-bound",
   "difficulty": "Nâng cao",
   "exam_tags": [
     "HUSTack 2025.2 (P.03.04.02)",
@@ -22,7 +22,7 @@
     }
   ],
   "theory_chapter": "chap3",
-  "mindset": "Đây là bài **CBUS gốc** (phiên bản không giới hạn số trạm trung gian). Dùng Quay lui + Nhánh cận với đánh giá cận dưới `f + (2*n + 1 - step) * cmin >= f_best` (hoặc chặt hơn dùng `min_out[v]`).",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Giới hạn `n` nhỏ (`n <= 12..30`), yêu cầu tìm phương án có **chi phí nhỏ nhất** hoặc **tải lớn nhất nhỏ nhất** (chia nhóm, phân công BCA/BACP, lộ trình TSP/CBUS).\n- Tại sao quay lui thuần bị chậm: Duyệt hết toàn bộ cây đệ quy sẽ vượt quá 1 giây khi `n >= 12`.\n- Hướng đi: Dùng **Nhánh và cận**: trước khi gọi `Try(k + 1)`, ước lượng cận dưới của nhánh; nếu đã `>= kỷ_lục_best` hiện có thì cắt bỏ nhánh đó ngay.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Giới hạn `n` nhỏ (`n <= 12..30`), yêu cầu tìm phương án có **chi phí nhỏ nhất** hoặc **tải lớn nhất nhỏ nhất** (chia nhóm, phân công BCA/BACP, lộ trình TSP/CBUS).\n- Tại sao quay lui thuần bị chậm: Duyệt hết toàn bộ cây đệ quy sẽ vượt quá 1 giây khi `n >= 12`.\n- Hướng đi: Dùng **Nhánh và cận**: trước khi gọi `Try(k + 1)`, ước lượng cận dưới của nhánh; nếu đã `>= kỷ_lục_best` hiện có thì cắt bỏ nhánh đó ngay.\n\n**2. Cách suy nghĩ cho bài này:**\nĐây là bài **CBUS gốc** (phiên bản không giới hạn số trạm trung gian). Dùng Quay lui + Nhánh cận với đánh giá cận dưới `f + (2*n + 1 - step) * cmin >= f_best` (hoặc chặt hơn dùng `min_out[v]`).",
   "hints": [
     "Khách `v <= n` đón được khi `load < k` và chưa đón; trả khách `v > n` được khi đã đón `v - n` và chưa trả `v`."
   ],
@@ -30,5 +30,6 @@
     "time": "Quay lui + Nhánh cận",
     "space": "O(n^2)"
   },
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1650
 }

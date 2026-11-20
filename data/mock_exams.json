@@ -1,0 +1,217 @@
+{
+  "exam_rules": {
+    "duration_seconds": 7200,
+    "problem_count": 5,
+    "max_score": 10.0,
+    "points_per_problem": 2.0,
+    "midterm_note": "Đề Giữa kỳ chỉ giới hạn từ Chương 1 đến hết Quy hoạch động (Chương 4B), tuyệt đối không có Đồ thị (Graph).",
+    "final_note": "Đề Cuối kỳ bao phủ toàn bộ học phần (bao gồm thêm Đồ thị, Cây khung, Đường đi ngắn nhất, Luồng/Cặp ghép, Bitmask DP và Truy vấn Log lớn).",
+    "slots": [
+      {
+        "slot": 1,
+        "label": "Câu 1 · Khởi động (2.0đ)",
+        "elo_range": "800 – 1050",
+        "target_minutes": 10,
+        "desc": "Đọc/ghi dữ liệu lớn, duyệt mảng, đếm tần suất hoặc công thức bậc thang cơ bản."
+      },
+      {
+        "slot": 2,
+        "label": "Câu 2 · Cấu trúc dữ liệu / Cộng dồn / 2 Con trỏ (2.0đ)",
+        "elo_range": "950 – 1300",
+        "target_minutes": 20,
+        "desc": "Mảng cộng dồn 1D/2D, Cửa sổ trượt, Hai con trỏ, Heap, Set hoặc Tham lam cơ bản."
+      },
+      {
+        "slot": 3,
+        "label": "Câu 3 · Quay lui (Backtracking) (2.0đ)",
+        "elo_range": "1100 – 1500",
+        "target_minutes": 25,
+        "desc": "Quay lui sinh tập con, tổ hợp K phần tử, điền dấu hoặc tìm đường trên lưới nhỏ."
+      },
+      {
+        "slot": 4,
+        "label": "Câu 4 · Quy hoạch động (Dynamic Programming) (2.0đ)",
+        "elo_range": "1150 – 1600",
+        "target_minutes": 30,
+        "desc": "Quy hoạch động 1 chiều, Ba lô / Đổi tiền, Dãy con tăng LIS, Xâu đối xứng LPS hoặc Lưới 2D."
+      },
+      {
+        "slot": 5,
+        "label": "Câu 5 · Phân loại điểm 9–10 (Siêu khó · 2.0đ)",
+        "elo_range": "1550 – 2100",
+        "target_minutes": 35,
+        "desc": "Giữa kỳ: Nhánh và cận nặng (BCA, CBUS, CVRP) hoặc QHĐ nâng cao/Chia để trị. Cuối kỳ: Đồ thị nâng cao, Bitmask DP, Steiner Tree, Luồng/Cặp ghép."
+      }
+    ]
+  },
+  "presets": [
+    {
+      "id": "gk-de-01",
+      "title": "Đề Giữa kỳ Chuẩn #1 — Chuẩn cấu trúc đề 2024.1",
+      "track": "midterm",
+      "avg_elo": 1240,
+      "teacher_intro": "Đề bám sát cấu trúc đề thi Giữa kỳ 2024.1: 2 câu đầu kiểm tra phản xạ đọc mảng và cửa sổ trượt `O(n)`, câu 3 quay lui đếm tập con trong đoạn `[A, B]`, câu 4 quy hoạch động 1 chiều, và câu 5 chốt bằng bài Nhánh cận phân công giảng dạy BCA.",
+      "problems": [
+        "gk-count-positive",
+        "gk-k-subseq-weight",
+        "gk-subset-sum-ab",
+        "gk-climbing-stairs",
+        "gk-bca-credit"
+      ]
+    },
+    {
+      "id": "gk-de-02",
+      "title": "Đề Giữa kỳ Chuẩn #2 — Chuẩn cấu trúc đề 2022.1 & 2023.2",
+      "track": "midterm",
+      "avg_elo": 1280,
+      "teacher_intro": "Câu 1 dùng `priority_queue` mô phỏng tập động, câu 2 dùng mảng cộng dồn đếm đoạn tổng chẵn (chú ý mốc `S[0] = 0`), câu 3 quay lui tổ hợp `K` phần tử, câu 4 chọn phần tử không kề nhau, và câu 5 là bài xe buýt CBUS có giới hạn số điểm dừng.",
+      "problems": [
+        "gk-insert-delete-max",
+        "gk-even-subarrays",
+        "gk-k-comb-sum-m",
+        "gk-no-2-adjacent",
+        "gk-cbus-stops"
+      ]
+    },
+    {
+      "id": "gk-de-03",
+      "title": "Đề Giữa kỳ Chuẩn #3 — Chuẩn cấu trúc đề 2024.2",
+      "track": "midterm",
+      "avg_elo": 1290,
+      "teacher_intro": "Tập trung vào kỹ năng Tham lam và Quy hoạch động trên lưới: câu 1 tìm đoạn toàn dương lớn nhất, câu 2 dùng Min-Heap gộp hàng (`gk-robot-merge`), câu 3 điền dấu `+`/`-`, câu 4 tìm đường trên lưới 2D có vật cản và số âm, câu 5 chia để trị trên chuỗi Fibonacci dài `10^{18}`.",
+      "problems": [
+        "gk-max-positive-subarray",
+        "gk-robot-merge",
+        "gk-insert-plus-minus",
+        "gk-treasure-grid",
+        "hs-cbus"
+      ]
+    },
+    {
+      "id": "gk-de-04",
+      "title": "Đề Giữa kỳ Chuẩn #4 — Chuẩn cấu trúc đề 2025.1",
+      "track": "midterm",
+      "avg_elo": 1310,
+      "teacher_intro": "Đề mô phỏng kỳ thi Giữa kỳ 2025.1: câu 1 đếm nhóm tần suất bằng `unordered_map`, câu 2 trượt cửa sổ tìm `k` số `0` liên tiếp, câu 3 robot đi 4 hướng trên ma trận nhỏ bằng quay lui, câu 4 ba lô mua sắm không giới hạn (Unbounded Knapsack), câu 5 chia 3 nhóm cân bằng bằng nhánh cận.",
+      "problems": [
+        "gk-count-group",
+        "gk-resource-allocation",
+        "ck-matrix-max-reward",
+        "gk-supermarket-knapsack",
+        "gk-partition-3-groups"
+      ]
+    },
+    {
+      "id": "gk-de-05",
+      "title": "Đề Giữa kỳ Chuẩn #5 — Tổng hợp HUSTack & Chặt nhị phân",
+      "track": "midterm",
+      "avg_elo": 1360,
+      "teacher_intro": "Đề rèn kỹ năng chống TLE: câu 1 đếm cặp bằng nhau `O(n)`, câu 2 dùng 2 con trỏ tìm đoạn dài nhất tổng `<= Q`, câu 3 quay lui cắt tấm gỗ 2D, câu 4 quy hoạch động không chọn 3 phần tử liên tiếp, câu 5 quy hoạch động khai thác vàng có khoảng cách `[L1, L2]`.",
+      "problems": [
+        "gk-equal-pairs",
+        "hs-longest-bounded-maxseq",
+        "hs-material-cut",
+        "gk-no-3-adjacent",
+        "hs-gold-mining"
+      ]
+    },
+    {
+      "id": "gk-de-06",
+      "title": "Đề Giữa kỳ Chuẩn #6 — Thử thách Điểm 10 (Nặng Nhánh cận & DP)",
+      "track": "midterm",
+      "avg_elo": 1440,
+      "teacher_intro": "Đề nâng cao dành cho mục tiêu 9–10 điểm Giữa kỳ: câu 1 xử lý log thời gian `HH:MM:SS`, câu 2 chia phòng họp bằng Sort + Min-Heap, câu 3 phân công công việc nhánh cận, câu 4 lập lịch trực y tá (DP 1D), câu 5 định tuyến đội xe tải giao hàng CVRP.",
+      "problems": [
+        "hs-analyze-order-raised",
+        "gk-meeting-rooms",
+        "gk-task-assignment",
+        "hs-nurse",
+        "hs-cvrp"
+      ]
+    },
+    {
+      "id": "ck-de-01",
+      "title": "Đề Cuối kỳ Chuẩn #1 — Chuẩn cấu trúc đề 2025.1",
+      "track": "final",
+      "avg_elo": 1270,
+      "teacher_intro": "Sát đề thi Cuối kỳ 2025.1: 2 câu đầu lấy trọn 4 điểm nhanh bằng duyệt mảng và mảng cộng dồn 1D; câu 3 tìm tập phủ đỉnh nhỏ nhất trên đồ thị `n` nhỏ; câu 4 quy hoạch động xâu con đối xứng dài nhất (LPS); câu 5 tìm đường đi đơn trọng số lớn nhất bằng Bitmask DP.",
+      "problems": [
+        "gk-count-gt-c",
+        "gk-range-sum-queries",
+        "ck-min-vertex-cover",
+        "ck-longest-palindrome-subseq",
+        "ck-max-simple-path"
+      ]
+    },
+    {
+      "id": "ck-de-02",
+      "title": "Đề Cuối kỳ Chuẩn #2 — Chuẩn cấu trúc đề 2024.2 (Dijkstra & Xúc xắc)",
+      "track": "final",
+      "avg_elo": 1280,
+      "teacher_intro": "Bám sát đề Cuối kỳ 2024.2: câu 1 tính tiền điện theo khung giờ, câu 2 mảng cộng dồn 2 chiều theo ngày và khách hàng, câu 3 quay lui chia 2 nhóm cân bằng, câu 4 quy hoạch động đếm tổng xúc xắc OTP, câu 5 đường đi ngắn nhất Dijkstra kèm khung giờ (Pareto Dijkstra).",
+      "problems": [
+        "ck-electricity-bill",
+        "ck-daily-transactions-2d",
+        "gk-partition-2-groups",
+        "ck-otp-dice-sum",
+        "ck-travel-time-window"
+      ]
+    },
+    {
+      "id": "ck-de-03",
+      "title": "Đề Cuối kỳ Chuẩn #3 — Chuẩn cấu trúc đề 2024.1 (Kíp 1 & Kíp 2)",
+      "track": "final",
+      "avg_elo": 1350,
+      "teacher_intro": "Đề kết hợp Đồ thị, Nhánh cận và QHĐ trạng thái: câu 1 đếm số lần nhận tiền, câu 2 đường đi ngắn nhất Dijkstra giao hàng, câu 3 nhánh cận phân công việc (hoặc Robot trên ma trận), câu 4 đầu tư chứng khoán tối đa `K` lần giao dịch, câu 5 TSP có ràng buộc thứ tự ưu tiên.",
+      "problems": [
+        "gk-count-positive",
+        "ck-delivery-dijkstra",
+        "ck-matrix-max-reward",
+        "ck-stock-k-transactions",
+        "ck-tsp-precedence"
+      ]
+    },
+    {
+      "id": "ck-de-04",
+      "title": "Đề Cuối kỳ Chuẩn #4 — Chuẩn cấu trúc đề 2023.1 & 2023.2 (MST & 2D LIS)",
+      "track": "final",
+      "avg_elo": 1390,
+      "teacher_intro": "Câu 1 đếm bộ ba tổng bằng `Q` bằng 2 con trỏ, câu 2 cây khung nhỏ nhất Kruskal trên đô thị có sẵn đường hầm (`ck-urban-mst`), câu 3 quay lui đếm cây khung trọng số `<= K`, câu 4 truy tìm kho báu 2D (sắp xếp tọa độ + LIS có trọng số), câu 5 quy hoạch động cắt khối đá 3D.",
+      "problems": [
+        "ck-triple-sum-q",
+        "ck-urban-mst",
+        "hs-count-spanning-trees-k",
+        "ck-treasure-2d-lis",
+        "ck-stone-castle-3d"
+      ]
+    },
+    {
+      "id": "ck-de-05",
+      "title": "Đề Cuối kỳ Chuẩn #5 — Đặc sản Truy vấn Log lớn & Cây Steiner (2021.2 – 2022.1)",
+      "track": "final",
+      "avg_elo": 1520,
+      "teacher_intro": "Đề tổng hợp các bài phân loại cao của năm 2021.2 và 2022.1: câu 1 thống kê đơn hàng thương mại điện tử, câu 2 cây khung biên giới Kruskal dừng sớm, câu 3 phân tích giao dịch ngân hàng (có DFS tìm chu trình độ dài `k`), câu 4 cắt thanh kim loại (Rod Cutting), câu 5 Cây Steiner nối tập đỉnh quan trọng `R`.",
+      "problems": [
+        "hs-analyze-sales-order",
+        "ck-border-comm",
+        "ck-bank-transactions",
+        "ck-rod-cutting",
+        "ck-steiner-tree"
+      ]
+    },
+    {
+      "id": "ck-de-06",
+      "title": "Đề Cuối kỳ Chuẩn #6 — Đồ thị toàn diện (Tarjan, Cặp ghép & Phân hoạch Cây)",
+      "track": "final",
+      "avg_elo": 1560,
+      "teacher_intro": "Đề luyện sâu về Đồ thị & QHĐ Cuối kỳ: câu 1 kiểm tra đồ thị 2 phía bằng BFS, câu 2 tìm Khớp và Cầu bằng Tarjan, câu 3 quay lui xếp thời khóa biểu ICT, câu 4 dãy con D-tăng dài nhất, câu 5 phân tích dữ liệu công dân (BFS tổ tiên + Cặp ghép cực đại tìm tập không quan hệ cha-con).",
+      "problems": [
+        "hs-check-bipartite",
+        "hs-bridges-arti-points",
+        "hs-timetable-ict-count",
+        "ck-d-increasing-subseq",
+        "ck-citizen-data"
+      ]
+    }
+  ]
+}

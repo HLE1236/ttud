@@ -4,7 +4,7 @@
   "exam_tags": [
     "GK 20241"
   ],
-  "topic": "dp-midterm",
+  "topic": "dp-1d",
   "theory_chapter": "chap4b",
   "difficulty": "Cơ bản",
   "day": 7,
@@ -20,7 +20,7 @@
       "explanation": "7 cách: [1,3], [1,1,2], [2,2], [3,1], [1,2,1], [2,1,1], [1,1,1,1]."
     }
   ],
-  "mindset": "Đây là bài Quy hoạch động đầu tiên dễ nhất để hiểu tư duy DP:\n- Gọi `dp[i]` là số cách leo lên đến bậc `i`.\n- Để bước được chân lên bậc `i`, bước cuối cùng của bạn chỉ có thể đi từ `i-1` (nhảy 1 bậc), từ `i-2` (nhảy 2 bậc), hoặc từ `i-3` (nhảy 3 bậc).\n- Vì vậy: `dp[i] = dp[i-1] + dp[i-2] + dp[i-3]`.\n- Trường hợp cơ sở: `dp[1] = 1`, `dp[2] = 2`, `dp[3] = 4`. Chú ý dùng `long long` vì số cách tăng rất nhanh!",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dãy `1..n` (`n` lớn hơn 30, lên tới `10^5 - 10^6`), hỏi số cách đi hoặc tổng lớn nhất có điều kiện giữa các phần tử đứng gần nhau.\n- Tại sao không quay lui được: Khi thử đệ quy, cùng một vị trí `i` bị tính đi tính lại hàng triệu lần.\n- Hướng đi: Quy hoạch động 1 chiều — lập mảng `dp[i]` lưu kết quả tốt nhất tính đến vị trí `i`, tính `dp[i]` trực tiếp từ `dp[i-1], dp[i-2], ...` trong 1 vòng lặp.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dãy `1..n` (`n` lớn hơn 30, lên tới `10^5 - 10^6`), hỏi số cách đi hoặc tổng lớn nhất có điều kiện giữa các phần tử đứng gần nhau.\n- Tại sao không quay lui được: Khi thử đệ quy, cùng một vị trí `i` bị tính đi tính lại hàng triệu lần.\n- Hướng đi: Quy hoạch động 1 chiều — lập mảng `dp[i]` lưu kết quả tốt nhất tính đến vị trí `i`, tính `dp[i]` trực tiếp từ `dp[i-1], dp[i-2], ...` trong 1 vòng lặp.\n\n**2. Cách suy nghĩ cho bài này:**\nĐây là bài Quy hoạch động đầu tiên dễ nhất để hiểu tư duy DP:\n- Gọi `dp[i]` là số cách leo lên đến bậc `i`.\n- Để bước được chân lên bậc `i`, bước cuối cùng của bạn chỉ có thể đi từ `i-1` (nhảy 1 bậc), từ `i-2` (nhảy 2 bậc), hoặc từ `i-3` (nhảy 3 bậc).\n- Vì vậy: `dp[i] = dp[i-1] + dp[i-2] + dp[i-3]`.\n- Trường hợp cơ sở: `dp[1] = 1`, `dp[2] = 2`, `dp[3] = 4`. Chú ý dùng `long long` vì số cách tăng rất nhanh!",
   "hints": [
     "Gọi `dp[i]` là số cách leo lên bậc `i`.",
     "Tính tay 3 giá trị đầu: `dp[1]=1, dp[2]=2, dp[3]=4`.",
@@ -28,7 +28,8 @@
   ],
   "complexity": "Time: O(n) | Space: O(n)",
   "starter_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    \n    return 0;\n}",
-  "reference_cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main() {\n    int n;\n    cin >> n;\n    vector<long long> dp(max(4, n + 1), 0);\n    dp[1] = 1; dp[2] = 2; dp[3] = 4;\n    for (int i = 4; i <= n; i++) {\n        dp[i] = dp[i - 1] + dp[i - 2] + dp[i - 3];\n    }\n    cout << dp[n] << \"\\n\";\n    return 0;\n}",
+  "reference_cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main() {\n    int n;\n    cin >> n;\n    vector<long long> dp(max(4, n + 1), 0);\n    dp[1] = 1; dp[2] = 2; dp[3] = 4;\n    for (int i = 4; i <= n; i++) {\n        dp[i] = dp[i - 1] + dp[i - 2] + dp[i - 3];\n    }\n    cout << dp[n] << \"\\n\";\n    return 0;\n}\n",
   "id": "gk-climbing-stairs",
-  "test_count": 8
+  "test_count": 8,
+  "elo": 950
 }

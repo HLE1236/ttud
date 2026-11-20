@@ -38,7 +38,7 @@ void Try(int idx, int curMax, int need) {
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    if (!(cin >> m >> n)) return 0;
+    cin >> m >> n;
     for (int t = 1; t <= m; t++) {
         int k; cin >> k;
         while (k--) {

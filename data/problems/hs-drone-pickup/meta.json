@@ -1,8 +1,8 @@
 {
   "title": "[HUSTack] Hành trình Drone thu hàng tối đa K chặng (DRONE PICKUP)",
-  "track": "final",
-  "topic": "dp-grid-3d",
-  "difficulty": "Trung bình",
+  "track": "midterm",
+  "topic": "dp-knapsack",
+  "difficulty": "Nâng cao",
   "exam_tags": [
     "HUSTack Programming Advanced (drone)",
     "TTUD Codeforces L.05"
@@ -22,11 +22,12 @@
     }
   ],
   "theory_chapter": "chap4b",
-  "mindset": "Gọi `dp[i][k]` là lượng hàng lớn nhất khi dừng tại điểm `i` sau đúng `k` chặng bay (`0 <= k <= K`).\n- Cơ sở: `dp[1][0] = c[1]`, các trạng thái khác là `-1`.\n- Chuyển trạng thái: từ mỗi trạng thái hợp lệ `(i, k)` với `k < K`, thử nhảy tới mọi `j` từ `i + 1` đến `min(N, i + a[i])`: cập nhật `dp[j][k + 1] = max(dp[j][k + 1], dp[i][k] + c[j])`.\n- Đáp án: `max(dp[N][0..K])`.",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Chọn các món đồ / mệnh giá tiền / lần giao dịch với **tổng trọng lượng / ngân sách giới hạn `W <= 10^5`**.\n- Hướng đi: Quy hoạch động theo dung lượng `dp[w]`. Nếu mỗi món được chọn nhiều lần thì duyệt `w` tăng dần (`cost -> W`); nếu mỗi món chỉ chọn tối đa 1 lần thì duyệt `w` giảm dần (`W -> cost`).\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Chọn các món đồ / mệnh giá tiền / lần giao dịch với **tổng trọng lượng / ngân sách giới hạn `W <= 10^5`**.\n- Hướng đi: Quy hoạch động theo dung lượng `dp[w]`. Nếu mỗi món được chọn nhiều lần thì duyệt `w` tăng dần (`cost -> W`); nếu mỗi món chỉ chọn tối đa 1 lần thì duyệt `w` giảm dần (`W -> cost`).\n\n**2. Cách suy nghĩ cho bài này:**\nGọi `dp[i][k]` là lượng hàng lớn nhất khi dừng tại điểm `i` sau đúng `k` chặng bay (`0 <= k <= K`).\n- Cơ sở: `dp[1][0] = c[1]`, các trạng thái khác là `-1`.\n- Chuyển trạng thái: từ mỗi trạng thái hợp lệ `(i, k)` với `k < K`, thử nhảy tới mọi `j` từ `i + 1` đến `min(N, i + a[i])`: cập nhật `dp[j][k + 1] = max(dp[j][k + 1], dp[i][k] + c[j])`.\n- Đáp án: `max(dp[N][0..K])`.",
   "hints": [
     "Vì `a[i] <= 50`, số phép chuyển trạng thái tối đa chỉ là `N * K * 50 ~ 7.5 * 10^6`, chạy dưới `50 ms`!"
   ],
   "complexity": "O(N * K * max(a_i))",
   "id": "hs-drone-pickup",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1500
 }

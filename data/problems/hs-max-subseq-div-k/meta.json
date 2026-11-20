@@ -2,7 +2,7 @@
   "id": "hs-max-subseq-div-k",
   "title": "[HUSTack] Đoạn con tổng chia hết cho K lớn nhất",
   "track": "midterm",
-  "topic": "dp-midterm",
+  "topic": "dp-1d",
   "difficulty": "Trung bình",
   "exam_tags": [
     "HUSTack 2025.2 (MaxSubseqDivK)",
@@ -25,13 +25,14 @@
       "output": "NOT_FOUND"
     }
   ],
-  "theory_chapter": "chap4",
-  "mindset": "Đây là bản tổng quát trực tiếp của bài Đoạn con tổng chẵn (`K = 2`)! Tổng đoạn `[l..r]` chia hết cho `K` tương đương `pref[r] % K == pref[l-1] % K` (chia dư dương trong `[0..K-1]`). Với mỗi lớp đồng dư `r in [0..K-1]`, chỉ cần lưu `min_pref[r]` nhỏ nhất từng gặp trước đó.",
+  "theory_chapter": "chap4b",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dãy `1..n` (`n` lớn hơn 30, lên tới `10^5 - 10^6`), hỏi số cách đi hoặc tổng lớn nhất có điều kiện giữa các phần tử đứng gần nhau.\n- Tại sao không quay lui được: Khi thử đệ quy, cùng một vị trí `i` bị tính đi tính lại hàng triệu lần.\n- Hướng đi: Quy hoạch động 1 chiều — lập mảng `dp[i]` lưu kết quả tốt nhất tính đến vị trí `i`, tính `dp[i]` trực tiếp từ `dp[i-1], dp[i-2], ...` trong 1 vòng lặp.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dãy `1..n` (`n` lớn hơn 30, lên tới `10^5 - 10^6`), hỏi số cách đi hoặc tổng lớn nhất có điều kiện giữa các phần tử đứng gần nhau.\n- Tại sao không quay lui được: Khi thử đệ quy, cùng một vị trí `i` bị tính đi tính lại hàng triệu lần.\n- Hướng đi: Quy hoạch động 1 chiều — lập mảng `dp[i]` lưu kết quả tốt nhất tính đến vị trí `i`, tính `dp[i]` trực tiếp từ `dp[i-1], dp[i-2], ...` trong 1 vòng lặp.\n\n**2. Cách suy nghĩ cho bài này:**\nĐây là bản tổng quát trực tiếp của bài Đoạn con tổng chẵn (`K = 2`)! Tổng đoạn `[l..r]` chia hết cho `K` tương đương `pref[r] % K == pref[l-1] % K` (chia dư dương trong `[0..K-1]`). Với mỗi lớp đồng dư `r in [0..K-1]`, chỉ cần lưu `min_pref[r]` nhỏ nhất từng gặp trước đó.",
   "hints": [
     "Khởi tạo mảng `min_pref` kích thước `K` toàn `+INF`, riêng `min_pref[0] = 0`.",
     "Tính `int rem = (int)(((pref % K) + K) % K);` để xử lý đúng cả khi `pref` âm.",
     "Cập nhật `ans = max(ans, pref - min_pref[rem])` (nếu `min_pref[rem] < INF/2`), rồi cập nhật `min_pref[rem] = min(min_pref[rem], pref)`."
   ],
   "complexity": "O(n) thời gian, O(K) bộ nhớ",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1350
 }

@@ -20,7 +20,7 @@ void dfs(int k) {
 }
 int main() {
     ios::sync_with_stdio(false); cin.tie(nullptr);
-    if (!(cin >> n >> cap)) return 0;
+    cin >> n >> cap;
     for (int i = 0; i <= 2 * n; ++i) {
         min_out[i] = 1e9;
         for (int j = 0; j <= 2 * n; ++j) {

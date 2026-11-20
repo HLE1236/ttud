@@ -8,7 +8,7 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     int N, M;
-    if (!(cin >> N >> M)) return 0;
+    cin >> N >> M;
     vector<vector<Edge>> adj(N);
     for (int i = 0; i < M; ++i) {
         int u, v, type;

@@ -4,7 +4,7 @@
   "exam_tags": [
     "GK 20221 (Kíp 2)"
   ],
-  "topic": "hash-prefix",
+  "topic": "two-pointers",
   "theory_chapter": "chap2",
   "difficulty": "Cơ bản",
   "day": 2,
@@ -20,14 +20,15 @@
       "explanation": "(2,2,8)=12 và (2,8,8)=18 thỏa mãn trong [6,18]; (8,8,3)=19 > 18."
     }
   ],
-  "mindset": "Y hệt bài `k-subsequence weight equal to m`, chỉ thay điều kiện kiểm tra `win == m` thành `win >= A && win <= B`!",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Cần tìm/đếm đoạn con liên tiếp hoặc cặp/bộ ba phần tử thỏa điều kiện tổng với `n <= 10^5 - 10^6`.\n- Tại sao cách ngây thơ chậm: Xét mọi cặp `(L, R)` bằng 2 vòng `for` tốn `O(n^2)` bước.\n- Hướng đi: Dùng Cửa sổ trượt cố định độ dài `k` (`win += a[i] - a[i-k]`) hoặc Hai con trỏ `L, R` dịch chuyển một chiều để tổng số bước giảm xuống `O(n)`.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Cần tìm/đếm đoạn con liên tiếp hoặc cặp/bộ ba phần tử thỏa điều kiện tổng với `n <= 10^5 - 10^6`.\n- Tại sao cách ngây thơ chậm: Xét mọi cặp `(L, R)` bằng 2 vòng `for` tốn `O(n^2)` bước.\n- Hướng đi: Dùng Cửa sổ trượt cố định độ dài `k` (`win += a[i] - a[i-k]`) hoặc Hai con trỏ `L, R` dịch chuyển một chiều để tổng số bước giảm xuống `O(n)`.\n\n**2. Cách suy nghĩ cho bài này:**\nY hệt bài `k-subsequence weight equal to m`, chỉ thay điều kiện kiểm tra `win == m` thành `win >= A && win <= B`!",
   "hints": [
     "Dùng Cửa sổ trượt độ dài `k` với biến tổng `win`.",
     "Nhớ kiểm tra cả hai đầu: `A <= win && win <= B`."
   ],
   "complexity": "Time: O(n) | Space: O(n)",
   "starter_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    \n    return 0;\n}",
-  "reference_cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    int n, k;\n    long long A, B;\n    cin >> n >> k >> A >> B;\n    vector<long long> a(n);\n    for (int i = 0; i < n; i++) cin >> a[i];\n    long long win = 0, ans = 0;\n    for (int i = 0; i < k; i++) win += a[i];\n    if (win >= A && win <= B) ans++;\n    for (int i = k; i < n; i++) {\n        win += a[i] - a[i - k];\n        if (win >= A && win <= B) ans++;\n    }\n    cout << ans << \"\\n\";\n    return 0;\n}",
+  "reference_cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    int n, k;\n    long long A, B;\n    cin >> n >> k >> A >> B;\n    vector<long long> a(n);\n    for (int i = 0; i < n; i++) cin >> a[i];\n    long long win = 0, ans = 0;\n    for (int i = 0; i < k; i++) win += a[i];\n    if (win >= A && win <= B) ans++;\n    for (int i = k; i < n; i++) {\n        win += a[i] - a[i - k];\n        if (win >= A && win <= B) ans++;\n    }\n    cout << ans << \"\\n\";\n    return 0;\n}\n",
   "id": "gk-k-subseq-bounded",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1050
 }

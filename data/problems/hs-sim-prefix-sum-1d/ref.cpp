@@ -2,7 +2,7 @@
 using namespace std;
 int main() {
     ios::sync_with_stdio(false); cin.tie(nullptr);
-    int n; if (!(cin >> n)) return 0;
+    int n; cin >> n;
     vector<long long> pref(n + 1, 0);
     for (int i = 1; i <= n; ++i) { long long x; cin >> x; pref[i] = pref[i - 1] + x; }
     int q; cin >> q;

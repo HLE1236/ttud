@@ -7,7 +7,7 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     int n;
-    if (!(cin >> n)) return 0;
+    cin >> n;
     vector<long long> dp(max(2, n + 1), 0);
     dp[0] = 1;
     dp[1] = 1;

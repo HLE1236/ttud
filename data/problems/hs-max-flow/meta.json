@@ -2,8 +2,8 @@
   "id": "hs-max-flow",
   "title": "[HUSTack] Luồng cực đại trên mạng (Maximum Flow - Dinic)",
   "track": "final",
-  "topic": "graph-special",
-  "difficulty": "Khó",
+  "topic": "graph-advanced",
+  "difficulty": "Nâng cao",
   "exam_tags": [
     "HUSTack 2025.2 (P.05.12.01)",
     "HUSTack: Chưa làm"
@@ -21,13 +21,14 @@
       "output": "17"
     }
   ],
-  "theory_chapter": "chap6",
-  "mindset": "Với `N <= 10^4, M <= 10^6`, Edmonds-Karp `O(N * M^2)` dễ TLE trên mạng lớn. Giải pháp chuẩn là **Thuật toán Dinic**:\n1. Dùng BFS dựng **đồ thị phân tầng (Level Graph)** từ `s` đến `t`.\n2. Dùng DFS (kết hợp **con trỏ hiện tại `ptr[u]`** để không đi lại các cung chết) đẩy luồng đồng thời trên toàn bộ đường tăng ngắn nhất.\n3. Lưu mỗi cung thuận `u -> v` (dung lượng `c`) đi kèm cung nghịch `v -> u` (dung lượng `0`).",
+  "theory_chapter": "chap5",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Bài toán đồ thị nâng cao (Câu 5 Cuối kỳ): ghép cặp 1-1 giữa 2 tập hợp, đẩy luồng tối đa từ `S` đến `T`, hoặc tìm đường đi đơn / chu trình / cây Steiner với số đỉnh cần nhớ nhỏ (`N <= 20` hoặc `K <= 12`).\n- Hướng đi: Dùng Cặp ghép 2 phía (Kuhn / Hopcroft-Karp), Luồng cực đại (Dinic), hoặc Bitmask DP `dp[mask][u]` với `mask` là dãy bit biểu diễn tập đỉnh đã đi qua.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Bài toán đồ thị nâng cao (Câu 5 Cuối kỳ): ghép cặp 1-1 giữa 2 tập hợp, đẩy luồng tối đa từ `S` đến `T`, hoặc tìm đường đi đơn / chu trình / cây Steiner với số đỉnh cần nhớ nhỏ (`N <= 20` hoặc `K <= 12`).\n- Hướng đi: Dùng Cặp ghép 2 phía (Kuhn / Hopcroft-Karp), Luồng cực đại (Dinic), hoặc Bitmask DP `dp[mask][u]` với `mask` là dãy bit biểu diễn tập đỉnh đã đi qua.\n\n**2. Cách suy nghĩ cho bài này:**\nVới `N <= 10^4, M <= 10^6`, Edmonds-Karp `O(N * M^2)` dễ TLE trên mạng lớn. Giải pháp chuẩn là **Thuật toán Dinic**:\n1. Dùng BFS dựng **đồ thị phân tầng (Level Graph)** từ `s` đến `t`.\n2. Dùng DFS (kết hợp **con trỏ hiện tại `ptr[u]`** để không đi lại các cung chết) đẩy luồng đồng thời trên toàn bộ đường tăng ngắn nhất.\n3. Lưu mỗi cung thuận `u -> v` (dung lượng `c`) đi kèm cung nghịch `v -> u` (dung lượng `0`).",
   "hints": [
     "Nhớ lưu trữ `long long` cho luồng và tổng luồng để tránh tràn `int`.",
     "Cập nhật `ptr[u]` ngay trong vòng `for (int& cid = ptr[u]; ...)` — đây là tối ưu bắt buộc để Dinic đạt độ phức tạp `O(V^2 E)` / `O(E sqrt(V))`.",
     "Kiểm tra điều kiện dừng DFS: `if (pushed == 0) return 0;` và đi qua cung nghịch `edges[id ^ 1].flow -= tr`."
   ],
   "complexity": "Dinic Algorithm (rất nhanh trên đồ thị tới 10^4 đỉnh)",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1700
 }

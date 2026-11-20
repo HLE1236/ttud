@@ -4,7 +4,7 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     int n, a, b, X, Y;
-    if (!(cin >> n >> a >> b >> X >> Y)) return 0;
+    cin >> n >> a >> b >> X >> Y;
     vector<int> dist(n + 1, -1);
     queue<int> q;
     dist[X] = 0;

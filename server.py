@@ -135,6 +135,19 @@ def init_db():
             value TEXT NOT NULL
         )
     """)
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS exam_history (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            exam_id TEXT NOT NULL,
+            title TEXT NOT NULL,
+            track TEXT NOT NULL,
+            total_score REAL NOT NULL,
+            duration_used_sec INTEGER NOT NULL,
+            problems_json TEXT NOT NULL,
+            feedback TEXT DEFAULT '',
+            created_at TEXT NOT NULL
+        )
+    """)
     conn.commit()
     conn.close()
 
@@ -163,6 +176,7 @@ def load_all_problem_summaries():
                 "track": m["track"],
                 "topic": m["topic"],
                 "difficulty": m["difficulty"],
+                "elo": m.get("elo", 1200),
                 "exam_tags": m.get("exam_tags", []),
                 "time_limit_ms": m.get("time_limit_ms", 1000),
                 "has_official_tests": m.get("has_official_tests", False),
@@ -194,6 +208,8 @@ def compile_cpp(code, tmpdir):
     with open(src_path, "w", encoding="utf-8") as f:
         f.write(code)
     cmd = [GXX_PATH, "-O2", "-std=c++17", "-Wall"]
+    if os.name == "nt":
+        cmd.append("-Wl,--stack,268435456")
     if os.path.isdir(COMPAT_INC_DIR):
         cmd.extend(["-idirafter", COMPAT_INC_DIR])
     cmd.extend([src_path, "-o", exe_path])
@@ -259,7 +275,7 @@ def judge_run_sample(pid, code, custom_input):
         meta = json.load(f)
     tl_sec = max(0.5, meta.get("time_limit_ms", 1000) / 1000.0)
 
-    with tempfile.TemporaryDirectory() as tmpdir:
+    with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as tmpdir:
         exe_path, err = compile_cpp(code, tmpdir)
         if not exe_path:
             return {"verdict": "CE", "compile_error": err, "output": "", "time_ms": 0}, 200
@@ -313,7 +329,7 @@ def judge_submit(pid, code):
     has_checker = os.path.isfile(checker_path)
     total = len(in_files)
 
-    with tempfile.TemporaryDirectory() as tmpdir:
+    with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as tmpdir:
         exe_path, cerr = compile_cpp(code, tmpdir)
         if not exe_path:
             verdict = "CE"
@@ -534,6 +550,11 @@ class TTUDHandler(BaseHTTPRequestHandler):
             if os.path.isfile(rec_path):
                 with open(rec_path, "r", encoding="utf-8") as f:
                     theory["recognition"] = json.load(f)
+            mock_exams_path = os.path.join(DATA_DIR, "mock_exams.json")
+            mock_exams = {}
+            if os.path.isfile(mock_exams_path):
+                with open(mock_exams_path, "r", encoding="utf-8") as f:
+                    mock_exams = json.load(f)
             problems = load_all_problem_summaries()
             for p in problems:
                 p["has_guide"] = os.path.isfile(os.path.join(PROBLEMS_DIR, p["id"], "guide.json"))
@@ -546,6 +567,15 @@ class TTUDHandler(BaseHTTPRequestHandler):
             roadmap_checked = {str(r["day"]): r["checked"] for r in cur.fetchall()}
             cur.execute("SELECT key, value FROM settings")
             settings = {r["key"]: r["value"] for r in cur.fetchall()}
+            cur.execute("SELECT * FROM exam_history ORDER BY id DESC LIMIT 30")
+            exam_history = []
+            for r in cur.fetchall():
+                d = dict(r)
+                try:
+                    d["problems"] = json.loads(d.pop("problems_json") or "[]")
+                except Exception:
+                    d["problems"] = []
+                exam_history.append(d)
             conn.close()
 
             for p in problems:
@@ -555,12 +585,16 @@ class TTUDHandler(BaseHTTPRequestHandler):
             return self.send_json({
                 "roadmap": roadmap,
                 "theory": theory,
+                "mock_exams": mock_exams,
+                "exam_history": exam_history,
                 "problems": problems,
                 "roadmap_checked": roadmap_checked,
                 "settings": settings,
                 "stats": compute_stats(problems, status_map),
                 "gxx_path": GXX_PATH,
                 "gdb_path": debugger.GDB_PATH or "",
+                "debugger_backend": debugger.ACTIVE_BACKEND or "",
+                "debugger_path": debugger.ACTIVE_DEBUGGER_PATH or "",
             })
 
         if path.startswith("/api/problem/"):
@@ -760,6 +794,42 @@ class TTUDHandler(BaseHTTPRequestHandler):
             conn.close()
             return self.send_json({"ok": True})
 
+        if path == "/api/exam/finish":
+            exam_id = str(body.get("exam_id", "custom"))
+            title = str(body.get("title", "Đề thi thử"))
+            track = str(body.get("track", "midterm"))
+            total_score = float(body.get("total_score", 0.0))
+            duration_used_sec = int(body.get("duration_used_sec", 0))
+            problems = body.get("problems", [])
+            feedback = str(body.get("feedback", ""))
+            ts = now_iso()
+            conn = get_db()
+            cur = conn.cursor()
+            cur.execute(
+                """
+                INSERT INTO exam_history (exam_id, title, track, total_score, duration_used_sec, problems_json, feedback, created_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                (exam_id, title, track, total_score, duration_used_sec, json.dumps(problems, ensure_ascii=False), feedback, ts),
+            )
+            new_id = cur.lastrowid
+            conn.commit()
+            conn.close()
+            return self.send_json({
+                "ok": True,
+                "record": {
+                    "id": new_id,
+                    "exam_id": exam_id,
+                    "title": title,
+                    "track": track,
+                    "total_score": total_score,
+                    "duration_used_sec": duration_used_sec,
+                    "problems": problems,
+                    "feedback": feedback,
+                    "created_at": ts,
+                }
+            })
+
         if path == "/api/debug/start":
             res = DEBUG_MANAGER.start(
                 body.get("code", ""),
@@ -830,7 +900,8 @@ def main():
         for ip in get_lan_ips():
             print(f"LAN / Network access: http://{ip}:{port}")
     print(f"C++ Compiler: {GXX_PATH}")
-    print(f"GDB Debugger: {debugger.GDB_PATH or 'Not found'}")
+    dbg_info = f"{debugger.ACTIVE_BACKEND} ({debugger.ACTIVE_DEBUGGER_PATH})" if debugger.ACTIVE_BACKEND else "Not found"
+    print(f"C++ Debugger: {dbg_info}")
     try:
         server.serve_forever()
     except KeyboardInterrupt:

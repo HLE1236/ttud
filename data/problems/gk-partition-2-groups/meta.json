@@ -2,7 +2,7 @@
   "id": "gk-partition-2-groups",
   "title": "Chia n túi tiền thành 2 phần chênh lệch nhỏ nhất",
   "track": "midterm",
-  "topic": "backtracking",
+  "topic": "branch-bound",
   "difficulty": "Trung bình",
   "exam_tags": [
     "Cuối kỳ 2023.1 Kíp 1 (Bài 3)"
@@ -20,8 +20,8 @@
       "output": "66"
     }
   ],
-  "theory_chapter": "chap2",
-  "mindset": "Thấy giới hạn `n <= 20` là tín hiệu đỏ cực rõ của **Quay lui nhị phân** (`2^20 ~ 10^6` trạng thái) hoặc **Bitmask** hoặc DP tổng.\nMỗi túi `i` chỉ có 2 lựa chọn: vào nhóm 1 hoặc nhóm 2. Gọi `total` là tổng cả `n` túi, nếu nhóm 1 có tổng `s1` thì nhóm 2 có tổng `total - s1`, hiệu là `|total - 2*s1|`!",
+  "theory_chapter": "chap3",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Giới hạn `n` nhỏ (`n <= 12..30`), yêu cầu tìm phương án có **chi phí nhỏ nhất** hoặc **tải lớn nhất nhỏ nhất** (chia nhóm, phân công BCA/BACP, lộ trình TSP/CBUS).\n- Tại sao quay lui thuần bị chậm: Duyệt hết toàn bộ cây đệ quy sẽ vượt quá 1 giây khi `n >= 12`.\n- Hướng đi: Dùng **Nhánh và cận**: trước khi gọi `Try(k + 1)`, ước lượng cận dưới của nhánh; nếu đã `>= kỷ_lục_best` hiện có thì cắt bỏ nhánh đó ngay.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Giới hạn `n` nhỏ (`n <= 12..30`), yêu cầu tìm phương án có **chi phí nhỏ nhất** hoặc **tải lớn nhất nhỏ nhất** (chia nhóm, phân công BCA/BACP, lộ trình TSP/CBUS).\n- Tại sao quay lui thuần bị chậm: Duyệt hết toàn bộ cây đệ quy sẽ vượt quá 1 giây khi `n >= 12`.\n- Hướng đi: Dùng **Nhánh và cận**: trước khi gọi `Try(k + 1)`, ước lượng cận dưới của nhánh; nếu đã `>= kỷ_lục_best` hiện có thì cắt bỏ nhánh đó ngay.\n\n**2. Cách suy nghĩ cho bài này:**\nThấy giới hạn `n <= 20` là tín hiệu đỏ cực rõ của **Quay lui nhị phân** (`2^20 ~ 10^6` trạng thái) hoặc **Bitmask** hoặc DP tổng.\nMỗi túi `i` chỉ có 2 lựa chọn: vào nhóm 1 hoặc nhóm 2. Gọi `total` là tổng cả `n` túi, nếu nhóm 1 có tổng `s1` thì nhóm 2 có tổng `total - s1`, hiệu là `|total - 2*s1|`!",
   "hints": [
     "Thậm chí để tối ưu hơn nửa số nhánh: túi đầu tiên `a[0]` luôn có thể cố định ở nhóm 1 (giảm từ `2^n` xuống `2^(n-1)`).",
     "Nếu tổng hiện tại của nhóm 1 đã vượt `total / 2` đáng kể mà `2*s1 - total >= best`, bạn có thể cắt nhánh ngay vì cộng thêm số dương chỉ làm `s1` to hơn!"
@@ -30,5 +30,6 @@
     "time": "O(2^n)",
     "space": "O(n)"
   },
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1250
 }

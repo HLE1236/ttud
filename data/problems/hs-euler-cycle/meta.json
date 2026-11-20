@@ -2,7 +2,7 @@
   "id": "hs-euler-cycle",
   "title": "[HUSTack] Tìm chu trình Euler (Euler Cycle - Hierholzer)",
   "track": "final",
-  "topic": "graph-special",
+  "topic": "graph-advanced",
   "difficulty": "Trung bình",
   "exam_tags": [
     "HUSTack 2025.2 (Euler-Cycle)",
@@ -21,13 +21,14 @@
       "output": "13\n1 2 3 4 2 5 4 6 5 7 6 3 1"
     }
   ],
-  "theory_chapter": "chap6",
-  "mindset": "Điều kiện cần và đủ để đồ thị vô hướng có chu trình Euler: (1) Mọi đỉnh đều có **bậc chẵn**, và (2) Tất cả các đỉnh có bậc `> 0` phải thuộc **cùng 1 thành phần liên thông**. Khi thỏa, ta dùng **Thuật toán Hierholzer**:\n1. Lưu cạnh kèm `edge_id` và mảng `used_edge[0..m-1]` (đồ thị vô hướng mỗi cạnh xuất hiện ở cả `adj[u]` lẫn `adj[v]` nên nhất thiết phải đánh dấu `used_edge[id]`!).\n2. Dùng stack lặp: đi tới khi bế tắc ở đỉnh `u` thì đẩy `u` vào `cycle` rồi lùi stack.\n3. Kiểm tra `cycle.size() == m + 1` (tự động đảm bảo đồ thị không bị rời rạc cạnh!).",
+  "theory_chapter": "chap5",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Bài toán đồ thị nâng cao (Câu 5 Cuối kỳ): ghép cặp 1-1 giữa 2 tập hợp, đẩy luồng tối đa từ `S` đến `T`, hoặc tìm đường đi đơn / chu trình / cây Steiner với số đỉnh cần nhớ nhỏ (`N <= 20` hoặc `K <= 12`).\n- Hướng đi: Dùng Cặp ghép 2 phía (Kuhn / Hopcroft-Karp), Luồng cực đại (Dinic), hoặc Bitmask DP `dp[mask][u]` với `mask` là dãy bit biểu diễn tập đỉnh đã đi qua.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Bài toán đồ thị nâng cao (Câu 5 Cuối kỳ): ghép cặp 1-1 giữa 2 tập hợp, đẩy luồng tối đa từ `S` đến `T`, hoặc tìm đường đi đơn / chu trình / cây Steiner với số đỉnh cần nhớ nhỏ (`N <= 20` hoặc `K <= 12`).\n- Hướng đi: Dùng Cặp ghép 2 phía (Kuhn / Hopcroft-Karp), Luồng cực đại (Dinic), hoặc Bitmask DP `dp[mask][u]` với `mask` là dãy bit biểu diễn tập đỉnh đã đi qua.\n\n**2. Cách suy nghĩ cho bài này:**\nĐiều kiện cần và đủ để đồ thị vô hướng có chu trình Euler: (1) Mọi đỉnh đều có **bậc chẵn**, và (2) Tất cả các đỉnh có bậc `> 0` phải thuộc **cùng 1 thành phần liên thông**. Khi thỏa, ta dùng **Thuật toán Hierholzer**:\n1. Lưu cạnh kèm `edge_id` và mảng `used_edge[0..m-1]` (đồ thị vô hướng mỗi cạnh xuất hiện ở cả `adj[u]` lẫn `adj[v]` nên nhất thiết phải đánh dấu `used_edge[id]`!).\n2. Dùng stack lặp: đi tới khi bế tắc ở đỉnh `u` thì đẩy `u` vào `cycle` rồi lùi stack.\n3. Kiểm tra `cycle.size() == m + 1` (tự động đảm bảo đồ thị không bị rời rạc cạnh!).",
   "hints": [
     "Kiểm tra nhanh `deg[u] % 2 == 1` -> lập tức in `-1`.",
     "Chọn đỉnh xuất phát `start` là đỉnh đầu tiên có `deg[start] > 0` (hoặc `1` nếu `m == 0`).",
     "Sau khi Hierholzer kết thúc, nếu `cycle.size() != m + 1` chứng tỏ vẫn còn cạnh ở thành phần liên thông khác -> in `-1`."
   ],
   "complexity": "O(n + m)",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1450
 }

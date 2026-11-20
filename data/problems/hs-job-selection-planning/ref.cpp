@@ -4,7 +4,7 @@ int par[100005];
 int find_slot(int t) { return par[t] == t ? t : par[t] = find_slot(par[t]); }
 int main() {
     ios::sync_with_stdio(false); cin.tie(nullptr);
-    int n; if (!(cin >> n)) return 0;
+    int n; cin >> n;
     vector<pair<long long, int>> jobs(n);
     int maxd = n;
     for (int i = 0; i < n; ++i) {

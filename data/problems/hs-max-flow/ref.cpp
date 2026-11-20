@@ -5,7 +5,7 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     int n, m;
-    if (!(cin >> n >> m)) return 0;
+    cin >> n >> m;
     int s, t; cin >> s >> t;
     vector<vector<Edge>> adj(n + 1);
     auto add_edge = [&](int u, int v, long long c) {

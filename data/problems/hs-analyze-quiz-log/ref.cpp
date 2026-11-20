@@ -19,7 +19,6 @@ int main() {
     }
 
     unordered_map<string, pair<string, int>> latest;
-    latest.reserve(131072);
     while (cin >> uid && uid != "#") {
         cin >> tid >> aid >> tm;
         auto it = ansInfo.find(aid);
@@ -34,7 +33,6 @@ int main() {
     }
 
     unordered_map<string, long long> testScore;
-    testScore.reserve(65536);
     for (const auto& kv : latest) {
         if (kv.second.second == 0) continue;
         size_t p1 = kv.first.find('#');

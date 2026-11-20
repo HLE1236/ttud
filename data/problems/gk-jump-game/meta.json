@@ -2,7 +2,7 @@
   "id": "gk-jump-game",
   "title": "Con đường huyền bí (Minimum Jumps O(n))",
   "track": "midterm",
-  "topic": "greedy-2ptr",
+  "topic": "greedy",
   "difficulty": "Trung bình",
   "exam_tags": [
     "Giữa kỳ 2022.2 (Con đường huyền bí)",
@@ -21,8 +21,8 @@
       "output": "3\n10"
     }
   ],
-  "theory_chapter": "chap3",
-  "mindset": "Vì `n <= 10^6`, DP `O(n^2)` hoặc BFS đầy đủ sẽ vượt giới hạn thời gian. Bài toán giải được trong `O(n)` bằng **Tham lam theo tầm với (Greedy / Implicit BFS Layers)**:\nGọi `cur_end` là biên xa nhất có thể đạt được bằng số bước hiện tại `jumps`, và `farthest` là vị trí xa nhất có thể vươn tới từ bất kỳ ô nào trong đoạn đang xét (`max(farthest, i + p[i])`). Khi duyệt tới `i == cur_end` (và `i < n - 1`), bắt buộc tăng `jumps++` và cập nhật `cur_end = farthest`.",
+  "theory_chapter": "chap4a",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Bài toán yêu cầu chọn nhiều đoạn rời nhau nhất, chia ít phòng nhất, hoặc ghép các phần tử với `n <= 10^5`.\n- Tại sao không quay lui được: `n = 10^5` không thể thử mọi tổ hợp `2^n`.\n- Hướng đi: Sắp xếp dữ liệu theo tiêu chí cố định (điểm kết thúc sớm nhất, hoặc đưa vào Min-Heap) để ở mỗi bước luôn lấy lựa chọn có lợi nhất.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Bài toán yêu cầu chọn nhiều đoạn rời nhau nhất, chia ít phòng nhất, hoặc ghép các phần tử với `n <= 10^5`.\n- Tại sao không quay lui được: `n = 10^5` không thể thử mọi tổ hợp `2^n`.\n- Hướng đi: Sắp xếp dữ liệu theo tiêu chí cố định (điểm kết thúc sớm nhất, hoặc đưa vào Min-Heap) để ở mỗi bước luôn lấy lựa chọn có lợi nhất.\n\n**2. Cách suy nghĩ cho bài này:**\nVì `n <= 10^6`, DP `O(n^2)` hoặc BFS đầy đủ sẽ vượt giới hạn thời gian. Bài toán giải được trong `O(n)` bằng **Tham lam theo tầm với (Greedy / Implicit BFS Layers)**:\nGọi `cur_end` là biên xa nhất có thể đạt được bằng số bước hiện tại `jumps`, và `farthest` là vị trí xa nhất có thể vươn tới từ bất kỳ ô nào trong đoạn đang xét (`max(farthest, i + p[i])`). Khi duyệt tới `i == cur_end` (và `i < n - 1`), bắt buộc tăng `jumps++` và cập nhật `cur_end = farthest`.",
   "hints": [
     "Nếu `n == 1`, bạn đã đứng ở đích nên số bước nhảy là `0`.",
     "Trong lúc duyệt `i` từ `0` đến `n - 2`: cập nhật `farthest = max(farthest, i + p[i])`. Khi `i == curEnd`: nếu `farthest <= i` thì bị kẹt (in `-1`), ngược lại `jumps++` và `curEnd = farthest` (nếu `curEnd >= n - 1` có thể dừng sớm!)."
@@ -31,5 +31,6 @@
     "time": "O(n)",
     "space": "O(n) hoặc O(1)"
   },
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1250
 }

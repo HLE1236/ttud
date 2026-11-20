@@ -2,8 +2,8 @@
   "id": "hs-max-independent-set-tree",
   "title": "[HUSTack] Tập độc lập có trọng số lớn nhất trên cây (Tree MIS)",
   "track": "final",
-  "topic": "graph-bfs-dfs",
-  "difficulty": "Khó",
+  "topic": "graph-traversal",
+  "difficulty": "Nâng cao",
   "exam_tags": [
     "HUSTack 2025.2 (P.05.11.02)",
     "HUSTack: Chưa làm"
@@ -21,13 +21,14 @@
       "output": "38"
     }
   ],
-  "theory_chapter": "chap6",
-  "mindset": "**Quy hoạch động trên cây (Tree DP)**: chọn gốc `1`, dựng thứ tự BFS từ gốc xuống rồi tính ngược từ lá lên gốc (không cần đệ quy nên chạy cực an toàn với `n = 10^5`!):\n- `dp[u][1]`: tổng lớn nhất trong cây con gốc `u` khi **chọn `u`** -> không được chọn con `v` nào: `dp[u][1] = w[u] + sum dp[v][0]`.\n- `dp[u][0]`: tổng lớn nhất khi **không chọn `u`** -> mỗi con `v` chọn hay không tùy ý: `dp[u][0] = sum max(dp[v][0], dp[v][1])`.",
+  "theory_chapter": "chap5",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dữ liệu biểu diễn các đỉnh nối với nhau bằng các cạnh (đồ thị hoặc cây). Yêu cầu đếm cụm liên thông, kiểm tra đồ thị 2 phía, tìm đường ít bước nhất, tìm Khớp/Cầu/SCC hoặc tính toán trên Cây.\n- Hướng đi: Lưu danh sách kề `adj[u]`. Dùng BFS (`queue`) nếu tìm số bước ít nhất; dùng DFS truyền `parent` nếu là Cây; dùng Tarjan (`num`, `low`) nếu tìm Khớp/Cầu/SCC.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dữ liệu biểu diễn các đỉnh nối với nhau bằng các cạnh (đồ thị hoặc cây). Yêu cầu đếm cụm liên thông, kiểm tra đồ thị 2 phía, tìm đường ít bước nhất, tìm Khớp/Cầu/SCC hoặc tính toán trên Cây.\n- Hướng đi: Lưu danh sách kề `adj[u]`. Dùng BFS (`queue`) nếu tìm số bước ít nhất; dùng DFS truyền `parent` nếu là Cây; dùng Tarjan (`num`, `low`) nếu tìm Khớp/Cầu/SCC.\n\n**2. Cách suy nghĩ cho bài này:**\n**Quy hoạch động trên cây (Tree DP)**: chọn gốc `1`, dựng thứ tự BFS từ gốc xuống rồi tính ngược từ lá lên gốc (không cần đệ quy nên chạy cực an toàn với `n = 10^5`!):\n- `dp[u][1]`: tổng lớn nhất trong cây con gốc `u` khi **chọn `u`** -> không được chọn con `v` nào: `dp[u][1] = w[u] + sum dp[v][0]`.\n- `dp[u][0]`: tổng lớn nhất khi **không chọn `u`** -> mỗi con `v` chọn hay không tùy ý: `dp[u][0] = sum max(dp[v][0], dp[v][1])`.",
   "hints": [
     "Chạy BFS từ đỉnh `1` để lưu danh sách đỉnh theo thứ tự `order` từ trên xuống và mảng `parent[u]`.",
     "Duyệt ngược `order` từ cuối về đầu để đảm bảo mọi con `v` đã tính xong trước cha `u`.",
     "Kết quả cuối cùng là `max(dp[1][0], dp[1][1])`."
   ],
   "complexity": "O(n)",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1550
 }

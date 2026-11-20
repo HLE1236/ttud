@@ -2,8 +2,8 @@
   "id": "hs-max-matching-bipartite",
   "title": "[HUSTack] Cặp ghép cực đại trên đồ thị hai phía (Max Bipartite Matching)",
   "track": "final",
-  "topic": "graph-special",
-  "difficulty": "Khó",
+  "topic": "graph-advanced",
+  "difficulty": "Nâng cao",
   "exam_tags": [
     "HUSTack 2025.2 (P.05.12.02)",
     "HUSTack: Chưa làm"
@@ -21,13 +21,14 @@
       "output": "3"
     }
   ],
-  "theory_chapter": "chap6",
-  "mindset": "Vì `n, m <= 10000`, thuật toán **Kuhn DFS `O(V * E)`** đơn giản có thể hơi chậm nếu đồ thị dày, nên chuẩn nhất là dùng **Thuật toán Hopcroft-Karp `O(E * sqrt(V))`**: mỗi pha dùng BFS tìm tập các đường mở ngắn nhất đồng thời rồi đẩy qua nhiều DFS cùng lúc (hoặc Dinic trên đồ thị mạng hai phía).",
+  "theory_chapter": "chap5",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Bài toán đồ thị nâng cao (Câu 5 Cuối kỳ): ghép cặp 1-1 giữa 2 tập hợp, đẩy luồng tối đa từ `S` đến `T`, hoặc tìm đường đi đơn / chu trình / cây Steiner với số đỉnh cần nhớ nhỏ (`N <= 20` hoặc `K <= 12`).\n- Hướng đi: Dùng Cặp ghép 2 phía (Kuhn / Hopcroft-Karp), Luồng cực đại (Dinic), hoặc Bitmask DP `dp[mask][u]` với `mask` là dãy bit biểu diễn tập đỉnh đã đi qua.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Bài toán đồ thị nâng cao (Câu 5 Cuối kỳ): ghép cặp 1-1 giữa 2 tập hợp, đẩy luồng tối đa từ `S` đến `T`, hoặc tìm đường đi đơn / chu trình / cây Steiner với số đỉnh cần nhớ nhỏ (`N <= 20` hoặc `K <= 12`).\n- Hướng đi: Dùng Cặp ghép 2 phía (Kuhn / Hopcroft-Karp), Luồng cực đại (Dinic), hoặc Bitmask DP `dp[mask][u]` với `mask` là dãy bit biểu diễn tập đỉnh đã đi qua.\n\n**2. Cách suy nghĩ cho bài này:**\nVì `n, m <= 10000`, thuật toán **Kuhn DFS `O(V * E)`** đơn giản có thể hơi chậm nếu đồ thị dày, nên chuẩn nhất là dùng **Thuật toán Hopcroft-Karp `O(E * sqrt(V))`**: mỗi pha dùng BFS tìm tập các đường mở ngắn nhất đồng thời rồi đẩy qua nhiều DFS cùng lúc (hoặc Dinic trên đồ thị mạng hai phía).",
   "hints": [
     "Hopcroft-Karp chia 2 bước lặp: `bfs()` phân tầng các đỉnh tự do phía trái qua cạnh chưa ghép -> cạnh đã ghép; sau đó chạy `dfs(u)` cho mọi đỉnh trái tự do có `dist[u] == 0`.",
     "Dùng `pairU[1..n]`, `pairV[1..m]` và `dist[0..n]` (trong đó `0` đại diện cho đỉnh giả `NIL`!).",
     "Đặt `INF = 1e9`; mỗi lần `bfs()` trả về `true` tức là còn đường tăng cặp ghép."
   ],
   "complexity": "O(E * sqrt(V)) (Hopcroft-Karp)",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1600
 }

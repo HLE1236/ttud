@@ -1,0 +1,7 @@
+{
+  "pattern": "greedy-interval-schedule",
+  "recognize": "Đọc đề & Nhìn giới hạn: Bài toán yêu cầu chọn nhiều đoạn rời nhau nhất, chia ít phòng nhất, hoặc ghép các phần tử với `n <= 10^5`.\n- Tại sao không quay lui được: `n = 10^5` không thể thử mọi tổ hợp `2^n`.\n- Hướng đi: Sắp xếp dữ liệu theo tiêu chí cố định (điểm kết thúc sớm nhất, hoặc đưa vào Min-Heap) để ở mỗi bước luôn lấy lựa chọn có lợi nhất.",
+  "idea": "Bài toán **Lập lịch chọn đoạn rời nhau (Activity Selection)**: sắp xếp các đoạn tăng dần theo đầu mút kết thúc `b_i`. Ở mỗi bước, luôn chọn đoạn có `b_i` nhỏ nhất sao cho `a_i > last_end` để giữ khoảng thời gian còn lại cho các đoạn sau là lớn nhất.\n\n**Các điểm cần lưu ý khi code:**\n- Chú ý 'không có điểm chung' nên điều kiện chọn là `a_i > last_b` (ngặt).",
+  "pseudocode": "Bước 1: Đọc dữ liệu đầu vào (bật Fast I/O, dùng long long cho biến tổng/đáp án)\nBước 2: Chú ý 'không có điểm chung' nên điều kiện chọn là a_i > last_b (ngặt).\nBước 3: In kết quả cuối cùng ra màn hình",
+  "skeleton_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    ios::sync_with_stdio(false); cin.tie(nullptr);\n    int n; cin >> n;\n    vector<pair<int, int>> seg(n);\n    for (int i = 0; i < n; ++i) cin >> seg[i].second >> seg[i].first; // (b, a)\n    sort(seg.begin(), seg.end());\n    int last = -1, ans = 0;\n        if (a > last) { ans++; last = b; }\n\n    // TODO: Hoàn thiện thuật toán xử lý và in kết quả theo các bước hướng dẫn\n\n    return 0;\n}\n"
+}

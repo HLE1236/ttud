@@ -1,9 +1,9 @@
 {
   "id": "hs-lcs",
   "title": "[HUSTack] Dãy con chung dài nhất (LCS)",
-  "track": "final",
-  "topic": "dp-lis-lcs",
-  "difficulty": "Cơ bản",
+  "track": "midterm",
+  "topic": "dp-subseq",
+  "difficulty": "Trung bình",
   "exam_tags": [
     "HUSTack 2025.2 (P.05.09.04)",
     "HUSTack: Chưa làm"
@@ -21,13 +21,14 @@
       "output": "5"
     }
   ],
-  "theory_chapter": "chap5",
-  "mindset": "Gọi `dp[i][j]` là độ dài LCS của tiền tố `X[1..i]` và `Y[1..j]`. Nếu `X[i] == Y[j]` thì `dp[i][j] = dp[i-1][j-1] + 1`; ngược lại lấy `max(dp[i-1][j], dp[i][j-1])`. Do `n, m` tới `10000`, mảng 2 chiều `10001 x 10001` kiểu `int` sẽ tốn ~`400 MB` dễ bị MLE (quá `256 MB`), nên ta BẮT BUỘC tối ưu bộ nhớ bằng **mảng lăn 1 chiều (rolling array)** chỉ tốn `O(m)`.",
+  "theory_chapter": "chap4b",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Tìm **dãy con** (được phép bỏ cách quãng, giữ nguyên thứ tự) tăng dài nhất (LIS), hoặc tìm phần chung / đối xứng trên 1-2 xâu (LCS, LPS).\n- Hướng đi: Dùng `dp[i]` = độ dài dãy tăng kết thúc tại `i` (hoặc mảng `tail[]` + `lower_bound` khi `n = 10^5`); với 2 xâu dùng bảng 2 chiều `dp[i][j]` trên `i` ký tự đầu xâu A và `j` ký tự đầu xâu B.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Tìm **dãy con** (được phép bỏ cách quãng, giữ nguyên thứ tự) tăng dài nhất (LIS), hoặc tìm phần chung / đối xứng trên 1-2 xâu (LCS, LPS).\n- Hướng đi: Dùng `dp[i]` = độ dài dãy tăng kết thúc tại `i` (hoặc mảng `tail[]` + `lower_bound` khi `n = 10^5`); với 2 xâu dùng bảng 2 chiều `dp[i][j]` trên `i` ký tự đầu xâu A và `j` ký tự đầu xâu B.\n\n**2. Cách suy nghĩ cho bài này:**\nGọi `dp[i][j]` là độ dài LCS của tiền tố `X[1..i]` và `Y[1..j]`. Nếu `X[i] == Y[j]` thì `dp[i][j] = dp[i-1][j-1] + 1`; ngược lại lấy `max(dp[i-1][j], dp[i][j-1])`. Do `n, m` tới `10000`, mảng 2 chiều `10001 x 10001` kiểu `int` sẽ tốn ~`400 MB` dễ bị MLE (quá `256 MB`), nên ta BẮT BUỘC tối ưu bộ nhớ bằng **mảng lăn 1 chiều (rolling array)** chỉ tốn `O(m)`.",
   "hints": [
     "Công thức 2D: `X[i] == Y[j] -> dp[i][j] = dp[i-1][j-1] + 1`, khác nhau -> `max(dp[i-1][j], dp[i][j-1])`.",
     "Để giảm bộ nhớ xuống `O(min(n, m))`, dùng hai mảng 1 chiều `prev[m+1]` và `cur[m+1]`, sau mỗi vòng `i` thì `swap(prev, cur)`.",
     "Kiểm tra giới hạn `n, m <= 10000` -> `n * m = 10^8` phép lặp rất nhẹ trong C++ (`~0.1s`)."
   ],
   "complexity": "O(n * m) thời gian, O(m) bộ nhớ",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1200
 }

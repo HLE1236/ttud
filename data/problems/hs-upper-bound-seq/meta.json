@@ -2,8 +2,8 @@
   "id": "hs-upper-bound-seq",
   "title": "[HUSTack] Tìm phần tử nhỏ nhất lớn hơn k (Upper Bound)",
   "track": "midterm",
-  "topic": "array-basic",
-  "difficulty": "Trung bình",
+  "topic": "stl-basic",
+  "difficulty": "Cơ bản",
   "exam_tags": [
     "HUSTack 2025.2 (P.01.01.04)",
     "HUSTack: Chưa làm"
@@ -22,7 +22,7 @@
     }
   ],
   "theory_chapter": "chap1",
-  "mindset": "Chỉ cần `sort(a.begin(), a.end())` một lần mất `O(n log n)`, sau đó mỗi truy vấn `next k` dùng `upper_bound(a.begin(), a.end(), k)` (tìm kiếm nhị phân `O(log n)`).",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dữ liệu có tới `10^5 - 10^6` phần tử hoặc các dòng log truy vấn.\n- Với kích thước này, nếu dùng 2 vòng lặp lồng nhau `O(n^2)` tìm kiếm sẽ bị quá thời gian (TLE).\n- Hướng đi: Duyệt 1 vòng `O(n)` kết hợp cấu trúc STL (`unordered_map`, `set`, `stack`, `queue`, `priority_queue`) hoặc quy đổi thời gian `HH:MM:SS` ra số giây `0..86399`.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dữ liệu có tới `10^5 - 10^6` phần tử hoặc các dòng log truy vấn.\n- Với kích thước này, nếu dùng 2 vòng lặp lồng nhau `O(n^2)` tìm kiếm sẽ bị quá thời gian (TLE).\n- Hướng đi: Duyệt 1 vòng `O(n)` kết hợp cấu trúc STL (`unordered_map`, `set`, `stack`, `queue`, `priority_queue`) hoặc quy đổi thời gian `HH:MM:SS` ra số giây `0..86399`.\n\n**2. Cách suy nghĩ cho bài này:**\nChỉ cần `sort(a.begin(), a.end())` một lần mất `O(n log n)`, sau đó mỗi truy vấn `next k` dùng `upper_bound(a.begin(), a.end(), k)` (tìm kiếm nhị phân `O(log n)`).",
   "hints": [
     "Nếu `it == a.end()` thì in `-1`, ngược lại in `*it`."
   ],
@@ -30,5 +30,6 @@
     "time": "O((n + Q) log n)",
     "space": "O(n)"
   },
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1050
 }

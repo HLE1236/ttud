@@ -1,0 +1,475 @@
+{
+  "chapter": "chap5",
+  "intro": "Chương 5 dành cho kỳ thi Cuối kỳ (tuyệt đối không xuất hiện trong đề Giữa kỳ). Khi bài toán có các đối tượng nối với nhau thành mạng lưới (thành phố - con đường, máy chủ - cáp mạng, cha/mẹ - con cái, công việc trước - công việc sau, tài khoản chuyển tiền), ta biểu diễn chúng bằng **Đồ thị** gồm tập đỉnh `1..N` và danh sách kề `adj[u]`.\n\nToàn bộ bài đồ thị trong đề thi Cuối kỳ xoay quanh 6 mẫu thuật toán dưới đây.",
+  "learning_path": {
+    "guided": [
+      "hs-connected-component",
+      "hs-shortest-path-dijkstra",
+      "hs-mst-kruskal"
+    ],
+    "practice": [
+      "hs-bfs-lex",
+      "hs-dfs-lex",
+      "hs-check-bipartite",
+      "hs-check-cyclic",
+      "hs-two-mode-elevator",
+      "hs-water-jug",
+      "hs-tree-manipulation",
+      "hs-family-tree",
+      "hs-longest-path-tree",
+      "hs-all-pair-shortest-path",
+      "hs-longest-path-dag",
+      "hs-make-span-schedule",
+      "hs-ship-traverse-islands",
+      "hs-bank-trans-basic",
+      "hs-bridges-arti-points",
+      "hs-strongly-connected-comp",
+      "hs-max-independent-set-tree",
+      "hs-sum-path-on-tree",
+      "hs-k-longest-path-tree",
+      "hs-ic-bus",
+      "hs-ham-cycle",
+      "hs-euler-cycle",
+      "hs-max-matching-bipartite",
+      "hs-max-flow",
+      "hs-graph-orientation",
+      "hs-task-assign-min-cost",
+      "hs-max-weighted-matching",
+      "hs-max-runaway",
+      "hs-store-search-graph",
+      "hs-robot-in-factory"
+    ],
+    "exam": [
+      "ck-delivery-dijkstra",
+      "ck-urban-mst",
+      "ck-border-comm",
+      "ck-bank-transactions",
+      "ck-citizen-data",
+      "ck-min-vertex-cover",
+      "ck-tsp-precedence",
+      "ck-travel-time-window",
+      "ck-tree-edge-partition",
+      "ck-max-simple-path",
+      "ck-steiner-tree"
+    ]
+  },
+  "patterns": [
+    {
+      "id": "bfs-dfs-components",
+      "name": "Dạng 1: Duyệt BFS / DFS, Đếm liên thông, Tô 2 màu & Đường đi ít bước nhất",
+      "when": [
+        "Đếm số thành phần liên thông (số cụm đỉnh tách rời nhau).",
+        "Kiểm tra đồ thị có phải **đồ thị 2 phía (Bipartite)** hay không (chia đỉnh thành 2 phe sao cho không có cạnh nào nối 2 đỉnh cùng phe).",
+        "Tìm **số bước ít nhất** khi mọi bước di chuyển đều tốn chi phí bằng 1 (thang máy 2 chế độ, đong nước bằng 2 bình, tàu vượt đảo ít chặng nhất)."
+      ],
+      "idea": "Cách chọn giữa DFS và BFS:\n1. **DFS (Đi sâu hết cỡ bằng đệ quy)**: Dùng khi chỉ cần **quét hết các đỉnh cùng một cụm** (đếm thành phần liên thông, tìm chu trình, kiểm tra chu trình độ dài `k` trong bài giao dịch ngân hàng). Mỗi lần ở ngoài vòng lặp `for (int i = 1; i <= n; i++)` gặp một đỉnh `i` chưa thăm (`!vis[i]`), ta tăng số cụm liên thông `comp++` rồi gọi `dfs(i)` để đánh dấu toàn bộ các đỉnh nối với `i`.\n2. **BFS (Loang theo từng lớp khoảng cách bằng `queue`)**: Từ đỉnh xuất phát `S` (lớp 0), BFS thăm hết các đỉnh cách `S` đúng 1 bước, rồi mới thăm các đỉnh cách 2 bước, 3 bước... Nhờ vậy, **lần đầu tiên BFS chạm tới đích `T` chắc chắn là đường đi tốn ít bước nhất**.\n3. **Kiểm tra đồ thị 2 phía**: Dùng mảng màu `color[u]` (`-1`: chưa tô, `0`: màu trắng, `1`: màu đen). Khi đứng ở `u` đi sang đỉnh kề `v`: nếu `v` chưa tô thì tô màu ngược lại `color[v] = 1 - color[u]`; nếu `v` đã tô mà `color[v] == color[u]` (2 đỉnh nối nhau lại cùng màu) -> kết luận ngay KHÔNG phải đồ thị 2 phía (`0`).",
+      "steps": [
+        "Bước 1: Khai báo danh sách kề `vector<vector<int>> adj(n + 1)` và đọc `m` cạnh. Nếu đồ thị **vô hướng**, nhớ thêm cả 2 chiều `adj[u].push_back(v)` và `adj[v].push_back(u)`.",
+        "Bước 2: Nếu đề yêu cầu duyệt theo **thứ tự từ điển**, chạy `for (int i = 1; i <= n; i++) sort(adj[i].begin(), adj[i].end());`.",
+        "Bước 3: Dùng mảng `dist(n + 1, -1)` (hoặc `vis(n + 1, false)`), đẩy đỉnh xuất phát vào `queue<int> q` (BFS) hoặc gọi hàm `dfs(u)`."
+      ],
+      "template_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int n, m;\n    cin >> n >> m;\n    vector<vector<int>> adj(n + 1);\n    for (int i = 0; i < m; i++) {\n        int u, v;\n        cin >> u >> v;\n        adj[u].push_back(v);\n        adj[v].push_back(u); // Do thi vo huong co 2 chieu\n    }\n\n    vector<int> vis(n + 1, 0);\n    int components = 0;\n\n    for (int i = 1; i <= n; i++) {\n        if (!vis[i]) {\n            components++; // Phat hien 1 thanh phan lien thong moi\n            queue<int> q;\n            q.push(i);\n            vis[i] = 1;\n            while (!q.empty()) {\n                int u = q.front(); q.pop();\n                for (int v : adj[u]) {\n                    if (!vis[v]) {\n                        vis[v] = 1;\n                        q.push(v);\n                    }\n                }\n            }\n        }\n    }\n\n    cout << components << '\\n';\n    return 0;\n}",
+      "trace": {
+        "title": "Chạy tay Đếm thành phần liên thông (n = 5, cạnh: 1-2, 2-3, 4-5)",
+        "input": "5 đỉnh, 3 cạnh: (1,2), (2,3), (4,5)",
+        "headers": [
+          "Vòng lặp i",
+          "vis[i] trước khi xét",
+          "Hành động",
+          "Các đỉnh được đánh dấu",
+          "Biến components"
+        ],
+        "rows": [
+          [
+            "i = 1",
+            "vis[1] = 0",
+            "Tăng comp, chạy BFS từ 1",
+            "Thăm 1 -> 2 -> 3",
+            "1"
+          ],
+          [
+            "i = 2",
+            "vis[2] = 1 (đã thăm)",
+            "Bỏ qua",
+            "-",
+            "1"
+          ],
+          [
+            "i = 3",
+            "vis[3] = 1 (đã thăm)",
+            "Bỏ qua",
+            "-",
+            "1"
+          ],
+          [
+            "i = 4",
+            "vis[4] = 0",
+            "Tăng comp, chạy BFS từ 4",
+            "Thăm 4 -> 5",
+            "2"
+          ],
+          [
+            "i = 5",
+            "vis[5] = 1 (đã thăm)",
+            "Bỏ qua",
+            "-",
+            "2"
+          ]
+        ],
+        "note": "Mỗi đỉnh chỉ được đẩy vào `queue` đúng 1 lần nên tổng thời gian là `O(N + M)`."
+      },
+      "pitfalls": [
+        "Trong BFS, phải đánh dấu `vis[v] = 1` **ngay tại lúc `q.push(v)`** chứ không phải đợi tới lúc `q.pop()` mới đánh dấu (đợi tới lúc `pop` sẽ làm một đỉnh bị đẩy vào hàng đợi nhiều lần gây TLE).",
+        "Ở bài đong nước (`hs-water-jug`), trạng thái là cặp `(x, y)` lượng nước trong 2 bình -> dùng mảng 2 chiều `dist[x][y]` để chạy BFS."
+      ],
+      "problems": [
+        "hs-connected-component",
+        "hs-bfs-lex",
+        "hs-dfs-lex",
+        "hs-check-bipartite",
+        "hs-check-cyclic",
+        "hs-two-mode-elevator",
+        "hs-water-jug",
+        "ck-bank-transactions",
+        "hs-bank-trans-basic"
+      ]
+    },
+    {
+      "id": "tree-dfs-dp",
+      "name": "Dạng 2: Thuật toán trên Cây — Đường kính, Tổng đường đi & QHĐ trên Cây",
+      "when": [
+        "Đồ thị là một **Cây** (`N` đỉnh, `N - 1` cạnh, liên thông, không có chu trình) hoặc cây gia phả cha-con.",
+        "Hỏi: *đường đi dài nhất trên cây (đường kính)*, *tổng khoảng cách từ mỗi đỉnh tới tất cả các đỉnh còn lại*, *chọn tập đỉnh không kề nhau trên cây có tổng trọng số lớn nhất*, *chia cây thành 2 phần*."
+      ],
+      "idea": "Cây không có chu trình nên khi chạy DFS từ một gốc `u`, ta chỉ cần truyền thêm tham số `parent` (`p`) và quy định `if (v == p) continue;` là không bao giờ đi ngược lại đỉnh đã thăm (thậm chí không cần mảng `vis[]`).\n\n3 kỹ thuật chuẩn trên cây:\n1. **Tìm đường đi dài nhất trên cây (Đường kính cây - `hs-longest-path-tree`)**: Chạy BFS/DFS lần 1 từ đỉnh `1` bất kỳ để tìm đỉnh `A` xa đỉnh `1` nhất. Sau đó chạy BFS/DFS lần 2 xuất phát từ `A` để tìm đỉnh `B` xa `A` nhất. Khoảng cách `A -> B` chính là đường kính của cây.\n2. **Quy hoạch động trên cây (Chọn tập đỉnh độc lập lớn nhất - `hs-max-independent-set-tree`)**: Tại mỗi nút `u`, có 2 trạng thái:\n   - `dp[u][0]`: tổng lớn nhất trong cây con gốc `u` khi **KHÔNG chọn `u`** -> con `v` của `u` được tự do chọn hoặc không chọn: `dp[u][0] += max(dp[v][0], dp[v][1])`.\n   - `dp[u][1]`: tổng lớn nhất khi **CHỌN `u`** -> mọi con `v` của `u` bắt buộc không được chọn: `dp[u][1] += dp[v][0]`.\n3. **Đổi gốc trên cây (Rerooting - `hs-sum-path-on-tree`)**: Tính `sz[u]` = số đỉnh trong cây con gốc `u`, và `down[1]` = tổng khoảng cách từ gốc `1` tới mọi đỉnh. Khi chuyển gốc từ cha `u` xuống con `v` qua cạnh trọng số `w`: có `sz[v]` đỉnh trong cây con `v` được lại gần hơn một đoạn `w`, và `N - sz[v]` đỉnh ngoài cây con `v` bị xa ra một đoạn `w` -> `ans[v] = ans[u] - sz[v] * w + (N - sz[v]) * w`.",
+      "steps": [
+        "Bước 1: Đọc `N - 1` cạnh vào danh sách kề `adj`.",
+        "Bước 2: Viết hàm `void dfs(int u, int p)` duyệt các con `v` trong `adj[u]` với `if (v == p) continue;`.",
+        "Bước 3: Gọi `dfs(v, u)` trước để tính xong thông tin của cây con `v`, rồi cộng dồn thông tin từ `v` lên `u`."
+      ],
+      "template_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint n;\nvector<long long> w;\nvector<vector<int>> adj;\nvector<array<long long, 2>> dp;\n\n// dp[u][0]: khong chon u | dp[u][1]: chon u\nvoid dfs(int u, int p) {\n    dp[u][0] = 0;\n    dp[u][1] = w[u];\n    for (int v : adj[u]) {\n        if (v == p) continue;\n        dfs(v, u); // Tinh xong cay con v truoc\n        dp[u][0] += max(dp[v][0], dp[v][1]); // Khong chon u -> v tu do\n        dp[u][1] += dp[v][0];                // Chon u -> cam chon v\n    }\n}\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    cin >> n;\n    w.resize(n + 1);\n    for (int i = 1; i <= n; i++) cin >> w[i];\n    adj.resize(n + 1);\n    for (int i = 0; i < n - 1; i++) {\n        int u, v;\n        cin >> u >> v;\n        adj[u].push_back(v);\n        adj[v].push_back(u);\n    }\n    dp.resize(n + 1);\n    dfs(1, 0);\n    cout << max(dp[1][0], dp[1][1]) << '\\n';\n    return 0;\n}",
+      "trace": {
+        "title": "Chạy tay Tree DP chọn đỉnh không kề trên cây 3 đỉnh: 1(10) - 2(50) - 3(20)",
+        "input": "Đỉnh 2 ở giữa nối với 1 và 3. Trọng số: w[1]=10, w[2]=50, w[3]=20. Chọn gốc tại 2",
+        "headers": [
+          "Nút đang tính",
+          "Loại nút",
+          "dp[u][0] (Không chọn u)",
+          "dp[u][1] (Chọn u)",
+          "Giải thích"
+        ],
+        "rows": [
+          [
+            "u = 1",
+            "Lá",
+            "0",
+            "10",
+            "Không có con"
+          ],
+          [
+            "u = 3",
+            "Lá",
+            "0",
+            "20",
+            "Không có con"
+          ],
+          [
+            "u = 2 (Gốc)",
+            "Cha của 1 và 3",
+            "max(0,10) + max(0,20) = 30",
+            "50 + dp[1][0](0) + dp[3][0](0) = 50",
+            "Chọn nút 2 (50) tốt hơn chọn {1, 3} (30)"
+          ]
+        ],
+        "note": "Kết quả tại gốc 2 là `max(30, 50) = 50`."
+      },
+      "pitfalls": [
+        "Quên `if (v == p) continue;` khi DFS trên cây vô hướng sẽ làm hàm gọi qua lại `u -> v -> u` vô tận gây tràn bộ nhớ Stack (Runtime Error).",
+        "Trong bài tổng đường đi trên cây (`hs-sum-path-on-tree`), tích `sz[v] * w` có thể vượt `int`, phải ép kiểu `1LL * sz[v] * w`."
+      ],
+      "problems": [
+        "hs-tree-manipulation",
+        "hs-family-tree",
+        "hs-longest-path-tree",
+        "hs-max-independent-set-tree",
+        "hs-sum-path-on-tree",
+        "ck-tree-edge-partition",
+        "hs-k-longest-path-tree"
+      ]
+    },
+    {
+      "id": "tarjan-bridges-scc",
+      "name": "Dạng 3: Thuật toán Tarjan — Tìm Khớp, Cầu & Thành phần liên thông mạnh (SCC)",
+      "when": [
+        "Trên đồ thị vô hướng: đếm số **Cạnh cầu** (cạnh xóa đi làm đồ thị tách thêm thành phần liên thông) và **Đỉnh khớp** (đỉnh xóa đi làm đồ thị tách thêm thành phần liên thông).",
+        "Trên đồ thị có hướng: đếm số **Thành phần liên thông mạnh (SCC)** (cụm các đỉnh mà từ đỉnh nào cũng đi tới được mọi đỉnh khác trong cụm), hoặc kiểm tra đồ thị vô hướng có định hướng cạnh thành liên thông mạnh được không (`hs-graph-orientation`)."
+      ],
+      "idea": "Ý tưởng của hai mảng `num[u]` và `low[u]` trong Tarjan:\nKhi chạy DFS, ta đánh số thứ tự thời điểm bước vào từng đỉnh: `num[u] = ++timer`.\nCây DFS có các **cạnh nét liền** (đi từ cha `u` xuống con `v` chưa thăm) và các **cạnh nét đứt / cạnh ngược** (đi từ `u` vắt ngược lên một tổ tiên `v` đã thăm trước đó).\n- Ta định nghĩa **`low[u]`** là số thứ tự `num` nhỏ nhất (tức tổ tiên cao nhất) mà từ cây con gốc `u` có thể leo ngược lên được bằng tối đa 1 cạnh nét đứt.\n- Khi xét nhánh con `v` của `u`:\n  - Nếu **`low[v] > num[u]`**: Từ cây con `v` không có bất kỳ cạnh phụ nào vắt được lên `u` hay tổ tiên của `u`. Vậy cạnh `(u, v)` là con đường độc đạo -> **`(u, v)` là Cạnh cầu**!\n  - Nếu **`low[v] >= num[u]`**: Cây con `v` cao lắm cũng chỉ bám được tới `u`. Nếu xóa đỉnh `u` đi thì cây con `v` bị cô lập -> **`u` là Đỉnh khớp** (riêng nếu `u` là đỉnh gốc xuất phát của DFS, `u` là khớp khi và chỉ khi `u` có từ `2` nhánh con DFS trở lên).\n- Với **Đồ thị có hướng (SCC)**: Dùng thêm một `stack` lưu các đỉnh đang mở. Khi duyệt xong `u` mà `low[u] == num[u]`, đỉnh `u` chính là chốt cao nhất của một thành phần liên thông mạnh -> rút các đỉnh từ `stack` ra cho tới `u` thì được 1 SCC.",
+      "steps": [
+        "Bước 1: Khởi tạo `num[u] = low[u] = ++timer` khi bắt đầu `dfs(u, p)`.",
+        "Bước 2: Duyệt đỉnh kề `v`: nếu `v == p` thì bỏ qua. Nếu `v` đã thăm (`num[v] > 0`), cập nhật cạnh ngược `low[u] = min(low[u], num[v])`.",
+        "Bước 3: Nếu `v` chưa thăm (`num[v] == 0`), tăng `children++`, gọi `dfs(v, u)`, cập nhật `low[u] = min(low[u], low[v])`, rồi kiểm tra điều kiện Cầu (`low[v] > num[u]`) và Khớp (`low[v] >= num[u]`)."
+      ],
+      "template_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint n, m, timer_dfs = 0, bridges = 0;\nvector<vector<int>> adj;\nvector<int> num, low, is_arti;\n\nvoid dfs(int u, int p) {\n    num[u] = low[u] = ++timer_dfs;\n    int children = 0;\n    for (int v : adj[u]) {\n        if (v == p) continue;\n        if (num[v]) {\n            // Canh nguoc len to tien v da tham\n            low[u] = min(low[u], num[v]);\n        } else {\n            children++;\n            dfs(v, u);\n            low[u] = min(low[u], low[v]);\n            // 1. Kiem tra canh cau (u, v)\n            if (low[v] > num[u]) bridges++;\n            // 2. Kiem tra dinh khop u (khi u khong phai goc)\n            if (p != 0 && low[v] >= num[u]) is_arti[u] = 1;\n        }\n    }\n    // Neu u la goc DFS, u la khop khi co >= 2 nhanh con doc lap\n    if (p == 0 && children >= 2) is_arti[u] = 1;\n}\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    cin >> n >> m;\n    adj.resize(n + 1);\n    num.assign(n + 1, 0);\n    low.assign(n + 1, 0);\n    is_arti.assign(n + 1, 0);\n    for (int i = 0; i < m; i++) {\n        int u, v; cin >> u >> v;\n        adj[u].push_back(v);\n        adj[v].push_back(u);\n    }\n    for (int i = 1; i <= n; i++) {\n        if (!num[i]) dfs(i, 0);\n    }\n    int arti_cnt = accumulate(is_arti.begin(), is_arti.end(), 0);\n    cout << arti_cnt << ' ' << bridges << '\\n';\n    return 0;\n}",
+      "trace": {
+        "title": "Chạy tay Tarjan tìm Khớp và Cầu trên đồ thị 4 đỉnh: vòng (1-2-3-1) và nhánh (3-4)",
+        "input": "Các cạnh: (1,2), (2,3), (3,1), (3,4). Chạy dfs(1, 0)",
+        "headers": [
+          "Đỉnh u",
+          "num[u]",
+          "Cạnh ngược gặp được",
+          "low[u] sau cùng",
+          "Kết luận tại u"
+        ],
+        "rows": [
+          [
+            "4 (lá)",
+            "4",
+            "Không có",
+            "low[4] = 4",
+            "Trả về cho cha u = 3"
+          ],
+          [
+            "3",
+            "3",
+            "Có cạnh ngược (3, 1) -> num[1] = 1",
+            "min(3, low[4]=4, num[1]=1) = 1",
+            "Với con v=4: low[4](4) > num[3](3) -> (3,4) là Cầu; 3 là Khớp"
+          ],
+          [
+            "2",
+            "2",
+            "Nhận low[3] = 1 từ con 3",
+            "low[2] = 1",
+            "low[3](1) < num[2](2) -> (2,3) không phải cầu, 2 không phải khớp"
+          ],
+          [
+            "1 (gốc)",
+            "1",
+            "Chỉ có 1 nhánh con DFS (v = 2)",
+            "low[1] = 1",
+            "children = 1 < 2 -> gốc 1 không phải khớp"
+          ]
+        ],
+        "note": "Đồ thị có đúng 1 đỉnh khớp là `3` và 1 cạnh cầu là `(3, 4)`."
+      },
+      "pitfalls": [
+        "Nếu sử dụng biến đếm số đỉnh khớp thay vì mảng đánh dấu `is_arti[u] = 1`, một đỉnh `u` có nhiều nhánh con thỏa `low[v] >= num[u]` sẽ bị đếm trùng nhiều lần.",
+        "Đồ thị có thể không liên thông, nên phải chạy vòng lặp `for (int i = 1; i <= n; i++) if (!num[i]) dfs(i, 0);`."
+      ],
+      "problems": [
+        "hs-bridges-arti-points",
+        "hs-strongly-connected-comp",
+        "hs-graph-orientation"
+      ]
+    },
+    {
+      "id": "dijkstra-dag-shortest",
+      "name": "Dạng 4: Đường đi ngắn nhất (Dijkstra, Floyd-Warshall) & Lập lịch trên DAG",
+      "when": [
+        "Tìm **đường đi có tổng trọng số (chi phí / thời gian) nhỏ nhất** từ đỉnh `S` đến đỉnh `T` trên đồ thị có trọng số cạnh **không âm** (`w >= 0`).",
+        "Đồ thị có hướng không có chu trình (DAG) hoặc lập lịch các công việc có điều kiện tiên quyết (`u` phải xong trước khi bắt đầu `v`)."
+      ],
+      "idea": "Tại sao khi cạnh có trọng số khác nhau (`w = 5`, `w = 100`) thì BFS thường lại sai?\nVì BFS thường chỉ đếm **số cạnh**: đi 1 cạnh trọng số `100` sẽ đến đích trước đi 2 cạnh trọng số `5 + 5 = 10`.\n\n**Cách sửa bằng Dijkstra**:\nThay `queue` thường bằng **Min-Heap** lưu cặp `(khoảng_cách_tích_lũy, đỉnh)`. Ở mỗi bước, Heap luôn lấy ra đỉnh `u` có khoảng cách `dist[u]` từ điểm xuất phát là **nhỏ nhất hiện tại**. Từ `u`, ta thử đi sang các đỉnh kề `v` qua cạnh trọng số `w`: nếu `dist[u] + w < dist[v]` (đi qua `u` rẻ hơn đường cũ tới `v`), ta cập nhật `dist[v] = dist[u] + w` và đẩy `{dist[v], v}` vào Heap.\n\n2 biến thể quan trọng:\n1. **Mọi cặp đỉnh khi `N <= 400` (`hs-all-pair-shortest-path`)**: Dùng **Floyd-Warshall** với 3 vòng lặp `k, i, j` (vòng `k` bắt buộc ở ngoài cùng): `d[i][j] = min(d[i][j], d[i][k] + d[k][j])`.\n2. **Đường đi dài nhất / Lập lịch dự án trên DAG (`hs-longest-path-dag`, `hs-make-span-schedule`)**: Đếm số cạnh đi vào mỗi đỉnh (`in_deg[v]`). Đẩy các đỉnh có `in_deg == 0` vào hàng đợi để lấy **Thứ tự Topo**, rồi duyệt theo thứ tự đó để cập nhật `dp[v] = max(dp[v], dp[u] + w)`.",
+      "steps": [
+        "Bước 1: Khởi tạo mảng `vector<long long> dist(n + 1, 1e18)` và gán `dist[S] = 0`.",
+        "Bước 2: Khai báo Min-Heap `priority_queue<pair<long long, int>, vector<pair<long long, int>>, greater<>> pq;` rồi `pq.push({0, S})`.",
+        "Bước 3: Trong vòng lặp `while (!pq.empty())`, lấy `[d, u] = pq.top(); pq.pop();`. **Bắt buộc có dòng `if (d > dist[u]) continue;`** để bỏ qua các bản ghi cũ đã lỗi thời trong Heap.",
+        "Bước 4: Duyệt `[v, w]` trong `adj[u]`, nếu `dist[u] + w < dist[v]` thì cập nhật `dist[v]` và đẩy vào `pq`."
+      ],
+      "template_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nconst long long INF = 1e18;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int n, m;\n    cin >> n >> m;\n    vector<vector<pair<int, long long>>> adj(n + 1);\n    for (int i = 0; i < m; i++) {\n        int u, v;\n        long long w;\n        cin >> u >> v >> w;\n        adj[u].push_back({v, w});\n        // Neu do thi vo huong thi them: adj[v].push_back({u, w});\n    }\n    int S, T;\n    cin >> S >> T;\n\n    vector<long long> dist(n + 1, INF);\n    priority_queue<pair<long long, int>, vector<pair<long long, int>>, greater<>> pq;\n\n    dist[S] = 0;\n    pq.push({0, S});\n\n    while (!pq.empty()) {\n        auto [d, u] = pq.top();\n        pq.pop();\n        if (d > dist[u]) continue; // Bo qua trang thai cu\n\n        for (auto [v, w] : adj[u]) {\n            if (dist[u] + w < dist[v]) {\n                dist[v] = dist[u] + w;\n                pq.push({dist[v], v});\n            }\n        }\n    }\n\n    cout << (dist[T] == INF ? -1 : dist[T]) << '\\n';\n    return 0;\n}",
+      "trace": {
+        "title": "Chạy tay Dijkstra từ đỉnh 1 tới đỉnh 3 (cạnh: 1->2 trọng số 10, 1->4 trọng số 3, 4->2 trọng số 2, 2->3 trọng số 1)",
+        "input": "S = 1, T = 3. Ban đầu dist = [0, INF, INF, INF]",
+        "headers": [
+          "Bước lấy từ Heap",
+          "dist[] hiện tại",
+          "Xét các cạnh kề",
+          "Đẩy vào Heap"
+        ],
+        "rows": [
+          [
+            "Lấy (0, u=1)",
+            "[0, INF, INF, INF]",
+            "1->2 (10), 1->4 (3)",
+            "push (10, 2), (3, 4)"
+          ],
+          [
+            "Lấy (3, u=4)",
+            "[0, 10, INF, 3]",
+            "4->2: 3 + 2 = 5 < 10 -> cập nhật dist[2] = 5",
+            "push (5, 2)"
+          ],
+          [
+            "Lấy (5, u=2)",
+            "[0, 5, INF, 3]",
+            "2->3: 5 + 1 = 6 < INF -> cập nhật dist[3] = 6",
+            "push (6, 3)"
+          ],
+          [
+            "Lấy (6, u=3)",
+            "[0, 5, 6, 3]",
+            "Đích 3 đạt khoảng cách 6",
+            "-"
+          ],
+          [
+            "Lấy (10, u=2)",
+            "[0, 5, 6, 3]",
+            "d=10 > dist[2]=5 -> continue (Bỏ qua ngay)",
+            "-"
+          ]
+        ],
+        "note": "Đỉnh 2 được đẩy vào Heap 2 lần: lần đầu với giá trị 10, lần sau qua đỉnh 4 với giá trị 5. Nhờ Min-Heap, bản ghi `(5, 2)` được lấy ra trước, còn `(10, 2)` lấy ra sau bị dòng `if (d > dist[u]) continue;` loại bỏ."
+      },
+      "pitfalls": [
+        "Quên dòng `if (d > dist[u]) continue;` sẽ làm thuật toán duyệt lại một đỉnh nhiều lần và bị TLE trên đồ thị dày.",
+        "Khởi tạo `INF = 1e9` (quá nhỏ!) khi tổng trọng số đường đi có thể vượt `10^9` -> luôn dùng `long long` với `INF = 1e18`."
+      ],
+      "problems": [
+        "hs-shortest-path-dijkstra",
+        "ck-delivery-dijkstra",
+        "hs-all-pair-shortest-path",
+        "hs-longest-path-dag",
+        "hs-make-span-schedule",
+        "hs-ship-traverse-islands",
+        "hs-ic-bus",
+        "ck-travel-time-window"
+      ]
+    },
+    {
+      "id": "kruskal-mst-dsu",
+      "name": "Dạng 5: Cây khung nhỏ nhất (Kruskal + DSU)",
+      "when": [
+        "Cần nối liên thông tất cả `N` thành phố / trạm phát sóng với **tổng chi phí lắp đặt nhỏ nhất**.",
+        "Một số đường đã được xây sẵn (chi phí `0`), hoặc cho phép giữ lại `S` trạm liên lạc vệ tinh nên chỉ cần nối thành `S` cụm thay vì `1` cụm (`ck-border-comm`)."
+      ],
+      "idea": "Cách làm của thuật toán **Kruskal**:\n1. Sắp xếp tất cả các cạnh theo chi phí **từ rẻ nhất đến đắt nhất**.\n2. Lần lượt xét từng cạnh `(u, v, w)`: nếu `u` và `v` **chưa liên thông với nhau**, ta chọn cạnh này (cộng `w` vào tổng chi phí) và gộp cụm của `u` với cụm của `v` lại. Nếu `u` và `v` đã cùng một cụm rồi thì bỏ qua (vì nối thêm sẽ tạo thành vòng khép kín thừa thãi).\n\nLàm sao kiểm tra `u` và `v` đã cùng cụm hay chưa chỉ trong gần như `O(1)`?\nDùng cấu trúc **DSU (Disjoint Set Union)**: mỗi cụm chọn ra 1 đỉnh làm đại diện (tổ tiên gốc `p[x]`). Hàm `find(x)` nhảy lên tìm gốc của `x` (kèm nén đường đi `p[x] = find(p[x])`). Hàm `unite(a, b)` tìm gốc của `a` và `b`: nếu 2 gốc trùng nhau thì trả về `false` (đã cùng cụm); nếu khác nhau thì gán gốc này làm cha của gốc kia và trả về `true`.",
+      "steps": [
+        "Bước 1: Viết `struct DSU` gồm mảng cha `p` và 2 hàm `find(x)`, `unite(a, b)`.",
+        "Bước 2: Nếu đề bài có những cạnh **đã nối sẵn từ trước** (`ck-urban-mst`), gọi `dsu.unite(u, v)` cho tất cả các cạnh có sẵn đó trước (không tốn chi phí).",
+        "Bước 3: Sắp xếp các cạnh ứng cử viên theo trọng số `w` tăng dần. Duyệt từng cạnh, nếu `dsu.unite(u, v)` trả về `true` thì cộng `w` vào `total_cost` và giảm số cụm `comp--`.",
+        "Bước 4: Dừng khi số cụm `comp == 1` (hoặc `comp <= S` nếu bài cho phép để lại `S` cụm)."
+      ],
+      "template_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nstruct DSU {\n    vector<int> p;\n    DSU(int n) : p(n + 1) {\n        iota(p.begin(), p.end(), 0); // Ban dau p[i] = i\n    }\n    int find(int x) {\n        return p[x] == x ? x : p[x] = find(p[x]);\n    }\n    bool unite(int a, int b) {\n        a = find(a);\n        b = find(b);\n        if (a == b) return false; // Da cung 1 thanh phan\n        p[a] = b;\n        return true;\n    }\n};\n\nstruct Edge {\n    int u, v;\n    long long w;\n    bool operator<(const Edge& o) const { return w < o.w; }\n};\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int n, m;\n    cin >> n >> m;\n    vector<Edge> edges(m);\n    for (int i = 0; i < m; i++) {\n        cin >> edges[i].u >> edges[i].v >> edges[i].w;\n    }\n    sort(edges.begin(), edges.end());\n\n    DSU dsu(n);\n    long long mst_cost = 0;\n    int taken = 0;\n    for (const auto& e : edges) {\n        if (dsu.unite(e.u, e.v)) {\n            mst_cost += e.w;\n            taken++;\n            if (taken == n - 1) break;\n        }\n    }\n\n    cout << (taken == n - 1 ? mst_cost : -1) << '\\n';\n    return 0;\n}",
+      "trace": {
+        "title": "Chạy tay Kruskal trên 4 đỉnh với 4 cạnh đã sort: (1-2: 1), (2-3: 2), (1-3: 3), (3-4: 4)",
+        "input": "N = 4, các cạnh sau khi sort theo trọng số: (1,2, w=1), (2,3, w=2), (1,3, w=3), (3,4, w=4)",
+        "headers": [
+          "Cạnh đang xét",
+          "find(u), find(v)",
+          "Cùng cụm?",
+          "Hành động",
+          "Chi phí tích lũy"
+        ],
+        "rows": [
+          [
+            "(1, 2, w=1)",
+            "1 != 2",
+            "Chưa",
+            "Gộp {1, 2}, chọn cạnh (taken = 1)",
+            "1"
+          ],
+          [
+            "(2, 3, w=2)",
+            "2 != 3",
+            "Chưa",
+            "Gộp {1, 2, 3}, chọn cạnh (taken = 2)",
+            "1 + 2 = 3"
+          ],
+          [
+            "(1, 3, w=3)",
+            "3 == 3",
+            "Đã cùng cụm {1,2,3}",
+            "Bỏ qua (nối sẽ tạo chu trình 1-2-3)",
+            "3"
+          ],
+          [
+            "(3, 4, w=4)",
+            "3 != 4",
+            "Chưa",
+            "Gộp {1, 2, 3, 4}, chọn cạnh (taken = 3 = N-1 -> Dừng)",
+            "3 + 4 = 7"
+          ]
+        ],
+        "note": "Cạnh `(1, 3, w=3)` bị bỏ qua vì `1` và `3` đã thông nhau qua `2` với chi phí rẻ hơn (`1 + 2`)."
+      },
+      "pitfalls": [
+        "Quên kiểm tra xem đồ thị có nối đủ `N - 1` cạnh (tức còn đúng `1` thành phần liên thông) hay không khi đề có trường hợp đồ thị không liên thông (phải in `-1`)."
+      ],
+      "problems": [
+        "hs-mst-kruskal",
+        "ck-urban-mst",
+        "ck-border-comm"
+      ]
+    },
+    {
+      "id": "flow-matching-bitmask-graph",
+      "name": "Dạng 6: Đồ thị nâng cao — Cặp ghép 2 phía, Luồng cực đại & Bitmask DP trên đồ thị",
+      "when": [
+        "**Cặp ghép 2 phía**: Ghép `N` công việc cho `M` nhân viên (mỗi người tối đa 1 việc) sao cho ghép được nhiều cặp nhất (`hs-max-matching-bipartite`), hoặc tìm tập người lớn nhất không có quan hệ cha-con (`ck-citizen-data`).",
+        "**Luồng cực đại**: Tìm lượng hàng/nước tối đa đẩy từ nguồn `S` tới đích `T` qua mạng ống có dung lượng giới hạn (`hs-max-flow`, `hs-max-runaway`).",
+        "**Bitmask DP trên đồ thị (`N <= 20` hoặc `K <= 12`)**: Đường đi đơn trọng số lớn nhất (`ck-max-simple-path`), TSP có thứ tự ưu tiên (`ck-tsp-precedence`), Phủ đỉnh nhỏ nhất (`ck-min-vertex-cover`), Cây Steiner (`ck-steiner-tree`)."
+      ],
+      "idea": "Đây là nhóm bài Câu 5 (phân loại điểm 9-10) của đề thi Cuối kỳ:\n1. **Cặp ghép cực đại trên đồ thị 2 phía (Kuhn / Hopcroft-Karp)**: Mỗi đỉnh `u` bên trái thử ghép với một đỉnh `v` bên phải. Nếu `v` đang rảnh (`matchR[v] == 0`), ghép luôn! Nếu `v` đã ghép với `u_cũ = matchR[v]`, ta đệ quy hỏi xem `u_cũ` có nhường `v` để chuyển sang một đỉnh khác được không (`dfs(matchR[v])`).\n2. **Luồng cực đại (Dinic)**: Mỗi cạnh `(u, v)` dung lượng `cap` luôn đi kèm một **cạnh ngược** `(v, u)` dung lượng `0` (để cho phép \"hối hận\" điều hướng lại dòng chảy). Lặp lại 2 bước: chạy BFS dựng đồ thị phân tầng `level[]`, rồi chạy DFS đẩy luồng dọc theo các cạnh có `level[v] == level[u] + 1`.\n3. **Bitmask DP trên đồ thị (Held-Karp)**: Dùng số nguyên `mask` từ `0` đến `(1 << N) - 1` để biểu diễn tập các đỉnh đã đi qua (bit thứ `i` bật `1` nghĩa là đỉnh `i` đã thăm). Trạng thái `dp[mask][u]` là chi phí tốt nhất khi đã thăm tập đỉnh `mask` và đang đứng ở đỉnh `u`. Bước chuyển: từ `(mask, u)` đi sang đỉnh `v` chưa thăm (`!(mask & (1 << v))`) tạo thành trạng thái mới `(mask | (1 << v), v)`.",
+      "steps": [
+        "Bước 1: Đọc kỹ giới hạn `N`:\n  - Nếu `N <= 20`: dùng **Bitmask DP** `dp[1 << N][N]` hoặc Quay lui Nhánh cận.\n  - Nếu `N, M <= 10^4` và là bài ghép cặp 1-1 giữa 2 tập hợp: dùng **Bipartite Matching**.\n  - Nếu có dung lượng cạnh / dung lượng đỉnh từ `S` đến `T`: dùng **Dinic Max Flow** (nếu giới hạn nằm ở đỉnh thì tách mỗi đỉnh `u` thành `u_in -> u_out`)."
+      ],
+      "template_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\n// Mau Cặp ghép cực đại 2 phía (Thuật toán đường mở rộng)\nint n, m;\nvector<vector<int>> adj;\nvector<int> matchR, vis;\n\nbool try_kuhn(int u, int step_id) {\n    if (vis[u] == step_id) return false;\n    vis[u] = step_id;\n    for (int v : adj[u]) {\n        // Neu v chua ghep, hoac nguoi dang giu v (matchR[v]) nhuong duoc sang cho khac\n        if (matchR[v] == 0 || try_kuhn(matchR[v], step_id)) {\n            matchR[v] = u;\n            return true;\n        }\n    }\n    return false;\n}\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    cin >> n >> m;\n    adj.resize(n + 1);\n    for (int u = 1; u <= n; u++) {\n        int k; cin >> k;\n        while (k--) {\n            int v; cin >> v;\n            adj[u].push_back(v);\n        }\n    }\n    matchR.assign(m + 1, 0);\n    vis.assign(n + 1, 0);\n    int matched = 0;\n    for (int u = 1; u <= n; u++) {\n        if (try_kuhn(u, u)) matched++;\n    }\n    cout << matched << '\\n';\n    return 0;\n}",
+      "trace": {
+        "title": "Chạy tay Ghép cặp 2 phía (Việc 1 làm được bởi {A, B}, Việc 2 chỉ làm được bởi {A})",
+        "input": "u = 1 nối {A, B}; u = 2 nối {A}",
+        "headers": [
+          "Xét đỉnh trái u",
+          "Thử cạnh (u, v)",
+          "Trạng thái matchR[v]",
+          "Hành động",
+          "Kết quả matchR"
+        ],
+        "rows": [
+          [
+            "u = 1",
+            "(1, A)",
+            "matchR[A] = 0 (rảnh)",
+            "Ghép A cho 1",
+            "matchR[A] = 1"
+          ],
+          [
+            "u = 2",
+            "(2, A)",
+            "matchR[A] = 1 (đang bận)",
+            "Hỏi u=1 có nhường A được không -> gọi try_kuhn(1)",
+            "Đang đệ quy..."
+          ],
+          [
+            "  -> u = 1",
+            "(1, B)",
+            "matchR[B] = 0 (rảnh)",
+            "u=1 chuyển sang B, nhường A cho u=2!",
+            "matchR[B] = 1, matchR[A] = 2"
+          ]
+        ],
+        "note": "Nhờ cơ chế đệ quy \"nhường chỗ\", cả 2 việc đều được ghép thành công (`matched = 2`)."
+      },
+      "pitfalls": [
+        "Trong Bitmask DP, phép dịch bit `1 << i` luôn phải đặt trong ngoặc khi kết hợp với phép so sánh: viết `if ((mask & (1 << i)) == 0)` chứ không viết `if (mask & (1 << i) == 0)` (vì toán tử `==` có độ ưu tiên cao hơn `&`).",
+        "Trong Dinic Max Flow, chỉ số cạnh bắt đầu từ `0` chẵn để cạnh thuận là `idx` và cạnh ngược của nó luôn là `idx ^ 1`."
+      ],
+      "problems": [
+        "hs-ham-cycle",
+        "hs-euler-cycle",
+        "ck-min-vertex-cover",
+        "hs-max-matching-bipartite",
+        "ck-citizen-data",
+        "ck-tsp-precedence",
+        "hs-max-flow",
+        "hs-task-assign-min-cost",
+        "ck-max-simple-path",
+        "hs-max-weighted-matching",
+        "hs-max-runaway",
+        "ck-steiner-tree",
+        "hs-store-search-graph",
+        "hs-robot-in-factory"
+      ]
+    }
+  ]
+}

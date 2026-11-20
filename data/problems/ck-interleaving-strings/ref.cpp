@@ -4,7 +4,7 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     string A, B, C;
-    if (!(cin >> A >> B >> C)) return 0;
+    cin >> A >> B >> C;
     int n = (int)A.size(), m = (int)B.size(), k = (int)C.size();
     if (n + m != k) {
         cout << "F\n";

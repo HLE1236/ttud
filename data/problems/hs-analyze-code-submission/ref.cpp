@@ -10,9 +10,6 @@ int main() {
     cin.tie(nullptr);
     int totalSub = 0, errSub = 0;
     unordered_map<string, int> userErr, userTotal, bestProb;
-    userErr.reserve(32768);
-    userTotal.reserve(32768);
-    bestProb.reserve(131072);
     vector<int> pref(86401, 0);
 
     string uid, pid, tm, st;

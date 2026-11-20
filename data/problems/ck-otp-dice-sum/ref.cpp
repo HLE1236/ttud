@@ -5,7 +5,7 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     int m, n, x;
-    if (!(cin >> m >> n >> x)) return 0;
+    cin >> m >> n >> x;
     if (x < n || x > n * m) {
         cout << 0 << "\n";
         return 0;

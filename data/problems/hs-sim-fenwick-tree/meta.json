@@ -1,7 +1,7 @@
 {
   "title": "[HUSTack] Mô phỏng cây Fenwick (Binary Indexed Tree)",
   "track": "midterm",
-  "topic": "hash-prefix",
+  "topic": "prefix-sum",
   "difficulty": "Trung bình",
   "exam_tags": [
     "HUSTack Programming Advanced (SIM_FENWICK_TREE)",
@@ -21,12 +21,13 @@
     }
   ],
   "theory_chapter": "chap2",
-  "mindset": "**Fenwick Tree (BIT)** nhỏ gọn hơn Segment Tree gấp 4 lần bộ nhớ và chạy cực nhanh với `n, Q = 10^6`:\n- Vì lệnh `update k v` là **gán** `a[k] = v` (trong khi BIT cộng dồn độ chênh lệch), ta lưu thêm mảng `a[]` hiện tại, tính `delta = v - a[k]`, gán `a[k] = v` rồi gọi `add(k, delta)`.\n- Hàm `add(idx, delta)`: `for (; idx <= n; idx += idx & -idx) bit[idx] += delta;`.\n- Hàm `query(idx)`: `for (; idx > 0; idx -= idx & -idx) s += bit[idx];`.",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Có nhiều truy vấn yêu cầu tính tổng (hoặc min/max) trên đoạn liên tiếp `[L..R]` (hoặc hình chữ nhật 2D) với `n, Q <= 10^5 - 10^6`.\n- Tại sao cách ngây thơ chậm: Nếu mỗi truy vấn dùng vòng `for` cộng từ `L` đến `R` sẽ mất `O(n * Q)` phép tính -> TLE.\n- Hướng đi: Tiền xử lý Mảng cộng dồn `S[i] = S[i-1] + a[i]` để trả lời tổng đoạn trong `O(1)` bằng phép trừ `S[R] - S[L-1]` (hoặc dùng Segment Tree / Fenwick / RMQ nếu hỏi Min/Max và có cập nhật).\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Có nhiều truy vấn yêu cầu tính tổng (hoặc min/max) trên đoạn liên tiếp `[L..R]` (hoặc hình chữ nhật 2D) với `n, Q <= 10^5 - 10^6`.\n- Tại sao cách ngây thơ chậm: Nếu mỗi truy vấn dùng vòng `for` cộng từ `L` đến `R` sẽ mất `O(n * Q)` phép tính -> TLE.\n- Hướng đi: Tiền xử lý Mảng cộng dồn `S[i] = S[i-1] + a[i]` để trả lời tổng đoạn trong `O(1)` bằng phép trừ `S[R] - S[L-1]` (hoặc dùng Segment Tree / Fenwick / RMQ nếu hỏi Min/Max và có cập nhật).\n\n**2. Cách suy nghĩ cho bài này:**\n**Fenwick Tree (BIT)** nhỏ gọn hơn Segment Tree gấp 4 lần bộ nhớ và chạy nhanh với `n, Q = 10^6`:\n- Vì lệnh `update k v` là **gán** `a[k] = v` (trong khi BIT cộng dồn độ chênh lệch), ta lưu thêm mảng `a[]` hiện tại, tính `delta = v - a[k]`, gán `a[k] = v` rồi gọi `add(k, delta)`.\n- Hàm `add(idx, delta)`: `for (; idx <= n; idx += idx & -idx) bit[idx] += delta;`.\n- Hàm `query(idx)`: `for (; idx > 0; idx -= idx & -idx) s += bit[idx];`.",
   "hints": [
     "Có thể dựng BIT ban đầu trong `O(n)` bằng `for i = 1..n: j = i + (i & -i); if (j <= n) bit[j] += bit[i];`.",
     "Dùng `long long` cho mảng `bit[]` và kết quả `sum`."
   ],
   "complexity": "O(n + Q log n)",
   "id": "hs-sim-fenwick-tree",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1350
 }

@@ -1,8 +1,8 @@
 {
   "id": "ck-interleaving-strings",
   "title": "Kiểm tra chuỗi ghép (Interleaving Strings)",
-  "track": "final",
-  "topic": "dp-lis-lcs",
+  "track": "midterm",
+  "topic": "dp-subseq",
   "difficulty": "Trung bình",
   "exam_tags": [
     "Cuối kỳ 2024.1 Kíp 2 (Bài 4)"
@@ -21,7 +21,7 @@
     }
   ],
   "theory_chapter": "chap4b",
-  "mindset": "Trước hết, điều kiện cần là `|A| + |B| == |C|`. Nếu khác -> `F` ngay!\nGọi `dp[i][j]` (`true/false`) là liệu `i` ký tự đầu của `A` và `j` ký tự đầu của `B` có thể ghép thành `i + j` ký tự đầu của `C` không?\nỞ ký tự thứ `i + j` của `C` (tức `C[i + j - 1]`):\n- Hoặc nó đến từ `A[i - 1]` (nếu `i > 0 && A[i - 1] == C[i + j - 1] && dp[i - 1][j]`)\n- Hoặc nó đến từ `B[j - 1]` (nếu `j > 0 && B[j - 1] == C[i + j - 1] && dp[i][j - 1]`)",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Tìm **dãy con** (được phép bỏ cách quãng, giữ nguyên thứ tự) tăng dài nhất (LIS), hoặc tìm phần chung / đối xứng trên 1-2 xâu (LCS, LPS).\n- Hướng đi: Dùng `dp[i]` = độ dài dãy tăng kết thúc tại `i` (hoặc mảng `tail[]` + `lower_bound` khi `n = 10^5`); với 2 xâu dùng bảng 2 chiều `dp[i][j]` trên `i` ký tự đầu xâu A và `j` ký tự đầu xâu B.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Tìm **dãy con** (được phép bỏ cách quãng, giữ nguyên thứ tự) tăng dài nhất (LIS), hoặc tìm phần chung / đối xứng trên 1-2 xâu (LCS, LPS).\n- Hướng đi: Dùng `dp[i]` = độ dài dãy tăng kết thúc tại `i` (hoặc mảng `tail[]` + `lower_bound` khi `n = 10^5`); với 2 xâu dùng bảng 2 chiều `dp[i][j]` trên `i` ký tự đầu xâu A và `j` ký tự đầu xâu B.\n\n**2. Cách suy nghĩ cho bài này:**\nTrước hết, điều kiện cần là `|A| + |B| == |C|`. Nếu khác -> `F` ngay!\nGọi `dp[i][j]` (`true/false`) là liệu `i` ký tự đầu của `A` và `j` ký tự đầu của `B` có thể ghép thành `i + j` ký tự đầu của `C` không?\nỞ ký tự thứ `i + j` của `C` (tức `C[i + j - 1]`):\n- Hoặc nó đến từ `A[i - 1]` (nếu `i > 0 && A[i - 1] == C[i + j - 1] && dp[i - 1][j]`)\n- Hoặc nó đến từ `B[j - 1]` (nếu `j > 0 && B[j - 1] == C[i + j - 1] && dp[i][j - 1]`)",
   "hints": [
     "Nhớ `dp[0][0] = true` (0 ký tự của A + 0 ký tự của B tạo 0 ký tự của C).",
     "Bài toán tương tự việc tìm đường đi từ `(0, 0)` đến `(n, m)` trên lưới 2D mà chỉ đi xuống (lấy từ `A`) hoặc sang phải (lấy từ `B`)!"
@@ -30,5 +30,6 @@
     "time": "O(|A| * |B|)",
     "space": "O(|A| * |B|) hoặc O(|B|)"
   },
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1400
 }

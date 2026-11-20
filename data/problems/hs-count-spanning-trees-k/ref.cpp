@@ -31,7 +31,7 @@ void dfs(int idx, int taken, int cur_w, array<int, 21> p) {
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    if (!(cin >> n >> m >> K)) return 0;
+    cin >> n >> m >> K;
     E.resize(m);
     for (int i = 0; i < m; ++i) cin >> E[i].u >> E[i].v >> E[i].w;
     sort(E.begin(), E.end(), [](const Edge& a, const Edge& b){ return a.w < b.w; });

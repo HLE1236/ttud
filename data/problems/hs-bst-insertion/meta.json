@@ -1,8 +1,8 @@
 {
   "title": "[HUSTack] Chèn và duyệt tiền tự Cây tìm kiếm nhị phân (BST)",
   "track": "midterm",
-  "topic": "array-basic",
-  "difficulty": "Cơ bản",
+  "topic": "stl-basic",
+  "difficulty": "Trung bình",
   "exam_tags": [
     "HUSTack Project1 (BST_INSERTION_MANIPULATION)",
     "HUSTack: Đã AC"
@@ -20,12 +20,13 @@
       "output": "20 10 7 3 8 15 26 23 30"
     }
   ],
-  "theory_chapter": "chap2",
-  "mindset": "Cài đặt `struct Node { int key; Node *left, *right; };` và viết hàm đệ quy `insert(Node* root, int k)`:\n- Nếu `root == nullptr`: tạo nút mới.\n- Nếu `k < root->key`: gán `root->left = insert(root->left, k)`.\n- Nếu `k > root->key`: gán `root->right = insert(root->right, k)`.\n- Nếu `k == root->key`: không làm gì cả.",
+  "theory_chapter": "chap1",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dữ liệu có tới `10^5 - 10^6` phần tử hoặc các dòng log truy vấn.\n- Với kích thước này, nếu dùng 2 vòng lặp lồng nhau `O(n^2)` tìm kiếm sẽ bị quá thời gian (TLE).\n- Hướng đi: Duyệt 1 vòng `O(n)` kết hợp cấu trúc STL (`unordered_map`, `set`, `stack`, `queue`, `priority_queue`) hoặc quy đổi thời gian `HH:MM:SS` ra số giây `0..86399`.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dữ liệu có tới `10^5 - 10^6` phần tử hoặc các dòng log truy vấn.\n- Với kích thước này, nếu dùng 2 vòng lặp lồng nhau `O(n^2)` tìm kiếm sẽ bị quá thời gian (TLE).\n- Hướng đi: Duyệt 1 vòng `O(n)` kết hợp cấu trúc STL (`unordered_map`, `set`, `stack`, `queue`, `priority_queue`) hoặc quy đổi thời gian `HH:MM:SS` ra số giây `0..86399`.\n\n**2. Cách suy nghĩ cho bài này:**\nCài đặt `struct Node { int key; Node *left, *right; };` và viết hàm đệ quy `insert(Node* root, int k)`:\n- Nếu `root == nullptr`: tạo nút mới.\n- Nếu `k < root->key`: gán `root->left = insert(root->left, k)`.\n- Nếu `k > root->key`: gán `root->right = insert(root->right, k)`.\n- Nếu `k == root->key`: không làm gì cả.",
   "hints": [
     "Duyệt PreOrder: in `root->key`, gọi đệ quy `root->left`, rồi gọi đệ quy `root->right`."
   ],
   "complexity": "O(N * h) với h là chiều cao cây",
   "id": "hs-bst-insertion",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1150
 }

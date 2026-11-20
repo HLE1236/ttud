@@ -4,7 +4,7 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     int n; long long D;
-    if (!(cin >> n >> D)) return 0;
+    cin >> n >> D;
     vector<long long> x(n + 1), y(n + 1);
     for (int i = 1; i <= n; ++i) cin >> x[i] >> y[i];
     if (n == 1) { cout << 0 << "\n"; return 0; }

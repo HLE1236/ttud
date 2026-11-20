@@ -10,8 +10,6 @@ int main() {
     cin.tie(nullptr);
     long long totalOrders = 0, totalRev = 0;
     unordered_map<string, long long> shopRev, custShop;
-    shopRev.reserve(65536);
-    custShop.reserve(131072);
     vector<long long> pref(86401, 0);
 
     string cust, prod, shop, tm;

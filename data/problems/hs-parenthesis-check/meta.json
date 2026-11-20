@@ -1,7 +1,7 @@
 {
   "title": "[HUSTack] Kiểm tra dãy ngoặc đúng (Check Parenthesis)",
   "track": "midterm",
-  "topic": "array-basic",
+  "topic": "stl-basic",
   "difficulty": "Cơ bản",
   "exam_tags": [
     "HUSTack Project1 (PARENTHESIS_CHECK)",
@@ -21,12 +21,13 @@
     }
   ],
   "theory_chapter": "chap1",
-  "mindset": "Bài kinh điển của `std::stack<char>`: gặp ngoặc mở thì `push` vào stack; gặp ngoặc đóng thì kiểm tra stack có rỗng không và phần tử đỉnh có khớp cặp không (`(` với `)`, `[` với `]`, `{` với `}`). Cuối cùng stack phải rỗng hoàn toàn.",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dữ liệu có tới `10^5 - 10^6` phần tử hoặc các dòng log truy vấn.\n- Với kích thước này, nếu dùng 2 vòng lặp lồng nhau `O(n^2)` tìm kiếm sẽ bị quá thời gian (TLE).\n- Hướng đi: Duyệt 1 vòng `O(n)` kết hợp cấu trúc STL (`unordered_map`, `set`, `stack`, `queue`, `priority_queue`) hoặc quy đổi thời gian `HH:MM:SS` ra số giây `0..86399`.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dữ liệu có tới `10^5 - 10^6` phần tử hoặc các dòng log truy vấn.\n- Với kích thước này, nếu dùng 2 vòng lặp lồng nhau `O(n^2)` tìm kiếm sẽ bị quá thời gian (TLE).\n- Hướng đi: Duyệt 1 vòng `O(n)` kết hợp cấu trúc STL (`unordered_map`, `set`, `stack`, `queue`, `priority_queue`) hoặc quy đổi thời gian `HH:MM:SS` ra số giây `0..86399`.\n\n**2. Cách suy nghĩ cho bài này:**\nBài cơ bản của `std::stack<char>`: gặp ngoặc mở thì `push` vào stack; gặp ngoặc đóng thì kiểm tra stack có rỗng không và phần tử đỉnh có khớp cặp không (`(` với `)`, `[` với `]`, `{` với `}`). Cuối cùng stack phải rỗng hoàn toàn.",
   "hints": [
     "Nếu độ dài xâu là số lẻ có thể kết luận ngay `0`.",
     "Sau khi duyệt hết xâu, nhớ kiểm tra `st.empty()` (tránh trường hợp thừa ngoặc mở như `((()`)."
   ],
   "complexity": "O(n) thời gian, O(n) bộ nhớ",
   "id": "hs-parenthesis-check",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1000
 }

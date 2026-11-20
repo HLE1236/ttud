@@ -2,8 +2,8 @@
   "id": "hs-bridges-arti-points",
   "title": "[HUSTack] Đếm Khớp và Cầu bằng Tarjan (Bridges & Articulation Points)",
   "track": "final",
-  "topic": "graph-bfs-dfs",
-  "difficulty": "Khó",
+  "topic": "graph-traversal",
+  "difficulty": "Nâng cao",
   "exam_tags": [
     "HUSTack 2025.2 (P.05.10.02)",
     "HUSTack: Đã AC"
@@ -21,13 +21,14 @@
       "output": "4 3"
     }
   ],
-  "theory_chapter": "chap6",
-  "mindset": "Thuật toán **Tarjan (`tin`, `low`)**:\n- Xét cạnh cây DFS `(u -> v)`:\n  + Cạnh `(u, v)` là **CẦU** nếu `low[v] > tin[u]` (cẩn thận xử lý đúng nếu đồ thị có đa cạnh bằng cách truyền `edge_id` cha chứ không truyền `parent_vertex`!).\n  + Đỉnh `u` là **KHỚP** nếu: (a) `u` là gốc DFS và có ít nhất 2 cây con DFS (`children >= 2`), HOẶC (b) `u` không phải gốc DFS và có ít nhất 1 con `v` thỏa `low[v] >= tin[u]`.\nNhớ dùng mảng `is_arti[u]` tránh đếm trùng một khớp nhiều lần khi nhiều con `v` cùng thỏa điều kiện!",
+  "theory_chapter": "chap5",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dữ liệu biểu diễn các đỉnh nối với nhau bằng các cạnh (đồ thị hoặc cây). Yêu cầu đếm cụm liên thông, kiểm tra đồ thị 2 phía, tìm đường ít bước nhất, tìm Khớp/Cầu/SCC hoặc tính toán trên Cây.\n- Hướng đi: Lưu danh sách kề `adj[u]`. Dùng BFS (`queue`) nếu tìm số bước ít nhất; dùng DFS truyền `parent` nếu là Cây; dùng Tarjan (`num`, `low`) nếu tìm Khớp/Cầu/SCC.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dữ liệu biểu diễn các đỉnh nối với nhau bằng các cạnh (đồ thị hoặc cây). Yêu cầu đếm cụm liên thông, kiểm tra đồ thị 2 phía, tìm đường ít bước nhất, tìm Khớp/Cầu/SCC hoặc tính toán trên Cây.\n- Hướng đi: Lưu danh sách kề `adj[u]`. Dùng BFS (`queue`) nếu tìm số bước ít nhất; dùng DFS truyền `parent` nếu là Cây; dùng Tarjan (`num`, `low`) nếu tìm Khớp/Cầu/SCC.\n\n**2. Cách suy nghĩ cho bài này:**\nThuật toán **Tarjan (`tin`, `low`)**:\n- Xét cạnh cây DFS `(u -> v)`:\n  + Cạnh `(u, v)` là **CẦU** nếu `low[v] > tin[u]` (cẩn thận xử lý đúng nếu đồ thị có đa cạnh bằng cách truyền `edge_id` cha chứ không truyền `parent_vertex`!).\n  + Đỉnh `u` là **KHỚP** nếu: (a) `u` là gốc DFS và có ít nhất 2 cây con DFS (`children >= 2`), HOẶC (b) `u` không phải gốc DFS và có ít nhất 1 con `v` thỏa `low[v] >= tin[u]`.\nNhớ dùng mảng `is_arti[u]` tránh đếm trùng một khớp nhiều lần khi nhiều con `v` cùng thỏa điều kiện!",
   "hints": [
     "Lưu cạnh kèm `edge_id` để phân biệt cạnh ngược về cha với cạnh song song nối cùng cặp `(u, v)`.",
     "Cẩn thận điều kiện **Cầu**: `low[v] > tin[u]` (dấu lớn hơn hẳn), còn **Khớp**: `low[v] >= tin[u]` (với `u` không phải gốc).",
     "Khởi chạy vòng lặp `for (int i = 1; i <= n; ++i) if (!tin[i]) dfs(i, -1);` để quét hết các thành phần liên thông."
   ],
   "complexity": "O(N + M)",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1550
 }

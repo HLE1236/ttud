@@ -2,7 +2,7 @@
   "id": "gk-stock-increasing",
   "title": "Chuỗi ngày chứng khoán tăng liên tiếp dài nhất",
   "track": "midterm",
-  "topic": "dp-midterm",
+  "topic": "dp-1d",
   "difficulty": "Cơ bản",
   "exam_tags": [
     "Giữa kỳ 2021.2 (Bài 1)",
@@ -21,8 +21,8 @@
       "output": "4"
     }
   ],
-  "theory_chapter": "chap4a",
-  "mindset": "Gọi `dp[i]` là độ dài đoạn tăng ngặt liên tiếp dài nhất kết thúc tại vị trí `i`.\n- Nếu `a[i] > a[i - 1]` thì `dp[i] = dp[i - 1] + 1`.\n- Ngược lại (`a[i] <= a[i - 1]`), chuỗi bị ngắt, bắt đầu lại từ `i`: `dp[i] = 1`.\nĐáp án là `max(dp[i])`. Thậm chí không cần mảng `dp`, chỉ cần một biến `cur` và `prev`!",
+  "theory_chapter": "chap4b",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dãy `1..n` (`n` lớn hơn 30, lên tới `10^5 - 10^6`), hỏi số cách đi hoặc tổng lớn nhất có điều kiện giữa các phần tử đứng gần nhau.\n- Tại sao không quay lui được: Khi thử đệ quy, cùng một vị trí `i` bị tính đi tính lại hàng triệu lần.\n- Hướng đi: Quy hoạch động 1 chiều — lập mảng `dp[i]` lưu kết quả tốt nhất tính đến vị trí `i`, tính `dp[i]` trực tiếp từ `dp[i-1], dp[i-2], ...` trong 1 vòng lặp.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dãy `1..n` (`n` lớn hơn 30, lên tới `10^5 - 10^6`), hỏi số cách đi hoặc tổng lớn nhất có điều kiện giữa các phần tử đứng gần nhau.\n- Tại sao không quay lui được: Khi thử đệ quy, cùng một vị trí `i` bị tính đi tính lại hàng triệu lần.\n- Hướng đi: Quy hoạch động 1 chiều — lập mảng `dp[i]` lưu kết quả tốt nhất tính đến vị trí `i`, tính `dp[i]` trực tiếp từ `dp[i-1], dp[i-2], ...` trong 1 vòng lặp.\n\n**2. Cách suy nghĩ cho bài này:**\nGọi `dp[i]` là độ dài đoạn tăng ngặt liên tiếp dài nhất kết thúc tại vị trí `i`.\n- Nếu `a[i] > a[i - 1]` thì `dp[i] = dp[i - 1] + 1`.\n- Ngược lại (`a[i] <= a[i - 1]`), chuỗi bị ngắt, bắt đầu lại từ `i`: `dp[i] = 1`.\nĐáp án là `max(dp[i])`. Thậm chí không cần mảng `dp`, chỉ cần một biến `cur` và `prev`!",
   "hints": [
     "Chú ý điều kiện **tăng ngặt**: `a[i] > a[i-1]` (bằng nhau cũng ngắt chuỗi!).",
     "Với `n = 1`, đáp án là `1`."
@@ -31,5 +31,6 @@
     "time": "O(n)",
     "space": "O(1)"
   },
-  "test_count": 10
+  "test_count": 10,
+  "elo": 900
 }

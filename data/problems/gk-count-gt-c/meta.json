@@ -2,7 +2,7 @@
   "id": "gk-count-gt-c",
   "title": "Đếm phần tử lớn hơn ngưỡng C (Giám sát ngưỡng)",
   "track": "midterm",
-  "topic": "array-basic",
+  "topic": "stl-basic",
   "difficulty": "Cơ bản",
   "exam_tags": [
     "Cuối kỳ 2025.1 (Câu 1)",
@@ -22,7 +22,7 @@
     }
   ],
   "theory_chapter": "chap1",
-  "mindset": "Bài khởi động kiểm tra kỹ năng nhập xuất nhanh (`ios::sync_with_stdio(false)`) với `n <= 10^6` và duyệt mảng `O(n)`. Với `n = 10^6`, không cần lưu cả mảng nếu chỉ đếm trực tiếp từng số vừa đọc vào!",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dữ liệu có tới `10^5 - 10^6` phần tử hoặc các dòng log truy vấn.\n- Với kích thước này, nếu dùng 2 vòng lặp lồng nhau `O(n^2)` tìm kiếm sẽ bị quá thời gian (TLE).\n- Hướng đi: Duyệt 1 vòng `O(n)` kết hợp cấu trúc STL (`unordered_map`, `set`, `stack`, `queue`, `priority_queue`) hoặc quy đổi thời gian `HH:MM:SS` ra số giây `0..86399`.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dữ liệu có tới `10^5 - 10^6` phần tử hoặc các dòng log truy vấn.\n- Với kích thước này, nếu dùng 2 vòng lặp lồng nhau `O(n^2)` tìm kiếm sẽ bị quá thời gian (TLE).\n- Hướng đi: Duyệt 1 vòng `O(n)` kết hợp cấu trúc STL (`unordered_map`, `set`, `stack`, `queue`, `priority_queue`) hoặc quy đổi thời gian `HH:MM:SS` ra số giây `0..86399`.\n\n**2. Cách suy nghĩ cho bài này:**\nBài khởi động kiểm tra kỹ năng nhập xuất nhanh (`ios::sync_with_stdio(false)`) với `n <= 10^6` và duyệt mảng `O(n)`. Với `n = 10^6`, không cần lưu cả mảng nếu chỉ đếm trực tiếp từng số vừa đọc vào!",
   "hints": [
     "Đọc từng số `x` trong vòng lặp `n` lần, nếu `x > c` thì tăng biến `ans` lên 1.",
     "Nhớ bật `ios::sync_with_stdio(false); cin.tie(nullptr);` vì `n = 10^6` có thể bị TLE nếu dùng `cin` chậm mặc định."
@@ -31,5 +31,6 @@
     "time": "O(n)",
     "space": "O(1)"
   },
-  "test_count": 10
+  "test_count": 10,
+  "elo": 800
 }

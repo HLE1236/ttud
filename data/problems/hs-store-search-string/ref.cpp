@@ -5,7 +5,6 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     unordered_set<string> db;
-    db.reserve(262144);
     string s;
     while (cin >> s && s != "*") {
         db.insert(s);

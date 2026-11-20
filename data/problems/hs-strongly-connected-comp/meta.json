@@ -2,8 +2,8 @@
   "id": "hs-strongly-connected-comp",
   "title": "[HUSTack] Thành phần liên thông mạnh (SCC Tarjan)",
   "track": "final",
-  "topic": "graph-bfs-dfs",
-  "difficulty": "Khó",
+  "topic": "graph-traversal",
+  "difficulty": "Nâng cao",
   "exam_tags": [
     "HUSTack 2025.2 (P.05.10.01)",
     "HUSTack: Đã AC"
@@ -21,13 +21,14 @@
       "output": "3"
     }
   ],
-  "theory_chapter": "chap6",
-  "mindset": "Thuật toán **Tarjan tìm SCC (`tin`, `low`, `on_stack`)**: Khi thăm xong toàn bộ cung đi ra từ đỉnh `u`, nếu `low[u] == tin[u]` thì `u` chính là gốc của một SCC! Lúc này bật `pop` dần các đỉnh trên `stack` cho đến khi gặp lại `u` và đánh dấu `on_stack = false`.\nMẹo chống TLE/Stack Overflow với `N = 10^5`: dùng phiên bản Tarjan **không đệ quy** (hoặc đồ thị đủ sâu vẫn chạy mượt trên stack tường minh).",
+  "theory_chapter": "chap5",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dữ liệu biểu diễn các đỉnh nối với nhau bằng các cạnh (đồ thị hoặc cây). Yêu cầu đếm cụm liên thông, kiểm tra đồ thị 2 phía, tìm đường ít bước nhất, tìm Khớp/Cầu/SCC hoặc tính toán trên Cây.\n- Hướng đi: Lưu danh sách kề `adj[u]`. Dùng BFS (`queue`) nếu tìm số bước ít nhất; dùng DFS truyền `parent` nếu là Cây; dùng Tarjan (`num`, `low`) nếu tìm Khớp/Cầu/SCC.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dữ liệu biểu diễn các đỉnh nối với nhau bằng các cạnh (đồ thị hoặc cây). Yêu cầu đếm cụm liên thông, kiểm tra đồ thị 2 phía, tìm đường ít bước nhất, tìm Khớp/Cầu/SCC hoặc tính toán trên Cây.\n- Hướng đi: Lưu danh sách kề `adj[u]`. Dùng BFS (`queue`) nếu tìm số bước ít nhất; dùng DFS truyền `parent` nếu là Cây; dùng Tarjan (`num`, `low`) nếu tìm Khớp/Cầu/SCC.\n\n**2. Cách suy nghĩ cho bài này:**\nThuật toán **Tarjan tìm SCC (`tin`, `low`, `on_stack`)**: Khi thăm xong toàn bộ cung đi ra từ đỉnh `u`, nếu `low[u] == tin[u]` thì `u` chính là gốc của một SCC! Lúc này bật `pop` dần các đỉnh trên `stack` cho đến khi gặp lại `u` và đánh dấu `on_stack = false`.\nMẹo chống TLE/Stack Overflow với `N = 10^5`: dùng phiên bản Tarjan **không đệ quy** (hoặc đồ thị đủ sâu vẫn chạy mượt trên stack tường minh).",
   "hints": [
     "Khác với đồ thị vô hướng, trong Tarjan có hướng chỉ cập nhật `low[u] = min(low[u], tin[v])` nếu đỉnh `v` **đang nằm trong `stack`** (`in_stack[v] == true`).",
     "Nếu `v` đã được gom vào một SCC khác trước đó (`in_stack[v] == false`), không được cập nhật `low[u]` qua cạnh chéo `(u, v)`.",
     "Cài đặt không đệ quy bằng `vector<int> call_st` + `ptr[u]` để an toàn 100% trước đồ thị đường thẳng `10^5` đỉnh."
   ],
   "complexity": "O(N + M)",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1550
 }

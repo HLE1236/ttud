@@ -1,7 +1,7 @@
 {
   "title": "[HUSTack] Vượt ngục tối đa (Maximum Runaway - Max Flow tách đỉnh)",
   "track": "final",
-  "topic": "graph-special",
+  "topic": "graph-advanced",
   "difficulty": "Khó",
   "exam_tags": [
     "HUSTack Programming Advanced (max-runaway)",
@@ -21,11 +21,12 @@
     }
   ],
   "theory_chapter": "chap5",
-  "mindset": "Bài toán **Luồng cực đại có giới hạn khả năng thông qua trên ĐỈNH (Vertex Capacity)**!\nKỹ thuật chuẩn mực: **Tách mỗi ô `(i, j)` thành 2 đỉnh `in(i, j)` và `out(i, j)`**:\n- Nối `in(i, j) -> out(i, j)` với dung lượng bằng `a[i][j]` (hoặc `INF` nếu là ô `-1` hay `-2`).\n- Từ `out(i, j)` nối sang `in(ni, nj)` của 4 ô kề cạnh với dung lượng `INF`.\n- Đặt nguồn `S = in(ô -1)` và nối mọi `out(ô -2)` tới đích chung `T` với dung lượng `INF`. Chạy Dinic từ `S` đến `T`!",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Bài toán đồ thị nâng cao (Câu 5 Cuối kỳ): ghép cặp 1-1 giữa 2 tập hợp, đẩy luồng tối đa từ `S` đến `T`, hoặc tìm đường đi đơn / chu trình / cây Steiner với số đỉnh cần nhớ nhỏ (`N <= 20` hoặc `K <= 12`).\n- Hướng đi: Dùng Cặp ghép 2 phía (Kuhn / Hopcroft-Karp), Luồng cực đại (Dinic), hoặc Bitmask DP `dp[mask][u]` với `mask` là dãy bit biểu diễn tập đỉnh đã đi qua.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Bài toán đồ thị nâng cao (Câu 5 Cuối kỳ): ghép cặp 1-1 giữa 2 tập hợp, đẩy luồng tối đa từ `S` đến `T`, hoặc tìm đường đi đơn / chu trình / cây Steiner với số đỉnh cần nhớ nhỏ (`N <= 20` hoặc `K <= 12`).\n- Hướng đi: Dùng Cặp ghép 2 phía (Kuhn / Hopcroft-Karp), Luồng cực đại (Dinic), hoặc Bitmask DP `dp[mask][u]` với `mask` là dãy bit biểu diễn tập đỉnh đã đi qua.\n\n**2. Cách suy nghĩ cho bài này:**\nBài toán **Luồng cực đại có giới hạn khả năng thông qua trên ĐỈNH (Vertex Capacity)**!\nKỹ thuật chuẩn: **Tách mỗi ô `(i, j)` thành 2 đỉnh `in(i, j)` và `out(i, j)`**:\n- Nối `in(i, j) -> out(i, j)` với dung lượng bằng `a[i][j]` (hoặc `INF` nếu là ô `-1` hay `-2`).\n- Từ `out(i, j)` nối sang `in(ni, nj)` của 4 ô kề cạnh với dung lượng `INF`.\n- Đặt nguồn `S = in(ô -1)` và nối mọi `out(ô -2)` tới đích chung `T` với dung lượng `INF`. Chạy Dinic từ `S` đến `T`!",
   "hints": [
     "Với `N, M <= 20`, mạng chỉ có tối đa `2 * 400 + 2 = 802` đỉnh, Dinic chạy trong tích tắc!"
   ],
   "complexity": "O(V^2 E) (Dinic trên tối đa 800 đỉnh)",
   "id": "hs-max-runaway",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1850
 }

@@ -2,8 +2,8 @@
   "id": "hs-rmq",
   "title": "[HUSTack] Range Minimum Query (RMQ O(n log n) / Sparse Table)",
   "track": "midterm",
-  "topic": "hash-prefix",
-  "difficulty": "Nâng cao",
+  "topic": "prefix-sum",
+  "difficulty": "Trung bình",
   "exam_tags": [
     "HUSTack 2025.2 (P.02.03.01)",
     "HUSTack: Chưa làm"
@@ -22,7 +22,7 @@
     }
   ],
   "theory_chapter": "chap2",
-  "mindset": "Vì mảng **không thay đổi giá trị** nhưng có tới `m = 10^6` truy vấn -> dùng **Sparse Table (Bảng thưa)** trả lời mỗi truy vấn trong đúng **`O(1)`**!\n- `st[k][i]` lưu `min` của đoạn dài `2^k` bắt đầu từ `i`: `st[k][i] = min(st[k-1][i], st[k-1][i + (1 << (k-1))])`.\n- Truy vấn `[L, R]`: đặt `k = floor(log2(R - L + 1))`, đáp án là `min(st[k][L], st[k][R - (1 << k) + 1])`!",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Có nhiều truy vấn yêu cầu tính tổng (hoặc min/max) trên đoạn liên tiếp `[L..R]` (hoặc hình chữ nhật 2D) với `n, Q <= 10^5 - 10^6`.\n- Tại sao cách ngây thơ chậm: Nếu mỗi truy vấn dùng vòng `for` cộng từ `L` đến `R` sẽ mất `O(n * Q)` phép tính -> TLE.\n- Hướng đi: Tiền xử lý Mảng cộng dồn `S[i] = S[i-1] + a[i]` để trả lời tổng đoạn trong `O(1)` bằng phép trừ `S[R] - S[L-1]` (hoặc dùng Segment Tree / Fenwick / RMQ nếu hỏi Min/Max và có cập nhật).\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Có nhiều truy vấn yêu cầu tính tổng (hoặc min/max) trên đoạn liên tiếp `[L..R]` (hoặc hình chữ nhật 2D) với `n, Q <= 10^5 - 10^6`.\n- Tại sao cách ngây thơ chậm: Nếu mỗi truy vấn dùng vòng `for` cộng từ `L` đến `R` sẽ mất `O(n * Q)` phép tính -> TLE.\n- Hướng đi: Tiền xử lý Mảng cộng dồn `S[i] = S[i-1] + a[i]` để trả lời tổng đoạn trong `O(1)` bằng phép trừ `S[R] - S[L-1]` (hoặc dùng Segment Tree / Fenwick / RMQ nếu hỏi Min/Max và có cập nhật).\n\n**2. Cách suy nghĩ cho bài này:**\nVì mảng **không thay đổi giá trị** nhưng có tới `m = 10^6` truy vấn -> dùng **Sparse Table (Bảng thưa)** trả lời mỗi truy vấn trong đúng **`O(1)`**!\n- `st[k][i]` lưu `min` của đoạn dài `2^k` bắt đầu từ `i`: `st[k][i] = min(st[k-1][i], st[k-1][i + (1 << (k-1))])`.\n- Truy vấn `[L, R]`: đặt `k = floor(log2(R - L + 1))`, đáp án là `min(st[k][L], st[k][R - (1 << k) + 1])`!",
   "hints": [
     "Với `n = 10^6`, `2^20 > 10^6` -> khai báo `static int st[20][1000005]` (hoặc `1000005 x 20` để thân thiện cache!) tốn ~80 MB RAM."
   ],
@@ -30,5 +30,6 @@
     "time": "O(n log n + m)",
     "space": "O(n log n)"
   },
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1350
 }

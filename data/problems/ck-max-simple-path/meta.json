@@ -2,8 +2,8 @@
   "id": "ck-max-simple-path",
   "title": "Đường đi đơn trọng số lớn nhất (Held-Karp / Multi-answer Checker)",
   "track": "final",
-  "topic": "graph-special",
-  "difficulty": "Nâng cao",
+  "topic": "graph-advanced",
+  "difficulty": "Khó",
   "exam_tags": [
     "Cuối kỳ 2025.1 (Câu 5)"
   ],
@@ -21,7 +21,7 @@
     }
   ],
   "theory_chapter": "chap5",
-  "mindset": "Tìm đường đi đơn dài nhất trên đồ thị tổng quát là bài toán Hamilton mở rộng (NP-hard).\nVới `n <= 16`, ta dùng **DP Trạng thái (Held-Karp Bitmask DP)** để tìm đáp án tối ưu tuyệt đối:\n- Gọi `dp[mask][u]` là tổng trọng số lớn nhất của đường đi đơn đi qua đúng tập đỉnh `mask` và kết thúc tại đỉnh `u` (với `u` thuộc `mask`).\n- Khởi tạo: với mỗi đỉnh `u`, `dp[1 << u][u] = 0`.\n- Chuyển trạng thái: từ `(mask, u)`, thử đi qua cạnh `(u, v, w)` tới đỉnh `v` chưa thuộc `mask`: `dp[mask | (1<<v)][v] = max(..., dp[mask][u] + w)` và lưu mảng `parent` để truy vết ngược lại dãy đỉnh!",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Bài toán đồ thị nâng cao (Câu 5 Cuối kỳ): ghép cặp 1-1 giữa 2 tập hợp, đẩy luồng tối đa từ `S` đến `T`, hoặc tìm đường đi đơn / chu trình / cây Steiner với số đỉnh cần nhớ nhỏ (`N <= 20` hoặc `K <= 12`).\n- Hướng đi: Dùng Cặp ghép 2 phía (Kuhn / Hopcroft-Karp), Luồng cực đại (Dinic), hoặc Bitmask DP `dp[mask][u]` với `mask` là dãy bit biểu diễn tập đỉnh đã đi qua.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Bài toán đồ thị nâng cao (Câu 5 Cuối kỳ): ghép cặp 1-1 giữa 2 tập hợp, đẩy luồng tối đa từ `S` đến `T`, hoặc tìm đường đi đơn / chu trình / cây Steiner với số đỉnh cần nhớ nhỏ (`N <= 20` hoặc `K <= 12`).\n- Hướng đi: Dùng Cặp ghép 2 phía (Kuhn / Hopcroft-Karp), Luồng cực đại (Dinic), hoặc Bitmask DP `dp[mask][u]` với `mask` là dãy bit biểu diễn tập đỉnh đã đi qua.\n\n**2. Cách suy nghĩ cho bài này:**\nTìm đường đi đơn dài nhất trên đồ thị tổng quát là bài toán Hamilton mở rộng (NP-hard).\nVới `n <= 16`, ta dùng **DP Trạng thái (Held-Karp Bitmask DP)** để tìm đáp án tối ưu tuyệt đối:\n- Gọi `dp[mask][u]` là tổng trọng số lớn nhất của đường đi đơn đi qua đúng tập đỉnh `mask` và kết thúc tại đỉnh `u` (với `u` thuộc `mask`).\n- Khởi tạo: với mỗi đỉnh `u`, `dp[1 << u][u] = 0`.\n- Chuyển trạng thái: từ `(mask, u)`, thử đi qua cạnh `(u, v, w)` tới đỉnh `v` chưa thuộc `mask`: `dp[mask | (1<<v)][v] = max(..., dp[mask][u] + w)` và lưu mảng `parent` để truy vết ngược lại dãy đỉnh!",
   "hints": [
     "Nhớ đường đi 1 đỉnh (`k = 1`, trọng số `0`) luôn hợp lệ nếu `m = 0`!",
     "Để tiết kiệm RAM với `n = 16`, `2^16 * 16 = 1,048,576` trạng thái (`int` parent chỉ tốn ~4 MB, `long long` dp tốn ~8 MB)."
@@ -30,5 +30,6 @@
     "time": "O(2^n * m)",
     "space": "O(2^n * n)"
   },
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1800
 }

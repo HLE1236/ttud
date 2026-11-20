@@ -2,7 +2,7 @@
   "id": "gk-range-sum-queries",
   "title": "Truy vấn tổng đoạn (Prefix Sum 1D)",
   "track": "midterm",
-  "topic": "hash-prefix",
+  "topic": "prefix-sum",
   "difficulty": "Cơ bản",
   "exam_tags": [
     "Cuối kỳ 2025.1 (Câu 2)",
@@ -22,8 +22,8 @@
       "output": "9"
     }
   ],
-  "theory_chapter": "chap1",
-  "mindset": "Tính tổng trực tiếp từng truy vấn mất `O(n*q)` -> TLE ngay khi `n = 10^6, q = 10^5`. Ta xây dựng trước mảng cộng dồn `pref[x] = a[1] + ... + a[x]` với `pref[0] = 0`. Khi đó tổng đoạn `[L, R]` (ở đây `L = i, R = i + k - 1`) chính bằng `pref[R] - pref[L - 1]`.",
+  "theory_chapter": "chap2",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Có nhiều truy vấn yêu cầu tính tổng (hoặc min/max) trên đoạn liên tiếp `[L..R]` (hoặc hình chữ nhật 2D) với `n, Q <= 10^5 - 10^6`.\n- Tại sao cách ngây thơ chậm: Nếu mỗi truy vấn dùng vòng `for` cộng từ `L` đến `R` sẽ mất `O(n * Q)` phép tính -> TLE.\n- Hướng đi: Tiền xử lý Mảng cộng dồn `S[i] = S[i-1] + a[i]` để trả lời tổng đoạn trong `O(1)` bằng phép trừ `S[R] - S[L-1]` (hoặc dùng Segment Tree / Fenwick / RMQ nếu hỏi Min/Max và có cập nhật).\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Có nhiều truy vấn yêu cầu tính tổng (hoặc min/max) trên đoạn liên tiếp `[L..R]` (hoặc hình chữ nhật 2D) với `n, Q <= 10^5 - 10^6`.\n- Tại sao cách ngây thơ chậm: Nếu mỗi truy vấn dùng vòng `for` cộng từ `L` đến `R` sẽ mất `O(n * Q)` phép tính -> TLE.\n- Hướng đi: Tiền xử lý Mảng cộng dồn `S[i] = S[i-1] + a[i]` để trả lời tổng đoạn trong `O(1)` bằng phép trừ `S[R] - S[L-1]` (hoặc dùng Segment Tree / Fenwick / RMQ nếu hỏi Min/Max và có cập nhật).\n\n**2. Cách suy nghĩ cho bài này:**\nTính tổng trực tiếp từng truy vấn mất `O(n*q)` -> TLE ngay khi `n = 10^6, q = 10^5`. Ta xây dựng trước mảng cộng dồn `pref[x] = a[1] + ... + a[x]` với `pref[0] = 0`. Khi đó tổng đoạn `[L, R]` (ở đây `L = i, R = i + k - 1`) chính bằng `pref[R] - pref[L - 1]`.",
   "hints": [
     "Dùng `vector<long long> pref(n + 1, 0)` để tránh tràn kiểu `int` vì tổng có thể lên tới `10^15`.",
     "Với mỗi truy vấn `(i, k)`, đầu phải của đoạn là `R = i + k - 1`, đáp án là `pref[R] - pref[i - 1]`."
@@ -32,5 +32,6 @@
     "time": "O(n + q)",
     "space": "O(n)"
   },
-  "test_count": 10
+  "test_count": 10,
+  "elo": 900
 }

@@ -2,7 +2,7 @@
   "id": "hs-sim-priority-queue",
   "title": "[HUSTack] Mô phỏng Min Priority Queue (PUSH / POP phần tử nhỏ nhất)",
   "track": "midterm",
-  "topic": "array-basic",
+  "topic": "stl-basic",
   "difficulty": "Cơ bản",
   "exam_tags": [
     "HUSTack 2025.2 (P__SIM_PRIORITY_QUEUE)",
@@ -22,7 +22,7 @@
     }
   ],
   "theory_chapter": "chap1",
-  "mindset": "Cẩn thận: `priority_queue<int>` mặc định trong C++ là **Max-Heap** (lấy số lớn nhất)! Để làm **Min-Heap**, khai báo `priority_queue<int, vector<int>, greater<int>> pq;`!",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dữ liệu có tới `10^5 - 10^6` phần tử hoặc các dòng log truy vấn.\n- Với kích thước này, nếu dùng 2 vòng lặp lồng nhau `O(n^2)` tìm kiếm sẽ bị quá thời gian (TLE).\n- Hướng đi: Duyệt 1 vòng `O(n)` kết hợp cấu trúc STL (`unordered_map`, `set`, `stack`, `queue`, `priority_queue`) hoặc quy đổi thời gian `HH:MM:SS` ra số giây `0..86399`.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dữ liệu có tới `10^5 - 10^6` phần tử hoặc các dòng log truy vấn.\n- Với kích thước này, nếu dùng 2 vòng lặp lồng nhau `O(n^2)` tìm kiếm sẽ bị quá thời gian (TLE).\n- Hướng đi: Duyệt 1 vòng `O(n)` kết hợp cấu trúc STL (`unordered_map`, `set`, `stack`, `queue`, `priority_queue`) hoặc quy đổi thời gian `HH:MM:SS` ra số giây `0..86399`.\n\n**2. Cách suy nghĩ cho bài này:**\nCẩn thận: `priority_queue<int>` mặc định trong C++ là **Max-Heap** (lấy số lớn nhất)! Để làm **Min-Heap**, khai báo `priority_queue<int, vector<int>, greater<int>> pq;`!",
   "hints": [
     "Hoặc dùng mẹo đẩy `-e` vào Max-Heap rồi khi `POP` in ra `-pq.top()`."
   ],
@@ -30,5 +30,6 @@
     "time": "O(Q log Q)",
     "space": "O(Q)"
   },
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1000
 }

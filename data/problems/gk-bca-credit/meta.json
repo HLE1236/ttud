@@ -5,7 +5,7 @@
     "GK 20241",
     "Codeforces"
   ],
-  "topic": "backtracking",
+  "topic": "branch-bound",
   "theory_chapter": "chap3",
   "difficulty": "Nâng cao",
   "day": 5,
@@ -21,7 +21,7 @@
       "explanation": "Tải lớn nhất tối ưu giữa 4 giảng viên là 8 tín chỉ."
     }
   ],
-  "mindset": "Đây là bài **Nhánh và cận kinh điển** của môn TTUD:\n- Biến quyết định `x[k]`: giảng viên được giao dạy môn `k` (`k = 1..n`).\n- Với mỗi môn `k`, ta chỉ thử những giảng viên `v` nằm trong `D[k]` (danh sách giảng viên có thể dạy môn `k`) và không dạy môn `i < k` nào xung đột với `k`.\n- **Cắt tỉa Nhánh cận hiệu quả**: Ngay khi thử gán môn `k` cho giảng viên `v`, nếu `load[v] >= best` (đã bằng hoặc vượt kỷ lục tốt nhất từng tìm được) thì **dừng ngay không đi tiếp nhánh này**!",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Giới hạn `n` nhỏ (`n <= 12..30`), yêu cầu tìm phương án có **chi phí nhỏ nhất** hoặc **tải lớn nhất nhỏ nhất** (chia nhóm, phân công BCA/BACP, lộ trình TSP/CBUS).\n- Tại sao quay lui thuần bị chậm: Duyệt hết toàn bộ cây đệ quy sẽ vượt quá 1 giây khi `n >= 12`.\n- Hướng đi: Dùng **Nhánh và cận**: trước khi gọi `Try(k + 1)`, ước lượng cận dưới của nhánh; nếu đã `>= kỷ_lục_best` hiện có thì cắt bỏ nhánh đó ngay.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Giới hạn `n` nhỏ (`n <= 12..30`), yêu cầu tìm phương án có **chi phí nhỏ nhất** hoặc **tải lớn nhất nhỏ nhất** (chia nhóm, phân công BCA/BACP, lộ trình TSP/CBUS).\n- Tại sao quay lui thuần bị chậm: Duyệt hết toàn bộ cây đệ quy sẽ vượt quá 1 giây khi `n >= 12`.\n- Hướng đi: Dùng **Nhánh và cận**: trước khi gọi `Try(k + 1)`, ước lượng cận dưới của nhánh; nếu đã `>= kỷ_lục_best` hiện có thì cắt bỏ nhánh đó ngay.\n\n**2. Cách suy nghĩ cho bài này:**\nBài toán thuộc dạng **Nhánh và cận**:\n- Biến quyết định `x[k]`: giảng viên được giao dạy môn `k` (`k = 1..n`).\n- Với mỗi môn `k`, ta chỉ thử những giảng viên `v` nằm trong `D[k]` (danh sách giảng viên có thể dạy môn `k`) và không dạy môn `i < k` nào xung đột với `k`.\n- **Cắt tỉa Nhánh cận hiệu quả**: Ngay khi thử gán môn `k` cho giảng viên `v`, nếu `load[v] >= best` (đã bằng hoặc vượt kỷ lục tốt nhất từng tìm được) thì **dừng ngay không đi tiếp nhánh này**!",
   "hints": [
     "Lưu `D[c]` là danh sách các giảng viên có thể dạy môn `c`.",
     "Trong `Try(k)`: duyệt từng giảng viên `v` trong `D[k]`, kiểm tra `conflict[i][k]` với các môn `i < k` đang gán cho `v`.",
@@ -29,7 +29,8 @@
   ],
   "complexity": "Time: Nhánh cận có cắt tỉa | Space: O(n^2)",
   "starter_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    \n    return 0;\n}",
-  "reference_cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint m, n;\nvector<int> D[35];\nint credits[35], load[15], x[35];\nbool conflict[35][35];\nint best = 1e9;\n\nbool check(int v, int k) {\n    for (int i = 1; i < k; i++) {\n        if (conflict[i][k] && x[i] == v) return false;\n    }\n    return true;\n}\n\nvoid Try(int k) {\n    for (int v : D[k]) {\n        if (check(v, k)) {\n            x[k] = v;\n            load[v] += credits[k];\n            if (load[v] < best) {\n                if (k == n) {\n                    int mx = 0;\n                    for (int i = 1; i <= m; i++) mx = max(mx, load[i]);\n                    best = min(best, mx);\n                } else {\n                    Try(k + 1);\n                }\n            }\n            load[v] -= credits[k];\n        }\n    }\n}\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    cin >> m >> n;\n    for (int i = 1; i <= m; i++) {\n        int k; cin >> k;\n        while (k--) {\n            int c; cin >> c;\n            D[c].push_back(i);\n        }\n    }\n    for (int i = 1; i <= n; i++) cin >> credits[i];\n    int K; cin >> K;\n    while (K--) {\n        int u, v; cin >> u >> v;\n        conflict[u][v] = conflict[v][u] = true;\n    }\n    Try(1);\n    cout << (best == 1e9 ? -1 : best) << \"\\n\";\n    return 0;\n}",
+  "reference_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint m, n, crd[35], load_gv[15], x[35], best = 1e9;\nvector<int> teach[35];\nbool conf[35][35];\n\nvoid Try(int k, int cur_max) {\n    if (cur_max >= best) return;\n    if (k > n) { best = cur_max; return; }\n    for (int v : teach[k]) {\n        bool ok = (load_gv[v] + crd[k] < best);\n        for (int i = 1; i < k && ok; i++)\n            if (conf[i][k] && x[i] == v) ok = false;\n        if (!ok) continue;\n\n        x[k] = v;\n        load_gv[v] += crd[k];\n        Try(k + 1, max(cur_max, load_gv[v]));\n        load_gv[v] -= crd[k];\n    }\n}\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    cin >> m >> n;\n    for (int i = 1; i <= m; i++) {\n        int k, c; cin >> k;\n        while (k--) cin >> c, teach[c].push_back(i);\n    }\n    for (int i = 1; i <= n; i++) cin >> crd[i];\n    int K, u, v; cin >> K;\n    while (K--) cin >> u >> v, conf[u][v] = conf[v][u] = true;\n    Try(1, 0);\n    cout << (best == 1e9 ? -1 : best) << '\\n';\n    return 0;\n}\n",
   "id": "gk-bca-credit",
-  "test_count": 8
+  "test_count": 8,
+  "elo": 1550
 }

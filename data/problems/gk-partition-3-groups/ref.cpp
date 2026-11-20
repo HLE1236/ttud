@@ -38,7 +38,7 @@ void dfs(int idx) {
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    if (!(cin >> n)) return 0;
+    cin >> n;
     for (int i = 0; i < n; ++i) cin >> a[i];
     sort(a, a + n, greater<long long>());
     suf[n] = 0;

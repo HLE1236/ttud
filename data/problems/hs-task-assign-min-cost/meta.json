@@ -1,8 +1,8 @@
 {
   "title": "[HUSTack] Phân công công việc tối thiểu chi phí (Hungarian / Min-Cost Flow)",
   "track": "final",
-  "topic": "graph-special",
-  "difficulty": "Trung bình",
+  "topic": "graph-advanced",
+  "difficulty": "Nâng cao",
   "exam_tags": [
     "HUSTack Programming Advanced (min-cost-flow-task-assignment)",
     "HUSTack: Chưa làm"
@@ -21,11 +21,12 @@
     }
   ],
   "theory_chapter": "chap5",
-  "mindset": "Với `n = 200`, thuật toán Quay lui Nhánh cận `O(n!)` không thể chạy kịp. Ta sử dụng **Thuật toán Hungary (Hungarian Algorithm) `O(n^3)`** hoặc **Min-Cost Max-Flow**!\nThuật toán Hungary cực kỳ gọn nhẹ (~30 dòng C++), dùng mảng thế `u[0..n], v[0..n]`, khớp `p[0..n]` và đường mở rộng `way[0..n]`, chạy chỉ vài mili-giây cho `n = 200`.",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Bài toán đồ thị nâng cao (Câu 5 Cuối kỳ): ghép cặp 1-1 giữa 2 tập hợp, đẩy luồng tối đa từ `S` đến `T`, hoặc tìm đường đi đơn / chu trình / cây Steiner với số đỉnh cần nhớ nhỏ (`N <= 20` hoặc `K <= 12`).\n- Hướng đi: Dùng Cặp ghép 2 phía (Kuhn / Hopcroft-Karp), Luồng cực đại (Dinic), hoặc Bitmask DP `dp[mask][u]` với `mask` là dãy bit biểu diễn tập đỉnh đã đi qua.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Bài toán đồ thị nâng cao (Câu 5 Cuối kỳ): ghép cặp 1-1 giữa 2 tập hợp, đẩy luồng tối đa từ `S` đến `T`, hoặc tìm đường đi đơn / chu trình / cây Steiner với số đỉnh cần nhớ nhỏ (`N <= 20` hoặc `K <= 12`).\n- Hướng đi: Dùng Cặp ghép 2 phía (Kuhn / Hopcroft-Karp), Luồng cực đại (Dinic), hoặc Bitmask DP `dp[mask][u]` với `mask` là dãy bit biểu diễn tập đỉnh đã đi qua.\n\n**2. Cách suy nghĩ cho bài này:**\nVới `n = 200`, thuật toán Quay lui Nhánh cận `O(n!)` không thể chạy kịp. Ta sử dụng **Thuật toán Hungary (Hungarian Algorithm) `O(n^3)`** hoặc **Min-Cost Max-Flow**!\nThuật toán Hungary cực kỳ gọn nhẹ (~30 dòng C++), dùng mảng thế `u[0..n], v[0..n]`, khớp `p[0..n]` và đường mở rộng `way[0..n]`, chạy chỉ vài mili-giây cho `n = 200`.",
   "hints": [
     "Kiểm tra kiểu `long long` cho tổng chi phí và mảng thế `u, v`."
   ],
   "complexity": "O(n^3)",
   "id": "hs-task-assign-min-cost",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1750
 }

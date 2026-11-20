@@ -11,7 +11,7 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     int n;
-    if (!(cin >> n)) return 0;
+    cin >> n;
     vector<Point> p(n);
     for (int i = 0; i < n; ++i) cin >> p[i].x >> p[i].y >> p[i].c;
     sort(p.begin(), p.end());

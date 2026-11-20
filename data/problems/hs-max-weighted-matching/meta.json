@@ -1,7 +1,7 @@
 {
   "title": "[HUSTack] Cặp ghép có trọng số lớn nhất trên đồ thị hai phía (Max Weighted Matching)",
   "track": "final",
-  "topic": "graph-special",
+  "topic": "graph-advanced",
   "difficulty": "Khó",
   "exam_tags": [
     "HUSTack Programming Advanced (MAX_WEIGHTED_MATCHING)",
@@ -21,11 +21,12 @@
     }
   ],
   "theory_chapter": "chap5",
-  "mindset": "Mô hình hóa thành bài toán **Luồng chi phí nhỏ nhất (Min-Cost Flow)**:\n- Tạo đỉnh nguồn `S` nối tới mỗi đỉnh `u in X` (dung lượng `1`, chi phí `0`).\n- Với mỗi cạnh `(u, v, w)`, thêm cung `u -> v` (dung lượng `1`, chi phí **`-w`**).\n- Nối mỗi đỉnh `v in Y` tới đích `T` (dung lượng `1`, chi phí `0`).\n\nDùng thuật toán tìm đường tăng ngắn nhất (SPFA hoặc Dijkstra với thế Johnson) đẩy từng đơn vị luồng từ `S` đến `T`. **Dừng ngay** khi chi phí đường tăng `dist[T] >= 0` (vì đẩy thêm sẽ làm giảm tổng trọng số!). Đáp án là `-totalCost`.",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Bài toán đồ thị nâng cao (Câu 5 Cuối kỳ): ghép cặp 1-1 giữa 2 tập hợp, đẩy luồng tối đa từ `S` đến `T`, hoặc tìm đường đi đơn / chu trình / cây Steiner với số đỉnh cần nhớ nhỏ (`N <= 20` hoặc `K <= 12`).\n- Hướng đi: Dùng Cặp ghép 2 phía (Kuhn / Hopcroft-Karp), Luồng cực đại (Dinic), hoặc Bitmask DP `dp[mask][u]` với `mask` là dãy bit biểu diễn tập đỉnh đã đi qua.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Bài toán đồ thị nâng cao (Câu 5 Cuối kỳ): ghép cặp 1-1 giữa 2 tập hợp, đẩy luồng tối đa từ `S` đến `T`, hoặc tìm đường đi đơn / chu trình / cây Steiner với số đỉnh cần nhớ nhỏ (`N <= 20` hoặc `K <= 12`).\n- Hướng đi: Dùng Cặp ghép 2 phía (Kuhn / Hopcroft-Karp), Luồng cực đại (Dinic), hoặc Bitmask DP `dp[mask][u]` với `mask` là dãy bit biểu diễn tập đỉnh đã đi qua.\n\n**2. Cách suy nghĩ cho bài này:**\nMô hình hóa thành bài toán **Luồng chi phí nhỏ nhất (Min-Cost Flow)**:\n- Tạo đỉnh nguồn `S` nối tới mỗi đỉnh `u in X` (dung lượng `1`, chi phí `0`).\n- Với mỗi cạnh `(u, v, w)`, thêm cung `u -> v` (dung lượng `1`, chi phí **`-w`**).\n- Nối mỗi đỉnh `v in Y` tới đích `T` (dung lượng `1`, chi phí `0`).\n\nDùng thuật toán tìm đường tăng ngắn nhất (SPFA hoặc Dijkstra với thế Johnson) đẩy từng đơn vị luồng từ `S` đến `T`. **Dừng ngay** khi chi phí đường tăng `dist[T] >= 0` (vì đẩy thêm sẽ làm giảm tổng trọng số!). Đáp án là `-totalCost`.",
   "hints": [
     "Chú ý có thể có nhiều cạnh song song giữa cùng cặp `(u, v)` hoặc không cần chọn đủ `min(n, m)` cạnh nếu trọng số có số âm."
   ],
   "complexity": "O(min(n, m) * K * log V) với Johnson Dijkstra hoặc SPFA",
   "id": "hs-max-weighted-matching",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1800
 }

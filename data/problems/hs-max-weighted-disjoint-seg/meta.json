@@ -1,9 +1,9 @@
 {
   "id": "hs-max-weighted-disjoint-seg",
   "title": "[HUSTack] Tập đoạn thẳng rời nhau có tổng độ dài lớn nhất",
-  "track": "final",
-  "topic": "dp-lis-lcs",
-  "difficulty": "Trung bình",
+  "track": "midterm",
+  "topic": "dp-subseq",
+  "difficulty": "Nâng cao",
   "exam_tags": [
     "HUSTack 2025.2 (P.05.10.02)",
     "HUSTack: Chưa làm"
@@ -25,13 +25,14 @@
       "output": "21"
     }
   ],
-  "theory_chapter": "chap5",
-  "mindset": "Đây là bài **Weighted Interval Scheduling**. Khác với bài không trọng số (chỉ cần tham lam chọn đầu mút kết thúc nhỏ nhất), khi có trọng số `w_i = b_i - a_i`, tham lam sẽ sai ngay ở Sample 1! Ta phải sắp xếp các đoạn tăng dần theo đầu mút phải `b_i`, rồi quy hoạch động: `dp[i]` = kết quả tốt nhất trong `i` đoạn đầu. Với đoạn `i`: không chọn nó -> `dp[i-1]`; chọn nó -> cộng `w_i` với `dp[j]` (trong đó `j` là chỉ số lớn nhất có `b_j < a_i`, tìm bằng tìm kiếm nhị phân).",
+  "theory_chapter": "chap4b",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Tìm **dãy con** (được phép bỏ cách quãng, giữ nguyên thứ tự) tăng dài nhất (LIS), hoặc tìm phần chung / đối xứng trên 1-2 xâu (LCS, LPS).\n- Hướng đi: Dùng `dp[i]` = độ dài dãy tăng kết thúc tại `i` (hoặc mảng `tail[]` + `lower_bound` khi `n = 10^5`); với 2 xâu dùng bảng 2 chiều `dp[i][j]` trên `i` ký tự đầu xâu A và `j` ký tự đầu xâu B.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Tìm **dãy con** (được phép bỏ cách quãng, giữ nguyên thứ tự) tăng dài nhất (LIS), hoặc tìm phần chung / đối xứng trên 1-2 xâu (LCS, LPS).\n- Hướng đi: Dùng `dp[i]` = độ dài dãy tăng kết thúc tại `i` (hoặc mảng `tail[]` + `lower_bound` khi `n = 10^5`); với 2 xâu dùng bảng 2 chiều `dp[i][j]` trên `i` ký tự đầu xâu A và `j` ký tự đầu xâu B.\n\n**2. Cách suy nghĩ cho bài này:**\nĐây là bài **Weighted Interval Scheduling**. Khác với bài không trọng số (chỉ cần tham lam chọn đầu mút kết thúc nhỏ nhất), khi có trọng số `w_i = b_i - a_i`, tham lam sẽ sai ngay ở Sample 1! Ta phải sắp xếp các đoạn tăng dần theo đầu mút phải `b_i`, rồi quy hoạch động: `dp[i]` = kết quả tốt nhất trong `i` đoạn đầu. Với đoạn `i`: không chọn nó -> `dp[i-1]`; chọn nó -> cộng `w_i` với `dp[j]` (trong đó `j` là chỉ số lớn nhất có `b_j < a_i`, tìm bằng tìm kiếm nhị phân).",
   "hints": [
     "Sắp xếp danh sách các đoạn tăng dần theo `b`.",
     "Dùng `lower_bound` trên mảng các giá trị `b` đã sắp xếp để tìm vị trí đầu tiên `>= a_i`; vị trí đứng ngay trước đó chính là đoạn `j` tương thích cuối cùng có `b_j < a_i`.",
     "`dp[i] = max(dp[i-1], (b_i - a_i) + dp[j])`."
   ],
   "complexity": "O(n log n) thời gian, O(n) bộ nhớ",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1550
 }

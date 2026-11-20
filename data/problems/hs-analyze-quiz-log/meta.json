@@ -1,7 +1,7 @@
 {
   "title": "[HUSTack] Chấm điểm nhật ký làm bài trắc nghiệm (Analyze Quiz Log)",
   "track": "final",
-  "topic": "hash-prefix",
+  "topic": "stl-basic",
   "difficulty": "Trung bình",
   "exam_tags": [
     "HUSTack Project1 (ANALYZE_QUIZ_TEST_LOG)",
@@ -20,12 +20,13 @@
       "output": "1\n0\n2\n0"
     }
   ],
-  "theory_chapter": "chap5",
-  "mindset": "Cẩn thận ở bước xử lý chọn lại đáp án:\n- Từ `<AnswerID>`, tra ra `<QuestionID>` và độ đúng/sai `isCorrect`.\n- Với mỗi bộ `(UserID, TestID, QuestionID)`, chỉ giữ lại lựa chọn có `TimePoint` (`string` định dạng `hh:mm:ss` có thể so sánh từ điển trực tiếp!) lớn nhất (`>=`).\n- Sau khi đọc xong khối nhật ký, duyệt qua các lựa chọn cuối cùng đó để cộng điểm vào `score[UserID#TestID]`.",
+  "theory_chapter": "chap1",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dữ liệu có tới `10^5 - 10^6` phần tử hoặc các dòng log truy vấn.\n- Với kích thước này, nếu dùng 2 vòng lặp lồng nhau `O(n^2)` tìm kiếm sẽ bị quá thời gian (TLE).\n- Hướng đi: Duyệt 1 vòng `O(n)` kết hợp cấu trúc STL (`unordered_map`, `set`, `stack`, `queue`, `priority_queue`) hoặc quy đổi thời gian `HH:MM:SS` ra số giây `0..86399`.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dữ liệu có tới `10^5 - 10^6` phần tử hoặc các dòng log truy vấn.\n- Với kích thước này, nếu dùng 2 vòng lặp lồng nhau `O(n^2)` tìm kiếm sẽ bị quá thời gian (TLE).\n- Hướng đi: Duyệt 1 vòng `O(n)` kết hợp cấu trúc STL (`unordered_map`, `set`, `stack`, `queue`, `priority_queue`) hoặc quy đổi thời gian `HH:MM:SS` ra số giây `0..86399`.\n\n**2. Cách suy nghĩ cho bài này:**\nCẩn thận ở bước xử lý chọn lại đáp án:\n- Từ `<AnswerID>`, tra ra `<QuestionID>` và độ đúng/sai `isCorrect`.\n- Với mỗi bộ `(UserID, TestID, QuestionID)`, chỉ giữ lại lựa chọn có `TimePoint` (`string` định dạng `hh:mm:ss` có thể so sánh từ điển trực tiếp!) lớn nhất (`>=`).\n- Sau khi đọc xong khối nhật ký, duyệt qua các lựa chọn cuối cùng đó để cộng điểm vào `score[UserID#TestID]`.",
   "hints": [
     "Chú ý dấu kết thúc khối truy vấn là `###` (3 dấu `#`), khác với `#` ở 3 khối đầu."
   ],
   "complexity": "O(Qbank + Ans + Log + Query)",
   "id": "hs-analyze-quiz-log",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1250
 }

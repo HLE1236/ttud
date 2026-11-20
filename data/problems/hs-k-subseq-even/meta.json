@@ -1,7 +1,7 @@
 {
   "title": "[HUSTack] Đếm dãy con k phần tử liên tiếp có tổng chẵn (k-Subsequence Even)",
   "track": "midterm",
-  "topic": "hash-prefix",
+  "topic": "two-pointers",
   "difficulty": "Cơ bản",
   "exam_tags": [
     "HUSTack Project1 (K_SUBSEQ_EVEN)",
@@ -21,11 +21,12 @@
     }
   ],
   "theory_chapter": "chap2",
-  "mindset": "Dùng **cửa sổ trượt (Sliding Window)** độ dài cố định `k`: tính tổng `k` phần tử đầu tiên `win`, nếu `win % 2 == 0` thì tăng `ans`. Khi trượt sang phải thêm `a[i]` và bỏ `a[i - k]`, cập nhật `win += a[i] - a[i - k]` rồi kiểm tra tính chẵn lẻ trong `O(1)`.",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Cần tìm/đếm đoạn con liên tiếp hoặc cặp/bộ ba phần tử thỏa điều kiện tổng với `n <= 10^5 - 10^6`.\n- Tại sao cách ngây thơ chậm: Xét mọi cặp `(L, R)` bằng 2 vòng `for` tốn `O(n^2)` bước.\n- Hướng đi: Dùng Cửa sổ trượt cố định độ dài `k` (`win += a[i] - a[i-k]`) hoặc Hai con trỏ `L, R` dịch chuyển một chiều để tổng số bước giảm xuống `O(n)`.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Cần tìm/đếm đoạn con liên tiếp hoặc cặp/bộ ba phần tử thỏa điều kiện tổng với `n <= 10^5 - 10^6`.\n- Tại sao cách ngây thơ chậm: Xét mọi cặp `(L, R)` bằng 2 vòng `for` tốn `O(n^2)` bước.\n- Hướng đi: Dùng Cửa sổ trượt cố định độ dài `k` (`win += a[i] - a[i-k]`) hoặc Hai con trỏ `L, R` dịch chuyển một chiều để tổng số bước giảm xuống `O(n)`.\n\n**2. Cách suy nghĩ cho bài này:**\nDùng **cửa sổ trượt (Sliding Window)** độ dài cố định `k`: tính tổng `k` phần tử đầu tiên `win`, nếu `win % 2 == 0` thì tăng `ans`. Khi trượt sang phải thêm `a[i]` và bỏ `a[i - k]`, cập nhật `win += a[i] - a[i - k]` rồi kiểm tra tính chẵn lẻ trong `O(1)`.",
   "hints": [
     "Có thể giữ biến `odd_cnt` (số phần tử lẻ trong cửa sổ) hoặc tính tổng `win` trực tiếp bằng `long long`."
   ],
   "complexity": "O(n) thời gian, O(n) bộ nhớ",
   "id": "hs-k-subseq-even",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1000
 }

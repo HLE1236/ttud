@@ -1,8 +1,8 @@
 {
   "id": "ck-equal-freq-binning",
   "title": "Chia khoảng tần suất cân bằng (Equal-Frequency Binning)",
-  "track": "final",
-  "topic": "dp-knapsack-stock",
+  "track": "midterm",
+  "topic": "dp-knapsack",
   "difficulty": "Nâng cao",
   "exam_tags": [
     "Cuối kỳ 2024.1 Kíp 1 (Bài 4)"
@@ -21,7 +21,7 @@
     }
   ],
   "theory_chapter": "chap4b",
-  "mindset": "Đầu tiên sắp xếp theo `v[i]` tăng dần và tính mảng cộng dồn `pref` của `f`.\nĐể kiểm tra xem có chia được `1..n` thành `K` đoạn liên tiếp mà mỗi đoạn có tổng nằm trong `[L, R]` hay không:\nDùng **DP + Two Pointers** trong `O(n * K)`: gọi `can[k][i]` là liệu tiền tố `1..i` có chia được thành `k` đoạn thuộc `[L, R]` không. Vì các đoạn chỉ lấy tổng dương, các chỉ số `j` thỏa `L <= pref[i] - pref[j] <= R` tạo thành một cửa sổ liên tiếp `[left_i .. right_i]`! Ta dùng mảng cộng dồn trên `can[k-1]` để kiểm tra trong `O(1)`.\nCuối cùng duyệt các giá trị `L` khả dĩ (là tổng một đoạn con bất kỳ `<= Total / K`, sắp xếp giảm dần để cắt sớm khi cận dưới `(Total - L)/(K-1) - L >= best`) và chặt nhị phân tìm `R` nhỏ nhất!",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Chọn các món đồ / mệnh giá tiền / lần giao dịch với **tổng trọng lượng / ngân sách giới hạn `W <= 10^5`**.\n- Hướng đi: Quy hoạch động theo dung lượng `dp[w]`. Nếu mỗi món được chọn nhiều lần thì duyệt `w` tăng dần (`cost -> W`); nếu mỗi món chỉ chọn tối đa 1 lần thì duyệt `w` giảm dần (`W -> cost`).\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Chọn các món đồ / mệnh giá tiền / lần giao dịch với **tổng trọng lượng / ngân sách giới hạn `W <= 10^5`**.\n- Hướng đi: Quy hoạch động theo dung lượng `dp[w]`. Nếu mỗi món được chọn nhiều lần thì duyệt `w` tăng dần (`cost -> W`); nếu mỗi món chỉ chọn tối đa 1 lần thì duyệt `w` giảm dần (`W -> cost`).\n\n**2. Cách suy nghĩ cho bài này:**\nĐầu tiên sắp xếp theo `v[i]` tăng dần và tính mảng cộng dồn `pref` của `f`.\nĐể kiểm tra xem có chia được `1..n` thành `K` đoạn liên tiếp mà mỗi đoạn có tổng nằm trong `[L, R]` hay không:\nDùng **DP + Two Pointers** trong `O(n * K)`: gọi `can[k][i]` là liệu tiền tố `1..i` có chia được thành `k` đoạn thuộc `[L, R]` không. Vì các đoạn chỉ lấy tổng dương, các chỉ số `j` thỏa `L <= pref[i] - pref[j] <= R` tạo thành một cửa sổ liên tiếp `[left_i .. right_i]`! Ta dùng mảng cộng dồn trên `can[k-1]` để kiểm tra trong `O(1)`.\nCuối cùng duyệt các giá trị `L` khả dĩ (là tổng một đoạn con bất kỳ `<= Total / K`, sắp xếp giảm dần để cắt sớm khi cận dưới `(Total - L)/(K-1) - L >= best`) và chặt nhị phân tìm `R` nhỏ nhất!",
   "hints": [
     "Nhớ sắp xếp các cặp `(v[i], f[i])` theo `v[i]` trước rồi mới lập `pref`.",
     "Mẹo cắt nhánh hiệu quả: nếu đang xét giá trị min `L`, thì tổng `K - 1` đoạn còn lại là `Total - L` nên max chắc chắn `>= ceil((Total - L) / (K - 1))`. Khi giá trị này `- L >= best` thì dừng ngay!"
@@ -30,5 +30,6 @@
     "time": "O(n * K * log S) mỗi L ứng viên",
     "space": "O(n)"
   },
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1750
 }

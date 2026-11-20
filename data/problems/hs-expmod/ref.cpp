@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 int main() {
-    unsigned long long a, b; if (!(cin >> a >> b)) return 0;
+    unsigned long long a, b; cin >> a >> b;
     const unsigned long long MOD = 1000000007ULL;
     a %= MOD;
     unsigned long long res = 1;

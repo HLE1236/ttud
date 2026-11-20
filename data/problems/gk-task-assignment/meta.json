@@ -2,8 +2,8 @@
   "id": "gk-task-assignment",
   "title": "Phân công công việc cho nhân viên (Branch & Bound)",
   "track": "midterm",
-  "topic": "backtracking",
-  "difficulty": "Nâng cao",
+  "topic": "branch-bound",
+  "difficulty": "Trung bình",
   "exam_tags": [
     "Cuối kỳ 2024.1 Kíp 1 (Bài 3)",
     "HUSTack 2025.2 (P.03.05.01)",
@@ -22,8 +22,8 @@
       "output": "7"
     }
   ],
-  "theory_chapter": "chap2",
-  "mindset": "Bài này chính là bài toán **Phân việc giới hạn tải** (tương tự BCA phân môn học cho giảng viên!).\nNếu `n > m * D` -> lập tức trả `-1`.\nĐể chạy nhanh với `n <= 20`: dùng Branch & Bound:\n1. Với mỗi công việc `j`, tính sẵn `minCost[j] = min_i c[i][j]`, sau đó tính tổng hậu tố `sufMin[j]` = chi phí tối thiểu có thể của các việc từ `j` trở đi.\n2. Ở mỗi việc `j`, thử gán cho nhân viên `i` theo thứ tự chi phí tăng dần (hoặc ít tải nhất), nhưng nếu `curCost + c[i][j] + sufMin[j + 1] >= best` thì cắt nhánh ngay!\n3. Mẹo sắp xếp thứ tự công việc: xử lý các công việc có **độ chênh lệch (min2 - min1)** lớn trước giúp tìm ra nghiệm tốt rất nhanh và cắt nhánh hiệu quả.",
+  "theory_chapter": "chap3",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Giới hạn `n` nhỏ (`n <= 12..30`), yêu cầu tìm phương án có **chi phí nhỏ nhất** hoặc **tải lớn nhất nhỏ nhất** (chia nhóm, phân công BCA/BACP, lộ trình TSP/CBUS).\n- Tại sao quay lui thuần bị chậm: Duyệt hết toàn bộ cây đệ quy sẽ vượt quá 1 giây khi `n >= 12`.\n- Hướng đi: Dùng **Nhánh và cận**: trước khi gọi `Try(k + 1)`, ước lượng cận dưới của nhánh; nếu đã `>= kỷ_lục_best` hiện có thì cắt bỏ nhánh đó ngay.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Giới hạn `n` nhỏ (`n <= 12..30`), yêu cầu tìm phương án có **chi phí nhỏ nhất** hoặc **tải lớn nhất nhỏ nhất** (chia nhóm, phân công BCA/BACP, lộ trình TSP/CBUS).\n- Tại sao quay lui thuần bị chậm: Duyệt hết toàn bộ cây đệ quy sẽ vượt quá 1 giây khi `n >= 12`.\n- Hướng đi: Dùng **Nhánh và cận**: trước khi gọi `Try(k + 1)`, ước lượng cận dưới của nhánh; nếu đã `>= kỷ_lục_best` hiện có thì cắt bỏ nhánh đó ngay.\n\n**2. Cách suy nghĩ cho bài này:**\nBài này chính là bài toán **Phân việc giới hạn tải** (tương tự BCA phân môn học cho giảng viên!).\nNếu `n > m * D` -> lập tức trả `-1`.\nĐể chạy nhanh với `n <= 20`: dùng Branch & Bound:\n1. Với mỗi công việc `j`, tính sẵn `minCost[j] = min_i c[i][j]`, sau đó tính tổng hậu tố `sufMin[j]` = chi phí tối thiểu có thể của các việc từ `j` trở đi.\n2. Ở mỗi việc `j`, thử gán cho nhân viên `i` theo thứ tự chi phí tăng dần (hoặc ít tải nhất), nhưng nếu `curCost + c[i][j] + sufMin[j + 1] >= best` thì cắt nhánh ngay!\n3. Mẹo sắp xếp thứ tự công việc: xử lý các công việc có **độ chênh lệch (min2 - min1)** lớn trước giúp tìm ra nghiệm tốt rất nhanh và cắt nhánh hiệu quả.",
   "hints": [
     "Nhớ kiểm tra `if (n > m * D) { cout << -1; return 0; }` ngay từ đầu.",
     "Tính `sufMin[k]` = tổng `min_i c[i][task]` cho các việc còn lại `k..n-1`. Điều kiện cắt tỉa: `if (cur + c[i][task] + sufMin[k+1] >= best) continue;`."
@@ -32,5 +32,6 @@
     "time": "Quay lui + Nhánh cận O(m^n) tối ưu",
     "space": "O(m * n)"
   },
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1450
 }

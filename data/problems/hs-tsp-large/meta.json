@@ -2,7 +2,7 @@
   "id": "hs-tsp-large",
   "title": "[HUSTack] Người du lịch cỡ lớn (TSP Large Scale)",
   "track": "midterm",
-  "topic": "greedy-2ptr",
+  "topic": "branch-bound",
   "difficulty": "Khó",
   "exam_tags": [
     "HUSTack 2025.2 (P.04.06.03)",
@@ -22,12 +22,13 @@
     }
   ],
   "theory_chapter": "chap3",
-  "mindset": "Với `n = 1000`, đây là bài tối ưu heuristic chuẩn mực:\n1. Dựng hành trình ban đầu bằng **Láng giềng gần nhất (Nearest Neighbor)**: bắt đầu ở đỉnh `1`, mỗi bước nhảy sang đỉnh chưa thăm gần nhất.\n2. Tối ưu cục bộ bằng **2-opt**: với mọi cặp cạnh `(A -> B)` và `(C -> D)` trong chu trình, thử đảo ngược đoạn giữa `B..C` nếu `dist(A,C) + dist(B,D) < dist(A,B) + dist(C,D)` (cẩn thận khi ma trận chi phí bất đối xứng thì phải tính lại tổng đoạn hoặc đảo nếu ma trận đối xứng!).",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Giới hạn `n` nhỏ (`n <= 12..30`), yêu cầu tìm phương án có **chi phí nhỏ nhất** hoặc **tải lớn nhất nhỏ nhất** (chia nhóm, phân công BCA/BACP, lộ trình TSP/CBUS).\n- Tại sao quay lui thuần bị chậm: Duyệt hết toàn bộ cây đệ quy sẽ vượt quá 1 giây khi `n >= 12`.\n- Hướng đi: Dùng **Nhánh và cận**: trước khi gọi `Try(k + 1)`, ước lượng cận dưới của nhánh; nếu đã `>= kỷ_lục_best` hiện có thì cắt bỏ nhánh đó ngay.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Giới hạn `n` nhỏ (`n <= 12..30`), yêu cầu tìm phương án có **chi phí nhỏ nhất** hoặc **tải lớn nhất nhỏ nhất** (chia nhóm, phân công BCA/BACP, lộ trình TSP/CBUS).\n- Tại sao quay lui thuần bị chậm: Duyệt hết toàn bộ cây đệ quy sẽ vượt quá 1 giây khi `n >= 12`.\n- Hướng đi: Dùng **Nhánh và cận**: trước khi gọi `Try(k + 1)`, ước lượng cận dưới của nhánh; nếu đã `>= kỷ_lục_best` hiện có thì cắt bỏ nhánh đó ngay.\n\n**2. Cách suy nghĩ cho bài này:**\nVới `n = 1000`, đây là bài tối ưu heuristic chuẩn:\n1. Dựng hành trình ban đầu bằng **Láng giềng gần nhất (Nearest Neighbor)**: bắt đầu ở đỉnh `1`, mỗi bước nhảy sang đỉnh chưa thăm gần nhất.\n2. Tối ưu cục bộ bằng **2-opt**: với mọi cặp cạnh `(A -> B)` và `(C -> D)` trong chu trình, thử đảo ngược đoạn giữa `B..C` nếu `dist(A,C) + dist(B,D) < dist(A,B) + dist(C,D)` (cẩn thận khi ma trận chi phí bất đối xứng thì phải tính lại tổng đoạn hoặc đảo nếu ma trận đối xứng!).",
   "hints": [
     "Khởi tạo chu trình từ nhiều đỉnh xuất phát khác nhau (hoặc đỉnh `1`), chạy Nearest Neighbor trong `O(n^2)`.",
     "Chạy 2-opt (hoặc relocate 1 đỉnh sang vị trí khác) trong giới hạn vòng lặp để cải thiện chất lượng lời giải.",
     "Kiểm tra kỹ output gồm `n` ở dòng 1 và đủ hoán vị `1..n` ở dòng 2."
   ],
   "complexity": "O(n^2) Nearest Neighbor + Local Search 2-opt",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1950
 }

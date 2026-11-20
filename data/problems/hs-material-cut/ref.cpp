@@ -37,7 +37,7 @@ void dfs(int k) {
 }
 int main() {
     ios::sync_with_stdio(false); cin.tie(nullptr);
-    if (!(cin >> H >> W >> n)) return 0;
+    cin >> H >> W >> n;
     int area = 0;
     for (int i = 0; i < n; ++i) {
         cin >> rect[i].first >> rect[i].second;

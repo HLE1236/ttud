@@ -4,7 +4,7 @@
   "exam_tags": [
     "GK 20242 (Kíp 2)"
   ],
-  "topic": "greedy-2ptr",
+  "topic": "divide-conquer",
   "theory_chapter": "chap4a",
   "difficulty": "Trung bình",
   "day": 6,
@@ -20,7 +20,7 @@
       "explanation": "FibStr(6) = 'xyztabcxyzt...' có ký tự ở vị trí 20 là 'z'."
     }
   ],
-  "mindset": "Vì `k` tới `10^18` nên KHÔNG THỂ nối chuỗi thật (tràn RAM ngay lập tức).\nTa dùng **Chia để trị (hay Giảm để trị)**:\n- Chỉ cần lưu **độ dài** `len[n]` của `FibStr(n)`: `len[1] = |S1|`, `len[2] = |S2|`, `len[i] = len[i-1] + len[i-2]` cho tới khi `len[n] > k` (chỉ mất ~90 bước vì Fibonacci tăng theo hàm mũ!).\n- Vì `FibStr(n) = FibStr(n-1) + FibStr(n-2)`: nếu `k < len[n-1]`, ký tự nằm trong nửa trái `FibStr(n-1)`! Ngược lại nó nằm trong nửa phải `FibStr(n-2)` tại vị trí mới `k - len[n-1]`.\n- Lặp đến khi `n == 1` (tra `S1[k]`) hoặc `n == 2` (tra `S2[k]`).",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Kích thước số mũ/độ dài lên tới `10^{18}`, hoặc cần tìm \"khoảng cách nhỏ nhất lớn nhất\" / đếm nghịch thế với `n <= 10^5`.\n- Tại sao cách ngây thơ chậm: Không thể nhân từng bước `10^{18}` lần hay dựng chuỗi thật trong bộ nhớ.\n- Hướng đi: Chia đôi bài toán sau mỗi bước (Chia để trị / Chặt nhị phân kết quả) để giảm độ phức tạp xuống `O(log n)` hoặc `O(n log n)`.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Kích thước số mũ/độ dài lên tới `10^{18}`, hoặc cần tìm \"khoảng cách nhỏ nhất lớn nhất\" / đếm nghịch thế với `n <= 10^5`.\n- Tại sao cách ngây thơ chậm: Không thể nhân từng bước `10^{18}` lần hay dựng chuỗi thật trong bộ nhớ.\n- Hướng đi: Chia đôi bài toán sau mỗi bước (Chia để trị / Chặt nhị phân kết quả) để giảm độ phức tạp xuống `O(log n)` hoặc `O(n log n)`.\n\n**2. Cách suy nghĩ cho bài này:**\nVì `k` tới `10^18` nên KHÔNG THỂ nối chuỗi thật (tràn RAM ngay lập tức).\nTa dùng **Chia để trị (hay Giảm để trị)**:\n- Chỉ cần lưu **độ dài** `len[n]` của `FibStr(n)`: `len[1] = |S1|`, `len[2] = |S2|`, `len[i] = len[i-1] + len[i-2]` cho tới khi `len[n] > k` (chỉ mất ~90 bước vì Fibonacci tăng theo hàm mũ!).\n- Vì `FibStr(n) = FibStr(n-1) + FibStr(n-2)`: nếu `k < len[n-1]`, ký tự nằm trong nửa trái `FibStr(n-1)`! Ngược lại nó nằm trong nửa phải `FibStr(n-2)` tại vị trí mới `k - len[n-1]`.\n- Lặp đến khi `n == 1` (tra `S1[k]`) hoặc `n == 2` (tra `S2[k]`).",
   "hints": [
     "Tính mảng `len[1..n]` bằng `long long` cho đến khi `len[n] > k`.",
     "Nếu `k < len[n-1]` thì giảm `n = n - 1`; ngược lại `k -= len[n-1]` và `n = n - 2`.",
@@ -28,7 +28,8 @@
   ],
   "complexity": "Time: O(log k) | Space: O(log k)",
   "starter_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    \n    return 0;\n}",
-  "reference_cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    string s1, s2;\n    long long k;\n    cin >> s1 >> s2 >> k;\n    vector<long long> len(100);\n    len[1] = s1.size();\n    len[2] = s2.size();\n    int n = 2;\n    while (len[n] <= k) {\n        n++;\n        len[n] = len[n - 1] + len[n - 2];\n    }\n    while (n > 2) {\n        if (k < len[n - 1]) {\n            n = n - 1;\n        } else {\n            k -= len[n - 1];\n            n = n - 2;\n        }\n    }\n    if (n == 1) cout << s1[k] << \"\\n\";\n    else cout << s2[k] << \"\\n\";\n    return 0;\n}",
+  "reference_cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    string s1, s2;\n    long long k;\n    cin >> s1 >> s2 >> k;\n    vector<long long> len(100);\n    len[1] = s1.size();\n    len[2] = s2.size();\n    int n = 2;\n    while (len[n] <= k) {\n        n++;\n        len[n] = len[n - 1] + len[n - 2];\n    }\n    while (n > 2) {\n        if (k < len[n - 1]) {\n            n = n - 1;\n        } else {\n            k -= len[n - 1];\n            n = n - 2;\n        }\n    }\n    if (n == 1) cout << s1[k] << \"\\n\";\n    else cout << s2[k] << \"\\n\";\n    return 0;\n}\n",
   "id": "gk-fib-string",
-  "test_count": 11
+  "test_count": 11,
+  "elo": 1250
 }

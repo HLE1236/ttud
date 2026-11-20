@@ -2,8 +2,8 @@
   "id": "hs-disjoint-segment",
   "title": "[HUSTack] Chọn nhiều đoạn thẳng rời nhau nhất (Disjoint Segments)",
   "track": "midterm",
-  "topic": "greedy-2ptr",
-  "difficulty": "Nâng cao",
+  "topic": "greedy",
+  "difficulty": "Trung bình",
   "exam_tags": [
     "HUSTack 2025.2 (P.03.07.01)",
     "HUSTack: Đã AC"
@@ -22,7 +22,7 @@
     }
   ],
   "theory_chapter": "chap4a",
-  "mindset": "Bài toán **Lập lịch chọn đoạn rời nhau (Activity Selection)**: sắp xếp các đoạn tăng dần theo đầu mút kết thúc `b_i`. Ở mỗi bước, luôn chọn đoạn có `b_i` nhỏ nhất sao cho `a_i > last_end` để giữ khoảng thời gian còn lại cho các đoạn sau là lớn nhất.",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Bài toán yêu cầu chọn nhiều đoạn rời nhau nhất, chia ít phòng nhất, hoặc ghép các phần tử với `n <= 10^5`.\n- Tại sao không quay lui được: `n = 10^5` không thể thử mọi tổ hợp `2^n`.\n- Hướng đi: Sắp xếp dữ liệu theo tiêu chí cố định (điểm kết thúc sớm nhất, hoặc đưa vào Min-Heap) để ở mỗi bước luôn lấy lựa chọn có lợi nhất.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Bài toán yêu cầu chọn nhiều đoạn rời nhau nhất, chia ít phòng nhất, hoặc ghép các phần tử với `n <= 10^5`.\n- Tại sao không quay lui được: `n = 10^5` không thể thử mọi tổ hợp `2^n`.\n- Hướng đi: Sắp xếp dữ liệu theo tiêu chí cố định (điểm kết thúc sớm nhất, hoặc đưa vào Min-Heap) để ở mỗi bước luôn lấy lựa chọn có lợi nhất.\n\n**2. Cách suy nghĩ cho bài này:**\nBài toán **Lập lịch chọn đoạn rời nhau (Activity Selection)**: sắp xếp các đoạn tăng dần theo đầu mút kết thúc `b_i`. Ở mỗi bước, luôn chọn đoạn có `b_i` nhỏ nhất sao cho `a_i > last_end` để giữ khoảng thời gian còn lại cho các đoạn sau là lớn nhất.",
   "hints": [
     "Chú ý 'không có điểm chung' nên điều kiện chọn là `a_i > last_b` (ngặt)."
   ],
@@ -30,5 +30,6 @@
     "time": "O(n log n)",
     "space": "O(n)"
   },
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1100
 }

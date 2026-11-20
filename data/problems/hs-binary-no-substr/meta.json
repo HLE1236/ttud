@@ -2,7 +2,7 @@
   "id": "hs-binary-no-substr",
   "title": "[HUSTack] Đếm xâu nhị phân độ dài n không chứa xâu s",
   "track": "midterm",
-  "topic": "backtracking",
+  "topic": "backtrack-gen",
   "difficulty": "Trung bình",
   "exam_tags": [
     "HUSTack 2025.2 (P.02.04.02)",
@@ -22,7 +22,7 @@
     }
   ],
   "theory_chapter": "chap3",
-  "mindset": "Với `n <= 20`, quay lui trực tiếp sinh dần xâu và kiểm tra ngay đoạn cuối dài `|s|` không khớp `s` là chạy dư sức! (Hoặc dùng DP + KMP chạy `O(n * |s|)` cho mọi `n`!).",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Giới hạn `n` nhỏ (`n <= 20..30`), yêu cầu liệt kê hoặc đếm số cấu hình (nhị phân, tập con, tổ hợp `k` phần tử, đặt vào lưới).\n- Vì `n` nhỏ, ta dùng hàm đệ quy Quay lui `Try(k)`: tại bước `k`, thử các lựa chọn hợp lệ, ghi nhận trạng thái, gọi `Try(k + 1)` rồi hoàn tác trạng thái.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Giới hạn `n` nhỏ (`n <= 20..30`), yêu cầu liệt kê hoặc đếm số cấu hình (nhị phân, tập con, tổ hợp `k` phần tử, đặt vào lưới).\n- Vì `n` nhỏ, ta dùng hàm đệ quy Quay lui `Try(k)`: tại bước `k`, thử các lựa chọn hợp lệ, ghi nhận trạng thái, gọi `Try(k + 1)` rồi hoàn tác trạng thái.\n\n**2. Cách suy nghĩ cho bài này:**\nVới `n <= 20`, quay lui trực tiếp sinh dần xâu và kiểm tra ngay đoạn cuối dài `|s|` không khớp `s` là chạy dư sức! (Hoặc dùng DP + KMP chạy `O(n * |s|)` cho mọi `n`!).",
   "hints": [
     "Nếu làm quay lui: ngay khi độ dài hiện tại `>= |s|`, kiểm tra `cur.substr(cur.size() - m) == s` -> cắt nhánh ngay!"
   ],
@@ -30,5 +30,6 @@
     "time": "O(n * |s|)",
     "space": "O(n)"
   },
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1250
 }

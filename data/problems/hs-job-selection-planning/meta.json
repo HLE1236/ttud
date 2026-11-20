@@ -2,7 +2,7 @@
   "id": "hs-job-selection-planning",
   "title": "[HUSTack] Chọn việc theo Deadline tối đa hóa lợi nhuận",
   "track": "midterm",
-  "topic": "greedy-2ptr",
+  "topic": "greedy",
   "difficulty": "Trung bình",
   "exam_tags": [
     "HUSTack 2025.2 (P.04.06.02)",
@@ -22,7 +22,7 @@
     }
   ],
   "theory_chapter": "chap4a",
-  "mindset": "Bài **Job Sequencing with Deadlines**! Tham lam:\n1. Sắp xếp công việc theo **lợi nhuận `p[i]` GIẢM DẦN**.\n2. Với mỗi việc `(d, p)`, đặt nó vào khe thời gian **trễ nhất có thể `t <= min(n, d)`** còn trống! Để tìm khe trống nhanh trong `O(1)` amortized khi `n = 10^5`, dùng **DSU `parent[t]`** (hoặc `set` các slot rảnh)!",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Bài toán yêu cầu chọn nhiều đoạn rời nhau nhất, chia ít phòng nhất, hoặc ghép các phần tử với `n <= 10^5`.\n- Tại sao không quay lui được: `n = 10^5` không thể thử mọi tổ hợp `2^n`.\n- Hướng đi: Sắp xếp dữ liệu theo tiêu chí cố định (điểm kết thúc sớm nhất, hoặc đưa vào Min-Heap) để ở mỗi bước luôn lấy lựa chọn có lợi nhất.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Bài toán yêu cầu chọn nhiều đoạn rời nhau nhất, chia ít phòng nhất, hoặc ghép các phần tử với `n <= 10^5`.\n- Tại sao không quay lui được: `n = 10^5` không thể thử mọi tổ hợp `2^n`.\n- Hướng đi: Sắp xếp dữ liệu theo tiêu chí cố định (điểm kết thúc sớm nhất, hoặc đưa vào Min-Heap) để ở mỗi bước luôn lấy lựa chọn có lợi nhất.\n\n**2. Cách suy nghĩ cho bài này:**\nBài **Job Sequencing with Deadlines**! Tham lam:\n1. Sắp xếp công việc theo **lợi nhuận `p[i]` GIẢM DẦN**.\n2. Với mỗi việc `(d, p)`, đặt nó vào khe thời gian **trễ nhất có thể `t <= min(n, d)`** còn trống! Để tìm khe trống nhanh trong `O(1)` amortized khi `n = 10^5`, dùng **DSU `parent[t]`** (hoặc `set` các slot rảnh)!",
   "hints": [
     "Dùng DSU: `find(t)` trả về khe trống `<= t`; khi chiếm khe `slot`, nối `parent[slot] = find(slot - 1)`! Tránh duyệt `for (t = d; t >= 1; t--)` kẻo bị `O(n^2)` TLE!"
   ],
@@ -30,5 +30,6 @@
     "time": "O(n log n)",
     "space": "O(n)"
   },
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1300
 }

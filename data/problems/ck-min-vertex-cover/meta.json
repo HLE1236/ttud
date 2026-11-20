@@ -2,8 +2,8 @@
   "id": "ck-min-vertex-cover",
   "title": "Đếm tập phủ đỉnh nhỏ nhất (Minimum Vertex Cover)",
   "track": "final",
-  "topic": "graph-special",
-  "difficulty": "Trung bình",
+  "topic": "graph-advanced",
+  "difficulty": "Nâng cao",
   "exam_tags": [
     "Cuối kỳ 2025.1 (Câu 3)"
   ],
@@ -25,7 +25,7 @@
     }
   ],
   "theory_chapter": "chap5",
-  "mindset": "Bài toán Minimum Vertex Cover tổng quát là NP-hard, và đề cho **`n <= 10` (hoặc `<= 20`)** chính là để ta dùng **Bitmask** duyệt `2^n` tập đỉnh con!\nMẹo viết Bitmask cực sạch:\nBiểu diễn kề của mỗi đỉnh bằng một bitmask `adj[u]` (hoặc lưu danh sách cạnh `(u, v)`). Một `mask` `n` bit là tập phủ hợp lệ khi và chỉ khi với mọi cạnh `(u, v)`, ít nhất 1 trong bit `u` hoặc bit `v` của `mask` bật lên (`((mask >> u) & 1) || ((mask >> v) & 1)`).",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Bài toán đồ thị nâng cao (Câu 5 Cuối kỳ): ghép cặp 1-1 giữa 2 tập hợp, đẩy luồng tối đa từ `S` đến `T`, hoặc tìm đường đi đơn / chu trình / cây Steiner với số đỉnh cần nhớ nhỏ (`N <= 20` hoặc `K <= 12`).\n- Hướng đi: Dùng Cặp ghép 2 phía (Kuhn / Hopcroft-Karp), Luồng cực đại (Dinic), hoặc Bitmask DP `dp[mask][u]` với `mask` là dãy bit biểu diễn tập đỉnh đã đi qua.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Bài toán đồ thị nâng cao (Câu 5 Cuối kỳ): ghép cặp 1-1 giữa 2 tập hợp, đẩy luồng tối đa từ `S` đến `T`, hoặc tìm đường đi đơn / chu trình / cây Steiner với số đỉnh cần nhớ nhỏ (`N <= 20` hoặc `K <= 12`).\n- Hướng đi: Dùng Cặp ghép 2 phía (Kuhn / Hopcroft-Karp), Luồng cực đại (Dinic), hoặc Bitmask DP `dp[mask][u]` với `mask` là dãy bit biểu diễn tập đỉnh đã đi qua.\n\n**2. Cách suy nghĩ cho bài này:**\nBài toán Minimum Vertex Cover tổng quát là NP-hard, và đề cho **`n <= 10` (hoặc `<= 20`)** chính là để ta dùng **Bitmask** duyệt `2^n` tập đỉnh con!\nMẹo viết Bitmask cực sạch:\nBiểu diễn kề của mỗi đỉnh bằng một bitmask `adj[u]` (hoặc lưu danh sách cạnh `(u, v)`). Một `mask` `n` bit là tập phủ hợp lệ khi và chỉ khi với mọi cạnh `(u, v)`, ít nhất 1 trong bit `u` hoặc bit `v` của `mask` bật lên (`((mask >> u) & 1) || ((mask >> v) & 1)`).",
   "hints": [
     "Đếm số đỉnh trong `mask` bằng `__builtin_popcount(mask)`.",
     "Cẩn thận đỉnh đánh số 1-based trong input -> đổi sang 0-based `u-1, v-1` trước khi dịch bit!"
@@ -34,5 +34,6 @@
     "time": "O(2^n * m)",
     "space": "O(m)"
   },
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1550
 }

@@ -1,7 +1,7 @@
 {
   "title": "[HUSTack] Bố trí băng chuyền trong nhà máy (Robot in Factory - OLP 2025)",
   "track": "final",
-  "topic": "graph-special",
+  "topic": "graph-advanced",
   "difficulty": "Khó",
   "exam_tags": [
     "HUSTack Programming Advanced (robot-in-factory-olp25)",
@@ -21,11 +21,12 @@
     }
   ],
   "theory_chapter": "chap5",
-  "mindset": "Bài toán **đóng gói đường đi đa cặp nguồn-đích (Maximum Disjoint Paths Packing)**:\n1. Sắp xếp hoặc ưu tiên tìm đường đi ngắn nhất (ít cạnh nhất) bằng BFS trên các cạnh còn dư sức chứa, vì đường ngắn tiêu tốn ít tài nguyên hành lang.\n2. Khi một yêu cầu `r` không tìm được đường trực tiếp, ta có thể thử **tái định tuyến (reroute)**: tìm một cạnh bị nghẽn mà yêu cầu khác đang dùng và xem yêu cầu kia có đường vòng thay thế không, rồi hoán đổi!\n*(Bài có nhiều phương án hợp lệ và được chấm bằng Checker kiểm tra đường đi + sức chứa hành lang.)*",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Bài toán đồ thị nâng cao (Câu 5 Cuối kỳ): ghép cặp 1-1 giữa 2 tập hợp, đẩy luồng tối đa từ `S` đến `T`, hoặc tìm đường đi đơn / chu trình / cây Steiner với số đỉnh cần nhớ nhỏ (`N <= 20` hoặc `K <= 12`).\n- Hướng đi: Dùng Cặp ghép 2 phía (Kuhn / Hopcroft-Karp), Luồng cực đại (Dinic), hoặc Bitmask DP `dp[mask][u]` với `mask` là dãy bit biểu diễn tập đỉnh đã đi qua.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Bài toán đồ thị nâng cao (Câu 5 Cuối kỳ): ghép cặp 1-1 giữa 2 tập hợp, đẩy luồng tối đa từ `S` đến `T`, hoặc tìm đường đi đơn / chu trình / cây Steiner với số đỉnh cần nhớ nhỏ (`N <= 20` hoặc `K <= 12`).\n- Hướng đi: Dùng Cặp ghép 2 phía (Kuhn / Hopcroft-Karp), Luồng cực đại (Dinic), hoặc Bitmask DP `dp[mask][u]` với `mask` là dãy bit biểu diễn tập đỉnh đã đi qua.\n\n**2. Cách suy nghĩ cho bài này:**\nBài toán **đóng gói đường đi đa cặp nguồn-đích (Maximum Disjoint Paths Packing)**:\n1. Sắp xếp hoặc ưu tiên tìm đường đi ngắn nhất (ít cạnh nhất) bằng BFS trên các cạnh còn dư sức chứa, vì đường ngắn tiêu tốn ít tài nguyên hành lang.\n2. Khi một yêu cầu `r` không tìm được đường trực tiếp, ta có thể thử **tái định tuyến (reroute)**: tìm một cạnh bị nghẽn mà yêu cầu khác đang dùng và xem yêu cầu kia có đường vòng thay thế không, rồi hoán đổi!\n*(Bài có nhiều phương án hợp lệ và được chấm bằng Checker kiểm tra đường đi + sức chứa hành lang.)*",
   "hints": [
     "Chú ý kiểm tra tính hợp lệ của từng đường đi (bắt đầu ở `s_i`, kết thúc ở `d_i`, mỗi cạnh liên tiếp có tồn tại và không vượt quá tổng sức chứa `c`)."
   ],
   "complexity": "BFS ngắn nhất + tái định tuyến cục bộ",
   "id": "hs-robot-in-factory",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 2100
 }

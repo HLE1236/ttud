@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 int main() {
-    int n; string s; if (!(cin >> n >> s)) return 0;
+    int n; string s; cin >> n >> s;
     int m = (int)s.size();
     vector<int> pi(m, 0);
     for (int i = 1; i < m; ++i) {

@@ -1,0 +1,7 @@
+{
+  "pattern": "stl-containers",
+  "recognize": "Đọc đề & Nhìn giới hạn: Dữ liệu có tới `10^5 - 10^6` phần tử hoặc các dòng log truy vấn.\n- Với kích thước này, nếu dùng 2 vòng lặp lồng nhau `O(n^2)` tìm kiếm sẽ bị quá thời gian (TLE).\n- Hướng đi: Duyệt 1 vòng `O(n)` kết hợp cấu trúc STL (`unordered_map`, `set`, `stack`, `queue`, `priority_queue`) hoặc quy đổi thời gian `HH:MM:SS` ra số giây `0..86399`.",
+  "idea": "Sử dụng cấu trúc cây đỏ-đen `std::set<int> s` hỗ trợ cả 4 truy vấn trong `O(log n)`:\n- `s.lower_bound(v)` trả về iterator tới phần tử đầu tiên `>= v`.\n- `s.upper_bound(v)` trả về iterator tới phần tử đầu tiên `> v`.\n- `insert` và `remove` tương ứng `s.insert(v)` và `s.erase(v)`.\n\n**Các điểm cần lưu ý khi code:**\n- Kiểm tra `if (it == s.end()) cout << \"NULL\\n\"; else cout << *it << \"\\n\";`.",
+  "pseudocode": "Bước 1: Đọc dữ liệu đầu vào (bật Fast I/O, dùng long long cho biến tổng/đáp án)\nBước 2: Kiểm tra if (it == s.end()) cout << \"NULL\\n\"; else cout << *it << \"\\n\";.\nBước 3: In kết quả cuối cùng ra màn hình",
+  "skeleton_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    ios::sync_with_stdio(false); cin.tie(nullptr);\n    int n; cin >> n;\n    set<int> s;\n    for (int i = 0; i < n; ++i) { int x; cin >> x; s.insert(x); }\n    string cmd;\n        int v; cin >> v;\n\n    // TODO: Hoàn thiện thuật toán xử lý và in kết quả theo các bước hướng dẫn\n\n    return 0;\n}\n"
+}

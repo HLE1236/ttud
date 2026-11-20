@@ -2,7 +2,7 @@
   "id": "hs-expmod",
   "title": "[HUSTack] Lũy thừa nhanh với số mũ 64-bit (EXPMOD)",
   "track": "midterm",
-  "topic": "greedy-2ptr",
+  "topic": "divide-conquer",
   "difficulty": "Trung bình",
   "exam_tags": [
     "HUSTack 2025.2 (P.04.08.03)",
@@ -22,7 +22,7 @@
     }
   ],
   "theory_chapter": "chap4a",
-  "mindset": "Hai điểm mấu chốt:\n1. Khai báo **`unsigned long long`** (vì `b > 2^63 - 1`, `long long` sẽ bị âm/tràn!).\n2. Trước khi nhân lũy thừa nhị phân, **giảm ngay `a %= MOD`**! Khi `a < 10^9 + 7` thì `a * a < 1.000000014 * 10^18`, vẫn nằm gọn trong `unsigned long long` (~`1.84 * 10^19`)!",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Kích thước số mũ/độ dài lên tới `10^{18}`, hoặc cần tìm \"khoảng cách nhỏ nhất lớn nhất\" / đếm nghịch thế với `n <= 10^5`.\n- Tại sao cách ngây thơ chậm: Không thể nhân từng bước `10^{18}` lần hay dựng chuỗi thật trong bộ nhớ.\n- Hướng đi: Chia đôi bài toán sau mỗi bước (Chia để trị / Chặt nhị phân kết quả) để giảm độ phức tạp xuống `O(log n)` hoặc `O(n log n)`.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Kích thước số mũ/độ dài lên tới `10^{18}`, hoặc cần tìm \"khoảng cách nhỏ nhất lớn nhất\" / đếm nghịch thế với `n <= 10^5`.\n- Tại sao cách ngây thơ chậm: Không thể nhân từng bước `10^{18}` lần hay dựng chuỗi thật trong bộ nhớ.\n- Hướng đi: Chia đôi bài toán sau mỗi bước (Chia để trị / Chặt nhị phân kết quả) để giảm độ phức tạp xuống `O(log n)` hoặc `O(n log n)`.\n\n**2. Cách suy nghĩ cho bài này:**\nHai điểm mấu chốt:\n1. Khai báo **`unsigned long long`** (vì `b > 2^63 - 1`, `long long` sẽ bị âm/tràn!).\n2. Trước khi nhân lũy thừa nhị phân, **giảm ngay `a %= MOD`**! Khi `a < 10^9 + 7` thì `a * a < 1.000000014 * 10^18`, vẫn nằm gọn trong `unsigned long long` (~`1.84 * 10^19`)!",
   "hints": [
     "Nhân đôi bình phương bằng vòng `while (b > 0)`: nếu `b & 1` thì `res = (res * a) % MOD`, rồi `a = (a * a) % MOD; b >>= 1;`."
   ],
@@ -30,5 +30,6 @@
     "time": "O(log b)",
     "space": "O(1)"
   },
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1100
 }

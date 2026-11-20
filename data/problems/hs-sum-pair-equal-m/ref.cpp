@@ -2,7 +2,7 @@
 using namespace std;
 int main() {
     ios::sync_with_stdio(false); cin.tie(nullptr);
-    int n; long long M; if (!(cin >> n >> M)) return 0;
+    int n; long long M; cin >> n >> M;
     vector<long long> a(n);
     for (int i = 0; i < n; ++i) cin >> a[i];
     sort(a.begin(), a.end());

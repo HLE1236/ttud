@@ -17,7 +17,7 @@ void msort(vector<int>& a, vector<int>& tmp, int l, int r) {
 }
 int main() {
     ios::sync_with_stdio(false); cin.tie(nullptr);
-    int n; if (!(cin >> n)) return 0;
+    int n; cin >> n;
     vector<int> a(n), tmp(n);
     for (int i = 0; i < n; ++i) cin >> a[i];
     msort(a, tmp, 0, n - 1);

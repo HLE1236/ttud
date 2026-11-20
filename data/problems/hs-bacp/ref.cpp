@@ -22,7 +22,7 @@ void dfs(int idx, int cur_max) {
 
 int main() {
     ios::sync_with_stdio(false); cin.tie(nullptr);
-    if (!(cin >> N >> M)) return 0;
+    cin >> N >> M;
     for (int i = 0; i < N; ++i) cin >> c[i];
     vector<int> indeg(N, 0);
     for (int i = 0; i < N; ++i)

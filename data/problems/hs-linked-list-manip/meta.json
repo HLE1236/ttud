@@ -1,8 +1,8 @@
 {
   "title": "[HUSTack] Thao tác trên danh sách liên kết (Linked List Manipulation)",
   "track": "midterm",
-  "topic": "array-basic",
-  "difficulty": "Cơ bản",
+  "topic": "stl-basic",
+  "difficulty": "Trung bình",
   "exam_tags": [
     "HUSTack Project1 (LINKED_LIST_MANIPULATION)",
     "HUSTack: Đã AC"
@@ -21,12 +21,13 @@
     }
   ],
   "theory_chapter": "chap1",
-  "mindset": "Cài đặt `struct Node { int key; Node* next; };` kết hợp các hàm tìm kiếm `findNode(k)` (để kiểm tra trùng lặp trước khi thêm), chèn đầu/cuối/trước/sau, xóa và hàm `reverse()` 3 con trỏ (`prev`, `cur`, `nxt`). Hoặc dùng `std::list<int>` kết hợp `std::find` đều chạy cực nhanh với `n <= 1000`.",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dữ liệu có tới `10^5 - 10^6` phần tử hoặc các dòng log truy vấn.\n- Với kích thước này, nếu dùng 2 vòng lặp lồng nhau `O(n^2)` tìm kiếm sẽ bị quá thời gian (TLE).\n- Hướng đi: Duyệt 1 vòng `O(n)` kết hợp cấu trúc STL (`unordered_map`, `set`, `stack`, `queue`, `priority_queue`) hoặc quy đổi thời gian `HH:MM:SS` ra số giây `0..86399`.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dữ liệu có tới `10^5 - 10^6` phần tử hoặc các dòng log truy vấn.\n- Với kích thước này, nếu dùng 2 vòng lặp lồng nhau `O(n^2)` tìm kiếm sẽ bị quá thời gian (TLE).\n- Hướng đi: Duyệt 1 vòng `O(n)` kết hợp cấu trúc STL (`unordered_map`, `set`, `stack`, `queue`, `priority_queue`) hoặc quy đổi thời gian `HH:MM:SS` ra số giây `0..86399`.\n\n**2. Cách suy nghĩ cho bài này:**\nCài đặt `struct Node { int key; Node* next; };` kết hợp các hàm tìm kiếm `findNode(k)` (để kiểm tra trùng lặp trước khi thêm), chèn đầu/cuối/trước/sau, xóa và hàm `reverse()` 3 con trỏ (`prev`, `cur`, `nxt`). Hoặc dùng `std::list<int>` kết hợp `std::find` đều chạy nhanh với `n <= 1000`.",
   "hints": [
     "Chú ý thứ tự tham số: `addafter u v` là chèn `u` vào **sau `v`** (không phải chèn `v` sau `u`).",
     "Đừng quên kiểm tra cả hai điều kiện: `v` phải tồn tại VÀ `u` chưa tồn tại trong danh sách."
   ],
   "complexity": "O(n * Q)",
   "id": "hs-linked-list-manip",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1100
 }

@@ -1,7 +1,7 @@
 {
   "title": "[HUSTack] Kiểm tra phần tử đã xuất hiện trước đó (Set Exist)",
   "track": "midterm",
-  "topic": "hash-prefix",
+  "topic": "stl-basic",
   "difficulty": "Cơ bản",
   "exam_tags": [
     "HUSTack Project1 (ipmac-set-exist)",
@@ -21,11 +21,12 @@
     }
   ],
   "theory_chapter": "chap1",
-  "mindset": "Vì `A_i` lên tới `10^9` nên không thể dùng mảng đánh dấu trực tiếp. Ta dùng `unordered_set<int> seen` (hoặc `set<int>`): với mỗi `A_i`, nếu `seen.count(A_i)` thì in `1`, ngược lại in `0` rồi `seen.insert(A_i)`.",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dữ liệu có tới `10^5 - 10^6` phần tử hoặc các dòng log truy vấn.\n- Với kích thước này, nếu dùng 2 vòng lặp lồng nhau `O(n^2)` tìm kiếm sẽ bị quá thời gian (TLE).\n- Hướng đi: Duyệt 1 vòng `O(n)` kết hợp cấu trúc STL (`unordered_map`, `set`, `stack`, `queue`, `priority_queue`) hoặc quy đổi thời gian `HH:MM:SS` ra số giây `0..86399`.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dữ liệu có tới `10^5 - 10^6` phần tử hoặc các dòng log truy vấn.\n- Với kích thước này, nếu dùng 2 vòng lặp lồng nhau `O(n^2)` tìm kiếm sẽ bị quá thời gian (TLE).\n- Hướng đi: Duyệt 1 vòng `O(n)` kết hợp cấu trúc STL (`unordered_map`, `set`, `stack`, `queue`, `priority_queue`) hoặc quy đổi thời gian `HH:MM:SS` ra số giây `0..86399`.\n\n**2. Cách suy nghĩ cho bài này:**\nVì `A_i` lên tới `10^9` nên không thể dùng mảng đánh dấu trực tiếp. Ta dùng `unordered_set<int> seen` (hoặc `set<int>`): với mỗi `A_i`, nếu `seen.count(A_i)` thì in `1`, ngược lại in `0` rồi `seen.insert(A_i)`.",
   "hints": [
     "Với `unordered_set`, nên gọi `seen.reserve(n * 2)` để tránh rehash giữa chừng."
   ],
   "complexity": "O(n) trung bình (unordered_set) hoặc O(n log n) (set)",
   "id": "hs-set-exist",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 950
 }

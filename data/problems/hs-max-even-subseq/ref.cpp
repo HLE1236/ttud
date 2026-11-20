@@ -4,7 +4,7 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     int n;
-    if (!(cin >> n)) return 0;
+    cin >> n;
     const long long INF = 4e18;
     long long min_pref[2] = {0, INF};
     long long pref = 0, ans = -INF;

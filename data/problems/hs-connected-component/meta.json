@@ -2,7 +2,7 @@
   "id": "hs-connected-component",
   "title": "[HUSTack] Đếm số thành phần liên thông (Connected Components)",
   "track": "final",
-  "topic": "graph-bfs-dfs",
+  "topic": "graph-traversal",
   "difficulty": "Cơ bản",
   "exam_tags": [
     "HUSTack 2025.2 (CONNECTED_COMPONENT)",
@@ -21,12 +21,13 @@
       "output": "3"
     }
   ],
-  "theory_chapter": "chap6",
-  "mindset": "Cách 1: Dùng BFS/DFS lặp qua mọi đỉnh `1..N`, hễ gặp đỉnh chưa thăm thì tăng `comp++` rồi loang hết thành phần đó. Cách 2 (nhanh và gọn hơn nữa): Dùng **DSU (Disjoint Set Union)** khởi tạo `comp = N`, mỗi khi gộp thành công 2 đỉnh khác tập thì `comp--`.",
+  "theory_chapter": "chap5",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dữ liệu biểu diễn các đỉnh nối với nhau bằng các cạnh (đồ thị hoặc cây). Yêu cầu đếm cụm liên thông, kiểm tra đồ thị 2 phía, tìm đường ít bước nhất, tìm Khớp/Cầu/SCC hoặc tính toán trên Cây.\n- Hướng đi: Lưu danh sách kề `adj[u]`. Dùng BFS (`queue`) nếu tìm số bước ít nhất; dùng DFS truyền `parent` nếu là Cây; dùng Tarjan (`num`, `low`) nếu tìm Khớp/Cầu/SCC.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dữ liệu biểu diễn các đỉnh nối với nhau bằng các cạnh (đồ thị hoặc cây). Yêu cầu đếm cụm liên thông, kiểm tra đồ thị 2 phía, tìm đường ít bước nhất, tìm Khớp/Cầu/SCC hoặc tính toán trên Cây.\n- Hướng đi: Lưu danh sách kề `adj[u]`. Dùng BFS (`queue`) nếu tìm số bước ít nhất; dùng DFS truyền `parent` nếu là Cây; dùng Tarjan (`num`, `low`) nếu tìm Khớp/Cầu/SCC.\n\n**2. Cách suy nghĩ cho bài này:**\nCách 1: Dùng BFS/DFS lặp qua mọi đỉnh `1..N`, hễ gặp đỉnh chưa thăm thì tăng `comp++` rồi loang hết thành phần đó. Cách 2 (nhanh và gọn hơn nữa): Dùng **DSU (Disjoint Set Union)** khởi tạo `comp = N`, mỗi khi gộp thành công 2 đỉnh khác tập thì `comp--`.",
   "hints": [
     "Dùng DSU không bao giờ bị tràn stack như DFS đệ quy trên cây dây chuyền `10^5` đỉnh.",
     "Cài đặt `find_set` với path compression, hợp nhất `u` và `v` nếu `find(u) != find(v)` thì giảm `comp` đi 1."
   ],
   "complexity": "O((N + M) * alpha(N))",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1050
 }

@@ -4,7 +4,7 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     int L, k;
-    if (!(cin >> L >> k)) return 0;
+    cin >> L >> k;
     long long zeros = 0, ans = 0;
     for (int i = 0; i < L; ++i) {
         int x; cin >> x;

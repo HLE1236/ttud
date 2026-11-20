@@ -1,9 +1,9 @@
 {
   "id": "hs-max-score-table",
   "title": "[HUSTack] Tổng điểm lớn nhất trên bảng (Max Score Table)",
-  "track": "final",
-  "topic": "dp-grid-3d",
-  "difficulty": "Cơ bản",
+  "track": "midterm",
+  "topic": "dp-grid",
+  "difficulty": "Trung bình",
   "exam_tags": [
     "HUSTack 2025.2 (MaxScoreTable)",
     "HUSTack: Chưa làm"
@@ -21,13 +21,14 @@
       "output": "27"
     }
   ],
-  "theory_chapter": "chap5",
-  "mindset": "Quy hoạch động trên bảng 2D theo chiều cột từ trái sang phải! Gọi `dp[r][c]` là tổng lớn nhất khi kết thúc tại ô `(r, c)`.",
+  "theory_chapter": "chap4b",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Đi trên bảng 2D `n x m` theo hướng tiến (xuống, sang phải, chéo xuống), hoặc chọn hình chữ nhật / cắt khối 3D.\n- Hướng đi: Quy hoạch động trên bảng `dp[i][j]`. Mỗi ô `(i, j)` chỉ lấy kết quả tốt nhất từ các ô liền trước (trên, trái, chéo trên-trái) cộng với `a[i][j]`. Lưu ý khởi tạo `INF` / `-INF` thay vì `-1` nếu bảng có số âm.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Đi trên bảng 2D `n x m` theo hướng tiến (xuống, sang phải, chéo xuống), hoặc chọn hình chữ nhật / cắt khối 3D.\n- Hướng đi: Quy hoạch động trên bảng `dp[i][j]`. Mỗi ô `(i, j)` chỉ lấy kết quả tốt nhất từ các ô liền trước (trên, trái, chéo trên-trái) cộng với `a[i][j]`. Lưu ý khởi tạo `INF` / `-INF` thay vì `-1` nếu bảng có số âm.\n\n**2. Cách suy nghĩ cho bài này:**\nQuy hoạch động trên bảng 2D theo chiều cột từ trái sang phải! Gọi `dp[r][c]` là tổng lớn nhất khi kết thúc tại ô `(r, c)`.",
   "hints": [
     "Khởi tạo cột 1: `dp[r][0] = a[r][0]` với mọi hàng `r = 0..m-1`.",
     "Với mỗi cột `c` từ `1` tới `n-1`: `dp[r][c] = a[r][c] + max(dp[r][c-1], dp[r-1][c-1] nếu r>0, dp[r+1][c-1] nếu r+1<m)`.",
     "Kết quả là `max_{r=0..m-1} dp[r][n-1]`."
   ],
   "complexity": "O(m * n) thời gian, O(m * n) bộ nhớ",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1150
 }

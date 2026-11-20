@@ -7,7 +7,7 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     int n, k;
-    if (!(cin >> n >> k)) return 0;
+    cin >> n >> k;
     vector<int> a(n + 1);
     for (int i = 1; i <= n; i++) cin >> a[i];
     vector<int> dp(n + 1, 1), ndp(n + 1, 0), bit(n + 1, 0);

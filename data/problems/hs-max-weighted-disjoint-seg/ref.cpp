@@ -4,7 +4,7 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     int n;
-    if (!(cin >> n)) return 0;
+    cin >> n;
     vector<pair<int, int>> seg(n);
     for (int i = 0; i < n; ++i) cin >> seg[i].first >> seg[i].second;
     sort(seg.begin(), seg.end(), [](const auto& A, const auto& B) {

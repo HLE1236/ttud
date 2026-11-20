@@ -2,7 +2,7 @@
   "id": "hs-ham-cycle",
   "title": "[HUSTack] Kiểm tra đồ thị có chu trình Hamilton (Hamiltonian Cycle)",
   "track": "final",
-  "topic": "graph-special",
+  "topic": "graph-advanced",
   "difficulty": "Trung bình",
   "exam_tags": [
     "HUSTack 2025.2 (P.06.12.05)",
@@ -21,12 +21,13 @@
       "output": "0\n1"
     }
   ],
-  "theory_chapter": "chap6",
-  "mindset": "Bài toán kiểm tra chu trình Hamilton là NP-Complete nên ta giải bằng **Quay lui + Cắt tỉa nhanh**:\n1. Kiểm tra điều kiện cần đơn giản trước: với `n >= 3`, nếu có đỉnh nào bậc `< 2` -> lập tức không có chu trình Hamilton (`0`).\n2. Cố định đỉnh xuất phát là `1` (do tính đối xứng của chu trình). Dùng quay lui chọn đỉnh kế tiếp chưa thăm; khi đủ `n` đỉnh, kiểm tra xem đỉnh cuối có kề lại với đỉnh `1` hay không!",
+  "theory_chapter": "chap5",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Bài toán đồ thị nâng cao (Câu 5 Cuối kỳ): ghép cặp 1-1 giữa 2 tập hợp, đẩy luồng tối đa từ `S` đến `T`, hoặc tìm đường đi đơn / chu trình / cây Steiner với số đỉnh cần nhớ nhỏ (`N <= 20` hoặc `K <= 12`).\n- Hướng đi: Dùng Cặp ghép 2 phía (Kuhn / Hopcroft-Karp), Luồng cực đại (Dinic), hoặc Bitmask DP `dp[mask][u]` với `mask` là dãy bit biểu diễn tập đỉnh đã đi qua.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Bài toán đồ thị nâng cao (Câu 5 Cuối kỳ): ghép cặp 1-1 giữa 2 tập hợp, đẩy luồng tối đa từ `S` đến `T`, hoặc tìm đường đi đơn / chu trình / cây Steiner với số đỉnh cần nhớ nhỏ (`N <= 20` hoặc `K <= 12`).\n- Hướng đi: Dùng Cặp ghép 2 phía (Kuhn / Hopcroft-Karp), Luồng cực đại (Dinic), hoặc Bitmask DP `dp[mask][u]` với `mask` là dãy bit biểu diễn tập đỉnh đã đi qua.\n\n**2. Cách suy nghĩ cho bài này:**\nBài toán kiểm tra chu trình Hamilton là NP-Complete nên ta giải bằng **Quay lui + Cắt tỉa nhanh**:\n1. Kiểm tra điều kiện cần đơn giản trước: với `n >= 3`, nếu có đỉnh nào bậc `< 2` -> lập tức không có chu trình Hamilton (`0`).\n2. Cố định đỉnh xuất phát là `1` (do tính đối xứng của chu trình). Dùng quay lui chọn đỉnh kế tiếp chưa thăm; khi đủ `n` đỉnh, kiểm tra xem đỉnh cuối có kề lại với đỉnh `1` hay không!",
   "hints": [
     "Dùng ma trận kề `g[u][v]` (khi `n` nhỏ/vừa) hoặc `unordered_set` để kiểm tra `g[last][1]` trong `O(1)`.",
     "Cắt nhánh hiệu quả: ưu tiên đi sang đỉnh kề có **số láng giềng chưa thăm ít nhất** (quy tắc Warnsdorff), hoặc kiểm tra đỉnh bậc `<= 1` trong phần còn lại."
   ],
   "complexity": "Quay lui + Cắt nhánh theo bậc đỉnh",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1350
 }

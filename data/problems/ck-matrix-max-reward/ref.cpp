@@ -26,7 +26,7 @@ void dfs(int x, int y, long long cur, long long rem) {
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    if (!(cin >> M >> N >> xs >> ys >> xt >> yt)) return 0;
+    cin >> M >> N >> xs >> ys >> xt >> yt;
     for (int i = 1; i <= M; ++i)
         for (int j = 1; j <= N; ++j) {
             cin >> w[i][j];

@@ -44,7 +44,7 @@ int main() {
     for (int r = 0; r < 9; r++) {
         for (int c = 0; c < 9; c++) {
             int v;
-            if (!(cin >> v)) return 0;
+            cin >> v;
             if (v == 0) empties.push_back({r, c});
             else {
                 int bit = 1 << v;

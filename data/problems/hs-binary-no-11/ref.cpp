@@ -8,7 +8,7 @@ void dfs(int i) {
 }
 int main() {
     ios::sync_with_stdio(false); cin.tie(nullptr);
-    if (!(cin >> n)) return 0;
+    cin >> n;
     s.assign(n, '0'); dfs(0);
     return 0;
 }

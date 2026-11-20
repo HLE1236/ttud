@@ -2,8 +2,8 @@
   "id": "hs-timetable-min-max-load",
   "title": "[HUSTack] Cân bằng tải phòng học ICT (Timetable Min-Max Load)",
   "track": "midterm",
-  "topic": "backtracking",
-  "difficulty": "Trung bình",
+  "topic": "branch-bound",
+  "difficulty": "Nâng cao",
   "exam_tags": [
     "HUSTack 2025.2 (Timetable-MinMax-Load)",
     "HUSTack: Chưa làm"
@@ -21,13 +21,14 @@
       "output": "6"
     }
   ],
-  "theory_chapter": "chap2",
-  "mindset": "Kết hợp **Nhánh và Cận (Branch & Bound)**! Sắp xếp các lớp theo thứ tự khó xếp trước (`v_i` giảm dần, `d_i` giảm dần) và dựng sẵn các cặp `(phòng r, tiết bắt đầu st)` hợp lệ cho từng lớp. Khi chọn phương án cho lớp `i`, ưu tiên thử các phòng đang có `room_load[r] + d_i` **nhỏ nhất** trước để nhanh tìm được nghiệm tốt, đồng thời cắt nhánh ngay nếu `room_load[r] + d_i >= best` hoặc đạt cận dưới lý tưởng `ceil(sum_d / m)`.",
+  "theory_chapter": "chap3",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Giới hạn `n` nhỏ (`n <= 12..30`), yêu cầu tìm phương án có **chi phí nhỏ nhất** hoặc **tải lớn nhất nhỏ nhất** (chia nhóm, phân công BCA/BACP, lộ trình TSP/CBUS).\n- Tại sao quay lui thuần bị chậm: Duyệt hết toàn bộ cây đệ quy sẽ vượt quá 1 giây khi `n >= 12`.\n- Hướng đi: Dùng **Nhánh và cận**: trước khi gọi `Try(k + 1)`, ước lượng cận dưới của nhánh; nếu đã `>= kỷ_lục_best` hiện có thì cắt bỏ nhánh đó ngay.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Giới hạn `n` nhỏ (`n <= 12..30`), yêu cầu tìm phương án có **chi phí nhỏ nhất** hoặc **tải lớn nhất nhỏ nhất** (chia nhóm, phân công BCA/BACP, lộ trình TSP/CBUS).\n- Tại sao quay lui thuần bị chậm: Duyệt hết toàn bộ cây đệ quy sẽ vượt quá 1 giây khi `n >= 12`.\n- Hướng đi: Dùng **Nhánh và cận**: trước khi gọi `Try(k + 1)`, ước lượng cận dưới của nhánh; nếu đã `>= kỷ_lục_best` hiện có thì cắt bỏ nhánh đó ngay.\n\n**2. Cách suy nghĩ cho bài này:**\nKết hợp **Nhánh và Cận (Branch & Bound)**! Sắp xếp các lớp theo thứ tự khó xếp trước (`v_i` giảm dần, `d_i` giảm dần) và dựng sẵn các cặp `(phòng r, tiết bắt đầu st)` hợp lệ cho từng lớp. Khi chọn phương án cho lớp `i`, ưu tiên thử các phòng đang có `room_load[r] + d_i` **nhỏ nhất** trước để nhanh tìm được nghiệm tốt, đồng thời cắt nhánh ngay nếu `room_load[r] + d_i >= best` hoặc đạt cận dưới lý tưởng `ceil(sum_d / m)`.",
   "hints": [
     "Khởi tạo `best = INF` và cận dưới `lb = (sum_d + m - 1) / m` (nhưng phải có `lb >= max(d_i)`).",
     "Dùng mảng `occ[t]` để đánh dấu các tiết thời gian đã có lớp học; kiểm tra đoạn `[st, st + d[i] - 1]` chưa bị chiếm trước khi đặt.",
     "Cắt nhánh: nếu `room_load[r] + d[i] >= best` thì bỏ qua luôn, và nếu `best == lb` thì dừng tìm kiếm ngay!"
   ],
   "complexity": "Nhánh & Cận với n <= 10",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1600
 }

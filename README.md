@@ -3,7 +3,8 @@
 Nền tảng học tập và luyện code C++ cho môn **Thuật toán ứng dụng (TTUD)** chạy trực tiếp trên máy cá nhân (localhost), không cần Internet sau khi tải về.
 
 ## Tính năng chính
-- **Trình soạn thảo code tích hợp** (CodeMirror, theme Dracula, tự động đóng ngoặc, lưu nháp tự động).
+- **Trình soạn thảo code tích hợp** (CodeMirror, theme Dracula, tự động đóng ngoặc, gợi ý cú pháp C++/STL, lưu nháp tự động).
+- **Trình Debug trực tiếp trên web kiểu Code::Blocks** (đặt Breakpoint chấm đỏ trên số dòng, Step Over/Into/Out, Run to Cursor, Watches, Local variables, Call Stack) — tự động dùng **GDB** trên Windows/Linux và **LLDB** có sẵn của Xcode Command Line Tools trên **macOS** (hỗ trợ cả Apple Silicon và Intel).
 - **Chấm bài tự động (Local Judge)** bằng `g++ -O2 -std=c++17` trên bộ testcase có sẵn trong `data/problems/`.
 - **Lộ trình học & Lý thuyết** (`data/roadmap.json`, `data/theory.json`) kèm theo dõi tiến độ cá nhân.
 - **Lưu lịch sử bài nộp & Ghi chú** cục bộ bằng SQLite (`data/ttud.db` tự động khởi tạo khi chạy lần đầu).

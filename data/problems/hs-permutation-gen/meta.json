@@ -1,7 +1,7 @@
 {
   "title": "[HUSTack] Liệt kê tất cả hoán vị độ dài n (Permutation Generation)",
   "track": "midterm",
-  "topic": "backtracking",
+  "topic": "backtrack-gen",
   "difficulty": "Cơ bản",
   "exam_tags": [
     "HUSTack Project1 (PERMUTATION_GEN)",
@@ -21,11 +21,12 @@
     }
   ],
   "theory_chapter": "chap3",
-  "mindset": "Bài quay lui hoán vị cơ bản nhất: tại vị trí `k` (`0..n-1`), duyệt `v` từ `1` đến `n` (tăng dần để ra đúng thứ tự từ điển). Nếu `!used[v]`, đánh dấu `used[v] = true`, gán `p[k] = v`, gọi `Try(k + 1)`, rồi hoàn tác `used[v] = false`.",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Giới hạn `n` nhỏ (`n <= 20..30`), yêu cầu liệt kê hoặc đếm số cấu hình (nhị phân, tập con, tổ hợp `k` phần tử, đặt vào lưới).\n- Vì `n` nhỏ, ta dùng hàm đệ quy Quay lui `Try(k)`: tại bước `k`, thử các lựa chọn hợp lệ, ghi nhận trạng thái, gọi `Try(k + 1)` rồi hoàn tác trạng thái.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Giới hạn `n` nhỏ (`n <= 20..30`), yêu cầu liệt kê hoặc đếm số cấu hình (nhị phân, tập con, tổ hợp `k` phần tử, đặt vào lưới).\n- Vì `n` nhỏ, ta dùng hàm đệ quy Quay lui `Try(k)`: tại bước `k`, thử các lựa chọn hợp lệ, ghi nhận trạng thái, gọi `Try(k + 1)` rồi hoàn tác trạng thái.\n\n**2. Cách suy nghĩ cho bài này:**\nBài quay lui hoán vị cơ bản nhất: tại vị trí `k` (`0..n-1`), duyệt `v` từ `1` đến `n` (tăng dần để ra đúng thứ tự từ điển). Nếu `!used[v]`, đánh dấu `used[v] = true`, gán `p[k] = v`, gọi `Try(k + 1)`, rồi hoàn tác `used[v] = false`.",
   "hints": [
     "Cũng có thể dùng `std::next_permutation(p.begin(), p.end())` bắt đầu từ `1, 2, ..., n`."
   ],
   "complexity": "O(n * n!)",
   "id": "hs-permutation-gen",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1000
 }

@@ -3,31 +3,16 @@ using namespace std;
 
 int root = -1;
 unordered_map<int, vector<int>> ch;
-unordered_set<int> ex;
+unordered_set<int> has;
+vector<int> res;
 
-void preOrder(int u, vector<int>& out) {
-    out.push_back(u);
-    for (int v : ch[u]) preOrder(v, out);
-}
-
-void inOrder(int u, vector<int>& out) {
+void pre(int u) { res.push_back(u); for (int v : ch[u]) pre(v); }
+void post(int u) { for (int v : ch[u]) post(v); res.push_back(u); }
+void in(int u) {
     auto& c = ch[u];
-    if (!c.empty()) inOrder(c[0], out);
-    out.push_back(u);
-    for (size_t i = 1; i < c.size(); i++) inOrder(c[i], out);
-}
-
-void postOrder(int u, vector<int>& out) {
-    for (int v : ch[u]) postOrder(v, out);
-    out.push_back(u);
-}
-
-void printVec(const vector<int>& v) {
-    for (size_t i = 0; i < v.size(); i++) {
-        if (i) cout << ' ';
-        cout << v[i];
-    }
-    cout << '\n';
+    if (!c.empty()) in(c[0]);
+    res.push_back(u);
+    for (int i = 1; i < c.size(); i++) in(c[i]);
 }
 
 int main() {
@@ -35,27 +20,20 @@ int main() {
     cin.tie(nullptr);
     string cmd;
     while (cin >> cmd && cmd != "*") {
-        if (cmd == "MakeRoot") {
-            cin >> root;
-            ex.insert(root);
-        } else if (cmd == "Insert") {
+        if (cmd == "MakeRoot") cin >> root, has.insert(root);
+        else if (cmd == "Insert") {
             int u, v; cin >> u >> v;
-            if (ex.count(v) && !ex.count(u)) {
-                ch[v].push_back(u);
-                ex.insert(u);
+            if (has.count(v) && !has.count(u)) ch[v].push_back(u), has.insert(u);
+        } else {
+            res.clear();
+            if (root != -1) {
+                if (cmd == "PreOrder") pre(root);
+                else if (cmd == "InOrder") in(root);
+                else post(root);
             }
-        } else if (cmd == "PreOrder") {
-            vector<int> out;
-            if (root != -1) preOrder(root, out);
-            printVec(out);
-        } else if (cmd == "InOrder") {
-            vector<int> out;
-            if (root != -1) inOrder(root, out);
-            printVec(out);
-        } else if (cmd == "PostOrder") {
-            vector<int> out;
-            if (root != -1) postOrder(root, out);
-            printVec(out);
+            for (int i = 0; i < res.size(); i++)
+                cout << res[i] << (i + 1 == res.size() ? "" : " ");
+            cout << '\n';
         }
     }
     return 0;

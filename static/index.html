@@ -21,15 +21,19 @@
     <nav class="nav-tabs" aria-label="Điều hướng chính">
       <button class="nav-tab active" data-view="roadmap">
         <svg class="ui-ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 3.5h12M2 8h8M2 12.5h10"/><circle cx="13" cy="8" r="1.5"/></svg>
-        Lộ trình Giữa kỳ
+        Lộ trình Học
       </button>
       <button class="nav-tab" data-view="theory">
         <svg class="ui-ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 2.5h8.5A1.5 1.5 0 0 1 13 4v9.5l-4.5-2-4.5 2V4A1.5 1.5 0 0 1 3 2.5z"/></svg>
-        Lý thuyết &amp; Phương pháp
+        Lý thuyết &amp; Cách nghĩ
       </button>
       <button class="nav-tab" data-view="problems">
         <svg class="ui-ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2.5 3.5h11M2.5 8h11M2.5 12.5h7"/></svg>
         Ngân hàng đề <span class="pill-count" id="nav-total-count">0</span>
+      </button>
+      <button class="nav-tab" data-view="exam">
+        <svg class="ui-ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="8" cy="8.5" r="5.5"/><path d="M8 5.5v3l2 1.5M6 1.5h4"/></svg>
+        Thi thử (120p) <span class="pill-count hidden" id="nav-exam-timer-pill">120:00</span>
       </button>
       <button class="nav-tab" data-view="arena">
         <svg class="ui-ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5.5 4.5 2 8l3.5 3.5M10.5 4.5 14 8l-3.5 3.5M9 3l-2 10"/></svg>
@@ -54,15 +58,17 @@
         <div class="surface hero-card">
           <div class="hero-head">
             <div class="hero-title-wrap">
-              <div class="eyebrow">Kế hoạch ôn Giữa kỳ · 18/11 – 28/11 (Thứ 4 tuần sau)</div>
-              <h1>Lộ trình ôn Giữa kỳ TTUD (đến hết Quy hoạch động)</h1>
-              <p class="muted prose-lead">Tập trung 100% kiến thức Giữa kỳ trong 11 ngày: <strong>Ngày 1–4</strong> củng cố STL, Cộng dồn, Hai con trỏ, Tham lam &amp; Chia để trị; <strong>Ngày 5–8</strong> luyện Quay lui &amp; Nhánh cận; <strong>Ngày 9–11</strong> làm chủ Quy hoạch động.</p>
+              <div class="eyebrow">Học theo bản chất từ Số 0 · Mỗi chặng làm chủ 1 dạng bài</div>
+              <h1>Lộ trình Học Thuật toán Ứng dụng (Giữa kỳ &amp; Cuối kỳ)</h1>
+              <p class="muted prose-lead">Thay vì nhồi nhiều dạng bài khác nhau vào cùng một buổi, lộ trình chia thành <strong>14 Chặng theo bản chất tư duy</strong>: <strong>Chặng 1–5</strong> Nền tảng STL, Cộng dồn, 2 Con trỏ, Tham lam &amp; Chia để trị; <strong>Chặng 6–8</strong> Quay lui &amp; Nhánh cận; <strong>Chặng 9–11</strong> Quy hoạch động (kết thúc phạm vi Giữa kỳ); <strong>Chặng 12–14</strong> Đồ thị Cuối kỳ.</p>
             </div>
             <div class="track-pills" id="roadmap-track-filter" role="group" aria-label="Lọc giai đoạn lộ trình">
-              <button class="filter-pill active" data-track="all">Tất cả 11 ngày</button>
-              <button class="filter-pill" data-track="foundation">Nền tảng &amp; Tham lam (1–4)</button>
-              <button class="filter-pill" data-track="backtracking">Quay lui &amp; Nhánh cận (5–8)</button>
+              <button class="filter-pill active" data-track="all">Tất cả 14 chặng</button>
+              <button class="filter-pill" data-track="midterm">Phạm vi Giữa kỳ (Chặng 1–11)</button>
+              <button class="filter-pill" data-track="foundation">Nền tảng &amp; Tham lam (1–5)</button>
+              <button class="filter-pill" data-track="backtracking">Quay lui &amp; Nhánh cận (6–8)</button>
               <button class="filter-pill" data-track="dp">Quy hoạch động (9–11)</button>
+              <button class="filter-pill" data-track="graph">Đồ thị Cuối kỳ (12–14)</button>
             </div>
           </div>
           <div class="progress-summary-grid" id="roadmap-summary"></div>
@@ -128,7 +134,7 @@
               <th>Bài toán &amp; Ràng buộc</th>
               <th>Học phần / Chuyên đề</th>
               <th>Nguồn / Năm thi</th>
-              <th>Mức độ</th>
+              <th>Elo &amp; Mức độ</th>
               <th>Bộ test</th>
               <th style="width: 108px; text-align: right;">Thao tác</th>
             </tr>
@@ -138,8 +144,15 @@
       </div>
     </section>
 
+    <!-- VIEW 3.5: MOCK EXAM (THI THỬ 5 CÂU / 120 PHÚT) -->
+    <section id="view-exam" class="view">
+      <div id="exam-root"></div>
+    </section>
+
     <!-- VIEW 4: CODING ARENA -->
     <section id="view-arena" class="view">
+      <!-- Active Exam Strip inside Arena when student is taking a mock exam -->
+      <div id="arena-exam-strip" class="surface exam-arena-strip hidden"></div>
       <div class="arena-grid">
         <!-- LEFT PANE -->
         <div class="arena-left surface">
@@ -304,7 +317,7 @@
             <div class="sub-tabs judge-tabs">
               <button class="sub-tab active" data-rtab="sample">Kiểm thử Input tùy chọn</button>
               <button class="sub-tab" data-rtab="verdict">Kết quả chấm bài <span id="verdict-pill-badge"></span></button>
-              <button class="sub-tab" data-rtab="debug">Debug (GDB) <span id="debug-tab-badge"></span></button>
+              <button class="sub-tab" data-rtab="debug">Debug (GDB/LLDB) <span id="debug-tab-badge"></span></button>
             </div>
 
             <div class="judge-body">
@@ -366,7 +379,7 @@
                     <div class="dbg-side-tabs">
                       <button class="dbg-side-tab active" data-dtab="stack">Call stack</button>
                       <button class="dbg-side-tab" data-dtab="stdout">Output (stdout)</button>
-                      <button class="dbg-side-tab" data-dtab="log">GDB Log</button>
+                      <button class="dbg-side-tab" data-dtab="log">Debugger Log</button>
                     </div>
                     <div class="dbg-side-body">
                       <div class="dbg-side-pane-content active" id="dtab-stack">

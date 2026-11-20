@@ -2,8 +2,8 @@
   "id": "hs-max-common-subset",
   "title": "[HUSTack] Giao của hai tập hợp số nguyên (Max Common Subset)",
   "track": "midterm",
-  "topic": "greedy-2ptr",
-  "difficulty": "Trung bình",
+  "topic": "two-pointers",
+  "difficulty": "Cơ bản",
   "exam_tags": [
     "HUSTack 2025.2 (P.03.07.04)",
     "HUSTack: Đã AC"
@@ -21,8 +21,8 @@
       "output": "4"
     }
   ],
-  "theory_chapter": "chap1",
-  "mindset": "Vì các số `<= 10^6` (hoặc dùng `sort` + Two Pointers / `unordered_set`), chỉ cần đánh dấu các phần tử có trong `A` (`vector<bool> inA(1000001)`), rồi đếm phần tử của `B` có trong `inA` (nhớ bỏ đánh dấu sau khi đếm để không đếm trùng).",
+  "theory_chapter": "chap2",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Cần tìm/đếm đoạn con liên tiếp hoặc cặp/bộ ba phần tử thỏa điều kiện tổng với `n <= 10^5 - 10^6`.\n- Tại sao cách ngây thơ chậm: Xét mọi cặp `(L, R)` bằng 2 vòng `for` tốn `O(n^2)` bước.\n- Hướng đi: Dùng Cửa sổ trượt cố định độ dài `k` (`win += a[i] - a[i-k]`) hoặc Hai con trỏ `L, R` dịch chuyển một chiều để tổng số bước giảm xuống `O(n)`.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Cần tìm/đếm đoạn con liên tiếp hoặc cặp/bộ ba phần tử thỏa điều kiện tổng với `n <= 10^5 - 10^6`.\n- Tại sao cách ngây thơ chậm: Xét mọi cặp `(L, R)` bằng 2 vòng `for` tốn `O(n^2)` bước.\n- Hướng đi: Dùng Cửa sổ trượt cố định độ dài `k` (`win += a[i] - a[i-k]`) hoặc Hai con trỏ `L, R` dịch chuyển một chiều để tổng số bước giảm xuống `O(n)`.\n\n**2. Cách suy nghĩ cho bài này:**\nVì các số `<= 10^6` (hoặc dùng `sort` + Two Pointers / `unordered_set`), chỉ cần đánh dấu các phần tử có trong `A` (`vector<bool> inA(1000001)`), rồi đếm phần tử của `B` có trong `inA` (nhớ bỏ đánh dấu sau khi đếm để không đếm trùng).",
   "hints": [
     "Dùng mảng đánh dấu `inA` chạy `O(n + m)` hiệu quả!"
   ],
@@ -30,5 +30,6 @@
     "time": "O(n + m)",
     "space": "O(maxA)"
   },
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1050
 }

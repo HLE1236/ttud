@@ -3,7 +3,7 @@
   "title": "[HUSTack] Đường đi ngắn nhất Dijkstra (Shortest Path Dijkstra)",
   "track": "final",
   "topic": "graph-shortest-mst",
-  "difficulty": "Cơ bản",
+  "difficulty": "Trung bình",
   "exam_tags": [
     "HUSTack 2025.2 (P.05.11.04)",
     "HUSTack: Chưa làm"
@@ -21,13 +21,14 @@
       "output": "97"
     }
   ],
-  "theory_chapter": "chap6",
-  "mindset": "Cài đặt chuẩn **Thuật toán Dijkstra với Priority Queue (`min-heap`)** độ phức tạp `O((n + m) log n)`.",
+  "theory_chapter": "chap5",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Đồ thị có **trọng số (chi phí / thời gian)** trên từng cạnh. Yêu cầu tìm đường đi ngắn nhất từ `S` đến `T`, hoặc nối thông tất cả các đỉnh với tổng chi phí nhỏ nhất.\n- Hướng đi: Nếu tìm đường đi ngắn nhất từ `S` đến `T` với cạnh không âm -> dùng **Dijkstra + Min-Heap**. Nếu nối thông tất cả các đỉnh rẻ nhất -> sắp xếp cạnh tăng dần và dùng **Kruskal + DSU**.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Đồ thị có **trọng số (chi phí / thời gian)** trên từng cạnh. Yêu cầu tìm đường đi ngắn nhất từ `S` đến `T`, hoặc nối thông tất cả các đỉnh với tổng chi phí nhỏ nhất.\n- Hướng đi: Nếu tìm đường đi ngắn nhất từ `S` đến `T` với cạnh không âm -> dùng **Dijkstra + Min-Heap**. Nếu nối thông tất cả các đỉnh rẻ nhất -> sắp xếp cạnh tăng dần và dùng **Kruskal + DSU**.\n\n**2. Cách suy nghĩ cho bài này:**\nCài đặt chuẩn **Thuật toán Dijkstra với Priority Queue (`min-heap`)** độ phức tạp `O((n + m) log n)`.",
   "hints": [
     "Dùng `long long` cho mảng khoảng cách `dist` và phần tử trong `priority_queue`.",
     "Luôn kiểm tra `if (d > dist[u]) continue;` ngay sau khi `pop()` khỏi heap để tránh xét lại bản ghi lỗi thời (lazy deletion).",
     "Nếu rút ra đúng đỉnh `t` thì có thể `break` sớm và in `dist[t]`."
   ],
   "complexity": "O((n + m) log n)",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1150
 }

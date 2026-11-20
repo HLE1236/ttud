@@ -1,7 +1,7 @@
 {
   "title": "[HUSTack] Phân công giảng dạy cân bằng tín chỉ có cận dưới số môn (BCA LB)",
   "track": "midterm",
-  "topic": "backtracking",
+  "topic": "branch-bound",
   "difficulty": "Khó",
   "exam_tags": [
     "HUSTack Project1 (BCA_CREDIT_LB_ON_NUMBER_COURSES)",
@@ -21,12 +21,13 @@
     }
   ],
   "theory_chapter": "chap3",
-  "mindset": "Biến thể của bài `gk-bca-credit` có thêm ràng buộc **cận dưới số môn `LB[t]`** cho từng giảng viên!\nTa giữ `cnt[t]` = số môn đã giao cho giảng viên `t` và `need = sum(max(0, LB[t] - cnt[t]))` = tổng số môn tối thiểu còn thiếu cho các giảng viên.\nHai điều kiện cắt nhánh bắt buộc để chạy cực nhanh:\n1. **Cắt nhánh theo `best`**: nếu `load[t] + crd[c] >= best` thì bỏ qua giảng viên `t`.\n2. **Cắt nhánh theo cận dưới `LB`**: nếu sau khi thử giao môn `c` cho `t`, số môn còn lại `(n - 1 - idx) < need_mới` thì không bao giờ đủ môn bù cho mọi giảng viên đạt `LB` -> cắt ngay!\nNgoài ra, sắp xếp các môn theo thứ tự **ít giảng viên dạy được nhất** giúp phát hiện ngõ cụt sớm hơn rất nhiều.",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Giới hạn `n` nhỏ (`n <= 12..30`), yêu cầu tìm phương án có **chi phí nhỏ nhất** hoặc **tải lớn nhất nhỏ nhất** (chia nhóm, phân công BCA/BACP, lộ trình TSP/CBUS).\n- Tại sao quay lui thuần bị chậm: Duyệt hết toàn bộ cây đệ quy sẽ vượt quá 1 giây khi `n >= 12`.\n- Hướng đi: Dùng **Nhánh và cận**: trước khi gọi `Try(k + 1)`, ước lượng cận dưới của nhánh; nếu đã `>= kỷ_lục_best` hiện có thì cắt bỏ nhánh đó ngay.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Giới hạn `n` nhỏ (`n <= 12..30`), yêu cầu tìm phương án có **chi phí nhỏ nhất** hoặc **tải lớn nhất nhỏ nhất** (chia nhóm, phân công BCA/BACP, lộ trình TSP/CBUS).\n- Tại sao quay lui thuần bị chậm: Duyệt hết toàn bộ cây đệ quy sẽ vượt quá 1 giây khi `n >= 12`.\n- Hướng đi: Dùng **Nhánh và cận**: trước khi gọi `Try(k + 1)`, ước lượng cận dưới của nhánh; nếu đã `>= kỷ_lục_best` hiện có thì cắt bỏ nhánh đó ngay.\n\n**2. Cách suy nghĩ cho bài này:**\nBiến thể của bài `gk-bca-credit` có thêm ràng buộc **cận dưới số môn `LB[t]`** cho từng giảng viên!\nTa giữ `cnt[t]` = số môn đã giao cho giảng viên `t` và `need = sum(max(0, LB[t] - cnt[t]))` = tổng số môn tối thiểu còn thiếu cho các giảng viên.\nHai điều kiện cắt nhánh bắt buộc để chạy nhanh:\n1. **Cắt nhánh theo `best`**: nếu `load[t] + crd[c] >= best` thì bỏ qua giảng viên `t`.\n2. **Cắt nhánh theo cận dưới `LB`**: nếu sau khi thử giao môn `c` cho `t`, số môn còn lại `(n - 1 - idx) < need_mới` thì không bao giờ đủ môn bù cho mọi giảng viên đạt `LB` -> cắt ngay!\nNgoài ra, sắp xếp các môn theo thứ tự **ít giảng viên dạy được nhất** giúp phát hiện ngõ cụt sớm hơn rất nhiều.",
   "hints": [
     "Cập nhật `need` trong `O(1)` mỗi lần giao môn `c` cho giảng viên `t`: nếu trước đó `cnt[t] < LB[t]` thì `need` giảm 1.",
     "Kiểm tra thêm: số môn mà giảng viên `t` còn dạy được trong phần còn lại cộng `cnt[t]` phải `>= LB[t]`."
   ],
   "complexity": "Nhánh và Cận với cắt tỉa LB + MRV",
   "id": "hs-bca-credit-lb",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1800
 }

@@ -21,7 +21,7 @@
     }
   ],
   "theory_chapter": "chap5",
-  "mindset": "Tại sao Dijkstra thông thường chỉ lưu `min_cost[u]` sẽ BỊ SAI?\nHãy nghĩ: có thể đường A đến `u` **rẻ hơn** (`cost = 10`) nhưng lại tới **muộn** (`time = 50`, bị lỡ khung giờ `closeTime` ở cạnh sau), trong khi đường B tới `u` **đắt hơn chút** (`cost = 15`) nhưng tới **sớm hơn** (`time = 10`, kịp đi đường tiếp theo tới `T`)!\nDo đó trạng thái ở mỗi đỉnh là một cặp **`(cost, time)`**. Một trạng thái `(c1, t1)` **thống trị (dominate)** hoàn toàn `(c2, t2)` nếu `c1 <= c2` VÀ `t1 <= t2`! Ta duy trì danh sách các trạng thái **Pareto tối ưu** (không bị cái nào khác trội hơn cả 2 tiêu chí) tại mỗi đỉnh `u`, và ưu tiên pop `(cost, time)` nhỏ nhất trong min-heap!",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Đồ thị có **trọng số (chi phí / thời gian)** trên từng cạnh. Yêu cầu tìm đường đi ngắn nhất từ `S` đến `T`, hoặc nối thông tất cả các đỉnh với tổng chi phí nhỏ nhất.\n- Hướng đi: Nếu tìm đường đi ngắn nhất từ `S` đến `T` với cạnh không âm -> dùng **Dijkstra + Min-Heap**. Nếu nối thông tất cả các đỉnh rẻ nhất -> sắp xếp cạnh tăng dần và dùng **Kruskal + DSU**.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Đồ thị có **trọng số (chi phí / thời gian)** trên từng cạnh. Yêu cầu tìm đường đi ngắn nhất từ `S` đến `T`, hoặc nối thông tất cả các đỉnh với tổng chi phí nhỏ nhất.\n- Hướng đi: Nếu tìm đường đi ngắn nhất từ `S` đến `T` với cạnh không âm -> dùng **Dijkstra + Min-Heap**. Nếu nối thông tất cả các đỉnh rẻ nhất -> sắp xếp cạnh tăng dần và dùng **Kruskal + DSU**.\n\n**2. Cách suy nghĩ cho bài này:**\nTại sao Dijkstra thông thường chỉ lưu `min_cost[u]` sẽ BỊ SAI?\nHãy nghĩ: có thể đường A đến `u` **rẻ hơn** (`cost = 10`) nhưng lại tới **muộn** (`time = 50`, bị lỡ khung giờ `closeTime` ở cạnh sau), trong khi đường B tới `u` **đắt hơn chút** (`cost = 15`) nhưng tới **sớm hơn** (`time = 10`, kịp đi đường tiếp theo tới `T`)!\nDo đó trạng thái ở mỗi đỉnh là một cặp **`(cost, time)`**. Một trạng thái `(c1, t1)` **thống trị (dominate)** hoàn toàn `(c2, t2)` nếu `c1 <= c2` VÀ `t1 <= t2`! Ta duy trì danh sách các trạng thái **Pareto tối ưu** (không bị cái nào khác trội hơn cả 2 tiêu chí) tại mỗi đỉnh `u`, và ưu tiên pop `(cost, time)` nhỏ nhất trong min-heap!",
   "hints": [
     "Dùng min-heap bật theo `(cost, time, u)`. Nếu đỉnh `u` pop ra bị một trạng thái trước đó trong `best[u]` có `prev_cost <= cost` và `prev_time <= time` thì bỏ qua luôn (vì cả cost lẫn time đều thua!).",
     "Vì ta pop theo `cost` tăng dần trước: mọi trạng thái trước đó được chấp nhận ở `u` ĐỀU có `prev_cost <= cost`! Do vậy điều kiện không bị thống trị đơn giản: chỉ cần kiểm tra `time < min_time_seen[u]`!! Nếu `time >= min_time_seen[u]` thì bỏ qua ngay, ngược lại cập nhật `min_time_seen[u] = time`! Kỹ thuật này rất gọn mà vẫn 100% chính xác!"
@@ -30,5 +30,6 @@
     "time": "O(states log states)",
     "space": "O(N + M)"
   },
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1750
 }

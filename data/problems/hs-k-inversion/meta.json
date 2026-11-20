@@ -1,8 +1,8 @@
 {
   "title": "[HUSTack] Đếm số k-nghịch thế của hoán vị (K-Inversion + Fenwick)",
-  "track": "final",
-  "topic": "dp-lis-lcs",
-  "difficulty": "Trung bình",
+  "track": "midterm",
+  "topic": "dp-subseq",
+  "difficulty": "Nâng cao",
   "exam_tags": [
     "HUSTack Programming Advanced (k-inversion)",
     "HUSTack: Chưa làm"
@@ -21,12 +21,13 @@
     }
   ],
   "theory_chapter": "chap4b",
-  "mindset": "Gọi `dp[len][i]` là số dãy con giảm dần độ dài `len` kết thúc tại phần tử `a[i]` (`1 <= len <= k`).\n- Với `len = 1`: `dp[1][i] = 1` với mọi `i`.\n- Với mỗi bước `len = 2..k`: ta duyệt `i` từ `1` đến `n` và cần tính `sum_{j < i, a[j] > a[i]} dp[len - 1][j]`.\nDùng **Fenwick Tree (BIT)** đánh chỉ số theo giá trị `a[j]` (`1..n`): tại vị trí `i`, tổng các `dp[len - 1][j]` có `a[j] > a[i]` bằng `(tổng BIT toàn bộ đã thêm) - query(a[i])`! Sau khi tính `dp[len][i]`, ta thêm `dp[len - 1][i]` vào BIT tại vị trí `a[i]`.",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Tìm **dãy con** (được phép bỏ cách quãng, giữ nguyên thứ tự) tăng dài nhất (LIS), hoặc tìm phần chung / đối xứng trên 1-2 xâu (LCS, LPS).\n- Hướng đi: Dùng `dp[i]` = độ dài dãy tăng kết thúc tại `i` (hoặc mảng `tail[]` + `lower_bound` khi `n = 10^5`); với 2 xâu dùng bảng 2 chiều `dp[i][j]` trên `i` ký tự đầu xâu A và `j` ký tự đầu xâu B.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Tìm **dãy con** (được phép bỏ cách quãng, giữ nguyên thứ tự) tăng dài nhất (LIS), hoặc tìm phần chung / đối xứng trên 1-2 xâu (LCS, LPS).\n- Hướng đi: Dùng `dp[i]` = độ dài dãy tăng kết thúc tại `i` (hoặc mảng `tail[]` + `lower_bound` khi `n = 10^5`); với 2 xâu dùng bảng 2 chiều `dp[i][j]` trên `i` ký tự đầu xâu A và `j` ký tự đầu xâu B.\n\n**2. Cách suy nghĩ cho bài này:**\nGọi `dp[len][i]` là số dãy con giảm dần độ dài `len` kết thúc tại phần tử `a[i]` (`1 <= len <= k`).\n- Với `len = 1`: `dp[1][i] = 1` với mọi `i`.\n- Với mỗi bước `len = 2..k`: ta duyệt `i` từ `1` đến `n` và cần tính `sum_{j < i, a[j] > a[i]} dp[len - 1][j]`.\nDùng **Fenwick Tree (BIT)** đánh chỉ số theo giá trị `a[j]` (`1..n`): tại vị trí `i`, tổng các `dp[len - 1][j]` có `a[j] > a[i]` bằng `(tổng BIT toàn bộ đã thêm) - query(a[i])`! Sau khi tính `dp[len][i]`, ta thêm `dp[len - 1][i]` vào BIT tại vị trí `a[i]`.",
   "hints": [
     "Mỗi tầng `len` cần xóa sạch mảng BIT (`fill(bit.begin(), bit.end(), 0)`).",
     "Kết quả cuối cùng là tổng `dp[k][1..n] % MOD`."
   ],
   "complexity": "O(k * n log n)",
   "id": "hs-k-inversion",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1700
 }

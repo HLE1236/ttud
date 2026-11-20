@@ -4,7 +4,7 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     int n, x;
-    if (!(cin >> n >> x)) return 0;
+    cin >> n >> x;
     vector<int> d(n);
     for (int i = 0; i < n; ++i) cin >> d[i];
     const int INF = 1e9;

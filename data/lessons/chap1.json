@@ -1,0 +1,335 @@
+{
+  "chapter": "chap1",
+  "intro": "Chương 1 giải quyết việc đọc/ghi dữ liệu đủ nhanh để không bị quá thời gian (TLE) và dùng các cấu trúc có sẵn trong C++ (`vector`, `map`, `set`, `stack`, `queue`, `priority_queue`) để đếm, tra cứu, hoặc xử lý dữ liệu dạng nhật ký (log).\n\nTrong đề thi Giữa kỳ và Cuối kỳ, câu 1 (và đôi khi cả câu 2) nằm ở chương này. Nếu bạn nắm được cách chọn đúng cấu trúc dữ liệu, bạn sẽ làm xong câu đầu tiên trong 10-15 phút.",
+  "learning_path": {
+    "guided": [
+      "gk-count-gt-c",
+      "gk-equal-pairs",
+      "gk-insert-delete-max"
+    ],
+    "practice": [
+      "hs-add-two-integers",
+      "gk-count-positive",
+      "hs-sort-int",
+      "hs-set-exist",
+      "hs-store-search-string",
+      "hs-queue-sim",
+      "hs-stack-sim",
+      "hs-sim-priority-queue",
+      "hs-parenthesis-check",
+      "hs-upper-bound-seq",
+      "hs-word-freq-text",
+      "hs-text-replacement",
+      "hs-hash-string",
+      "hs-set-lower-upper",
+      "hs-linked-list-manip",
+      "hs-bst-insertion",
+      "hs-eval-expr-add-mul",
+      "hs-string-matching",
+      "hs-seq-num-matching",
+      "hs-eval-expr-paren",
+      "hs-suffix-signature"
+    ],
+    "exam": [
+      "ck-electricity-bill",
+      "gk-count-group",
+      "hs-analyze-order-raised",
+      "hs-analyze-sales-order",
+      "hs-analyze-quiz-log",
+      "hs-analyze-code-submission",
+      "ck-delivery-trips"
+    ]
+  },
+  "patterns": [
+    {
+      "id": "fast-io-array",
+      "name": "Dạng 1: Đọc dữ liệu lớn, Duyệt mảng & Chống tràn số",
+      "when": [
+        "Số lượng phần tử `n` lên tới `10^5` hoặc `10^6`.",
+        "Đề yêu cầu đếm số phần tử thỏa điều kiện, tính tổng theo công thức bậc thang (như tính tiền điện), hoặc cộng hai số nguyên vượt quá `10^18`."
+      ],
+      "idea": "Cách nghĩ từ đầu:\n1. Khi `n = 10^6`, nếu dùng `cin` và `endl` mặc định, chương trình mất gần 1 giây chỉ để đọc/in dữ liệu. Do đó, dòng đầu tiên trong `main()` luôn là `ios::sync_with_stdio(false); cin.tie(nullptr);` và dùng `'\\n'` thay cho `endl`.\n2. Xem giá trị lớn nhất của kết quả: kiểu `int` chỉ chứa được tới khoảng `2 * 10^9` (9 chữ số 0). Nếu đề cho `n = 10^5` số, mỗi số tới `10^5`, thì tổng của chúng có thể lên tới `10^10` -> tràn `int` ra số âm. Lúc này phải khai báo biến tổng là `long long` (chứa được tới `9 * 10^18`).\n3. Nếu đề chỉ yêu cầu xét từng số rồi đếm hoặc cộng dồn, ta vừa đọc vừa xử lý ngay trong vòng lặp mà không cần lưu cả mảng.",
+      "steps": [
+        "Bước 1: Viết khung `main()` có 2 dòng tăng tốc `cin/cout`.",
+        "Bước 2: Đọc `n` và các tham số đề cho.",
+        "Bước 3: Dùng vòng lặp `for (int i = 0; i < n; i++)`, đọc từng phần tử `x` (dùng `long long`), kiểm tra điều kiện `if (...)` rồi tăng biến đếm.",
+        "Bước 4: In kết quả ra kèm `'\\n'`."
+      ],
+      "template_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    // Tang toc doc/ghi khi n >= 10^5\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int n;\n    long long c;\n    cin >> n >> c;\n\n    long long ans = 0; // Dung long long de khong bao gio bi tran so\n    for (int i = 0; i < n; i++) {\n        long long x;\n        cin >> x;\n        if (x > c) {\n            ans++;\n        }\n    }\n\n    cout << ans << '\\n';\n    return 0;\n}",
+      "trace": {
+        "title": "Chạy tay bài Đếm phần tử lớn hơn C",
+        "input": "n = 5, c = 120, dãy: 1 120 121 20 60",
+        "headers": [
+          "Bước i",
+          "Số đọc vào x",
+          "So sánh x > 120",
+          "Biến đếm ans"
+        ],
+        "rows": [
+          [
+            "0",
+            "1",
+            "1 > 120 (Sai)",
+            "0"
+          ],
+          [
+            "1",
+            "120",
+            "120 > 120 (Sai - phải lớn hơn hẳn)",
+            "0"
+          ],
+          [
+            "2",
+            "121",
+            "121 > 120 (Đúng)",
+            "1"
+          ],
+          [
+            "3",
+            "20",
+            "20 > 120 (Sai)",
+            "1"
+          ],
+          [
+            "4",
+            "60",
+            "60 > 120 (Sai)",
+            "1"
+          ]
+        ],
+        "note": "Chú ý dấu `>` khác với `>=`. Tại `x = 120`, điều kiện `x > 120` là sai nên không đếm."
+      },
+      "pitfalls": [
+        "Quên dùng `long long` khi cộng tổng nhiều số hoặc nhân hai số `10^5 * 10^5`.",
+        "Với bài cộng hai số nguyên lớn lên tới `10^19` (`hs-add-two-integers`), ngay cả `long long` cũng có thể tràn ở biên `9 * 10^18`; hãy dùng `unsigned long long` hoặc tách phần nguyên cuối (`a / 10 + b / 10`)."
+      ],
+      "problems": [
+        "gk-count-gt-c",
+        "gk-count-positive",
+        "ck-electricity-bill",
+        "hs-add-two-integers",
+        "hs-sort-int"
+      ]
+    },
+    {
+      "id": "freq-map-set",
+      "name": "Dạng 2: Đếm tần suất & Tra cứu nhanh bằng Map / Set",
+      "when": [
+        "Đề hỏi: *có bao nhiêu cặp phần tử bằng nhau*, *nhóm nào có đúng t phần tử*, *kiểm tra một số/chuỗi đã xuất hiện trước đó chưa*, *đếm số lần xuất hiện của từng từ*.",
+        "Giá trị phần tử rất lớn (tới `10^9`, số âm, hoặc là chuỗi ký tự `string`) nên không thể dùng mảng đánh dấu `cnt[x]` thông thường."
+      ],
+      "idea": "Tại sao cách ngây thơ bị chậm?\nNếu để đếm số cặp `a[i] == a[j]` (với `i < j`), bạn dùng 2 vòng lặp lồng nhau xét mọi cặp `(i, j)`, số phép tính là `n * (n - 1) / 2`. Với `n = 10^5`, số phép tính là `5 * 10^9` -> chạy mất 50 giây (quá giới hạn 1 giây).\n\nCách sửa:\nThay vì so sánh từng cặp, ta gom các số giống nhau lại. Giả sử số `5` đã xuất hiện `3` lần trước đó. Khi gặp thêm một số `5` nữa ở vị trí hiện tại, nó sẽ ghép cặp được với cả `3` số `5` đứng trước nó -> cộng thêm `3` vào đáp án, rồi tăng số lần xuất hiện của số `5` lên `4`.\n\nCông cụ dùng trong C++:\n- `unordered_map<K, V>`: bảng băm, tra cứu và cộng tần suất `cnt[x]++` mất trung bình `O(1)`.\n- `map<K, V>`: cây nhị phân cân bằng, chậm hơn một chút (`O(log n)`), dùng khi đề bắt buộc **in kết quả theo thứ tự tăng dần của khóa** (ví dụ bài đếm từ trong văn bản).\n- `set<T>` / `unordered_set<T>`: chỉ lưu tập các phần tử không trùng nhau để kiểm tra có tồn tại hay chưa (`s.count(x)`).",
+      "steps": [
+        "Bước 1: Xác định khóa cần đếm/lưu là gì (`long long` hay `string`) và có cần in theo thứ tự từ điển không (cần -> dùng `map`/`set`; không cần -> dùng `unordered_map`/`unordered_set`).",
+        "Bước 2: Duyệt từng phần tử `x`. Nếu cần đếm cặp hoặc kiểm tra tồn tại với các phần tử đứng trước, hãy **kiểm tra/cộng vào đáp án trước**, rồi mới **cập nhật `cnt[x]++` hoặc `s.insert(x)` sau**.",
+        "Bước 3: Nếu đề yêu cầu thống kê sau khi đọc hết (như đếm có bao nhiêu nhóm có tần suất bằng `t`), duyệt `for (auto &p : cnt)` với `p.first` là giá trị, `p.second` là số lần xuất hiện."
+      ],
+      "template_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int n;\n    cin >> n;\n\n    // cnt[x] luu so lan gia tri x da xuat hien tinh den truoc vi tri hien tai\n    unordered_map<long long, long long> cnt;\n    long long ans = 0;\n\n    for (int i = 0; i < n; i++) {\n        long long x;\n        cin >> x;\n        // So x hien tai ghep cap duoc voi tat ca cac so x da gap truoc do\n        ans += cnt[x];\n        // Sau do moi tang so lan xuat hien cua x len 1\n        cnt[x]++;\n    }\n\n    cout << ans << '\\n';\n    return 0;\n}",
+      "trace": {
+        "title": "Chạy tay bài Đếm cặp bằng nhau (gk-equal-pairs)",
+        "input": "n = 5, a = [4, 2, 4, 2, 4]",
+        "headers": [
+          "Bước i",
+          "Giá trị x",
+          "cnt[x] trước khi cộng",
+          "Cộng vào ans",
+          "cnt[x] sau khi tăng"
+        ],
+        "rows": [
+          [
+            "0",
+            "4",
+            "cnt[4] = 0",
+            "ans = 0 + 0 = 0",
+            "cnt[4] = 1"
+          ],
+          [
+            "1",
+            "2",
+            "cnt[2] = 0",
+            "ans = 0 + 0 = 0",
+            "cnt[2] = 1"
+          ],
+          [
+            "2",
+            "4",
+            "cnt[4] = 1",
+            "ans = 0 + 1 = 1",
+            "cnt[4] = 2"
+          ],
+          [
+            "3",
+            "2",
+            "cnt[2] = 1",
+            "ans = 1 + 1 = 2",
+            "cnt[2] = 2"
+          ],
+          [
+            "4",
+            "4",
+            "cnt[4] = 2",
+            "ans = 2 + 2 = 4",
+            "cnt[4] = 3"
+          ]
+        ],
+        "note": "Ba số `4` tạo thành `1 + 2 = 3` cặp; hai số `2` tạo thành `1` cặp. Tổng cộng `4` cặp, chỉ cần duyệt 1 vòng `O(n)`."
+      },
+      "pitfalls": [
+        "Biến `ans` đếm số cặp có thể lên tới `n * (n - 1) / 2`. Với `n = 10^5`, nếu toàn bộ mảng bằng nhau thì `ans = 5 * 10^9` vượt quá `int` -> `ans` bắt buộc là `long long`.",
+        "Khi chỉ kiểm tra một khóa có trong `map` hay không mà không muốn vô tình tạo thêm khóa mới có giá trị `0`, hãy dùng `cnt.find(x) != cnt.end()` thay vì `if (cnt[x] > 0)`."
+      ],
+      "problems": [
+        "gk-equal-pairs",
+        "gk-count-group",
+        "hs-set-exist",
+        "hs-store-search-string",
+        "hs-word-freq-text"
+      ]
+    },
+    {
+      "id": "stl-containers",
+      "name": "Dạng 3: Hàng đợi (Queue), Ngăn xếp (Stack), Heap & Tìm cận trong Set",
+      "when": [
+        "Mô phỏng các lệnh `PUSH`, `POP`, `INSERT`, `DELETE-MAX`, `LOWER_BOUND`, `UPPER_BOUND`.",
+        "Kiểm tra biểu thức dấu ngoặc hợp lệ `()`, `[]`, `{}` hoặc tính giá trị biểu thức số học có phép `+`, `*` và ngoặc.",
+        "Cần liên tục lấy ra phần tử lớn nhất hoặc nhỏ nhất sau mỗi lần thêm số mới."
+      ],
+      "idea": "Mỗi cấu trúc giữ phần tử theo một quy tắc lấy ra khác nhau:\n1. **`queue<T>` (Vào trước - Ra trước)**: giống xếp hàng mua vé. Thêm vào cuối `q.push(x)`, xem đầu hàng `q.front()`, xóa đầu hàng `q.pop()`.\n2. **`stack<T>` (Vào sau - Ra trước)**: giống chồng đĩa. Thêm lên đỉnh `st.push(x)`, xem đỉnh `st.top()`, lấy đỉnh ra `st.pop()`. Dùng cho bài kiểm tra ngoặc (gặp ngoặc mở thì đẩy vào stack, gặp ngoặc đóng thì so với ngoặc mở vừa đẩy vào gần nhất ở đỉnh stack) và bài tính biểu thức.\n3. **`priority_queue<T>` (Hàng đợi ưu tiên / Heap)**: tự động đẩy phần tử **lớn nhất** lên đỉnh trong `O(log n)`. Nếu muốn phần tử **nhỏ nhất** ở đỉnh, khai báo `priority_queue<long long, vector<long long>, greater<long long>>`.\n4. **`set<T>` (Tập hợp tự sắp xếp)**: vừa thêm/xóa phần tử trong `O(log n)`, vừa tìm được ngay phần tử nhỏ nhất `>= x` bằng lệnh `s.lower_bound(x)` hoặc nhỏ nhất `> x` bằng `s.upper_bound(x)`.",
+      "steps": [
+        "Bước 1: Đọc kỹ đề xem thao tác lấy ra là gì: lấy đầu hàng (`queue`), lấy cuối vừa vào (`stack`), lấy max/min (`priority_queue`), hay tìm số gần `x` nhất (`set`).",
+        "Bước 2: Trước khi gọi `.top()`, `.front()` hay `.pop()`, **luôn kiểm tra `!q.empty()`**. Gọi `.pop()` trên cấu trúc rỗng sẽ làm chương trình sập ngay lập tức (Runtime Error).",
+        "Bước 3: Với `set::lower_bound(x)`, hàm trả về một con trỏ (iterator) `it`. Phải kiểm tra `if (it == s.end())` (không có số nào `>= x`) trước khi lấy giá trị `*it`."
+      ],
+      "template_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    // Max-heap: phan tu lon nhat luon nam o pq.top()\n    priority_queue<long long> pq;\n    int n;\n    cin >> n;\n    for (int i = 0; i < n; i++) {\n        long long x;\n        cin >> x;\n        pq.push(x);\n    }\n\n    string cmd;\n    while (cin >> cmd && cmd != \"*\") {\n        if (cmd == \"insert\") {\n            long long x;\n            cin >> x;\n            pq.push(x);\n        } else if (cmd == \"delete-max\") {\n            if (!pq.empty()) {\n                cout << pq.top() << '\\n';\n                pq.pop();\n            }\n        }\n    }\n    return 0;\n}",
+      "trace": {
+        "title": "Chạy tay bài Insert và Delete-Max (gk-insert-delete-max)",
+        "input": "Mảng đầu: [3, 8, 5]. Lệnh: insert 10 -> delete-max -> delete-max",
+        "headers": [
+          "Thao tác",
+          "Trạng thái Heap (từ lớn đến nhỏ)",
+          "Đỉnh pq.top()",
+          "In ra màn hình"
+        ],
+        "rows": [
+          [
+            "Khởi tạo",
+            "{8, 5, 3}",
+            "8",
+            "-"
+          ],
+          [
+            "insert 10",
+            "{10, 8, 5, 3}",
+            "10",
+            "-"
+          ],
+          [
+            "delete-max",
+            "Lấy 10 ra -> còn {8, 5, 3}",
+            "8",
+            "10"
+          ],
+          [
+            "delete-max",
+            "Lấy 8 ra -> còn {5, 3}",
+            "5",
+            "8"
+          ]
+        ],
+        "note": "Mỗi lần `push` hoặc `pop` trên Heap chỉ mất `O(log n)`, nên `10^5` lệnh chạy trong chưa tới 0.05 giây."
+      },
+      "pitfalls": [
+        "Gọi `s.lower_bound(x)` (hàm thành viên của `set`, chạy `O(log n)`) chứ tuyệt đối KHÔNG gọi `std::lower_bound(s.begin(), s.end(), x)` (chạy `O(n)` trên `set` gây TLE).",
+        "Không kiểm tra `empty()` trước khi `top()` / `pop()` khi đề có trường hợp xóa lúc tập rỗng."
+      ],
+      "problems": [
+        "hs-queue-sim",
+        "hs-stack-sim",
+        "hs-sim-priority-queue",
+        "gk-insert-delete-max",
+        "hs-parenthesis-check",
+        "hs-upper-bound-seq",
+        "hs-set-lower-upper",
+        "hs-linked-list-manip",
+        "hs-bst-insertion",
+        "hs-eval-expr-add-mul",
+        "hs-eval-expr-paren"
+      ]
+    },
+    {
+      "id": "string-log-queries",
+      "name": "Dạng 4: Xử lý Xâu & Truy vấn Nhật ký thời gian (Log Analysis)",
+      "when": [
+        "Đề bài cho hàng chục nghìn dòng dữ liệu dạng bản ghi (đơn hàng, bài nộp, chuyến giao hàng) kết thúc bằng dấu `#` hoặc `***`, theo sau là nhiều dòng truy vấn.",
+        "Trong dòng dữ liệu có mốc thời gian dạng `HH:MM:SS` hoặc ngày `YYYY-MM-DD`, và truy vấn hỏi tổng trong khoảng từ thời điểm `t1` đến `t2`."
+      ],
+      "idea": "Cách giải quyết mọi bài Log trong đề thi HUST gồm 3 bước cố định:\n1. **Đổi thời gian ra một con số nguyên**: Một ngày chỉ có `24 * 3600 = 86400` giây (từ `0` đến `86399`). Bất kỳ chuỗi `HH:MM:SS` nào cũng đổi được thành số giây: `sec = h * 3600 + m * 60 + s`. Nếu có thêm ngày, ánh xạ mỗi ngày thành chỉ số `day_id` rồi tính `timestamp = day_id * 86400 + sec`.\n2. **Cộng dồn ngay lúc đọc**: Những truy vấn hỏi tổng toàn bộ hoặc tổng của một khách hàng/cửa hàng (`?total_revenue`, `?revenue_of_shop`), ta dùng biến `total` và `unordered_map<string, long long>` cộng ngay trong vòng lặp `while (cin >> ...)` lúc đọc dữ liệu. Khi gặp truy vấn chỉ việc in ra trong `O(1)`.\n3. **Truy vấn theo khoảng thời gian `[t1, t2]`**: Vì giây trong ngày chỉ từ `0` đến `86399`, ta tạo mảng `pref[86400]` lưu tổng cộng dồn theo từng giây. Khi hỏi đoạn `[s1, s2]`, đáp án là `pref[s2] - (s1 > 0 ? pref[s1 - 1] : 0)`. Nếu có nhiều ngày, lưu danh sách các mốc thời gian đã sắp xếp rồi dùng `lower_bound` / `upper_bound`.",
+      "steps": [
+        "Bước 1: Viết hàm `int toSec(const string& t)` đổi `\"HH:MM:SS\"` sang số giây `0..86399`.",
+        "Bước 2: Đọc phần dữ liệu bằng `while (cin >> token && token != \"#\")`, vừa đọc vừa cộng vào các bảng băm `unordered_map` và mảng thời gian `cnt_sec[s]`.",
+        "Bước 3: Sau khi đọc xong khối dữ liệu, chạy 1 vòng lặp từ `1` đến `86399` để tính mảng cộng dồn `pref[i] = pref[i - 1] + cnt_sec[i]`.",
+        "Bước 4: Đọc khối truy vấn, ứng với mỗi câu hỏi thì tra bảng băm hoặc lấy `pref[r] - pref[l - 1]` in ra ngay."
+      ],
+      "template_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\n// Doi chuoi HH:MM:SS sang so giay trong ngay (0 .. 86399)\nint toSec(const string& t) {\n    int h = (t[0] - '0') * 10 + (t[1] - '0');\n    int m = (t[3] - '0') * 10 + (t[4] - '0');\n    int s = (t[6] - '0') * 10 + (t[7] - '0');\n    return h * 3600 + m * 60 + s;\n}\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    const int DAY_SEC = 86400;\n    vector<long long> by_sec(DAY_SEC, 0);\n    unordered_map<string, long long> by_user;\n    long long total_all = 0;\n\n    // 1. Doc khoi du lieu den khi gap dau #\n    string user, time_str;\n    long long val;\n    while (cin >> user && user != \"#\") {\n        cin >> val >> time_str;\n        int s = toSec(time_str);\n        total_all += val;\n        by_user[user] += val;\n        by_sec[s] += val;\n    }\n\n    // 2. Xay mang cong don theo giay de tra loi truy van khoang thoi gian O(1)\n    vector<long long> pref(DAY_SEC, 0);\n    pref[0] = by_sec[0];\n    for (int i = 1; i < DAY_SEC; i++) {\n        pref[i] = pref[i - 1] + by_sec[i];\n    }\n\n    // 3. Tra loi cac truy van\n    string q;\n    while (cin >> q && q != \"#\") {\n        if (q == \"?total\") {\n            cout << total_all << '\\n';\n        } else if (q == \"?by_user\") {\n            string u; cin >> u;\n            cout << by_user[u] << '\\n';\n        } else if (q == \"?period\") {\n            string t1, t2; cin >> t1 >> t2;\n            int l = toSec(t1), r = toSec(t2);\n            long long ans = pref[r] - (l > 0 ? pref[l - 1] : 0);\n            cout << ans << '\\n';\n        }\n    }\n    return 0;\n}",
+      "trace": {
+        "title": "Chạy tay quy đổi thời gian và truy vấn khoảng",
+        "input": "3 đơn hàng lúc 00:00:05 (+10), 00:00:10 (+25), 00:00:10 (+15). Hỏi đoạn [00:00:06, 00:00:12]",
+        "headers": [
+          "Giây s",
+          "by_sec[s]",
+          "Mảng cộng dồn pref[s]",
+          "Giải thích"
+        ],
+        "rows": [
+          [
+            "0..4",
+            "0",
+            "0",
+            "Chưa có đơn nào"
+          ],
+          [
+            "5",
+            "10",
+            "10",
+            "Đơn lúc 00:00:05"
+          ],
+          [
+            "6..9",
+            "0",
+            "10",
+            "Giữ nguyên tổng tích lũy 10"
+          ],
+          [
+            "10",
+            "25 + 15 = 40",
+            "10 + 40 = 50",
+            "Hai đơn cùng lúc 00:00:10"
+          ],
+          [
+            "11..12",
+            "0",
+            "50",
+            "Truy vấn [6, 12] lấy pref[12] - pref[5] = 50 - 10 = 40"
+          ]
+        ],
+        "note": "Nhờ gom sẵn vào mảng 86400 giây, dù có 100.000 truy vấn khoảng thời gian thì mỗi truy vấn cũng chỉ làm đúng 1 phép trừ."
+      },
+      "pitfalls": [
+        "Nếu có truy vấn theo cặp `(shop, customer)` (2 khóa chuỗi), đừng dùng `map<pair<string, string>, long long>` vì chậm; hãy nối chuỗi `shop + \"#\" + customer` làm khóa cho `unordered_map<string, long long>`.",
+        "Khi `l == 0` (tức `00:00:00`), truy cập `pref[l - 1]` sẽ bị lỗi truy cập `pref[-1]` -> luôn viết `(l > 0 ? pref[l - 1] : 0)`."
+      ],
+      "problems": [
+        "hs-text-replacement",
+        "hs-hash-string",
+        "hs-string-matching",
+        "hs-seq-num-matching",
+        "hs-suffix-signature",
+        "hs-analyze-order-raised",
+        "hs-analyze-sales-order",
+        "hs-analyze-quiz-log",
+        "hs-analyze-code-submission",
+        "ck-delivery-trips"
+      ]
+    }
+  ]
+}

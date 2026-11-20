@@ -1,7 +1,7 @@
 {
   "title": "[HUSTack] Tối đa hóa biểu thức bộ ba chỉ số i < j < k (TRIPLE)",
-  "track": "final",
-  "topic": "greedy-2ptr",
+  "track": "midterm",
+  "topic": "two-pointers",
   "difficulty": "Trung bình",
   "exam_tags": [
     "HUSTack Programming Advanced (triple-index-max)",
@@ -21,12 +21,13 @@
     }
   ],
   "theory_chapter": "chap2",
-  "mindset": "Biến đổi đại số cực gọn:\n`A[i]^2 - (A[i] + A[k]) * A[j] + A[k]^2 = (A[i]^2 - A[i]*A[j]) + (A[k]^2 - A[k]*A[j])`.\nKhi cố định chỉ số ở giữa `j`, bài toán tách hoàn toàn thành tìm `max_{i < j} (A[i]^2 - A[i]*A[j])` và `max_{k > j} (A[k]^2 - A[k]*A[j])`!\n\nMẹo khai thác giới hạn nhỏ `1 <= A[i] <= M = 1000`: giữ mảng `bestL[v]` lưu `max (x^2 - x * v)` với mọi `x` đã xuất hiện bên trái. Chỉ khi gặp một giá trị `x` **lần đầu tiên**, ta mới cập nhật `bestL[1..1000]` trong `O(M)` -> tổng thời gian cập nhật cả mảng chỉ là `O(M^2) = 10^6` phép toán! Làm tương tự từ phải qua trái cho `bestR[v]`.",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Cần tìm/đếm đoạn con liên tiếp hoặc cặp/bộ ba phần tử thỏa điều kiện tổng với `n <= 10^5 - 10^6`.\n- Tại sao cách ngây thơ chậm: Xét mọi cặp `(L, R)` bằng 2 vòng `for` tốn `O(n^2)` bước.\n- Hướng đi: Dùng Cửa sổ trượt cố định độ dài `k` (`win += a[i] - a[i-k]`) hoặc Hai con trỏ `L, R` dịch chuyển một chiều để tổng số bước giảm xuống `O(n)`.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Cần tìm/đếm đoạn con liên tiếp hoặc cặp/bộ ba phần tử thỏa điều kiện tổng với `n <= 10^5 - 10^6`.\n- Tại sao cách ngây thơ chậm: Xét mọi cặp `(L, R)` bằng 2 vòng `for` tốn `O(n^2)` bước.\n- Hướng đi: Dùng Cửa sổ trượt cố định độ dài `k` (`win += a[i] - a[i-k]`) hoặc Hai con trỏ `L, R` dịch chuyển một chiều để tổng số bước giảm xuống `O(n)`.\n\n**2. Cách suy nghĩ cho bài này:**\nBiến đổi đại số gọn:\n`A[i]^2 - (A[i] + A[k]) * A[j] + A[k]^2 = (A[i]^2 - A[i]*A[j]) + (A[k]^2 - A[k]*A[j])`.\nKhi cố định chỉ số ở giữa `j`, bài toán tách hoàn toàn thành tìm `max_{i < j} (A[i]^2 - A[i]*A[j])` và `max_{k > j} (A[k]^2 - A[k]*A[j])`!\n\nMẹo khai thác giới hạn nhỏ `1 <= A[i] <= M = 1000`: giữ mảng `bestL[v]` lưu `max (x^2 - x * v)` với mọi `x` đã xuất hiện bên trái. Chỉ khi gặp một giá trị `x` **lần đầu tiên**, ta mới cập nhật `bestL[1..1000]` trong `O(M)` -> tổng thời gian cập nhật cả mảng chỉ là `O(M^2) = 10^6` phép toán! Làm tương tự từ phải qua trái cho `bestR[v]`.",
   "hints": [
     "Dùng `seenL[1001]` để đánh dấu giá trị `x` đã xuất hiện bên trái chưa; mỗi giá trị `1..1000` chỉ kích hoạt vòng lặp `v = 1..1000` tối đa 1 lần!",
     "Độ phức tạp tổng thể là `O(n + M^2)` với `M = 1000`, chạy chỉ vài mili-giây cho `n = 10^6`."
   ],
   "complexity": "O(n + M^2) với M = max(A[i]) = 1000",
   "id": "hs-triple-index-max",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1300
 }

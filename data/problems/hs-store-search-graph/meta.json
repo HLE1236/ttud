@@ -1,7 +1,7 @@
 {
   "title": "[HUSTack] Lưu trữ và kiểm tra đẳng cấu đồ thị (Store & Search Graphs)",
   "track": "final",
-  "topic": "graph-special",
+  "topic": "graph-advanced",
   "difficulty": "Khó",
   "exam_tags": [
     "HUSTack Project1 (STORE_SEARCH_GRAPH)",
@@ -21,12 +21,13 @@
     }
   ],
   "theory_chapter": "chap5",
-  "mindset": "Để lưu trữ và tra cứu đẳng cấu của hàng nghìn đồ thị nhỏ trong `O(1)`:\nTa chuẩn hóa mỗi đồ thị thành một **dạng chính tắc (Canonical Form)** duy nhất không phụ thuộc cách đánh số đỉnh:\n- Sắp xếp các đỉnh theo bất biến bậc `(deg[u], tổng_bậc_hàng_xóm)` và chỉ hoán vị các đỉnh có cùng chữ ký.\n- Với mỗi hoán vị `p` hợp lệ, tạo xâu nhị phân của ma trận kề tam giác trên `(0 <= i < j < n)` và chọn xâu lớn nhất (hoặc nhỏ nhất) làm mã chính tắc, lưu vào `unordered_set<string>`!",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Bài toán đồ thị nâng cao (Câu 5 Cuối kỳ): ghép cặp 1-1 giữa 2 tập hợp, đẩy luồng tối đa từ `S` đến `T`, hoặc tìm đường đi đơn / chu trình / cây Steiner với số đỉnh cần nhớ nhỏ (`N <= 20` hoặc `K <= 12`).\n- Hướng đi: Dùng Cặp ghép 2 phía (Kuhn / Hopcroft-Karp), Luồng cực đại (Dinic), hoặc Bitmask DP `dp[mask][u]` với `mask` là dãy bit biểu diễn tập đỉnh đã đi qua.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Bài toán đồ thị nâng cao (Câu 5 Cuối kỳ): ghép cặp 1-1 giữa 2 tập hợp, đẩy luồng tối đa từ `S` đến `T`, hoặc tìm đường đi đơn / chu trình / cây Steiner với số đỉnh cần nhớ nhỏ (`N <= 20` hoặc `K <= 12`).\n- Hướng đi: Dùng Cặp ghép 2 phía (Kuhn / Hopcroft-Karp), Luồng cực đại (Dinic), hoặc Bitmask DP `dp[mask][u]` với `mask` là dãy bit biểu diễn tập đỉnh đã đi qua.\n\n**2. Cách suy nghĩ cho bài này:**\nĐể lưu trữ và tra cứu đẳng cấu của hàng nghìn đồ thị nhỏ trong `O(1)`:\nTa chuẩn hóa mỗi đồ thị thành một **dạng chính tắc (Canonical Form)** duy nhất không phụ thuộc cách đánh số đỉnh:\n- Sắp xếp các đỉnh theo bất biến bậc `(deg[u], tổng_bậc_hàng_xóm)` và chỉ hoán vị các đỉnh có cùng chữ ký.\n- Với mỗi hoán vị `p` hợp lệ, tạo xâu nhị phân của ma trận kề tam giác trên `(0 <= i < j < n)` và chọn xâu lớn nhất (hoặc nhỏ nhất) làm mã chính tắc, lưu vào `unordered_set<string>`!",
   "hints": [
     "Nếu đồ thị là cạnh trống hoặc đầy đủ, cả hai chỉ cần `n` và `m` là đủ nhận diện.",
     "Gắn kèm `n` và `m` vào đầu xâu mã chính tắc: `to_string(n) + \"_\" + bestMatrixStr`."
   ],
   "complexity": "O((N + K) * số hoán vị theo nhóm bậc)",
   "id": "hs-store-search-graph",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1950
 }

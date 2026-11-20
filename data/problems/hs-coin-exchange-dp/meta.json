@@ -1,9 +1,9 @@
 {
   "id": "hs-coin-exchange-dp",
   "title": "[HUSTack] Đổi tiền ít tờ nhất (Coin Exchange DP)",
-  "track": "final",
-  "topic": "dp-knapsack-stock",
-  "difficulty": "Cơ bản",
+  "track": "midterm",
+  "topic": "dp-knapsack",
+  "difficulty": "Trung bình",
   "exam_tags": [
     "HUSTack 2025.2 (P.05.11.01)",
     "HUSTack: Chưa làm"
@@ -21,13 +21,14 @@
       "output": "4"
     }
   ],
-  "theory_chapter": "chap5",
-  "mindset": "Áp dụng mô hình Quy hoạch động **Unbounded Knapsack**: đặt `dp[s]` là số đồng xu ít nhất cần dùng để tạo thành tổng `s`. Với mỗi mệnh giá `d`, duyệt `s` tăng dần từ `d` tới `x` và cập nhật `dp[s] = min(dp[s], dp[s - d] + 1)`.",
+  "theory_chapter": "chap4b",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Chọn các món đồ / mệnh giá tiền / lần giao dịch với **tổng trọng lượng / ngân sách giới hạn `W <= 10^5`**.\n- Hướng đi: Quy hoạch động theo dung lượng `dp[w]`. Nếu mỗi món được chọn nhiều lần thì duyệt `w` tăng dần (`cost -> W`); nếu mỗi món chỉ chọn tối đa 1 lần thì duyệt `w` giảm dần (`W -> cost`).\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Chọn các món đồ / mệnh giá tiền / lần giao dịch với **tổng trọng lượng / ngân sách giới hạn `W <= 10^5`**.\n- Hướng đi: Quy hoạch động theo dung lượng `dp[w]`. Nếu mỗi món được chọn nhiều lần thì duyệt `w` tăng dần (`cost -> W`); nếu mỗi món chỉ chọn tối đa 1 lần thì duyệt `w` giảm dần (`W -> cost`).\n\n**2. Cách suy nghĩ cho bài này:**\nÁp dụng mô hình Quy hoạch động **Unbounded Knapsack**: đặt `dp[s]` là số đồng xu ít nhất cần dùng để tạo thành tổng `s`. Với mỗi mệnh giá `d`, duyệt `s` tăng dần từ `d` tới `x` và cập nhật `dp[s] = min(dp[s], dp[s - d] + 1)`.",
   "hints": [
     "Khởi tạo `dp[0] = 0`, mọi `dp[1..x] = INF` (ví dụ `1e9`).",
     "Duyệt `s` từ `1` tới `x` (hoặc duyệt từng đồng xu `d`, rồi duyệt `s` từ `d` tới `x` tăng dần để dùng được nhiều lần một loại xu).",
     "Nếu `dp[x] >= INF` thì in `-1`, ngược lại in `dp[x]`."
   ],
   "complexity": "O(n * x) thời gian, O(x) bộ nhớ",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1200
 }

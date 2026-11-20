@@ -42,7 +42,7 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     int n;
-    if (!(cin >> n)) return 0;
+    cin >> n;
     p.resize(n);
     tmp.resize(n);
     for (int i = 0; i < n; ++i) cin >> p[i].x >> p[i].y;

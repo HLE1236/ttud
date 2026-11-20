@@ -2,7 +2,7 @@
   "id": "gk-supermarket-knapsack",
   "title": "Siêu thị mua sắm không giới hạn (Unbounded Knapsack)",
   "track": "midterm",
-  "topic": "dp-midterm",
+  "topic": "dp-knapsack",
   "difficulty": "Trung bình",
   "exam_tags": [
     "Giữa kỳ 2025.1 (Bài 4 - Super Market)"
@@ -20,8 +20,8 @@
       "output": "17"
     }
   ],
-  "theory_chapter": "chap4a",
-  "mindset": "Đây là bài toán **Cái túi không giới hạn (Unbounded Knapsack)**.\nGọi `dp[w]` là tổng giá trị lớn nhất có thể mua được với ngân sách `w`.\n- Với mỗi món hàng `i` có giá `cost[i]`, giá trị `val[i]`: vì được mua **nhiều lần**, khi cập nhật `dp[w] = max(dp[w], dp[w - cost[i]] + val[i])`, ta duyệt `w` **TĂNG DẦN** từ `cost[i]` đến `W`!\n*(So sánh quan trọng: nếu mỗi món chỉ mua TỐI ĐA 1 lần - 0/1 Knapsack - thì phải duyệt `w` GIẢM DẦN từ `W` về `cost[i]`)*.",
+  "theory_chapter": "chap4b",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Chọn các món đồ / mệnh giá tiền / lần giao dịch với **tổng trọng lượng / ngân sách giới hạn `W <= 10^5`**.\n- Hướng đi: Quy hoạch động theo dung lượng `dp[w]`. Nếu mỗi món được chọn nhiều lần thì duyệt `w` tăng dần (`cost -> W`); nếu mỗi món chỉ chọn tối đa 1 lần thì duyệt `w` giảm dần (`W -> cost`).\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Chọn các món đồ / mệnh giá tiền / lần giao dịch với **tổng trọng lượng / ngân sách giới hạn `W <= 10^5`**.\n- Hướng đi: Quy hoạch động theo dung lượng `dp[w]`. Nếu mỗi món được chọn nhiều lần thì duyệt `w` tăng dần (`cost -> W`); nếu mỗi món chỉ chọn tối đa 1 lần thì duyệt `w` giảm dần (`W -> cost`).\n\n**2. Cách suy nghĩ cho bài này:**\nĐây là bài toán **Cái túi không giới hạn (Unbounded Knapsack)**.\nGọi `dp[w]` là tổng giá trị lớn nhất có thể mua được với ngân sách `w`.\n- Với mỗi món hàng `i` có giá `cost[i]`, giá trị `val[i]`: vì được mua **nhiều lần**, khi cập nhật `dp[w] = max(dp[w], dp[w - cost[i]] + val[i])`, ta duyệt `w` **TĂNG DẦN** từ `cost[i]` đến `W`!\n*(So sánh quan trọng: nếu mỗi món chỉ mua TỐI ĐA 1 lần - 0/1 Knapsack - thì phải duyệt `w` GIẢM DẦN từ `W` về `cost[i]`)*.",
   "hints": [
     "Khởi tạo mảng `dp(W + 1, 0)`.",
     "Hai vòng lặp: `for i = 0..n-1`, `for w = cost[i]..W`: `dp[w] = max(dp[w], dp[w - cost[i]] + val[i])`. Đáp án là `dp[W]`."
@@ -30,5 +30,6 @@
     "time": "O(n * W)",
     "space": "O(W)"
   },
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1200
 }

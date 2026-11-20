@@ -32,7 +32,7 @@ void dfs(int idx, long long cur) {
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    if (!(cin >> m >> n >> D)) return 0;
+    cin >> m >> n >> D;
     for (int i = 0; i < m; ++i)
         for (int j = 0; j < n; ++j)
             cin >> c[i][j];

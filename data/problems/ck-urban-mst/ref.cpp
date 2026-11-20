@@ -19,7 +19,7 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     int n;
-    if (!(cin >> n)) return 0;
+    cin >> n;
     vector<long long> x(n + 1), y(n + 1);
     for (int i = 1; i <= n; ++i) cin >> x[i] >> y[i];
     DSU dsu(n);
@@ -29,7 +29,6 @@ int main() {
         dsu.unite(u, v);
     }
     vector<Edge> edges;
-    edges.reserve((size_t)n * (n - 1) / 2);
     for (int i = 1; i <= n; ++i) {
         for (int j = i + 1; j <= n; ++j) {
             if (dsu.find(i) == dsu.find(j)) continue;

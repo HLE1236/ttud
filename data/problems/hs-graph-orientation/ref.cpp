@@ -1,44 +1,58 @@
 #include <bits/stdc++.h>
 using namespace std;
+
+int n, m, timer_dfs = 0, visited_cnt = 0;
+bool has_bridge = false;
+vector<vector<pair<int, int>>> adj;
+vector<int> num, low;
+vector<pair<int, int>> oriented_edge;
+
+void dfs(int u, int parent_edge) {
+    num[u] = low[u] = ++timer_dfs;
+    visited_cnt++;
+
+    for (auto [v, id] : adj[u]) {
+        if (id == parent_edge) continue;
+        if (num[v] == 0) {
+            oriented_edge[id] = {u, v}; // Canh cay DFS: dinh huong di xuong
+            dfs(v, id);
+            low[u] = min(low[u], low[v]);
+            if (low[v] > num[u]) has_bridge = true;
+        } else if (num[v] < num[u]) {
+            oriented_edge[id] = {u, v}; // Canh nguoc: dinh huong di len to tien
+            low[u] = min(low[u], num[v]);
+        }
+    }
+}
+
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    int n, m;
-    if (!(cin >> n >> m)) return 0;
-    vector<vector<pair<int, int>>> adj(n + 1);
-    for (int i = 0; i < m; ++i) {
-        int u, v; cin >> u >> v;
+
+    cin >> n >> m;
+    adj.resize(n + 1);
+    num.assign(n + 1, 0);
+    low.assign(n + 1, 0);
+    oriented_edge.resize(m);
+
+    for (int i = 0; i < m; i++) {
+        int u, v;
+        cin >> u >> v;
         adj[u].push_back({v, i});
         adj[v].push_back({u, i});
     }
-    vector<int> tin(n + 1, 0), low(n + 1, 0);
-    vector<pair<int, int>> ans(m, {-1, -1});
-    int timer = 0, visited = 0;
-    bool has_bridge = false;
 
-    auto dfs = [&](auto& self, int u, int peid) -> void {
-        tin[u] = low[u] = ++timer;
-        visited++;
-        for (auto [v, eid] : adj[u]) {
-            if (eid == peid) continue;
-            if (!tin[v]) {
-                ans[eid] = {u, v}; // tree edge goes down
-                self(self, v, eid);
-                low[u] = min(low[u], low[v]);
-                if (low[v] > tin[u]) has_bridge = true;
-            } else if (tin[v] < tin[u]) {
-                ans[eid] = {u, v}; // back edge goes up
-                low[u] = min(low[u], tin[v]);
-            }
-        }
-    };
+    dfs(1, -1);
 
-    dfs(dfs, 1, -1);
-    if (visited != n || has_bridge) {
-        cout << -1 << "\n";
+    // Do thi vo huong dinh huong thanh SCC duoc khi va chi khi lien thong va khong co canh cau
+    if (visited_cnt != n || has_bridge) {
+        cout << -1 << '\n';
         return 0;
     }
-    cout << m << "\n";
-    for (auto [u, v] : ans) cout << u << " " << v << "\n";
+
+    cout << m << '\n';
+    for (int i = 0; i < m; i++) {
+        cout << oriented_edge[i].first << ' ' << oriented_edge[i].second << '\n';
+    }
     return 0;
 }

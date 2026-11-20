@@ -2,7 +2,7 @@
   "id": "hs-balanced-set-partition",
   "title": "[HUSTack] Chia tập hợp cân bằng nhất (Balanced Set Partition)",
   "track": "midterm",
-  "topic": "greedy-2ptr",
+  "topic": "branch-bound",
   "difficulty": "Khó",
   "exam_tags": [
     "HUSTack 2025.2 (P.07.16.01)",
@@ -22,12 +22,13 @@
     }
   ],
   "theory_chapter": "chap3",
-  "mindset": "Bài toán chia cân bằng vào `m` thùng là NP-Hard! Cách giải chuẩn và hiệu quả nhất là **Tham lam LPT (Longest Processing Time First)** kết hợp **Tìm kiếm cục bộ (Local Search)**:\n1. Sắp xếp các phần tử theo trọng số `w[i]` **giảm dần**.\n2. Lần lượt bỏ phần tử đang xét vào nhóm hiện đang có tổng nhỏ nhất (dùng `priority_queue` min-heap!).\n3. Để cải thiện thêm, lặp thử chuyển một phần tử từ nhóm nặng nhất sang nhóm nhẹ nhất (hoặc hoán đổi cặp phần tử giữa hai nhóm) nếu làm giảm chênh lệch `max_sum - min_sum`.",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Giới hạn `n` nhỏ (`n <= 12..30`), yêu cầu tìm phương án có **chi phí nhỏ nhất** hoặc **tải lớn nhất nhỏ nhất** (chia nhóm, phân công BCA/BACP, lộ trình TSP/CBUS).\n- Tại sao quay lui thuần bị chậm: Duyệt hết toàn bộ cây đệ quy sẽ vượt quá 1 giây khi `n >= 12`.\n- Hướng đi: Dùng **Nhánh và cận**: trước khi gọi `Try(k + 1)`, ước lượng cận dưới của nhánh; nếu đã `>= kỷ_lục_best` hiện có thì cắt bỏ nhánh đó ngay.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Giới hạn `n` nhỏ (`n <= 12..30`), yêu cầu tìm phương án có **chi phí nhỏ nhất** hoặc **tải lớn nhất nhỏ nhất** (chia nhóm, phân công BCA/BACP, lộ trình TSP/CBUS).\n- Tại sao quay lui thuần bị chậm: Duyệt hết toàn bộ cây đệ quy sẽ vượt quá 1 giây khi `n >= 12`.\n- Hướng đi: Dùng **Nhánh và cận**: trước khi gọi `Try(k + 1)`, ước lượng cận dưới của nhánh; nếu đã `>= kỷ_lục_best` hiện có thì cắt bỏ nhánh đó ngay.\n\n**2. Cách suy nghĩ cho bài này:**\nBài toán chia cân bằng vào `m` thùng là NP-Hard! Cách giải chuẩn và hiệu quả nhất là **Tham lam LPT (Longest Processing Time First)** kết hợp **Tìm kiếm cục bộ (Local Search)**:\n1. Sắp xếp các phần tử theo trọng số `w[i]` **giảm dần**.\n2. Lần lượt bỏ phần tử đang xét vào nhóm hiện đang có tổng nhỏ nhất (dùng `priority_queue` min-heap!).\n3. Để cải thiện thêm, lặp thử chuyển một phần tử từ nhóm nặng nhất sang nhóm nhẹ nhất (hoặc hoán đổi cặp phần tử giữa hai nhóm) nếu làm giảm chênh lệch `max_sum - min_sum`.",
   "hints": [
     "Tham lam LPT đơn giản cho nghiệm gần tối ưu hiệu quả chỉ trong `O(n log m)`.",
     "Cẩn thận giữ chỉ số gốc `1..n` khi sắp xếp giảm dần theo `w[i]` để cuối cùng gán đúng `x[orig_id] = bin_id`.",
     "Thêm bước Local Search: lặp tối đa vài nghìn bước tìm cặp phần tử chuyển/đổi giữa nhóm max và nhóm min giúp giảm hiệu."
   ],
   "complexity": "O(n log n + n log m + LocalSearch)",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1850
 }

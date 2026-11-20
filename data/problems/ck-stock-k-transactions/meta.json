@@ -1,8 +1,8 @@
 {
   "id": "ck-stock-k-transactions",
   "title": "Đầu tư chứng khoán tối đa K lần giao dịch (Stock K)",
-  "track": "final",
-  "topic": "dp-knapsack-stock",
+  "track": "midterm",
+  "topic": "dp-knapsack",
   "difficulty": "Nâng cao",
   "exam_tags": [
     "Cuối kỳ 2024.1 Kíp 2 & 3 (Bài 4)"
@@ -29,7 +29,7 @@
     }
   ],
   "theory_chapter": "chap4b",
-  "mindset": "Hai bẫy kinh điển khiến bài `n = 10^5, k = 1000` bị TLE/MLE nếu không để ý:\n1. **Nếu `2 * k >= n`**: Một giao dịch cần ít nhất 2 ngày (1 mua, 1 bán), nên nếu `k >= n / 2` thì thực tế bạn được giao dịch **không giới hạn số lần**! Khi đó chỉ cần cộng mọi `max(0, p[i] - p[i-1])` trong `O(n)`!\n2. **Ngược lại (`k < n / 2`)**: Số phép tính `n * k` tối đa chỉ ~`5 * 10^7` (nhưng `k <= 1000` thì `10^5 * 1000` hơi sát, tối ưu bằng mảng 1 chiều hoặc `best_buy`!).\nGọi `cash[t]` = tiền tối đa khi không giữ cổ phiếu sau tối đa `t` giao dịch; `hold[t]` = tiền tối đa khi đang giữ 1 cổ phiếu trong giao dịch thứ `t`:\n- `cash[t] = max(cash[t], hold[t] + p[i])`\n- `hold[t] = max(hold[t], cash[t - 1] - p[i])`",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Chọn các món đồ / mệnh giá tiền / lần giao dịch với **tổng trọng lượng / ngân sách giới hạn `W <= 10^5`**.\n- Hướng đi: Quy hoạch động theo dung lượng `dp[w]`. Nếu mỗi món được chọn nhiều lần thì duyệt `w` tăng dần (`cost -> W`); nếu mỗi món chỉ chọn tối đa 1 lần thì duyệt `w` giảm dần (`W -> cost`).\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Chọn các món đồ / mệnh giá tiền / lần giao dịch với **tổng trọng lượng / ngân sách giới hạn `W <= 10^5`**.\n- Hướng đi: Quy hoạch động theo dung lượng `dp[w]`. Nếu mỗi món được chọn nhiều lần thì duyệt `w` tăng dần (`cost -> W`); nếu mỗi món chỉ chọn tối đa 1 lần thì duyệt `w` giảm dần (`W -> cost`).\n\n**2. Cách suy nghĩ cho bài này:**\nHai bẫy cơ bản khiến bài `n = 10^5, k = 1000` bị TLE/MLE nếu không để ý:\n1. **Nếu `2 * k >= n`**: Một giao dịch cần ít nhất 2 ngày (1 mua, 1 bán), nên nếu `k >= n / 2` thì thực tế bạn được giao dịch **không giới hạn số lần**! Khi đó chỉ cần cộng mọi `max(0, p[i] - p[i-1])` trong `O(n)`!\n2. **Ngược lại (`k < n / 2`)**: Số phép tính `n * k` tối đa chỉ ~`5 * 10^7` (nhưng `k <= 1000` thì `10^5 * 1000` hơi sát, tối ưu bằng mảng 1 chiều hoặc `best_buy`!).\nGọi `cash[t]` = tiền tối đa khi không giữ cổ phiếu sau tối đa `t` giao dịch; `hold[t]` = tiền tối đa khi đang giữ 1 cổ phiếu trong giao dịch thứ `t`:\n- `cash[t] = max(cash[t], hold[t] + p[i])`\n- `hold[t] = max(hold[t], cash[t - 1] - p[i])`",
   "hints": [
     "Chú ý tràn số `int`! `p[i] <= 10^9` và `k` giao dịch -> bắt buộc dùng `long long` (`-4e18` cho âm rất).",
     "Cập nhật `t` tăng dần hoặc lưu trạng thái ngày trước? Thực chất ngay trong ngày `i`, mua rồi bán cùng ngày lợi nhuận là `0`, nên cập nhật `for t = 1..k: hold[t] = max(hold[t], cash[t-1] - price); cash[t] = max(cash[t], hold[t] + price);` vừa chuẩn vừa tiết kiệm bộ nhớ `O(k)`!"
@@ -38,5 +38,6 @@
     "time": "O(min(n * k, n))",
     "space": "O(k)"
   },
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1600
 }

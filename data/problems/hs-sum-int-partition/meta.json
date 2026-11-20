@@ -1,7 +1,7 @@
 {
   "title": "[HUSTack] Liệt kê cách phân tích N thành tổng các số nguyên dương",
   "track": "midterm",
-  "topic": "backtracking",
+  "topic": "backtrack-gen",
   "difficulty": "Cơ bản",
   "exam_tags": [
     "HUSTack Project1 (gen-sol-represent-n-as-sum-int)",
@@ -21,11 +21,12 @@
     }
   ],
   "theory_chapter": "chap3",
-  "mindset": "Quay lui giữ trạng thái `Try(int rem, int minVal)`: để các số sinh ra **không giảm** và đúng thứ tự từ điển, ở mỗi bước thử chọn `v` từ `minVal` đến `rem`, đẩy `v` vào mảng `cur`, gọi `Try(rem - v, v)`, rồi `cur.pop_back()`.",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Giới hạn `n` nhỏ (`n <= 20..30`), yêu cầu liệt kê hoặc đếm số cấu hình (nhị phân, tập con, tổ hợp `k` phần tử, đặt vào lưới).\n- Vì `n` nhỏ, ta dùng hàm đệ quy Quay lui `Try(k)`: tại bước `k`, thử các lựa chọn hợp lệ, ghi nhận trạng thái, gọi `Try(k + 1)` rồi hoàn tác trạng thái.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Giới hạn `n` nhỏ (`n <= 20..30`), yêu cầu liệt kê hoặc đếm số cấu hình (nhị phân, tập con, tổ hợp `k` phần tử, đặt vào lưới).\n- Vì `n` nhỏ, ta dùng hàm đệ quy Quay lui `Try(k)`: tại bước `k`, thử các lựa chọn hợp lệ, ghi nhận trạng thái, gọi `Try(k + 1)` rồi hoàn tác trạng thái.\n\n**2. Cách suy nghĩ cho bài này:**\nQuay lui giữ trạng thái `Try(int rem, int minVal)`: để các số sinh ra **không giảm** và đúng thứ tự từ điển, ở mỗi bước thử chọn `v` từ `minVal` đến `rem`, đẩy `v` vào mảng `cur`, gọi `Try(rem - v, v)`, rồi `cur.pop_back()`.",
   "hints": [
     "Điều kiện dừng: khi `rem == 0`, in toàn bộ `cur`."
   ],
   "complexity": "O(p(N)) với p(20) = 627",
   "id": "hs-sum-int-partition",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1050
 }

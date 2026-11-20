@@ -1,7 +1,7 @@
 {
   "title": "[HUSTack] Tính giá trị biểu thức có dấu ngoặc +, *, ()",
   "track": "midterm",
-  "topic": "array-basic",
+  "topic": "stl-basic",
   "difficulty": "Trung bình",
   "exam_tags": [
     "HUSTack Project1 (EVALUATE_EXPRESSION_ADD_MUL)",
@@ -25,12 +25,13 @@
     }
   ],
   "theory_chapter": "chap1",
-  "mindset": "Có dấu ngoặc và độ ưu tiên `* > +`, cách cài sạch nhất và ít lỗi nhất là **Bộ phân tích đệ quy (Recursive Descent Parser)**:\n- `parseExpr()`: đọc `parseTerm()`, lặp khi gặp `+` thì cộng thêm `parseTerm()`.\n- `parseTerm()`: đọc `parseFactor()`, lặp khi gặp `*` thì nhân thêm `parseFactor()`.\n- `parseFactor()`: nếu là số thì trả về giá trị số; nếu là `(` thì gọi `parseExpr()` rồi bắt buộc phải gặp `)`; ngược lại báo lỗi cú pháp!",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dữ liệu có tới `10^5 - 10^6` phần tử hoặc các dòng log truy vấn.\n- Với kích thước này, nếu dùng 2 vòng lặp lồng nhau `O(n^2)` tìm kiếm sẽ bị quá thời gian (TLE).\n- Hướng đi: Duyệt 1 vòng `O(n)` kết hợp cấu trúc STL (`unordered_map`, `set`, `stack`, `queue`, `priority_queue`) hoặc quy đổi thời gian `HH:MM:SS` ra số giây `0..86399`.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dữ liệu có tới `10^5 - 10^6` phần tử hoặc các dòng log truy vấn.\n- Với kích thước này, nếu dùng 2 vòng lặp lồng nhau `O(n^2)` tìm kiếm sẽ bị quá thời gian (TLE).\n- Hướng đi: Duyệt 1 vòng `O(n)` kết hợp cấu trúc STL (`unordered_map`, `set`, `stack`, `queue`, `priority_queue`) hoặc quy đổi thời gian `HH:MM:SS` ra số giây `0..86399`.\n\n**2. Cách suy nghĩ cho bài này:**\nCó dấu ngoặc và độ ưu tiên `* > +`, cách cài sạch nhất và ít lỗi nhất là **Bộ phân tích đệ quy (Recursive Descent Parser)**:\n- `parseExpr()`: đọc `parseTerm()`, lặp khi gặp `+` thì cộng thêm `parseTerm()`.\n- `parseTerm()`: đọc `parseFactor()`, lặp khi gặp `*` thì nhân thêm `parseFactor()`.\n- `parseFactor()`: nếu là số thì trả về giá trị số; nếu là `(` thì gọi `parseExpr()` rồi bắt buộc phải gặp `)`; ngược lại báo lỗi cú pháp!",
   "hints": [
     "Sau khi `parseExpr()` kết thúc, con trỏ token phải đi hết toàn bộ mảng token (nếu còn dư ký tự hoặc dấu `)` thừa thì báo `NOT_CORRECT`).",
     "Kiểm tra kỹ trường hợp ngoặc rỗng `()` hoặc hai số đứng cạnh nhau `(2)(3)`."
   ],
   "complexity": "O(|S|)",
   "id": "hs-eval-expr-paren",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1300
 }

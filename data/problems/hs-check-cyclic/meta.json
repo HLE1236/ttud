@@ -2,8 +2,8 @@
   "id": "hs-check-cyclic",
   "title": "[HUSTack] Kiểm tra đồ thị có chu trình (Check Cyclic Graph)",
   "track": "final",
-  "topic": "graph-bfs-dfs",
-  "difficulty": "Cơ bản",
+  "topic": "graph-traversal",
+  "difficulty": "Trung bình",
   "exam_tags": [
     "HUSTack 2025.2 (P.06.12.04)",
     "HUSTack: Chưa làm"
@@ -21,12 +21,13 @@
       "output": "1"
     }
   ],
-  "theory_chapter": "chap6",
-  "mindset": "Trên đồ thị **vô hướng**, cách ngắn gọn và nhanh nhất để phát hiện chu trình là dùng **DSU**: khi xét cạnh `(u, v)`, nếu `find(u) == find(v)` chứng tỏ `u` và `v` đã nối thông từ trước -> thêm cạnh này sẽ khép kín một chu trình -> in `1` ngay!",
+  "theory_chapter": "chap5",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dữ liệu biểu diễn các đỉnh nối với nhau bằng các cạnh (đồ thị hoặc cây). Yêu cầu đếm cụm liên thông, kiểm tra đồ thị 2 phía, tìm đường ít bước nhất, tìm Khớp/Cầu/SCC hoặc tính toán trên Cây.\n- Hướng đi: Lưu danh sách kề `adj[u]`. Dùng BFS (`queue`) nếu tìm số bước ít nhất; dùng DFS truyền `parent` nếu là Cây; dùng Tarjan (`num`, `low`) nếu tìm Khớp/Cầu/SCC.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dữ liệu biểu diễn các đỉnh nối với nhau bằng các cạnh (đồ thị hoặc cây). Yêu cầu đếm cụm liên thông, kiểm tra đồ thị 2 phía, tìm đường ít bước nhất, tìm Khớp/Cầu/SCC hoặc tính toán trên Cây.\n- Hướng đi: Lưu danh sách kề `adj[u]`. Dùng BFS (`queue`) nếu tìm số bước ít nhất; dùng DFS truyền `parent` nếu là Cây; dùng Tarjan (`num`, `low`) nếu tìm Khớp/Cầu/SCC.\n\n**2. Cách suy nghĩ cho bài này:**\nTrên đồ thị **vô hướng**, cách ngắn gọn và nhanh nhất để phát hiện chu trình là dùng **DSU**: khi xét cạnh `(u, v)`, nếu `find(u) == find(v)` chứng tỏ `u` và `v` đã nối thông từ trước -> thêm cạnh này sẽ khép kín một chu trình -> in `1` ngay!",
   "hints": [
     "Dùng DSU vừa không sợ đệ quy tràn stack với `n = 10^5`, vừa xử lý gọn tự khuyên và cạnh song song.",
     "Nếu duyệt hết `m` cạnh mà chưa từng gặp `find(u) == find(v)` thì đồ thị là rừng (acyclic), in `0`."
   ],
   "complexity": "O((n + m) * alpha(n))",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1150
 }

@@ -1,7 +1,7 @@
 {
   "title": "[HUSTack] Lát gạch Domino trên bảng 2 x n (Domino)",
   "track": "midterm",
-  "topic": "dp-midterm",
+  "topic": "dp-1d",
   "difficulty": "Trung bình",
   "exam_tags": [
     "HUSTack Programming Advanced (domino)",
@@ -21,11 +21,12 @@
     }
   ],
   "theory_chapter": "chap4b",
-  "mindset": "Gọi `dp[i]` là số cách lát kín bảng `2 x i`. Xét cột cuối cùng ở vị trí `i`:\n- Đặt 1 viên đứng `2 x 1`: phần còn lại dài `i - 1` -> `dp[i - 1]` cách.\n- Đặt 2 viên ngang `1 x 2` chồng lên nhau chiếm 2 cột cuối: phần còn lại dài `i - 2` -> `dp[i - 2]` cách.\n- Đặt 1 viên vuông `2 x 2` chiếm 2 cột cuối: phần còn lại dài `i - 2` -> `dp[i - 2]` cách.\nVậy `dp[i] = (dp[i - 1] + 2 * dp[i - 2]) % MOD` với cơ sở `dp[0] = 1, dp[1] = 1`.",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dãy `1..n` (`n` lớn hơn 30, lên tới `10^5 - 10^6`), hỏi số cách đi hoặc tổng lớn nhất có điều kiện giữa các phần tử đứng gần nhau.\n- Tại sao không quay lui được: Khi thử đệ quy, cùng một vị trí `i` bị tính đi tính lại hàng triệu lần.\n- Hướng đi: Quy hoạch động 1 chiều — lập mảng `dp[i]` lưu kết quả tốt nhất tính đến vị trí `i`, tính `dp[i]` trực tiếp từ `dp[i-1], dp[i-2], ...` trong 1 vòng lặp.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Dãy `1..n` (`n` lớn hơn 30, lên tới `10^5 - 10^6`), hỏi số cách đi hoặc tổng lớn nhất có điều kiện giữa các phần tử đứng gần nhau.\n- Tại sao không quay lui được: Khi thử đệ quy, cùng một vị trí `i` bị tính đi tính lại hàng triệu lần.\n- Hướng đi: Quy hoạch động 1 chiều — lập mảng `dp[i]` lưu kết quả tốt nhất tính đến vị trí `i`, tính `dp[i]` trực tiếp từ `dp[i-1], dp[i-2], ...` trong 1 vòng lặp.\n\n**2. Cách suy nghĩ cho bài này:**\nGọi `dp[i]` là số cách lát kín bảng `2 x i`. Xét cột cuối cùng ở vị trí `i`:\n- Đặt 1 viên đứng `2 x 1`: phần còn lại dài `i - 1` -> `dp[i - 1]` cách.\n- Đặt 2 viên ngang `1 x 2` chồng lên nhau chiếm 2 cột cuối: phần còn lại dài `i - 2` -> `dp[i - 2]` cách.\n- Đặt 1 viên vuông `2 x 2` chiếm 2 cột cuối: phần còn lại dài `i - 2` -> `dp[i - 2]` cách.\nVậy `dp[i] = (dp[i - 1] + 2 * dp[i - 2]) % MOD` với cơ sở `dp[0] = 1, dp[1] = 1`.",
   "hints": [
     "Kiểm tra tay `n = 2`: `dp[2] = 1 + 2 * 1 = 3` (2 viên đứng, 2 viên ngang, hoặc 1 viên `2x2`)."
   ],
   "complexity": "O(n)",
   "id": "hs-domino",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1100
 }

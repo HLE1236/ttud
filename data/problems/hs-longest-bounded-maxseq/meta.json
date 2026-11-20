@@ -2,8 +2,8 @@
   "id": "hs-longest-bounded-maxseq",
   "title": "[HUSTack] Đoạn con liên tiếp dài nhất có tổng <= Q (Two Pointers)",
   "track": "midterm",
-  "topic": "greedy-2ptr",
-  "difficulty": "Nâng cao",
+  "topic": "two-pointers",
+  "difficulty": "Trung bình",
   "exam_tags": [
     "HUSTack 2025.2 (P.02.02.04)",
     "HUSTack: Đã AC"
@@ -22,7 +22,7 @@
     }
   ],
   "theory_chapter": "chap2",
-  "mindset": "Vì **mọi phần tử `a[i]` đều dương** nên tổng đoạn chỉ tăng khi mở rộng sang phải và chỉ giảm khi co đầu trái -> **Kỹ thuật Hai con trỏ (Sliding Window `O(n)`)**!\nDuy trì đoạn `[L..R]` có tổng `sum`: cứ tăng `R` thêm 1 và cộng `a[R]`; trong khi `sum > Q` thì trừ `a[L]` và tăng `L++`. Cập nhật `best = max(best, R - L + 1)`!",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Cần tìm/đếm đoạn con liên tiếp hoặc cặp/bộ ba phần tử thỏa điều kiện tổng với `n <= 10^5 - 10^6`.\n- Tại sao cách ngây thơ chậm: Xét mọi cặp `(L, R)` bằng 2 vòng `for` tốn `O(n^2)` bước.\n- Hướng đi: Dùng Cửa sổ trượt cố định độ dài `k` (`win += a[i] - a[i-k]`) hoặc Hai con trỏ `L, R` dịch chuyển một chiều để tổng số bước giảm xuống `O(n)`.\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Cần tìm/đếm đoạn con liên tiếp hoặc cặp/bộ ba phần tử thỏa điều kiện tổng với `n <= 10^5 - 10^6`.\n- Tại sao cách ngây thơ chậm: Xét mọi cặp `(L, R)` bằng 2 vòng `for` tốn `O(n^2)` bước.\n- Hướng đi: Dùng Cửa sổ trượt cố định độ dài `k` (`win += a[i] - a[i-k]`) hoặc Hai con trỏ `L, R` dịch chuyển một chiều để tổng số bước giảm xuống `O(n)`.\n\n**2. Cách suy nghĩ cho bài này:**\nVì **mọi phần tử `a[i]` đều dương** nên tổng đoạn chỉ tăng khi mở rộng sang phải và chỉ giảm khi co đầu trái -> **Kỹ thuật Hai con trỏ (Sliding Window `O(n)`)**!\nDuy trì đoạn `[L..R]` có tổng `sum`: cứ tăng `R` thêm 1 và cộng `a[R]`; trong khi `sum > Q` thì trừ `a[L]` và tăng `L++`. Cập nhật `best = max(best, R - L + 1)`!",
   "hints": [
     "Nhớ kiểm tra trường hợp mọi `a[i] > Q`: lúc đó `best == 0` -> in `-1`!"
   ],
@@ -30,5 +30,6 @@
     "time": "O(n)",
     "space": "O(n)"
   },
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1150
 }

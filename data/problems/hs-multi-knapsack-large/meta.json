@@ -1,8 +1,8 @@
 {
   "id": "hs-multi-knapsack-large",
   "title": "[HUSTack] Xếp hàng đa balo cỡ lớn (Multi-Knapsack Large)",
-  "track": "final",
-  "topic": "dp-knapsack-stock",
+  "track": "midterm",
+  "topic": "dp-knapsack",
   "difficulty": "Khó",
   "exam_tags": [
     "HUSTack 2025.2 (MultiKnapsackLarge)",
@@ -21,13 +21,14 @@
       "output": "6\n1 1 2 2 1 -1"
     }
   ],
-  "theory_chapter": "chap5",
-  "mindset": "Bài tối ưu tổ hợp cỡ lớn: ta sắp xếp các xe tải theo hiệu quả lợi nhuận (ví dụ `q[j]` lớn hoặc tỷ lệ `P * q[j] - c[j]` cao) và các đơn hàng theo `r[i]` giảm dần (First-Fit Decreasing), chỉ mở một xe mới nếu tổng doanh thu thực sự có thể nhét vào xe đó lớn hơn chi phí thuê `c[j]` (hoặc thử điền vào các xe đã mở trước để không tốn thêm phí mở xe!).",
+  "theory_chapter": "chap4b",
+  "mindset": "**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Chọn các món đồ / mệnh giá tiền / lần giao dịch với **tổng trọng lượng / ngân sách giới hạn `W <= 10^5`**.\n- Hướng đi: Quy hoạch động theo dung lượng `dp[w]`. Nếu mỗi món được chọn nhiều lần thì duyệt `w` tăng dần (`cost -> W`); nếu mỗi món chỉ chọn tối đa 1 lần thì duyệt `w` giảm dần (`W -> cost`).\n\n**2. Cách suy nghĩ cho bài này:**\n**1. Nhận diện từ đề bài:**\nĐọc đề & Nhìn giới hạn: Chọn các món đồ / mệnh giá tiền / lần giao dịch với **tổng trọng lượng / ngân sách giới hạn `W <= 10^5`**.\n- Hướng đi: Quy hoạch động theo dung lượng `dp[w]`. Nếu mỗi món được chọn nhiều lần thì duyệt `w` tăng dần (`cost -> W`); nếu mỗi món chỉ chọn tối đa 1 lần thì duyệt `w` giảm dần (`W -> cost`).\n\n**2. Cách suy nghĩ cho bài này:**\nBài tối ưu tổ hợp cỡ lớn: ta sắp xếp các xe tải theo hiệu quả lợi nhuận (ví dụ `q[j]` lớn hoặc tỷ lệ `P * q[j] - c[j]` cao) và các đơn hàng theo `r[i]` giảm dần (First-Fit Decreasing), chỉ mở một xe mới nếu tổng doanh thu thực sự có thể nhét vào xe đó lớn hơn chi phí thuê `c[j]` (hoặc thử điền vào các xe đã mở trước để không tốn thêm phí mở xe!).",
   "hints": [
     "Ưu tiên nhét đơn hàng vào các xe **đã được sử dụng** trước (không mất thêm chi phí thuê `c[j]`).",
     "Nếu không nhét vừa xe nào đã dùng, tìm xe chưa dùng tốt nhất (hoặc đóng gói trước một lô đơn hàng còn lại vào xe đó xem `P * sum_r - c[j] > 0` mới mở xe).",
     "Bài chấm theo checker kiểm tra ràng buộc tải trọng và đánh giá tổng lợi nhuận đạt được."
   ],
   "complexity": "Tham lam First-Fit Decreasing + Đánh giá mở xe O(n * m)",
-  "test_count": 10
+  "test_count": 10,
+  "elo": 1900
 }

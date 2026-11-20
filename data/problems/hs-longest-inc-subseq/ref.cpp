@@ -4,7 +4,7 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     int n;
-    if (!(cin >> n)) return 0;
+    cin >> n;
     vector<long long> tail;
     for (int i = 0; i < n; ++i) {
         long long x; cin >> x;

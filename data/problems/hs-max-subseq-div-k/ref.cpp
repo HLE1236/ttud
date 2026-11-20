@@ -4,7 +4,7 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     int n, K;
-    if (!(cin >> n >> K)) return 0;
+    cin >> n >> K;
     const long long INF = 4e18;
     vector<long long> min_pref(K, INF);
     min_pref[0] = 0;

@@ -5,7 +5,7 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     int n, L1, L2;
-    if (!(cin >> n >> L1 >> L2)) return 0;
+    cin >> n >> L1 >> L2;
     vector<long long> a(n + 1), dp(n + 1, 0);
     for (int i = 1; i <= n; i++) cin >> a[i];
     deque<int> dq;

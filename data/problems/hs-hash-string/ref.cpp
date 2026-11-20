@@ -6,12 +6,12 @@ int main() {
     cin.tie(nullptr);
     int n;
     long long m;
-    if (!(cin >> n >> m)) return 0;
+    cin >> n >> m;
     for (int i = 0; i < n; i++) {
         string s;
         cin >> s;
         long long h = 0;
-        for (unsigned char c : s) {
+        for (char c : s) {
             h = (h * 256 + c) % m;
         }
         cout << h << '\n';
