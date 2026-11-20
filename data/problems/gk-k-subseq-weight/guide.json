@@ -3,5 +3,16 @@
   "recognize": "Đọc đề & Nhìn giới hạn: Cần tìm/đếm đoạn con liên tiếp hoặc cặp/bộ ba phần tử thỏa điều kiện tổng với `n <= 10^5 - 10^6`.\n- Tại sao cách ngây thơ chậm: Xét mọi cặp `(L, R)` bằng 2 vòng `for` tốn `O(n^2)` bước.\n- Hướng đi: Dùng Cửa sổ trượt cố định độ dài `k` (`win += a[i] - a[i-k]`) hoặc Hai con trỏ `L, R` dịch chuyển một chiều để tổng số bước giảm xuống `O(n)`.",
   "idea": "Cách ngây thơ dùng 2 vòng `for` có độ phức tạp `O(n*k)` → với `n = 10^5, k = 50000` sẽ bị **TLE**!\nDùng **Cửa sổ trượt (Sliding Window)**:\n- Tính tổng `k` số đầu tiên: `win = a[0] + ... + a[k-1]`.\n- Khi dịch khung sang phải 1 ô (tới `i`), tổng mới chỉ là: `win = win + a[i] - a[i - k]`! Mất đúng `O(1)` mỗi bước → toàn bài chỉ `O(n)`.\n\n**Các điểm cần lưu ý khi code:**\n- Tính tổng cửa sổ đầu tiên gồm `k` phần tử đầu.\n- Duyệt `i` từ `k` đến `n-1`: cập nhật `win += a[i] - a[i-k]`.\n- Mỗi vị trí nếu `win == m` thì tăng `ans++`.",
   "pseudocode": "Bước 1: Đọc dữ liệu đầu vào (bật Fast I/O, dùng long long cho biến tổng/đáp án)\nBước 2: Tính tổng cửa sổ đầu tiên gồm k phần tử đầu.\nBước 3: Duyệt i từ k đến n-1: cập nhật win += a[i] - a[i-k].\nBước 4: Mỗi vị trí nếu win == m thì tăng ans++.\nBước 5: In kết quả cuối cùng ra màn hình",
-  "skeleton_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int n, k;\n    long long m;\n    cin >> n >> k >> m;\n    vector<long long> a(n);\n    for (int i = 0; i < n; i++) cin >> a[i];\n    long long win = 0, ans = 0;\n    for (int i = 0; i < k; i++) win += a[i];\n    if (win == m) ans++;\n\n    // TODO: Hoàn thiện thuật toán xử lý và in kết quả theo các bước hướng dẫn\n\n    return 0;\n}\n"
+  "skeleton_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int n, k;\n    long long m;\n    cin >> n >> k >> m;\n    vector<long long> a(n);\n    for (int i = 0; i < n; i++) cin >> a[i];\n    long long win = 0, ans = 0;\n    for (int i = 0; i < k; i++) win += a[i];\n    if (win == m) ans++;\n\n    // TODO: Hoàn thiện thuật toán xử lý và in kết quả theo các bước hướng dẫn\n\n    return 0;\n}\n",
+  "walkthrough": [
+    "Bước 1 (Kỹ thuật cửa sổ trượt): Duy trì tổng `win` của đúng `k` phần tử liên tiếp thay vì cộng lại từ đầu ở mỗi vị trí.",
+    "Bước 2 (Khởi tạo & trượt): Tính `win = a[0] + ... + a[k-1]`, kiểm tra `win == m`. Sau đó với mỗi `i` từ `k` đến `n - 1`, cập nhật `win += a[i] - a[i - k]` và kiểm tra `win == m`.",
+    "Bước 3 (Kết quả): Mỗi lần thỏa mãn tăng `ans++`, cuối cùng in `ans`.",
+    "Bước 4 (Độ phức tạp): Thời gian O(n); bộ nhớ O(n)."
+  ],
+  "annotated_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    int n, k;\n    long long m;\n    cin >> n >> k >> m;\n    vector<long long> a(n);\n    for (int i = 0; i < n; i++) cin >> a[i];\n    long long win = 0, ans = 0;\n    for (int i = 0; i < k; i++) win += a[i]; // Cửa sổ đầu tiên [0..k-1]\n    if (win == m) ans++;\n    for (int i = k; i < n; i++) {\n        win += a[i] - a[i - k]; // Dịch cửa sổ sang phải 1 vị trí\n        if (win == m) ans++;\n    }\n    cout << ans << \"\\n\";\n    return 0;\n}\n",
+  "pitfalls": [
+    "Tính tổng lại từ đầu cho mỗi cửa sổ mất O(n * k) dẫn đến TLE.",
+    "Dùng `int` cho `win` và `m` gây tràn số."
+  ]
 }

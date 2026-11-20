@@ -3,5 +3,17 @@
   "recognize": "Đọc đề & Nhìn giới hạn: Có nhiều truy vấn yêu cầu tính tổng (hoặc min/max) trên đoạn liên tiếp `[L..R]` (hoặc hình chữ nhật 2D) với `n, Q <= 10^5 - 10^6`.\n- Tại sao cách ngây thơ chậm: Nếu mỗi truy vấn dùng vòng `for` cộng từ `L` đến `R` sẽ mất `O(n * Q)` phép tính -> TLE.\n- Hướng đi: Tiền xử lý Mảng cộng dồn `S[i] = S[i-1] + a[i]` để trả lời tổng đoạn trong `O(1)` bằng phép trừ `S[R] - S[L-1]` (hoặc dùng Segment Tree / Fenwick / RMQ nếu hỏi Min/Max và có cập nhật).",
   "idea": "Tạo mảng cộng dồn `pref[k] = pref[k - 1] + a[k]` với `pref[0] = 0`. Mỗi truy vấn trả `pref[j] - pref[i - 1]` trong `O(1)`.\n\n**Các điểm cần lưu ý khi code:**\n- Nhớ đọc xong cả mảng rồi mới đọc `Q`.",
   "pseudocode": "Bước 1: Đọc dữ liệu đầu vào (bật Fast I/O, dùng long long cho biến tổng/đáp án)\nBước 2: Nhớ đọc xong cả mảng rồi mới đọc Q.\nBước 3: In kết quả cuối cùng ra màn hình",
-  "skeleton_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    ios::sync_with_stdio(false); cin.tie(nullptr);\n    int n; cin >> n;\n    vector<long long> pref(n + 1, 0);\n    for (int i = 1; i <= n; ++i) { long long x; cin >> x; pref[i] = pref[i - 1] + x; }\n    int q; cin >> q;\n    while (q--) { int i, j; cin >> i >> j; cout << pref[j] - pref[i - 1] << \"\\n\"; }\n\n    // TODO: Hoàn thiện thuật toán xử lý và in kết quả theo các bước hướng dẫn\n\n    return 0;\n}\n"
+  "skeleton_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    ios::sync_with_stdio(false); cin.tie(nullptr);\n    int n; cin >> n;\n    vector<long long> pref(n + 1, 0);\n    for (int i = 1; i <= n; ++i) { long long x; cin >> x; pref[i] = pref[i - 1] + x; }\n    int q; cin >> q;\n    while (q--) { int i, j; cin >> i >> j; cout << pref[j] - pref[i - 1] << \"\\n\"; }\n\n    // TODO: Hoàn thiện thuật toán xử lý và in kết quả theo các bước hướng dẫn\n\n    return 0;\n}\n",
+  "walkthrough": [
+    "Ý tưởng: Nếu mỗi truy vấn `(i, j)` đều cộng từ `i` đến `j` thì mất $O(n)$ mỗi truy vấn, tổng $O(nQ)$ bị TLE với $n, Q \\le 10^5$. Ta dùng mảng cộng dồn (Prefix Sum) `pref` để trả lời mỗi truy vấn trong $O(1)$.",
+    "Công thức: Đặt `pref[0] = 0` và `pref[k] = a[1] + a[2] + ... + a[k] = pref[k - 1] + a[k]` với $k = 1..n$. Khi đó tổng đoạn `[i, j]` là `pref[j] - pref[i - 1]`.",
+    "Tính đúng đắn: Vì `pref[j]` chứa tổng từ `1` đến `j` và `pref[i - 1]` chứa tổng từ `1` đến `i - 1`, hiệu `pref[j] - pref[i - 1]` triệt tiêu đúng phần `1..i-1`, còn lại chính xác `a[i] + ... + a[j]` (kể cả khi `i = 1` vì `pref[0] = 0`).",
+    "Độ phức tạp: Thời gian $O(n + Q)$ ($O(n)$ tiền xử lý + $O(1)$ cho mỗi truy vấn); không gian $O(n)$ cho mảng `pref` kiểu `long long`."
+  ],
+  "annotated_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int n;\n    cin >> n;\n    // Dùng long long cho pref và đặt pref[0] = 0 (đánh số 1-based)\n    vector<long long> pref(n + 1, 0);\n    for (int i = 1; i <= n; ++i) {\n        long long x;\n        cin >> x;\n        pref[i] = pref[i - 1] + x; // Cộng dồn trực tiếp khi đọc\n    }\n\n    int q;\n    cin >> q;\n    while (q--) {\n        int i, j;\n        cin >> i >> j;\n        // Tổng đoạn [i, j] = pref[j] - pref[i - 1] trong O(1)\n        cout << pref[j] - pref[i - 1] << \"\\n\";\n    }\n    return 0;\n}",
+  "pitfalls": [
+    "Đánh số mảng từ `0` nhưng quên xử lý trường hợp `i = 0` (truy cập `pref[-1]` gây lỗi bộ nhớ).",
+    "Quên gán `pref[0] = 0`, làm sai tất cả truy vấn bắt đầu từ `i = 1`.",
+    "Tính nhầm công thức thành `pref[j] - pref[i]` (làm mất phần tử `a[i]`)."
+  ]
 }

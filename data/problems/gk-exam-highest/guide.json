@@ -1,0 +1,12 @@
+{
+  "pattern": "fast-io-array",
+  "recognize": "Đề cho dãy `n <= 1000` số nguyên và yêu cầu tìm giá trị lớn nhất → Duyệt tuyến tính `O(n)` một vòng `for`.",
+  "idea": "Ta không cần lưu cả mảng nếu chỉ tìm max:\n- Đọc `n`, khởi tạo `mx = -1` (vì `a[i] >= 0`).\n- Lặp `n` lần, mỗi lần đọc một số `x` và cập nhật `mx = max(mx, x)`.",
+  "pseudocode": "Đọc n\nmx = -1\nLặp i từ 1 đến n:\n    Đọc x\n    mx = max(mx, x)\nIn mx",
+  "skeleton_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int n;\n    cin >> n;\n    int mx = -1;\n    for (int i = 0; i < n; i++) {\n        int x;\n        cin >> x;\n        // TODO: Cập nhật mx bằng max(mx, x)\n    }\n    cout << mx << \"\\n\";\n    return 0;\n}\n",
+  "walkthrough": "Với `n = 5`, dãy `[3, 2, 0, 8, 4]`:\n- Ban đầu `mx = -1`.\n- Đọc `3` -> `mx = 3`; đọc `2` -> `mx = 3`; đọc `0` -> `mx = 3`; đọc `8` -> `mx = 8`; đọc `4` -> `mx = 8`.\n- In `8`.",
+  "annotated_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false); // Tăng tốc nhập xuất\n    cin.tie(nullptr);\n\n    int n;\n    cin >> n;\n    int mx = -1; // Điểm >= 0 nên -1 luôn nhỏ hơn mọi điểm hợp lệ\n    for (int i = 0; i < n; i++) {\n        int x;\n        cin >> x;\n        mx = max(mx, x); // Cập nhật điểm cao nhất\n    }\n    cout << mx << \"\\n\";\n    return 0;\n}\n",
+  "pitfalls": [
+    "Khởi tạo `mx = 0` vẫn đúng nếu `a[i] >= 0`, nhưng thói quen tốt là khởi tạo bằng `a[0]` hoặc `INT_MIN` để tránh sai khi dữ liệu có số âm."
+  ]
+}

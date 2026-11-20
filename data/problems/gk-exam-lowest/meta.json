@@ -1,0 +1,37 @@
+{
+  "id": "gk-exam-lowest",
+  "title": "Điểm thấp nhất kỳ thi",
+  "track": "midterm",
+  "exam_tags": [
+    "GK 20241"
+  ],
+  "topic": "stl-basic",
+  "theory_chapter": "chap1",
+  "difficulty": "Cơ bản",
+  "elo": 800,
+  "day": 1,
+  "time_limit_ms": 1000,
+  "memory_limit_mb": 256,
+  "has_official_tests": true,
+  "has_checker": false,
+  "test_count": 8,
+  "tc_source": "Official Zip (GK 20241)",
+  "statement": "Kết quả của một kỳ thi được biểu diễn bằng dãy số nguyên `a[1], a[2], ..., a[n]`, trong đó `a[i]` là điểm của thí sinh thứ `i` (`i = 1, ..., n`).\n\nHãy tìm điểm số **thấp nhất** trong kỳ thi.",
+  "input_spec": "- Dòng 1: số nguyên dương `n` (`1 <= n <= 1000`).\n- Dòng 2: `n` số nguyên `a[1], a[2], ..., a[n]` (`0 <= a[i] <= 1000`).",
+  "output_spec": "Ghi ra một số nguyên duy nhất là điểm số thấp nhất.",
+  "samples": [
+    {
+      "input": "5\n3 2 0 8 4",
+      "output": "0",
+      "explanation": "Trong dãy [3, 2, 0, 8, 4], giá trị nhỏ nhất là 0."
+    }
+  ],
+  "mindset": "Bài khởi động duyệt mảng tìm giá trị nhỏ nhất (`min`).\n- Khởi tạo `mn = INT_MAX` (hoặc phần tử đầu tiên `a[0]`).\n- Duyệt qua từng phần tử `x`, cập nhật `mn = min(mn, x)`.",
+  "hints": [
+    "Khởi tạo `mn = 1e9` hoặc bằng phần tử đầu tiên.",
+    "Cập nhật `mn = min(mn, x)` cho mỗi phần tử đọc vào."
+  ],
+  "complexity": "Time: O(n) | Space: O(1)",
+  "starter_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    // Viet code cua ban o day\n\n    return 0;\n}\n",
+  "reference_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int n;\n    if (!(cin >> n)) return 0;\n    int mn = INT_MAX;\n    for (int i = 0; i < n; i++) {\n        int x;\n        cin >> x;\n        mn = min(mn, x);\n    }\n    cout << mn << \"\\n\";\n    return 0;\n}\n"
+}

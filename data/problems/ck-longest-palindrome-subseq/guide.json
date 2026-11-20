@@ -3,5 +3,16 @@
   "recognize": "Tìm độ dài **xâu con đối xứng dài nhất** (không cần liên tiếp) của xâu `S` độ dài `n <= 1000`.\n- `n <= 1000` → **Interval DP `dp[i][j]`** (hoặc `LCS(S, reverse(S))`).",
   "idea": "Đặt `dp[i][j]` = độ dài xâu con đối xứng dài nhất trong đoạn `S[i..j]`.\n- Cơ sở: `dp[i][i] = 1`.\n- Nếu `S[i] == S[j]`: 2 đầu khớp nhau → `dp[i][j] = dp[i + 1][j - 1] + 2`.\n- Nếu `S[i] != S[j]`: bỏ đầu trái hoặc đầu phải → `dp[i][j] = max(dp[i + 1][j], dp[i][j - 1])`.\nThứ tự tính: `i` giảm dần từ `n-1` về `0`, `j` tăng dần từ `i+1` đến `n-1`.",
   "pseudocode": "cho i từ n - 1 về 0:\n    dp[i][i] = 1\n    cho j từ i + 1 đến n - 1:\n        nếu s[i] == s[j]: dp[i][j] = dp[i+1][j-1] + 2\n        ngược lại: dp[i][j] = max(dp[i+1][j], dp[i][j-1])\nin dp[0][n - 1]",
-  "skeleton_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    string s;\n    cin >> s;\n    int n = (int)s.size();\n\n    vector<vector<int>> dp(n, vector<int>(n, 0));\n    // TODO: Duyệt i từ n-1 về 0, j từ i+1 đến n-1 để tính dp[i][j]\n\n    cout << dp[0][n - 1] << '\\n';\n    return 0;\n}\n"
+  "skeleton_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    string s;\n    cin >> s;\n    int n = (int)s.size();\n\n    vector<vector<int>> dp(n, vector<int>(n, 0));\n    // TODO: Duyệt i từ n-1 về 0, j từ i+1 đến n-1 để tính dp[i][j]\n\n    cout << dp[0][n - 1] << '\\n';\n    return 0;\n}\n",
+  "walkthrough": [
+    "Bước 1 (Định nghĩa trạng thái): Gọi `dp[i][j]` là độ dài xâu con đối xứng dài nhất nằm trong đoạn `s[i..j]`.",
+    "Bước 2 (Công thức chuyển trạng thái): Nếu `s[i] == s[j]`, hai ký tự đầu cuối ghép thành cặp đối xứng nên `dp[i][j] = dp[i + 1][j - 1] + 2`. Nếu `s[i] != s[j]`, bỏ một trong hai đầu nên `dp[i][j] = max(dp[i + 1][j], dp[i][j - 1])`.",
+    "Bước 3 (Thứ tự tính & cơ sở): Vì `dp[i][j]` phụ thuộc vào `dp[i + 1][...]` và `dp[...][j - 1]`, ta duyệt `i` giảm dần từ `n - 1` về `0` (gán cơ sở `dp[i][i] = 1`), và `j` tăng dần từ `i + 1` đến `n - 1`.",
+    "Bước 4 (Độ phức tạp): Thời gian O(n^2); bộ nhớ O(n^2)."
+  ],
+  "annotated_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    string s;\n    cin >> s;\n    int n = (int)s.size();\n    vector<vector<int>> dp(n, vector<int>(n, 0));\n    // Duyệt i giảm dần và j tăng dần để các bài toán con (i+1, j-1), (i+1, j), (i, j-1) đã có sẵn\n    for (int i = n - 1; i >= 0; --i) {\n        dp[i][i] = 1; // Xâu độ dài 1 luôn đối xứng\n        for (int j = i + 1; j < n; ++j) {\n            if (s[i] == s[j]) dp[i][j] = dp[i + 1][j - 1] + 2;\n            else dp[i][j] = max(dp[i + 1][j], dp[i][j - 1]);\n        }\n    }\n    cout << dp[0][n - 1] << \"\\n\";\n    return 0;\n}\n",
+  "pitfalls": [
+    "Duyệt `i` tăng dần từ `0` đến `n - 1` làm `dp[i + 1][j - 1]` chưa được tính khi cần dùng.",
+    "Nhầm giữa xâu con không liên tiếp (Subsequence) với xâu con liên tiếp (Substring)."
+  ]
 }

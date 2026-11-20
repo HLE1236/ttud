@@ -3,5 +3,16 @@
   "recognize": "Đọc đề & Nhìn giới hạn: Dữ liệu có tới `10^5 - 10^6` phần tử hoặc các dòng log truy vấn.\n- Với kích thước này, nếu dùng 2 vòng lặp lồng nhau `O(n^2)` tìm kiếm sẽ bị quá thời gian (TLE).\n- Hướng đi: Duyệt 1 vòng `O(n)` kết hợp cấu trúc STL (`unordered_map`, `set`, `stack`, `queue`, `priority_queue`) hoặc quy đổi thời gian `HH:MM:SS` ra số giây `0..86399`.",
   "idea": "Dùng `std::stack<int>` (hoặc `vector<int>` với `push_back`/`back`/`pop_back`). Luôn kiểm tra `.empty()` trước khi lấy đỉnh.\n\n**Các điểm cần lưu ý khi code:**\n- Khung đọc lệnh y hệt `QUEUE_SIM`, chỉ đổi `queue` thành `stack` (`st.top()`).",
   "pseudocode": "Bước 1: Đọc dữ liệu đầu vào (bật Fast I/O, dùng long long cho biến tổng/đáp án)\nBước 2: Khung đọc lệnh y hệt QUEUE_SIM, chỉ đổi queue thành stack (st.top()).\nBước 3: In kết quả cuối cùng ra màn hình",
-  "skeleton_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    ios::sync_with_stdio(false); cin.tie(nullptr);\n    stack<int> st; string cmd;\n        if (cmd == \"PUSH\") { int v; cin >> v; st.push(v); }\n            if (st.empty()) cout << \"NULL\\n\";\n            else { cout << st.top() << \"\\n\"; st.pop(); }\n\n    // TODO: Hoàn thiện thuật toán xử lý và in kết quả theo các bước hướng dẫn\n\n    return 0;\n}\n"
+  "skeleton_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    ios::sync_with_stdio(false); cin.tie(nullptr);\n    stack<int> st; string cmd;\n        if (cmd == \"PUSH\") { int v; cin >> v; st.push(v); }\n            if (st.empty()) cout << \"NULL\\n\";\n            else { cout << st.top() << \"\\n\"; st.pop(); }\n\n    // TODO: Hoàn thiện thuật toán xử lý và in kết quả theo các bước hướng dẫn\n\n    return 0;\n}\n",
+  "walkthrough": [
+    "Ý tưởng: Ngăn xếp hoạt động theo nguyên tắc LIFO (vào sau ra trước), hoàn toàn khớp với cấu trúc `std::stack<int>` trong STL.",
+    "Thuật toán: Khởi tạo `stack<int> st`. Đọc từng lệnh `cmd` đến khi gặp `#`: nếu là `PUSH` thì đọc thêm `v` và gọi `st.push(v)`; nếu là `POP` thì kiểm tra `st.empty()`, nếu rỗng in `NULL`, ngược lại in `st.top()` rồi gọi `st.pop()`.",
+    "Tính đúng đắn: Mỗi thao tác `push`, `top`, `pop` trên `std::stack` mô phỏng chính xác trạng thái đỉnh ngăn xếp sau từng lệnh.",
+    "Độ phức tạp: Thời gian $O(Q)$ với $Q$ là số thao tác vì mỗi thao tác `stack` tốn $O(1)$; không gian $O(Q)$ trong trường hợp xấu nhất khi toàn lệnh `PUSH`."
+  ],
+  "annotated_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    stack<int> st; // Ngăn xếp LIFO (vào sau ra trước)\n    string cmd;\n    while (cin >> cmd && cmd != \"#\") {\n        if (cmd == \"PUSH\") {\n            int v;\n            cin >> v;\n            st.push(v);\n        } else if (cmd == \"POP\") {\n            if (st.empty()) {\n                cout << \"NULL\\n\"; // Ngăn xếp rỗng\n            } else {\n                cout << st.top() << \"\\n\"; // Lấy phần tử trên đỉnh\n                st.pop();                  // Xóa phần tử trên đỉnh\n            }\n        }\n    }\n    return 0;\n}",
+  "pitfalls": [
+    "Gọi `st.top()` hoặc `st.pop()` khi `st.empty()` là `true`: gây lỗi Runtime Error (Undefined Behavior).",
+    "Quên in `NULL` khi ngăn xếp rỗng ở lệnh `POP`."
+  ]
 }

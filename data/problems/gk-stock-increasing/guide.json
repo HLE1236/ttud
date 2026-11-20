@@ -3,5 +3,16 @@
   "recognize": "Tìm độ dài **đoạn con liên tiếp tăng ngặt** dài nhất (`n <= 10^6`).\n- Chú ý chữ **liên tiếp**! Khác với LIS (không liên tiếp), bài này chỉ cần **QHĐ 1 chiều `O(n)`**.",
   "idea": "Đặt `dp[i]` = độ dài đoạn con liên tiếp tăng ngặt dài nhất kết thúc đúng tại `i`.\n- Nếu `a[i] > a[i-1]` thì nối tiếp được: `dp[i] = dp[i-1] + 1`.\n- Ngược lại chuỗi bị đứt: `dp[i] = 1`.\nĐáp án là `max(dp[i])`. Thậm chí chỉ cần 1 biến `cur` và `prev` mà không cần mảng `dp`.",
   "pseudocode": "cur = 0, best = 0\nvới mỗi i từ 0 đến n - 1:\n    nếu i == 0 hoặc a[i] <= prev: cur = 1\n    ngược lại: cur++\n    best = max(best, cur)\n    prev = a[i]\nin best",
-  "skeleton_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int n;\n    cin >> n;\n\n    long long prev = 0, x;\n    int cur = 0, best = 0;\n    for (int i = 0; i < n; i++) {\n        cin >> x;\n        // TODO: Cập nhật cur (nếu i == 0 hoặc x <= prev thì cur = 1, ngược lại cur++) và cập nhật best\n        prev = x;\n    }\n    cout << best << '\\n';\n    return 0;\n}\n"
+  "skeleton_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int n;\n    cin >> n;\n\n    long long prev = 0, x;\n    int cur = 0, best = 0;\n    for (int i = 0; i < n; i++) {\n        cin >> x;\n        // TODO: Cập nhật cur (nếu i == 0 hoặc x <= prev thì cur = 1, ngược lại cur++) và cập nhật best\n        prev = x;\n    }\n    cout << best << '\\n';\n    return 0;\n}\n",
+  "walkthrough": [
+    "Bước 1 (Định nghĩa trạng thái): Gọi `cur` là độ dài đoạn con liên tiếp tăng ngặt dài nhất kết thúc tại vị trí đang xét.",
+    "Bước 2 (Chuyển trạng thái): Đọc lần lượt từng giá trị `x`. Nếu là phần tử đầu tiên (`i == 0`) hoặc `x <= prev` (không tăng ngặt), chuỗi bị ngắt nên đặt lại `cur = 1`; ngược lại (`x > prev`) thì nối dài chuỗi `cur++`.",
+    "Bước 3 (Cập nhật kỷ lục): Sau mỗi bước cập nhật `best = max(best, cur)` và `prev = x`.",
+    "Bước 4 (Độ phức tạp): Thời gian O(n); bộ nhớ O(1)."
+  ],
+  "annotated_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    int n;\n    cin >> n;\n    long long prev = 0, x;\n    int cur = 0, best = 0;\n    for (int i = 0; i < n; ++i) {\n        cin >> x;\n        if (i == 0 || x <= prev) cur = 1; // Bắt đầu chuỗi tăng mới\n        else cur++;                       // Nối tiếp chuỗi tăng ngặt\n        best = max(best, cur);\n        prev = x;\n    }\n    cout << best << \"\\n\";\n    return 0;\n}\n",
+  "pitfalls": [
+    "Nhầm sang bài LIS (dãy con không liên tiếp) hoặc dùng điều kiện `x < prev` (cho phép bằng nhau) thay vì `x <= prev` (tăng ngặt).",
+    "Khởi tạo `prev = 0` rồi so sánh `x > prev` ở `i == 0` mà không kiểm tra `i == 0` (sẽ sai nếu `x <= 0`)."
+  ]
 }

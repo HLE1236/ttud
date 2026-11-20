@@ -3,5 +3,16 @@
   "recognize": "Yêu cầu **liệt kê tất cả hoán vị** của `1..n` theo thứ tự từ điển (`n <= 8`).",
   "idea": "Dùng mảng `p[0..n-1]` lưu hoán vị đang xây dựng và `used[1..n]` đánh dấu số đã dùng. Hàm `Try(k)` thử các số `v = 1..n` chưa dùng.",
   "pseudocode": "Try(k):\n  if k == n: in p[0..n-1]; return\n  for v = 1..n:\n    if not used[v]:\n      used[v] = true; p[k] = v\n      Try(k + 1)\n      used[v] = false",
-  "skeleton_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint n;\nint p[12];\nbool used[12];\n\nvoid Try(int k) {\n    // TODO 1: Neu k == n thi in ra p[0..n-1] va return\n\n    // TODO 2: Duyet v tu 1..n, neu !used[v] thi chon v, de quy Try(k+1), roi bo danh dau\n}\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    cin >> n;\n    Try(0);\n    return 0;\n}\n"
+  "skeleton_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint n;\nint p[12];\nbool used[12];\n\nvoid Try(int k) {\n    // TODO 1: Neu k == n thi in ra p[0..n-1] va return\n\n    // TODO 2: Duyet v tu 1..n, neu !used[v] thi chon v, de quy Try(k+1), roi bo danh dau\n}\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    cin >> n;\n    Try(0);\n    return 0;\n}\n",
+  "walkthrough": [
+    "Ý tưởng: Liệt kê tất cả hoán vị của $\\{1, 2, \\dots, n\\}$ với $n \\le 8$ ($8! = 40320$) theo thứ tự từ điển tăng dần bằng Quay lui kết hợp mảng đánh dấu `used[]`.",
+    "Thuật toán: Hàm `Try(k)` chọn giá trị cho vị trí `p[k]`. Duyệt `v` từ `1` đến `n`: nếu `!used[v]` thì đánh dấu `used[v] = true`, gán `p[k] = v`, gọi `Try(k + 1)`, rồi **hoàn tác** `used[v] = false`. Khi `k == n` thì in mảng `p[0..n-1]`.",
+    "Tính đúng đắn: Duyệt `v` tăng dần từ `1` đến `n` đảm bảo thứ tự từ điển; mảng `used[v]` đảm bảo mỗi số xuất hiện đúng một lần; bước hoàn tác `used[v] = false` trả lại trạng thái sạch cho các nhánh anh em.",
+    "Độ phức tạp: Thời gian $O(n \\cdot n!)$ (có $n!$ hoán vị, mỗi hoán vị in $n$ số); không gian $O(n)$ cho mảng `p`, `used` và stack đệ quy."
+  ],
+  "annotated_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint n;\nint p[12];\nbool used[12]; // used[v] = true nếu số v đã được dùng trong hoán vị hiện tại\n\nvoid Try(int k) {\n    if (k == n) {\n        // In ra một hoán vị hoàn chỉnh\n        for (int i = 0; i < n; i++) {\n            if (i) cout << ' ';\n            cout << p[i];\n        }\n        cout << '\\n';\n        return;\n    }\n    // Duyệt v từ 1 đến n để sinh theo thứ tự từ điển tăng dần\n    for (int v = 1; v <= n; v++) {\n        if (!used[v]) {\n            used[v] = true; // Đánh dấu đã chọn v\n            p[k] = v;\n            Try(k + 1);     // Đệ quy chọn vị trí tiếp theo\n            used[v] = false; // Hoàn tác (unmark) khi quay lui\n        }\n    }\n}\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    cin >> n;\n    Try(0);\n    return 0;\n}",
+  "pitfalls": [
+    "Quên hoàn tác `used[v] = false` sau khi gọi `Try(k + 1)`: chương trình chỉ sinh được đúng 1 hoán vị đầu tiên rồi dừng.",
+    "In thừa khoảng trắng ở cuối dòng hoặc thiếu dấu cách giữa các số."
+  ]
 }

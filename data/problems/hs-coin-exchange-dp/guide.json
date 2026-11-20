@@ -3,5 +3,17 @@
   "recognize": "Cho `n <= 1000` mệnh giá xu (mỗi loại vô hạn) và số tiền `x <= 1000`, tìm **số xu ít nhất** để đổi đúng `x` (hoặc `-1`).\n- `x <= 1000` + dùng nhiều lần → **Unbounded Knapsack tìm min**.",
   "idea": "Đặt `dp[s]` = số đồng xu ít nhất để tạo đúng tổng `s`.\n- Cơ sở: `dp[0] = 0`, mọi `dp[1..x] = INF` (ví dụ `1e9`).\n- Với mỗi mệnh giá `coin`: duyệt `s` tăng dần từ `coin` tới `x`: `dp[s] = min(dp[s], dp[s - coin] + 1)`.\n- Nếu `dp[x] >= INF` thì in `-1`.",
   "pseudocode": "dp[0] = 0; dp[1..x] = 1e9\nvới mỗi coin trong D:\n    cho s từ coin đến x:\n        dp[s] = min(dp[s], dp[s - coin] + 1)\nin -1 nếu dp[x] >= 1e9, ngược lại in dp[x]",
-  "skeleton_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int n, x;\n    cin >> n >> x;\n    vector<int> d(n);\n    for (int i = 0; i < n; i++) cin >> d[i];\n\n    const int INF = 1e9;\n    vector<int> dp(x + 1, INF);\n    dp[0] = 0;\n\n    // TODO: Duyệt từng mệnh giá coin và s = coin..x để cập nhật dp[s]\n\n    cout << (dp[x] >= INF ? -1 : dp[x]) << '\\n';\n    return 0;\n}\n"
+  "skeleton_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int n, x;\n    cin >> n >> x;\n    vector<int> d(n);\n    for (int i = 0; i < n; i++) cin >> d[i];\n\n    const int INF = 1e9;\n    vector<int> dp(x + 1, INF);\n    dp[0] = 0;\n\n    // TODO: Duyệt từng mệnh giá coin và s = coin..x để cập nhật dp[s]\n\n    cout << (dp[x] >= INF ? -1 : dp[x]) << '\\n';\n    return 0;\n}\n",
+  "walkthrough": [
+    "Bước 1 (Định nghĩa trạng thái): Gọi `dp[s]` là số đồng xu ít nhất cần dùng để đổi đúng tổng `s` (`0 <= s <= x`).",
+    "Bước 2 (Công thức chuyển trạng thái): Với mỗi mệnh giá `coin`, vì mỗi loại xu có thể dùng không giới hạn số lần, ta duyệt `s` tăng dần từ `coin` đến `x` và cập nhật `dp[s] = min(dp[s], dp[s - coin] + 1)`.",
+    "Bước 3 (Khởi tạo & kết quả): Đặt `dp[0] = 0` và `dp[1..x] = INF` (`1e9`). Sau khi duyệt hết các mệnh giá, nếu `dp[x] >= INF` thì không thể đổi được tổng `x` (in `-1`), ngược lại in `dp[x]`.",
+    "Bước 4 (Độ phức tạp): Thời gian O(n * x); bộ nhớ O(x)."
+  ],
+  "annotated_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    int n, x;\n    cin >> n >> x;\n    vector<int> d(n);\n    for (int i = 0; i < n; ++i) cin >> d[i];\n    const int INF = 1e9;\n    vector<int> dp(x + 1, INF);\n    dp[0] = 0; // Đổi tổng 0 cần 0 đồng xu\n    for (int coin : d) {\n        // Duyệt s tăng dần để mỗi mệnh giá có thể dùng nhiều lần\n        for (int s = coin; s <= x; ++s) {\n            if (dp[s - coin] + 1 < dp[s]) dp[s] = dp[s - coin] + 1;\n        }\n    }\n    cout << (dp[x] >= INF ? -1 : dp[x]) << \"\\n\";\n    return 0;\n}\n",
+  "pitfalls": [
+    "Dùng chiến lược tham lam (luôn chọn đồng xu lớn nhất trước) sẽ sai với các bộ mệnh giá không chuẩn (ví dụ mệnh giá {1, 3, 4}, cần đổi 6).",
+    "Duyệt `s` giảm dần (nhầm với 0-1 Knapsack) khiến mỗi mệnh giá chỉ được dùng tối đa 1 lần.",
+    "Khởi tạo `INF = INT_MAX` khiến `dp[s - coin] + 1` bị tràn số nguyên âm."
+  ]
 }

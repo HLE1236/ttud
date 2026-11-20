@@ -3,5 +3,16 @@
   "recognize": "Đọc đề & Nhìn giới hạn: Cần tìm/đếm đoạn con liên tiếp hoặc cặp/bộ ba phần tử thỏa điều kiện tổng với `n <= 10^5 - 10^6`.\n- Tại sao cách ngây thơ chậm: Xét mọi cặp `(L, R)` bằng 2 vòng `for` tốn `O(n^2)` bước.\n- Hướng đi: Dùng Cửa sổ trượt cố định độ dài `k` (`win += a[i] - a[i-k]`) hoặc Hai con trỏ `L, R` dịch chuyển một chiều để tổng số bước giảm xuống `O(n)`.",
   "idea": "Duyệt dãy từ trái sang phải, duy trì biến `cur` lưu tổng đoạn toàn dương liên tiếp kết thúc tại phần tử hiện tại:\n- Nếu `a[i] > 0`: cập nhật `cur += a[i]` và `max_sum = max(max_sum, cur)`.\n- Nếu `a[i] <= 0`: chuỗi phần tử dương bị ngắt, đặt lại `cur = 0`.\n- Với `n <= 10^5` và `a[i] <= 10^4`, tổng tối đa ~`10^9`, nên dùng kiểu `long long` để tránh tràn số.\n\n**Các điểm cần lưu ý khi code:**\n- Giữ biến `cur` lưu tổng đoạn dương đang xét kết thúc tại ngày hiện tại.\n- Gặp số `<= 0` thì reset `cur = 0`.\n- Luôn cập nhật `ans = max(ans, cur)` mỗi khi `cur` tăng.",
   "pseudocode": "Bước 1: Đọc dữ liệu đầu vào (bật Fast I/O, dùng long long cho biến tổng/đáp án)\nBước 2: Giữ biến cur lưu tổng đoạn dương đang xét kết thúc tại ngày hiện tại.\nBước 3: Gặp số <= 0 thì reset cur = 0.\nBước 4: Luôn cập nhật ans = max(ans, cur) mỗi khi cur tăng.\nBước 5: In kết quả cuối cùng ra màn hình",
-  "skeleton_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int n;\n    cin >> n;\n    long long max_sum = 0, cur = 0;\n        long long a;\n        cin >> a;\n            cur += a;\n\n    // TODO: Hoàn thiện thuật toán xử lý và in kết quả theo các bước hướng dẫn\n\n    return 0;\n}\n"
+  "skeleton_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int n;\n    cin >> n;\n    long long max_sum = 0, cur = 0;\n        long long a;\n        cin >> a;\n            cur += a;\n\n    // TODO: Hoàn thiện thuật toán xử lý và in kết quả theo các bước hướng dẫn\n\n    return 0;\n}\n",
+  "walkthrough": [
+    "Bước 1 (Ý tưởng quét tuyến tính): Một đoạn con toàn số dương dài nhất kết thúc tại vị trí `i` được mở rộng trực tiếp từ đoạn kết thúc tại `i - 1` nếu `a[i] > 0`; ngược lại nếu `a[i] <= 0` thì đoạn bị ngắt.",
+    "Bước 2 (Cập nhật trạng thái): Duy trì `cur` (tổng đoạn dương đang xét) và `max_sum` (kỷ lục). Với mỗi số `a` đọc vào: nếu `a > 0` thì `cur += a` và `max_sum = max(max_sum, cur)`; ngược lại đặt `cur = 0`.",
+    "Bước 3 (Kiểu dữ liệu): Với `n <= 10^5`, tổng có thể vượt `10^9`, nên dùng `long long`.",
+    "Bước 4 (Độ phức tạp): Thời gian O(n); bộ nhớ O(1)."
+  ],
+  "annotated_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    int n;\n    cin >> n;\n    long long max_sum = 0, cur = 0;\n    for (int i = 0; i < n; i++) {\n        long long a;\n        cin >> a;\n        if (a > 0) {\n            cur += a; // Nối tiếp đoạn toàn dương hiện tại\n            max_sum = max(max_sum, cur);\n        } else {\n            cur = 0;  // Gặp số <= 0, reset đoạn về 0\n        }\n    }\n    cout << max_sum << \"\\n\";\n    return 0;\n}\n",
+  "pitfalls": [
+    "Coi số `0` là số dương (`a >= 0`) trong khi đề yêu cầu đoạn toàn số dương ngặt.",
+    "Dùng `int` cho `cur` và `max_sum` gây tràn số."
+  ]
 }

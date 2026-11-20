@@ -1,0 +1,61 @@
+{
+  "title": "Luyện bài tập 8 ngày (Lec 1 → Lec 10)",
+  "days": [
+    {
+      "day": 1,
+      "title": "STL, mảng & xử lý dữ liệu",
+      "theory_chapters": ["chap1"],
+      "visualizer_hint": null,
+      "problems": ["hs-add-two-integers", "gk-count-positive", "gk-count-gt-c", "gk-count-group", "gk-equal-pairs", "hs-set-lower-upper", "hs-word-freq-text", "hs-stack-sim", "hs-queue-sim"]
+    },
+    {
+      "day": 2,
+      "title": "Prefix Sum, Sliding Window, Two Pointers",
+      "theory_chapters": ["chap2"],
+      "visualizer_hint": "prefix-window",
+      "problems": ["hs-sim-prefix-sum-1d", "hs-sim-prefix-sum-2d", "gk-range-sum-queries", "gk-k-subseq-weight", "gk-k-subseq-bounded", "gk-even-subarrays", "gk-resource-allocation", "gk-stock-increasing", "hs-longest-bounded-maxseq", "hs-sum-pair-equal-m"]
+    },
+    {
+      "day": 3,
+      "title": "Heap, RMQ, Segment Tree",
+      "theory_chapters": ["chap2"],
+      "visualizer_hint": null,
+      "problems": ["gk-insert-delete-max", "hs-sim-priority-queue", "hs-rmq", "hs-segment-tree-sim", "hs-sim-fenwick-tree", "gk-max-positive-subarray"]
+    },
+    {
+      "day": 4,
+      "title": "Quay lui: tập con, tổ hợp, điền dấu, lưới",
+      "theory_chapters": ["chap3"],
+      "visualizer_hint": "backtracking",
+      "problems": ["hs-binary-seq-gen", "hs-permutation-gen", "gk-subset-sum-ab", "gk-k-comb-sum-m", "gk-insert-plus-minus", "ck-matrix-max-reward", "gk-partition-2-groups", "gk-partition-3-groups", "hs-sudoku-count"]
+    },
+    {
+      "day": 5,
+      "title": "Nhánh và cận: CBUS, BCA, cắt vật liệu, CVRP, TSP",
+      "theory_chapters": ["chap3"],
+      "visualizer_hint": "backtracking",
+      "problems": ["hs-cbus", "gk-cbus-stops", "gk-bca-credit", "hs-bca-credit-lb", "gk-task-assignment", "hs-material-cut", "hs-cvrp", "hs-bacp"]
+    },
+    {
+      "day": 6,
+      "title": "Tham lam & Chia để trị",
+      "theory_chapters": ["chap4a"],
+      "visualizer_hint": null,
+      "problems": ["hs-disjoint-segment", "gk-jump-game", "gk-robot-merge", "gk-meeting-rooms", "gk-fib-string", "hs-inversion", "hs-closest-pair", "hs-max-distance-subseq", "hs-expmod"]
+    },
+    {
+      "day": 7,
+      "title": "QHĐ cơ bản: 1D, đổi tiền, ba lô, lưới 2D",
+      "theory_chapters": ["chap4b"],
+      "visualizer_hint": "dp-table",
+      "problems": ["gk-climbing-stairs", "gk-no-2-adjacent", "gk-no-3-adjacent", "hs-coin-exchange-dp", "gk-supermarket-knapsack", "gk-treasure-grid", "hs-gold-mining", "hs-max-subseq-div-k"]
+    },
+    {
+      "day": 8,
+      "title": "QHĐ dãy con & Bitmask: LIS, LCS, TSP",
+      "theory_chapters": ["chap4b"],
+      "visualizer_hint": "lis",
+      "problems": ["hs-longest-inc-subseq", "hs-lcs", "hs-max-even-subseq", "ck-d-increasing-subseq", "ck-longest-palindrome-subseq", "hs-tsp", "hs-tsp-large"]
+    }
+  ]
+}

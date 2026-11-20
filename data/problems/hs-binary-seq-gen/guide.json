@@ -3,5 +3,16 @@
   "recognize": "Đề yêu cầu **liệt kê tất cả** xâu nhị phân độ dài `n` (`1 <= n <= 16`) theo thứ tự từ điển.\n- Thấy `n <= 16` (`2^16 = 65536` xâu) và từ khoá *liệt kê tất cả* → dùng **Quay lui sinh nhị phân**.",
   "idea": "Dùng một xâu `s` độ dài `n` và hàm đệ quy `Try(i)` biểu diễn việc đang điền ký tự ở vị trí `i` (`0..n-1`):\n- Để ra đúng **thứ tự từ điển**, tại mỗi vị trí `i`, luôn thử đặt `'0'` trước rồi mới thử `'1'`.\n- Khi `i == n`, đã điền xong cả `n` vị trí → in `s` ra và quay lui.",
   "pseudocode": "hàm Try(i):\n    nếu i == n:\n        in xâu s\n        return\n    s[i] = '0'\n    Try(i + 1)\n    s[i] = '1'\n    Try(i + 1)\n\nmain:\n    đọc n\n    khởi tạo s độ dài n\n    Try(0)",
-  "skeleton_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint n;\nstring s;\n\nvoid Try(int i) {\n    // TODO 1: Nếu i == n thì in s và return\n\n    // TODO 2: Thử đặt s[i] = '0' rồi gọi Try(i + 1)\n\n    // TODO 3: Thử đặt s[i] = '1' rồi gọi Try(i + 1)\n}\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    cin >> n;\n    s.assign(n, '0');\n    Try(0);\n    return 0;\n}\n"
+  "skeleton_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint n;\nstring s;\n\nvoid Try(int i) {\n    // TODO 1: Nếu i == n thì in s và return\n\n    // TODO 2: Thử đặt s[i] = '0' rồi gọi Try(i + 1)\n\n    // TODO 3: Thử đặt s[i] = '1' rồi gọi Try(i + 1)\n}\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    cin >> n;\n    s.assign(n, '0');\n    Try(0);\n    return 0;\n}\n",
+  "walkthrough": [
+    "Ý tưởng: Với $n \\le 16$, số lượng xâu nhị phân là $2^n \\le 65536$, hoàn toàn sinh được bằng đệ quy Quay lui (Backtracking) theo từng vị trí từ trái sang phải.",
+    "Thuật toán: Dùng hàm `dfs(i)` để chọn ký tự cho vị trí `i` ($0 \\le i < n$). Tại mỗi bước `i`, thử gán `s[i] = '0'` rồi gọi `dfs(i + 1)`, sau đó gán `s[i] = '1'` rồi gọi `dfs(i + 1)`. Khi `i == n`, in ra xâu `s`.",
+    "Tính đúng đắn: Vì luôn thử `'0'` trước `'1'` tại vị trí có trọng số cao hơn (`i` nhỏ hơn), cây đệ quy duyệt các lá từ trái sang phải đúng theo **thứ tự từ điển tăng dần** và sinh đủ $2^n$ xâu.",
+    "Độ phức tạp: Thời gian $O(n \\cdot 2^n)$ (có $2^n$ lá, mỗi lá in xâu độ dài $n$); không gian $O(n)$ cho xâu `s` và ngăn xếp đệ quy."
+  ],
+  "annotated_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint n;\nstring s;\n\n// Thử điền ký tự cho vị trí i (từ 0 đến n - 1)\nvoid dfs(int i) {\n    if (i == n) {\n        cout << s << \"\\n\"; // Đã điền đủ n vị trí -> in nghiệm\n        return;\n    }\n    // Thử '0' trước '1' để đảm bảo thứ tự từ điển tăng dần\n    s[i] = '0';\n    dfs(i + 1);\n    s[i] = '1';\n    dfs(i + 1);\n}\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    cin >> n;\n    s.assign(n, '0'); // Cấp phát trước xâu độ dài n\n    dfs(0);\n    return 0;\n}",
+  "pitfalls": [
+    "Dùng `endl` thay vì `'\\n'`: với $n = 16$ có $65536$ dòng, `endl` ép flush bộ đệm mỗi dòng có thể gây chậm/TLE.",
+    "Thử `'1'` trước `'0'` làm kết quả bị ngược thứ tự từ điển."
+  ]
 }

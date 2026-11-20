@@ -1,0 +1,37 @@
+{
+  "id": "gk-k-subseq-geq",
+  "title": "Đếm dãy con k-phần tử có tổng >= D",
+  "track": "midterm",
+  "exam_tags": [
+    "GK 20241"
+  ],
+  "topic": "two-pointers",
+  "theory_chapter": "chap2",
+  "difficulty": "Cơ bản",
+  "elo": 1050,
+  "day": 2,
+  "time_limit_ms": 1000,
+  "memory_limit_mb": 256,
+  "has_official_tests": true,
+  "has_checker": false,
+  "test_count": 8,
+  "tc_source": "Official Zip (GK 20241)",
+  "statement": "Doanh thu của một cửa hàng vào ngày thứ `i` là `a[i]` (`i = 1, 2, ..., n`). Cho số nguyên dương `K`, một **K-chu kỳ** là một dãy gồm `K` ngày liên tiếp trong `1, 2, ..., n`.\n\nCho ngưỡng `D` (số nguyên dương), hãy tính số lượng `Q` các K-chu kỳ có tổng doanh thu **lớn hơn hoặc bằng `D`**.",
+  "input_spec": "- Dòng 1: ba số nguyên dương `n, K, D` (`1 <= n <= 100000`, `1 <= K <= n/2`, `1 <= D <= 1000000`).\n- Dòng 2: `n` số nguyên `a[1], a[2], ..., a[n]` (`1 <= a[i] <= 10000`).",
+  "output_spec": "Ghi ra giá trị `Q` tìm được.",
+  "samples": [
+    {
+      "input": "7 3 10\n6 3 4 2 3 3 5",
+      "output": "2",
+      "explanation": "Có 2 đoạn độ dài 3 có tổng >= 10 là: (6, 3, 4) tổng 13 và (3, 3, 5) tổng 11."
+    }
+  ],
+  "mindset": "Với `n <= 10^5` và `K <= n/2`, nếu tính tổng từng đoạn bằng 2 vòng lặp lồng nhau `O(n * K)` sẽ bị quá thời gian (TLE).\nDùng **Cửa sổ trượt (Sliding Window)** kích thước cố định `K`:\n- Tính tổng `win` của `K` phần tử đầu tiên.\n- Khi trượt cửa sổ sang phải 1 vị trí tới `i`, cộng thêm `a[i]` và trừ đi `a[i - K]` trong `O(1)`.\n- Kiểm tra `win >= D` để tăng biến đếm.",
+  "hints": [
+    "Tính tổng `K` phần tử đầu tiên: `win = a[0] + ... + a[K-1]`.",
+    "Với `i` từ `K` đến `n-1`: cập nhật `win += a[i] - a[i - K]` và kiểm tra `if (win >= D) ans++`."
+  ],
+  "complexity": "Time: O(n) | Space: O(n)",
+  "starter_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    // Viet code cua ban o day\n\n    return 0;\n}\n",
+  "reference_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int n, K;\n    long long D;\n    if (!(cin >> n >> K >> D)) return 0;\n    vector<long long> a(n);\n    for (int i = 0; i < n; i++) cin >> a[i];\n\n    long long win = 0, ans = 0;\n    for (int i = 0; i < K; i++) win += a[i];\n    if (win >= D) ans++;\n    for (int i = K; i < n; i++) {\n        win += a[i] - a[i - K];\n        if (win >= D) ans++;\n    }\n    cout << ans << \"\\n\";\n    return 0;\n}\n"
+}

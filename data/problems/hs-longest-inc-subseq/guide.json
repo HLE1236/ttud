@@ -3,5 +3,16 @@
   "recognize": "Tìm độ dài **dãy con tăng ngặt dài nhất (LIS)** với `n <= 10^5`.\n- `n = 10^5` nên QHĐ `O(n^2)` sẽ TLE ở test lớn → cần **LIS `O(n log n)` dùng `lower_bound`**.",
   "idea": "Duy trì mảng `tail`: `tail[k]` là phần tử kết thúc **nhỏ nhất** trong tất cả các dãy con tăng độ dài `k + 1` đã gặp.\nVì `tail` luôn tăng ngặt, với mỗi `x` đọc vào, dùng `lower_bound(tail.begin(), tail.end(), x)` tìm vị trí đầu tiên `>= x` để ghi đè (giúp phần tử kết thúc nhỏ xuống, dễ nối dài về sau), hoặc `push_back(x)` nếu `x` lớn hơn mọi phần tử trong `tail`.\nĐáp án là `tail.size()`.",
   "pseudocode": "tạo mảng rỗng tail\nvới mỗi x trong n phần tử:\n    it = lower_bound(tail, x)\n    nếu it == tail.end(): tail.push_back(x)\n    ngược lại: *it = x\nin tail.size()",
-  "skeleton_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int n;\n    cin >> n;\n\n    vector<long long> tail;\n    for (int i = 0; i < n; i++) {\n        long long x;\n        cin >> x;\n        // TODO: Dùng lower_bound trên tail để cập nhật hoặc push_back(x)\n    }\n\n    cout << tail.size() << '\\n';\n    return 0;\n}\n"
+  "skeleton_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int n;\n    cin >> n;\n\n    vector<long long> tail;\n    for (int i = 0; i < n; i++) {\n        long long x;\n        cin >> x;\n        // TODO: Dùng lower_bound trên tail để cập nhật hoặc push_back(x)\n    }\n\n    cout << tail.size() << '\\n';\n    return 0;\n}\n",
+  "walkthrough": [
+    "Bước 1 (Ý tưởng mảng `tail`): Duy trì mảng `tail`, trong đó `tail[k]` lưu phần tử kết thúc nhỏ nhất có thể của một dãy con tăng ngặt có độ dài `k + 1` đã xét tới hiện tại.",
+    "Bước 2 (Cập nhật bằng tìm kiếm nhị phân): Mảng `tail` luôn có thứ tự tăng ngặt. Khi xét phần tử `x`, dùng `lower_bound(tail.begin(), tail.end(), x)` tìm vị trí đầu tiên có giá trị `>= x`.",
+    "Bước 3 (Mở rộng hoặc thay thế): Nếu không có phần tử nào `>= x` (`it == tail.end()`), nối `x` vào cuối để tăng độ dài LIS thêm 1 (`tail.push_back(x)`). Ngược lại, ghi đè `*it = x` để giảm giá trị kết thúc xuống, tạo điều kiện nối dài tốt hơn cho các phần tử sau.",
+    "Bước 4 (Độ phức tạp): Thời gian O(n log n); bộ nhớ O(n). Đáp án là `tail.size()`."
+  ],
+  "annotated_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    int n;\n    cin >> n;\n    vector<int> tail; // tail[k]: phần tử cuối nhỏ nhất của dãy tăng độ dài k+1\n    for (int i = 0; i < n; ++i) {\n        int x; cin >> x;\n        // Tìm vị trí đầu tiên >= x (tăng ngặt nên dùng lower_bound)\n        auto it = lower_bound(tail.begin(), tail.end(), x);\n        if (it == tail.end()) tail.push_back(x);\n        else *it = x;\n    }\n    cout << tail.size() << \"\\n\";\n    return 0;\n}\n",
+  "pitfalls": [
+    "Dùng `upper_bound` thay vì `lower_bound` sẽ tính thành dãy con không giảm (cho phép bằng nhau) thay vì tăng ngặt.",
+    "Nhầm tưởng nội dung của mảng `tail` chính là dãy con tăng dài nhất thực sự (chỉ độ dài `tail.size()` là đúng; muốn truy vết dãy cần lưu thêm mảng `pos` và `parent`)."
+  ]
 }

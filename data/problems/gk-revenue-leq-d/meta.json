@@ -1,0 +1,36 @@
+{
+  "id": "gk-revenue-leq-d",
+  "title": "Đếm đoạn ngày có tổng doanh thu <= D",
+  "track": "midterm",
+  "exam_tags": [
+    "GK 20241"
+  ],
+  "topic": "two-pointers",
+  "theory_chapter": "chap2",
+  "difficulty": "Cơ bản",
+  "elo": 1000,
+  "day": 2,
+  "time_limit_ms": 1000,
+  "memory_limit_mb": 256,
+  "has_official_tests": true,
+  "has_checker": false,
+  "test_count": 8,
+  "tc_source": "Official Zip (GK 20241)",
+  "statement": "Doanh thu của một cửa hàng vào ngày thứ `i` là `a[i]` (`i = 1, 2, ..., n`).\n\nCho ngưỡng `D` (số nguyên dương), hãy tính số lượng `Q` các đoạn ngày **liên tiếp** (độ dài bất kỳ `>= 1`) có tổng doanh thu **nhỏ hơn hoặc bằng `D`**.",
+  "input_spec": "- Dòng 1: hai số nguyên dương `n` và `D` (`1 <= n <= 1000`, `1 <= D <= 1000`).\n- Dòng 2: `n` số nguyên `a[1], a[2], ..., a[n]` (`1 <= a[i] <= 100`).",
+  "output_spec": "Ghi ra giá trị `Q` tìm được.",
+  "samples": [
+    {
+      "input": "5 8\n1 6 4 2 9",
+      "output": "6",
+      "explanation": "Có 6 đoạn liên tiếp có tổng <= 8: [1] (1), [1,6] (7), [6] (6), [4] (4), [4,2] (6), [2] (2)."
+    }
+  ],
+  "mindset": "Có 2 cách giải:\n- **Cách 1 (`O(n^2)`):** Vì `n <= 1000`, duyệt mọi điểm đầu `i`, cộng dồn `S += a[j]`, nếu `S <= D` thì `ans++` (ngược lại có thể `break` sớm vì `a[j] >= 1`).\n- **Cách 2 (`O(n)` Hai con trỏ):** Với mỗi `R`, tăng `L` cho đến khi `sum(L..R) <= D`. Khi đó mọi đoạn kết thúc tại `R` bắt đầu từ `L, L+1, ..., R` đều hợp lệ → cộng `R - L + 1` vào `ans`.",
+  "hints": [
+    "Dùng Hai con trỏ: tăng `R`, nếu `sum > D` thì dịch `L` sang phải cho tới khi `sum <= D`, rồi cộng `R - L + 1` vào kết quả."
+  ],
+  "complexity": "Time: O(n) | Space: O(n)",
+  "starter_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    // Viet code cua ban o day\n\n    return 0;\n}\n",
+  "reference_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int n;\n    long long D;\n    if (!(cin >> n >> D)) return 0;\n    vector<long long> a(n);\n    for (int i = 0; i < n; i++) cin >> a[i];\n\n    long long ans = 0, sum = 0;\n    int L = 0;\n    for (int R = 0; R < n; R++) {\n        sum += a[R];\n        while (sum > D) {\n            sum -= a[L++];\n        }\n        ans += (R - L + 1);\n    }\n    cout << ans << \"\\n\";\n    return 0;\n}\n"
+}

@@ -1,0 +1,12 @@
+{
+  "pattern": "two-pointers",
+  "recognize": "Đếm số đoạn con liên tiếp của mảng **các số dương** có tổng `<= D` → **Hai con trỏ (Two Pointers)** `O(n)` (hoặc cộng dồn `O(n^2)` vì `n <= 1000`).",
+  "idea": "Với mỗi đầu mút phải `R`, ta tìm vị trí `L` nhỏ nhất sao cho tổng đoạn `[L..R] <= D`. Vì các số đều dương, mọi đoạn con kết thúc tại `R` bắt đầu từ `L, L+1, ..., R` đều có tổng `<= D` → có đúng `R - L + 1` đoạn hợp lệ kết thúc tại `R`.",
+  "pseudocode": "L = 0, sum = 0, ans = 0\nVới R từ 0 đến n-1:\n    sum += a[R]\n    Trong khi sum > D:\n        sum -= a[L]\n        L++\n    ans += (R - L + 1)\nIn ans",
+  "skeleton_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int n;\n    long long D;\n    cin >> n >> D;\n    vector<long long> a(n);\n    for (int i = 0; i < n; i++) cin >> a[i];\n\n    long long ans = 0, sum = 0;\n    int L = 0;\n    for (int R = 0; R < n; R++) {\n        sum += a[R];\n        // TODO: Thu hẹp L khi sum > D, sau đó cộng số đoạn kết thúc tại R vào ans\n    }\n    cout << ans << \"\\n\";\n    return 0;\n}\n",
+  "walkthrough": "Với `n=5, D=8`, `a=[1, 6, 4, 2, 9]`:\n- `R=0`: `[1]` → +1 (`ans=1`)\n- `R=1`: `[1,6]` → +2 (`ans=3`)\n- `R=2`: `sum=11>8` bỏ `1` (`sum=10>8`) bỏ `6` (`sum=4<=8`), `L=2` → +1 (`ans=4`)\n- `R=3`: `sum=6<=8`, `L=2` → +2 (`ans=6`)\n- `R=4`: `sum=15>8` bỏ `4`, bỏ `2`, bỏ `9` (`sum=0`), `L=5` → `R-L+1 = 0` (`ans=6`).",
+  "annotated_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int n;\n    long long D;\n    cin >> n >> D;\n    vector<long long> a(n);\n    for (int i = 0; i < n; i++) cin >> a[i];\n\n    long long ans = 0, sum = 0;\n    int L = 0;\n    for (int R = 0; R < n; R++) {\n        sum += a[R];\n        while (sum > D) {\n            sum -= a[L++]; // Thu hẹp cửa sổ cho đến khi tổng <= D\n        }\n        ans += (R - L + 1); // Tất cả đoạn [i..R] với L <= i <= R đều hợp lệ\n    }\n    cout << ans << \"\\n\";\n    return 0;\n}\n",
+  "pitfalls": [
+    "Nếu `a[R] > D`, vòng `while (sum > D)` sẽ tăng `L` lên `R + 1` (làm `sum = 0`), khi đó `R - L + 1 = 0` — hoàn toàn chuẩn xác, không cần `if (L <= R)`."
+  ]
+}

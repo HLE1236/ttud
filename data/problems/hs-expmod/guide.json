@@ -3,5 +3,17 @@
   "recognize": "Đọc đề & Nhìn giới hạn: Kích thước số mũ/độ dài lên tới `10^{18}`, hoặc cần tìm \"khoảng cách nhỏ nhất lớn nhất\" / đếm nghịch thế với `n <= 10^5`.\n- Tại sao cách ngây thơ chậm: Không thể nhân từng bước `10^{18}` lần hay dựng chuỗi thật trong bộ nhớ.\n- Hướng đi: Chia đôi bài toán sau mỗi bước (Chia để trị / Chặt nhị phân kết quả) để giảm độ phức tạp xuống `O(log n)` hoặc `O(n log n)`.",
   "idea": "Hai điểm mấu chốt:\n1. Khai báo **`unsigned long long`** (vì `b > 2^63 - 1`, `long long` sẽ bị âm/tràn!).\n2. Trước khi nhân lũy thừa nhị phân, **giảm ngay `a %= MOD`**! Khi `a < 10^9 + 7` thì `a * a < 1.000000014 * 10^18`, vẫn nằm gọn trong `unsigned long long` (~`1.84 * 10^19`)!\n\n**Các điểm cần lưu ý khi code:**\n- Nhân đôi bình phương bằng vòng `while (b > 0)`: nếu `b & 1` thì `res = (res * a) % MOD`, rồi `a = (a * a) % MOD; b >>= 1;`.",
   "pseudocode": "Bước 1: Đọc dữ liệu đầu vào (bật Fast I/O, dùng long long cho biến tổng/đáp án)\nBước 2: Nhân đôi bình phương bằng vòng while (b > 0): nếu b & 1 thì res = (res * a) % MOD, rồi a = (a * a) % MOD; b >>= 1;.\nBước 3: In kết quả cuối cùng ra màn hình",
-  "skeleton_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    unsigned long long a, b; cin >> a >> b;\n    const unsigned long long MOD = 1000000007ULL;\n    a %= MOD;\n    unsigned long long res = 1;\n        if (b & 1ULL) res = (res * a) % MOD;\n        a = (a * a) % MOD;\n        b >>= 1;\n\n    // TODO: Hoàn thiện thuật toán xử lý và in kết quả theo các bước hướng dẫn\n\n    return 0;\n}\n"
+  "skeleton_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    unsigned long long a, b; cin >> a >> b;\n    const unsigned long long MOD = 1000000007ULL;\n    a %= MOD;\n    unsigned long long res = 1;\n        if (b & 1ULL) res = (res * a) % MOD;\n        a = (a * a) % MOD;\n        b >>= 1;\n\n    // TODO: Hoàn thiện thuật toán xử lý và in kết quả theo các bước hướng dẫn\n\n    return 0;\n}\n",
+  "walkthrough": [
+    "Bước 1 (Xử lý số mũ 64-bit): Số mũ `b` có thể vượt quá giới hạn `long long` có dấu (`2^63 - 1`), nên bắt buộc phải dùng `unsigned long long` cho cả `a` và `b`.",
+    "Bước 2 (Giảm cơ số trước khi nhân): Thực hiện `a %= MOD` ngay từ đầu (với `MOD = 10^9 + 7`). Khi đó `a < 10^9 + 7`, nên `a * a < 1.000000015 * 10^18`, hoàn toàn vừa trong `unsigned long long` (tối đa `~1.84 * 10^19`) mà không bị tràn.",
+    "Bước 3 (Lũy thừa nhị phân): Duyệt từng bit của `b`: nếu bit cuối là `1` (`b & 1ULL`) thì nhân `res = (res * a) % MOD`; sau đó bình phương cơ số `a = (a * a) % MOD` và dịch phải `b >>= 1`.",
+    "Bước 4 (Độ phức tạp): Thời gian O(log b) (tối đa 64 vòng lặp); bộ nhớ O(1)."
+  ],
+  "annotated_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    // Dùng unsigned long long vì b có thể lớn hơn 2^63 - 1\n    unsigned long long a, b;\n    cin >> a >> b;\n    const unsigned long long MOD = 1000000007ULL;\n    a %= MOD; // Giảm a trước để a * a không vượt quá giới hạn uint64\n    unsigned long long res = 1;\n    while (b > 0) {\n        if (b & 1ULL) res = (res * a) % MOD; // Bit hiện tại bằng 1 thì nhân vào kết quả\n        a = (a * a) % MOD;                   // Bình phương cơ số cho bit tiếp theo\n        b >>= 1;\n    }\n    cout << res << \"\\n\";\n    return 0;\n}\n",
+  "pitfalls": [
+    "Khai báo `long long a, b` khiến `b > 2^63 - 1` bị đọc sai hoặc tràn dấu.",
+    "Quên `a %= MOD` trước khi vào vòng lặp khiến `a * a` bị tràn `unsigned long long` ngay ở bước đầu tiên.",
+    "Viết đệ quy hoặc quên `% MOD` sau mỗi phép nhân."
+  ]
 }

@@ -32,6 +32,7 @@ int main() {
 const state = {
   bootstrap: null,
   currentView: "roadmap",
+  roadmapMode: "practice8",
   roadmapTrack: "all",
   activeTheoryTab: "mindset",
   currentProblem: null,
@@ -118,7 +119,17 @@ function switchView(view) {
   if (view === "exam" && typeof renderExamView === "function") {
     renderExamView();
   }
+  if (view === "visualizer" && typeof renderVisualizerView === "function") {
+    renderVisualizerView();
+  }
 }
+
+window.openVisualizer = function (tab) {
+  switchView("visualizer");
+  if (typeof renderVisualizerView === "function") {
+    renderVisualizerView(tab);
+  }
+};
 
 function getProblemMap() {
   const m = {};
@@ -159,7 +170,117 @@ function applyTheme(theme) {
   }
 }
 
+function getPracticeCheckedMap() {
+  try {
+    return JSON.parse(state.bootstrap?.settings?.practice_checked || "{}");
+  } catch (e) {
+    return {};
+  }
+}
+
+window.togglePracticeDayDone = async function (day, checked) {
+  const cur = getPracticeCheckedMap();
+  cur[String(day)] = checked ? 1 : 0;
+  const val = JSON.stringify(cur);
+  if (!state.bootstrap.settings) state.bootstrap.settings = {};
+  state.bootstrap.settings.practice_checked = val;
+  await apiPost("/api/settings", { key: "practice_checked", value: val });
+  renderRoadmap();
+};
+
+function renderPractice8Days() {
+  const plan = state.bootstrap?.practice_8days;
+  if (!plan || !Array.isArray(plan.days)) return false;
+  const pmap = getProblemMap();
+  const checkedMap = getPracticeCheckedMap();
+  const checkedDays = plan.days.filter((d) => checkedMap[String(d.day)]).length;
+  const ids = [...new Set(plan.days.flatMap((d) => d.problems || []))];
+  const solved = ids.filter((pid) => pmap[pid]?.status?.solved).length;
+  const pct = ids.length ? Math.round((solved * 100) / ids.length) : 0;
+  const pctDays = plan.days.length ? Math.round((checkedDays * 100) / plan.days.length) : 0;
+
+  document.getElementById("roadmap-summary").innerHTML = `
+    <div class="sum-box">
+      <div class="sum-box-label">Bài đã AC</div>
+      <div class="sum-box-val">${solved} / ${ids.length} bài (${pct}%)</div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+    </div>
+    <div class="sum-box">
+      <div class="sum-box-label">Ngày đã hoàn thành</div>
+      <div class="sum-box-val">${checkedDays} / ${plan.days.length} ngày</div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${pctDays}%"></div></div>
+    </div>
+  `;
+
+  document.getElementById("roadmap-days").innerHTML = plan.days
+    .map((d) => {
+      const done = Boolean(checkedMap[String(d.day)]);
+      const probs = d.problems || [];
+      const acInDay = probs.filter((pid) => pmap[pid]?.status?.solved).length;
+      const theoryBtns = (d.theory_chapters || [])
+        .map((cid) => `<button class="btn-link small" onclick="openTheoryChapter('${cid}')">Lý thuyết ${cid.replace("chap", "Chương ")}</button>`)
+        .join(" · ");
+      const vizBtn = d.visualizer_hint
+        ? ` · <button class="btn-link small" onclick="openVisualizer('${d.visualizer_hint}')">Visualizer</button>`
+        : "";
+      const probItems = probs
+        .map((pid) => {
+          const p = pmap[pid];
+          if (!p) return "";
+          const ok = Boolean(p.status?.solved);
+          const tried = !ok && (p.status?.attempts || 0) > 0;
+          const dotCls = ok ? "ac" : tried ? "tried" : "";
+          const vBadge = ok
+            ? `<span class="badge verdict-AC">AC</span>`
+            : tried
+            ? `<span class="badge verdict-WA">${esc(p.status.last_verdict)}</span>`
+            : `<span class="badge ${diffBadgeClass(p.difficulty)}">${esc(p.difficulty)}</span>`;
+          return `
+            <div class="day-prob-item" onclick="openProblem('${pid}')">
+              <div class="day-prob-left">
+                <span class="status-dot ${dotCls}"></span>
+                <span class="day-prob-title">${esc(p.title)}</span>
+              </div>
+              <div style="display:flex;gap:6px;align-items:center;">
+                <span class="muted small">${p.exam_tags?.length ? esc(p.exam_tags[0]) : ""}</span>
+                ${vBadge}
+              </div>
+            </div>`;
+        })
+        .join("");
+      return `
+        <div class="surface day-card track-midterm ${done ? "day-done" : ""}">
+          <div class="day-top-section">
+            <div class="day-head">
+              <div>
+                <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+                  <span class="badge badge-midterm">Ngày ${d.day}</span>
+                  <span class="muted small">AC ${acInDay}/${probs.length}</span>
+                </div>
+                <div class="day-title">${esc(d.title)}</div>
+              </div>
+              <label class="day-check-label">
+                <input type="checkbox" ${done ? "checked" : ""} onchange="togglePracticeDayDone(${d.day}, this.checked)" />
+                Hoàn thành
+              </label>
+            </div>
+            <div class="day-theory-row">${theoryBtns}${vizBtn}</div>
+          </div>
+          <div class="day-problems">${probItems}</div>
+        </div>`;
+    })
+    .join("");
+  return true;
+}
+
 function renderRoadmap() {
+  const trackFilter = document.getElementById("roadmap-track-filter");
+  if (state.roadmapMode === "practice8" && state.bootstrap?.practice_8days?.days?.length) {
+    if (trackFilter) trackFilter.style.display = "none";
+    if (renderPractice8Days()) return;
+  }
+  if (trackFilter) trackFilter.style.display = "";
+
   const { roadmap, stats, roadmap_checked } = state.bootstrap;
   const pmap = getProblemMap();
   const checkedDays = roadmap.days.filter((d) => roadmap_checked?.[String(d.day)]).length;
@@ -681,6 +802,16 @@ window.copyCodeById = function (id, btn) {
   }
 };
 
+function getPatternLabelMap() {
+  const m = {};
+  for (const chap of state.bootstrap?.theory?.chapters || []) {
+    for (const pat of chap.lesson?.patterns || []) {
+      m[pat.id] = pat.name;
+    }
+  }
+  return m;
+}
+
 function renderProblemBankFilters() {
   const topicSel = document.getElementById("filter-topic");
   const curVal = topicSel.value;
@@ -689,6 +820,22 @@ function renderProblemBankFilters() {
       .map(([k, v]) => `<option value="${k}">${esc(v)}</option>`)
       .join("");
   if (curVal) topicSel.value = curVal;
+
+  const patSel = document.getElementById("filter-pattern");
+  if (patSel) {
+    const curPat = patSel.value;
+    const patLabels = getPatternLabelMap();
+    const patCounts = {};
+    (state.bootstrap.problems || []).forEach((p) => {
+      if (p.pattern) patCounts[p.pattern] = (patCounts[p.pattern] || 0) + 1;
+    });
+    patSel.innerHTML = `<option value="all">Tất cả kỹ thuật</option>` +
+      Object.keys(patCounts)
+        .sort()
+        .map((k) => `<option value="${esc(k)}">${esc(patLabels[k] || k)} (${patCounts[k]})</option>`)
+        .join("");
+    if (curPat) patSel.value = curPat;
+  }
 
   const strip = document.getElementById("topic-stats-strip");
   const byTopic = state.bootstrap.stats.by_topic || {};
@@ -714,17 +861,30 @@ function renderProblemTable() {
   const q = document.getElementById("search-input").value.trim().toLowerCase();
   const track = document.getElementById("filter-track").value;
   const topic = document.getElementById("filter-topic").value;
+  const pattern = document.getElementById("filter-pattern")?.value || "all";
+  const eloBand = document.getElementById("filter-elo")?.value || "all";
   const year = document.getElementById("filter-year").value;
   const status = document.getElementById("filter-status").value;
+  const mistakes = state.bootstrap?.mistakes || {};
 
   const rows = state.bootstrap.problems.filter((p) => {
     if (track !== "all" && p.track !== track) return false;
     if (topic !== "all" && p.topic !== topic) return false;
+    if (pattern !== "all" && p.pattern !== pattern) return false;
+    if (eloBand !== "all") {
+      const elo = Number(p.elo || 1200);
+      if (eloBand === "easy" && elo >= 1100) return false;
+      if (eloBand === "med" && (elo < 1100 || elo >= 1400)) return false;
+      if (eloBand === "hard" && (elo < 1400 || elo >= 1700)) return false;
+      if (eloBand === "vhard" && elo < 1700) return false;
+    }
     if (status === "solved" && !p.status?.solved) return false;
     if (status === "unsolved" && p.status?.solved) return false;
+    if (status === "mistakes" && (!mistakes[p.id] || mistakes[p.id].resolved)) return false;
+    if (status === "mistakes_all" && !mistakes[p.id]) return false;
     if (year !== "all" && !p.exam_tags.some((t) => t.includes(year))) return false;
     if (q) {
-      const hay = `${p.id} ${p.title} ${p.exam_tags.join(" ")} ${TOPIC_LABELS[p.topic] || ""}`.toLowerCase();
+      const hay = `${p.id} ${p.title} ${p.pattern || ""} ${p.exam_tags.join(" ")} ${TOPIC_LABELS[p.topic] || ""}`.toLowerCase();
       if (!hay.includes(q)) return false;
     }
     return true;
@@ -740,11 +900,15 @@ function renderProblemTable() {
     .map((p) => {
       const solved = Boolean(p.status?.solved);
       const tried = !solved && (p.status?.attempts || 0) > 0;
+      const mRec = mistakes[p.id];
       const stHtml = solved
         ? `<span class="badge verdict-AC">AC</span>`
         : tried
         ? `<span class="badge verdict-WA">${esc(p.status.last_verdict)}</span>`
         : `<span class="muted">—</span>`;
+      const mistakeBadge = mRec && !mRec.resolved
+        ? `<span class="badge badge-mistake" title="${esc(mRec.note || "Trong sổ lỗi")}">${esc(mRec.tag || "Sổ lỗi")} (${mRec.fail_count})</span>`
+        : "";
       const trackBadge =
         p.track === "midterm"
           ? `<span class="badge badge-midterm">Giữa kỳ</span>`
@@ -758,7 +922,7 @@ function renderProblemTable() {
 
       return `
         <tr>
-          <td>${stHtml}</td>
+          <td>${stHtml}${mistakeBadge ? `<div style="margin-top:4px;">${mistakeBadge}</div>` : ""}</td>
           <td>
             <div style="font-weight:600;cursor:pointer;" onclick="openProblem('${p.id}')">${esc(p.title)}</div>
             <div class="muted small"><code>${esc(p.id)}</code> · ${p.time_limit_ms} ms ${p.has_checker ? "· Checker đa nghiệm" : ""}</div>
@@ -962,14 +1126,55 @@ function findPatternForProblem(pid, patternId) {
   return null;
 }
 
+function getVisualizerForProblem(prob) {
+  const pid = prob.id || "";
+  const pat = prob.guide?.pattern || "";
+  const topic = prob.topic || "";
+  if (pid.includes("tsp") || pat === "dp-state") return "tsp-bitmask";
+  if (pid.includes("longest-inc") || pat === "dp-subseq") return "lis";
+  if (topic === "dp-knapsack" || pat === "dp-knapsack" || pid.includes("coin")) return "dp-table";
+  if (topic === "backtrack-gen" || topic === "branch-bound") return "backtracking";
+  if (topic === "prefix-sum" || topic === "two-pointers") return "prefix-window";
+  return null;
+}
+
+function getSolutionUnlockMode() {
+  return state.bootstrap?.settings?.solution_unlock_mode || "locked";
+}
+
+function isSolutionUnlocked(prob) {
+  if (getSolutionUnlockMode() === "always") return true;
+  const st = state.bootstrap?.problems?.find((x) => x.id === prob.id)?.status;
+  if (st?.solved) return true;
+  if ((st?.attempts || 0) >= 3) return true;
+  return false;
+}
+
+window.toggleSolutionUnlockMode = async function () {
+  const cur = getSolutionUnlockMode();
+  const next = cur === "always" ? "locked" : "always";
+  if (!state.bootstrap.settings) state.bootstrap.settings = {};
+  state.bootstrap.settings.solution_unlock_mode = next;
+  await apiPost("/api/settings", { key: "solution_unlock_mode", value: next });
+  drawGuideLadder();
+};
+
 function buildGuideSteps(prob) {
   const g = prob.guide;
   const hintsHtml = (prob.hints || []).length
     ? `<ul>${prob.hints.map((h) => `<li>${renderProse(h)}</li>`).join("")}</ul>`
     : "";
+  const walkthroughHtml = Array.isArray(g?.walkthrough) && g.walkthrough.length
+    ? `<ol class="guide-walkthrough">${g.walkthrough.map((w) => `<li>${renderProse(w)}</li>`).join("")}</ol>`
+    : "";
+  const pitfallsHtml = Array.isArray(g?.pitfalls) && g.pitfalls.length
+    ? `<div class="callout callout-warn" style="margin-top:10px;"><strong>Bẫy hay gặp:</strong><ul>${g.pitfalls.map((p) => `<li>${renderProse(p)}</li>`).join("")}</ul></div>`
+    : "";
+  const solCode = g?.annotated_cpp || prob.ref_cpp || "// Không có code mẫu";
   const solution = {
-    title: "Lời giải đầy đủ (C++17)",
-    html: `<pre class="code-box">${esc(prob.ref_cpp || "// Không có code mẫu")}</pre>
+    title: g?.annotated_cpp ? "Lời giải chi tiết (C++17 có chú thích)" : "Lời giải đầy đủ (C++17)",
+    isSolution: true,
+    html: `<pre class="code-box">${esc(solCode)}</pre>
       <button class="btn btn-sm btn-ghost" onclick="loadGuideCode('ref')">Nạp lời giải vào Editor</button>`,
   };
   if (!g) {
@@ -982,8 +1187,8 @@ function buildGuideSteps(prob) {
   return [
     { title: "Nhận dạng dạng bài", html: renderProse(g.recognize) },
     {
-      title: "Ý tưởng thuật toán",
-      html: renderProse(g.idea) +
+      title: "Ý tưởng & Giải thích từng bước",
+      html: renderProse(g.idea) + walkthroughHtml + pitfallsHtml +
         (prob.mindset ? `<details class="guide-more"><summary>Phân tích thêm</summary>${renderProse(prob.mindset)}${hintsHtml}</details>` : ""),
     },
     { title: "Mã giả", html: `<pre class="code-box">${esc(g.pseudocode || "")}</pre>` },
@@ -1000,9 +1205,15 @@ function renderGuideLadder(prob) {
   state.guideOpened = 1;
   state.guideSteps = buildGuideSteps(prob);
   const found = findPatternForProblem(prob.id, prob.guide?.pattern);
-  state.guidePatternLink = found
-    ? `<div class="guide-pattern-link">Thuộc dạng: <strong>${esc(found.pat.name)}</strong>
-         <button class="btn-link small" onclick="openTheoryChapter('${found.chap.id}', '${esc(found.pat.id)}')">Xem bài giảng dạng này →</button></div>`
+  const vizTab = getVisualizerForProblem(prob);
+  const vizBtn = vizTab
+    ? `<button class="btn-link small" style="margin-left:10px;" onclick="openVisualizer('${vizTab}')">Mở Visualizer →</button>`
+    : "";
+  state.guidePatternLink = (found || vizBtn)
+    ? `<div class="guide-pattern-link">
+         ${found ? `Thuộc dạng: <strong>${esc(found.pat.name)}</strong> <button class="btn-link small" onclick="openTheoryChapter('${found.chap.id}', '${esc(found.pat.id)}')">Xem bài giảng dạng này →</button>` : ""}
+         ${vizBtn}
+       </div>`
     : "";
   drawGuideLadder();
 }
@@ -1020,10 +1231,26 @@ function drawGuideLadder() {
     return;
   }
   if (compBox) compBox.classList.remove("hidden");
+  const prob = state.currentProblem;
+  const mode = getSolutionUnlockMode();
+  const solUnlocked = prob ? isSolutionUnlocked(prob) : true;
+  const st = prob ? state.bootstrap?.problems?.find((x) => x.id === prob.id)?.status : null;
+  const attempts = st?.attempts || 0;
+  const modeBar = `
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px;font-size:12px;">
+      <span class="muted">Chế độ lời giải: <strong>${mode === "always" ? "Luôn xem được" : "Khóa đến khi AC hoặc 3 lần nộp"}</strong></span>
+      <button class="btn btn-sm btn-ghost" onclick="toggleSolutionUnlockMode()">${mode === "always" ? "Đổi sang Khóa tự động" : "Bật Luôn xem được"}</button>
+    </div>`;
+
   const steps = state.guideSteps || [];
-  el.innerHTML = state.guidePatternLink + steps
+  el.innerHTML = modeBar + state.guidePatternLink + steps
     .map((s, i) => {
       const open = i < state.guideOpened;
+      if (s.isSolution && !solUnlocked) {
+        return `<div class="guide-step locked"><div class="guide-step-head"><span class="guide-num">${i + 1}</span>${esc(s.title)}
+          <span class="muted small" style="margin-left:auto;">🔒 Cần AC hoặc nộp ${Math.max(0, 3 - attempts)} lần nữa (hoặc bật Luôn xem được)</span>
+        </div></div>`;
+      }
       if (open) {
         return `<div class="guide-step open"><div class="guide-step-head"><span class="guide-num">${i + 1}</span>${esc(s.title)}</div>
           <div class="guide-step-body prose">${s.html}</div></div>`;
@@ -1112,6 +1339,77 @@ window.viewSubmissionResult = function (idx) {
   }
 };
 
+function renderLineDiffHtml(expected, actual) {
+  const eLines = String(expected || "").replace(/\r\n/g, "\n").split("\n");
+  const aLines = String(actual || "").replace(/\r\n/g, "\n").split("\n");
+  const maxL = Math.max(eLines.length, aLines.length);
+  let firstDiff = -1;
+  for (let i = 0; i < maxL; i++) {
+    if ((eLines[i] || "").trimEnd() !== (aLines[i] || "").trimEnd()) {
+      firstDiff = i;
+      break;
+    }
+  }
+  const fmt = (lines, cls) =>
+    lines
+      .map((ln, idx) =>
+        idx === firstDiff
+          ? `<span class="${cls}">${esc(ln)}</span>`
+          : esc(ln)
+      )
+      .join("\n");
+  return {
+    firstDiff,
+    expHtml: fmt(eLines, "diff-line-exp"),
+    actHtml: fmt(aLines, "diff-line-act"),
+  };
+}
+
+window.loadCustomInputFromPreview = function (text) {
+  document.getElementById("custom-input").value = text || "";
+  setRightTab("sample");
+};
+
+window.saveMistakeBox = async function () {
+  if (!state.currentProblem) return;
+  const pid = state.currentProblem.id;
+  const tag = document.getElementById("mistake-tag-sel")?.value || "";
+  const note = document.getElementById("mistake-note-inp")?.value || "";
+  const resolved = Boolean(document.getElementById("mistake-resolved-chk")?.checked);
+  const res = await apiPost("/api/mistake", { problem_id: pid, tag, note, resolved });
+  if (res.mistake) {
+    if (!state.bootstrap.mistakes) state.bootstrap.mistakes = {};
+    state.bootstrap.mistakes[pid] = res.mistake;
+    renderProblemTable();
+    const stEl = document.getElementById("mistake-save-status");
+    if (stEl) stEl.textContent = "Đã lưu vào Sổ lỗi!";
+  }
+};
+
+function renderMistakeBoxHtml(pid) {
+  const m = state.bootstrap?.mistakes?.[pid];
+  if (!m) return "";
+  const tags = ["", "Tràn số (long long)", "Sai biên / off-by-one", "Quên reset biến", "TLE thuật toán", "Đọc nhầm đề", "Lỗi cú pháp / STL", "Khác"];
+  return `
+    <div class="callout callout-warn" style="margin-top:12px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
+        <strong>Sổ lỗi cá nhân</strong>
+        <span class="muted small">Số lần gặp lỗi: ${m.fail_count || 1}</span>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;align-items:center;">
+        <select id="mistake-tag-sel" class="select-input">
+          ${tags.map((t) => `<option value="${esc(t)}" ${m.tag === t ? "selected" : ""}>${t || "-- Chọn loại lỗi --"}</option>`).join("")}
+        </select>
+        <input id="mistake-note-inp" class="input-search" style="flex:1;min-width:180px;" placeholder="Ghi chú ngắn để nhớ lỗi này..." value="${esc(m.note || "")}" />
+        <label style="font-size:12px;display:inline-flex;align-items:center;gap:4px;">
+          <input type="checkbox" id="mistake-resolved-chk" ${m.resolved ? "checked" : ""} /> Đã khắc phục
+        </label>
+        <button class="btn btn-sm btn-primary" onclick="saveMistakeBox()">Lưu sổ lỗi</button>
+        <span id="mistake-save-status" class="muted small"></span>
+      </div>
+    </div>`;
+}
+
 function renderVerdictResult(res) {
   const container = document.getElementById("verdict-container");
   const pill = document.getElementById("verdict-pill-badge");
@@ -1134,6 +1432,7 @@ function renderVerdictResult(res) {
 
   if (res.compile_error) {
     html += `<div class="io-label">Chi tiết lỗi biên dịch (g++):</div><pre class="io-pre">${esc(res.compile_error)}</pre>`;
+    html += renderMistakeBoxHtml(res.problem_id || state.currentProblem?.id);
     container.innerHTML = html;
     return;
   }
@@ -1149,7 +1448,8 @@ function renderVerdictResult(res) {
           </button>`
       )
       .join("") +
-    `</div><div id="verdict-detail-box"></div>`;
+    `</div><div id="verdict-detail-box"></div>` +
+    renderMistakeBoxHtml(res.problem_id || state.currentProblem?.id);
 
   container.innerHTML = html;
 
@@ -1170,16 +1470,22 @@ window.showTestDetail = function (idx) {
     box.innerHTML = `<div class="diff-box">${esc(d.note || "Đã bỏ qua")}</div>`;
     return;
   }
+  const diff = renderLineDiffHtml(d.expected_preview, d.actual_preview);
+  window._lastDiffInput = d.input_preview || "";
   box.innerHTML = `
     <div class="diff-box">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;gap:8px;flex-wrap:wrap;">
         <strong>Chi tiết Test #${esc(d.test)} (<span class="badge verdict-${esc(d.verdict)}">${esc(d.verdict)}</span>)</strong>
-        ${d.checker_msg ? `<span class="muted small">Checker: ${esc(d.checker_msg)}</span>` : ""}
+        <div style="display:flex;gap:8px;align-items:center;">
+          ${diff.firstDiff >= 0 ? `<span class="muted small">Khác nhau đầu tiên tại dòng ${diff.firstDiff + 1}</span>` : ""}
+          ${d.checker_msg ? `<span class="muted small">Checker: ${esc(d.checker_msg)}</span>` : ""}
+          <button class="btn btn-sm btn-ghost" onclick="loadCustomInputFromPreview(window._lastDiffInput)">Nạp input vào Chạy thử</button>
+        </div>
       </div>
       <div class="diff-cols">
         <div><div class="io-label">Input</div><pre class="io-pre">${esc(d.input_preview || "")}</pre></div>
-        <div><div class="io-label">Kết quả đúng (Expected)</div><pre class="io-pre">${esc(d.expected_preview || "")}</pre></div>
-        <div><div class="io-label">Output của bạn (Actual)</div><pre class="io-pre">${esc(d.actual_preview || "")}</pre></div>
+        <div><div class="io-label">Kết quả đúng (Expected)</div><pre class="io-pre">${diff.expHtml}</pre></div>
+        <div><div class="io-label">Output của bạn (Actual)</div><pre class="io-pre">${diff.actHtml}</pre></div>
       </div>
     </div>
   `;
@@ -1239,11 +1545,16 @@ async function submitSolution() {
     if (res.stats) state.bootstrap.stats = res.stats;
     const p = state.bootstrap.problems.find((x) => x.id === pid);
     if (p && res.problem_status) p.status = res.problem_status;
+    if (res.mistake) {
+      if (!state.bootstrap.mistakes) state.bootstrap.mistakes = {};
+      state.bootstrap.mistakes[pid] = res.mistake;
+    }
     onExamProblemSubmitted(pid, res);
     updateTopStats();
     renderRoadmap();
     renderProblemBankFilters();
     renderProblemTable();
+    drawGuideLadder();
 
     // Reload history silently
     const full = await apiGet(`/api/problem/${encodeURIComponent(pid)}`);
@@ -1254,6 +1565,56 @@ async function submitSolution() {
     state.busyJudge = false;
     btn.disabled = false;
     btn.innerHTML = 'Nộp bài <kbd>Ctrl+⇧+↵</kbd>';
+  }
+}
+
+async function runStressTest() {
+  if (!state.currentProblem || state.busyJudge) return;
+  const pid = state.currentProblem.id;
+  const summary = state.bootstrap?.problems?.find((x) => x.id === pid);
+  if (summary && !summary.has_gen) {
+    setRightTab("verdict");
+    document.getElementById("verdict-container").innerHTML = `<div class="callout callout-warn">Bài này chưa có file sinh test ngẫu nhiên (<code>gen.py</code>) nên chưa hỗ trợ Stress test.</div>`;
+    return;
+  }
+  state.busyJudge = true;
+  const btn = document.getElementById("btn-stress-test");
+  if (btn) { btn.disabled = true; btn.textContent = "Đang stress test..."; }
+  setRightTab("verdict");
+  document.getElementById("verdict-container").innerHTML = `<div class="muted center-empty">Đang sinh tối đa 60 test ngẫu nhiên từ <code>gen.py</code> và đối chiếu với <code>ref.cpp</code>...</div>`;
+
+  try {
+    const res = await apiPost("/api/stress-test", {
+      problem_id: pid,
+      code: state.editor.getValue(),
+      max_iters: 60,
+    });
+    const box = document.getElementById("verdict-container");
+    if (res.status === "CE") {
+      box.innerHTML = `<div class="verdict-banner verdict-CE">CE — Lỗi biên dịch</div><pre class="io-pre">${esc(res.compile_error || "")}</pre>`;
+    } else if (res.status === "PASSED") {
+      box.innerHTML = `<div class="verdict-banner verdict-AC"><span>Stress test PASSED</span><span>Đã kiểm tra ${res.iters} test ngẫu nhiên khớp với ref.cpp! ${esc(res.note || "")}</span></div>`;
+    } else if (res.status === "FOUND") {
+      const diff = renderLineDiffHtml(res.expected_preview, res.actual_preview);
+      window._lastDiffInput = res.input_preview || "";
+      box.innerHTML = `
+        <div class="verdict-banner verdict-${esc(res.verdict)}">
+          <span>Tìm thấy test phản ví dụ ở lần #${res.iter} (seed=${res.seed}) — ${esc(res.verdict)}</span>
+          <button class="btn btn-sm btn-ghost" onclick="loadCustomInputFromPreview(window._lastDiffInput)">Nạp input vào Chạy thử</button>
+        </div>
+        <div class="diff-cols">
+          <div><div class="io-label">Input</div><pre class="io-pre">${esc(res.input_preview || "")}</pre></div>
+          <div><div class="io-label">Kết quả đúng (ref.cpp)</div><pre class="io-pre">${diff.expHtml}</pre></div>
+          <div><div class="io-label">Output của bạn</div><pre class="io-pre">${diff.actHtml}</pre></div>
+        </div>`;
+    } else {
+      box.innerHTML = `<div class="verdict-banner verdict-CE">Lỗi: ${esc(res.error || "Không rõ")}</div>`;
+    }
+  } catch (e) {
+    document.getElementById("verdict-container").innerHTML = `<div class="verdict-banner verdict-CE">Lỗi Stress test: ${esc(e.message)}</div>`;
+  } finally {
+    state.busyJudge = false;
+    if (btn) { btn.disabled = false; btn.textContent = "Stress test"; }
   }
 }
 
@@ -1283,6 +1644,14 @@ function bindEvents() {
     await apiPost("/api/settings", { key: "theme", value: next });
   };
 
+  document.querySelectorAll("#roadmap-mode-switch .filter-pill").forEach((b) => {
+    b.onclick = () => {
+      state.roadmapMode = b.dataset.rmode;
+      document.querySelectorAll("#roadmap-mode-switch .filter-pill").forEach((x) => x.classList.toggle("active", x === b));
+      renderRoadmap();
+    };
+  });
+
   document.querySelectorAll("#roadmap-track-filter .filter-pill").forEach((b) => {
     b.onclick = () => {
       state.roadmapTrack = b.dataset.track;
@@ -1291,8 +1660,9 @@ function bindEvents() {
     };
   });
 
-  ["search-input", "filter-track", "filter-topic", "filter-year", "filter-status"].forEach((id) => {
-    document.getElementById(id).addEventListener("input", () => {
+  ["search-input", "filter-track", "filter-topic", "filter-pattern", "filter-elo", "filter-year", "filter-status"].forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener("input", () => {
       renderProblemBankFilters();
       renderProblemTable();
     });
@@ -1315,6 +1685,8 @@ function bindEvents() {
 
   document.getElementById("btn-copy-sample1").onclick = () => loadSampleIntoRunner(0);
   document.getElementById("btn-run-sample").onclick = runSample;
+  const stBtn = document.getElementById("btn-stress-test");
+  if (stBtn) stBtn.onclick = runStressTest;
   document.getElementById("btn-submit").onclick = submitSolution;
 
   const acBtn = document.getElementById("btn-autocomplete-toggle");

@@ -1,0 +1,36 @@
+{
+  "id": "gk-exam-failed",
+  "title": "Đếm thí sinh trượt kỳ thi (< D)",
+  "track": "midterm",
+  "exam_tags": [
+    "GK 20241"
+  ],
+  "topic": "stl-basic",
+  "theory_chapter": "chap1",
+  "difficulty": "Cơ bản",
+  "elo": 800,
+  "day": 1,
+  "time_limit_ms": 1000,
+  "memory_limit_mb": 256,
+  "has_official_tests": true,
+  "has_checker": false,
+  "test_count": 8,
+  "tc_source": "Official Zip (GK 20241)",
+  "statement": "Kết quả của một kỳ thi được biểu diễn bằng dãy số nguyên `a[1], a[2], ..., a[n]`, trong đó `a[i]` là điểm của thí sinh thứ `i` (`i = 1, ..., n`).\n\nCho ngưỡng điểm `D` (số nguyên dương). Một thí sinh `i` bị coi là **trượt** nếu điểm `a[i] < D`. Hãy đếm số lượng thí sinh trượt kỳ thi.",
+  "input_spec": "- Dòng 1: hai số nguyên dương `n` và `D` (`1 <= n, D <= 1000`).\n- Dòng 2: `n` số nguyên `a[1], a[2], ..., a[n]` (`0 <= a[i] <= 1000`).",
+  "output_spec": "Ghi ra số lượng thí sinh trượt kỳ thi.",
+  "samples": [
+    {
+      "input": "5 4\n3 2 0 8 4",
+      "output": "3",
+      "explanation": "Có 3 thí sinh có điểm < 4 là: 3, 2, 0. Thí sinh điểm 4 không bị trượt."
+    }
+  ],
+  "mindset": "Bài đếm có điều kiện đơn giản trong `O(n)`.\n- Đọc `n, D`.\n- Duyệt `n` phần tử, nếu `x < D` thì tăng biến đếm `cnt++`.\n- Chú ý điều kiện là `< D` (nhỏ hơn hẳn), bằng `D` là đạt.",
+  "hints": [
+    "Dùng vòng `for` đọc từng số `x`, kiểm tra `if (x < D) cnt++;`."
+  ],
+  "complexity": "Time: O(n) | Space: O(1)",
+  "starter_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    // Viet code cua ban o day\n\n    return 0;\n}\n",
+  "reference_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int n, D;\n    if (!(cin >> n >> D)) return 0;\n    int cnt = 0;\n    for (int i = 0; i < n; i++) {\n        int x;\n        cin >> x;\n        if (x < D) cnt++;\n    }\n    cout << cnt << \"\\n\";\n    return 0;\n}\n"
+}

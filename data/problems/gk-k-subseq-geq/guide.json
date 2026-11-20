@@ -1,0 +1,13 @@
+{
+  "pattern": "sliding-window",
+  "recognize": "Đếm số đoạn con liên tiếp **độ dài cố định `K`** có tổng `>= D` với `n <= 10^5` → **Cửa sổ trượt (Sliding Window)** `O(n)`.",
+  "idea": "Thay vì cộng lại `K` phần tử mỗi lần dịch (tốn `O(n*K)`), ta giữ tổng cửa sổ hiện tại `win`:\n1. Tính `win` cho `K` phần tử đầu (`0..K-1`). Nếu `win >= D` thì `ans = 1`.\n2. Với mỗi `i` từ `K` đến `n-1`, thêm `a[i]` vào bên phải và bỏ `a[i-K]` ở bên trái: `win += a[i] - a[i-K]`.\n3. Nếu `win >= D` thì `ans++`.",
+  "pseudocode": "Đọc n, K, D và mảng a[0..n-1]\nwin = tổng a[0..K-1]\nans = (win >= D ? 1 : 0)\nVới i từ K đến n-1:\n    win = win + a[i] - a[i - K]\n    Nếu win >= D: ans++\nIn ans",
+  "skeleton_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int n, K;\n    long long D;\n    cin >> n >> K >> D;\n    vector<long long> a(n);\n    for (int i = 0; i < n; i++) cin >> a[i];\n\n    long long win = 0, ans = 0;\n    // TODO: Tính tổng K phần tử đầu tiên, kiểm tra >= D\n    // TODO: Trượt cửa sổ từ i = K đến n - 1\n    cout << ans << \"\\n\";\n    return 0;\n}\n",
+  "walkthrough": "Với `n=7, K=3, D=10`, `a = [6, 3, 4, 2, 3, 3, 5]`:\n- `win = 6+3+4 = 13 >= 10` → `ans = 1`.\n- `i=3`: `win = 13 + 2 - 6 = 9 < 10`.\n- `i=4`: `win = 9 + 3 - 3 = 9 < 10`.\n- `i=5`: `win = 9 + 3 - 4 = 8 < 10`.\n- `i=6`: `win = 8 + 5 - 2 = 11 >= 10` → `ans = 2`.",
+  "annotated_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int n, K;\n    long long D;\n    cin >> n >> K >> D;\n    vector<long long> a(n);\n    for (int i = 0; i < n; i++) cin >> a[i];\n\n    long long win = 0, ans = 0; // Dùng long long tránh tràn số khi K lớn\n    for (int i = 0; i < K; i++) win += a[i];\n    if (win >= D) ans++;\n    for (int i = K; i < n; i++) {\n        win += a[i] - a[i - K]; // Thêm phần tử mới, bỏ phần tử cũ nhất\n        if (win >= D) ans++;\n    }\n    cout << ans << \"\\n\";\n    return 0;\n}\n",
+  "pitfalls": [
+    "Quên kiểm tra cửa sổ đầu tiên `[0..K-1]` trước khi vào vòng lặp trượt.",
+    "Dùng `int` có thể tràn nếu `K = 50000` và `a[i] = 10000` (tổng tới `5*10^8`, vẫn vừa `int` nhưng dùng `long long` an toàn hơn)."
+  ]
+}

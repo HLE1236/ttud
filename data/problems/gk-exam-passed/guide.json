@@ -1,0 +1,12 @@
+{
+  "pattern": "fast-io-array",
+  "recognize": "Đề yêu cầu đếm số phần tử thỏa mãn điều kiện `a[i] >= D` với `n <= 1000` → Duyệt 1 vòng `O(n)`.",
+  "idea": "Đọc `n` và `D`. Khởi tạo `cnt = 0`. Mỗi lần đọc một điểm `x`, nếu `x >= D` thì `cnt++`.",
+  "pseudocode": "Đọc n, D\ncnt = 0\nLặp i từ 1 đến n:\n    Đọc x\n    Nếu x >= D: cnt = cnt + 1\nIn cnt",
+  "skeleton_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int n, D;\n    cin >> n >> D;\n    int cnt = 0;\n    for (int i = 0; i < n; i++) {\n        int x;\n        cin >> x;\n        // TODO: Nếu x >= D thì tăng cnt\n    }\n    cout << cnt << \"\\n\";\n    return 0;\n}\n",
+  "walkthrough": "Với `n = 5, D = 4`, dãy `[3, 2, 0, 8, 4]`:\n- `8 >= 4` (cnt=1), `4 >= 4` (cnt=2).\n- Kết quả: `2`.",
+  "annotated_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int n, D;\n    cin >> n >> D;\n    int cnt = 0;\n    for (int i = 0; i < n; i++) {\n        int x;\n        cin >> x;\n        if (x >= D) cnt++; // Đạt khi điểm lớn hơn hoặc bằng D\n    }\n    cout << cnt << \"\\n\";\n    return 0;\n}\n",
+  "pitfalls": [
+    "Nhầm `>= D` thành `> D` làm sót những thí sinh đạt đúng bằng ngưỡng `D`."
+  ]
+}

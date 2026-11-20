@@ -27,6 +27,10 @@
         <svg class="ui-ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 2.5h8.5A1.5 1.5 0 0 1 13 4v9.5l-4.5-2-4.5 2V4A1.5 1.5 0 0 1 3 2.5z"/></svg>
         Lý thuyết &amp; Cách nghĩ
       </button>
+      <button class="nav-tab" data-view="visualizer">
+        <svg class="ui-ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="2" y="9" width="3" height="5"/><rect x="6.5" y="5" width="3" height="9"/><rect x="11" y="2" width="3" height="12"/></svg>
+        Trực quan hóa
+      </button>
       <button class="nav-tab" data-view="problems">
         <svg class="ui-ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2.5 3.5h11M2.5 8h11M2.5 12.5h7"/></svg>
         Ngân hàng đề <span class="pill-count" id="nav-total-count">0</span>
@@ -61,6 +65,10 @@
               <div class="eyebrow">Học theo bản chất từ Số 0 · Mỗi chặng làm chủ 1 dạng bài</div>
               <h1>Lộ trình Học Thuật toán Ứng dụng (Giữa kỳ &amp; Cuối kỳ)</h1>
               <p class="muted prose-lead">Thay vì nhồi nhiều dạng bài khác nhau vào cùng một buổi, lộ trình chia thành <strong>14 Chặng theo bản chất tư duy</strong>: <strong>Chặng 1–5</strong> Nền tảng STL, Cộng dồn, 2 Con trỏ, Tham lam &amp; Chia để trị; <strong>Chặng 6–8</strong> Quay lui &amp; Nhánh cận; <strong>Chặng 9–11</strong> Quy hoạch động (kết thúc phạm vi Giữa kỳ); <strong>Chặng 12–14</strong> Đồ thị Cuối kỳ.</p>
+            </div>
+            <div class="track-pills" id="roadmap-mode-switch" role="group" aria-label="Chế độ lộ trình" style="margin-bottom:8px;">
+              <button class="filter-pill active" data-rmode="practice8">Luyện bài 8 ngày</button>
+              <button class="filter-pill" data-rmode="14stages">14 Chặng theo bản chất</button>
             </div>
             <div class="track-pills" id="roadmap-track-filter" role="group" aria-label="Lọc giai đoạn lộ trình">
               <button class="filter-pill active" data-track="all">Tất cả 14 chặng</button>
@@ -107,6 +115,16 @@
           <select id="filter-topic" class="select-input" aria-label="Lọc theo chuyên đề">
             <option value="all">Tất cả chuyên đề</option>
           </select>
+          <select id="filter-pattern" class="select-input" aria-label="Lọc theo dạng bài / kỹ thuật">
+            <option value="all">Tất cả kỹ thuật</option>
+          </select>
+          <select id="filter-elo" class="select-input" aria-label="Lọc theo khoảng Elo">
+            <option value="all">Tất cả Elo</option>
+            <option value="easy">Dễ (&lt; 1100)</option>
+            <option value="med">Trung bình (1100–1399)</option>
+            <option value="hard">Khá (1400–1699)</option>
+            <option value="vhard">Khó (&ge; 1700)</option>
+          </select>
           <select id="filter-year" class="select-input" aria-label="Lọc theo nguồn và năm thi">
             <option value="all">Tất cả nguồn / năm thi</option>
             <option value="HUSTack 2025.2">HUSTack 2025.2 (76 bài / 77 đề)</option>
@@ -122,6 +140,8 @@
             <option value="all">Tất cả trạng thái</option>
             <option value="unsolved">Chưa AC</option>
             <option value="solved">Đã AC</option>
+            <option value="mistakes">Sổ lỗi (chưa xử lý)</option>
+            <option value="mistakes_all">Sổ lỗi (tất cả)</option>
           </select>
         </div>
         <div class="topic-stats-strip" id="topic-stats-strip"></div>
@@ -268,6 +288,7 @@
                 Debug <kbd>F8</kbd>
               </button>
               <button class="btn btn-sm btn-secondary" id="btn-run-sample" title="Phím tắt: Ctrl + Enter">Chạy thử <kbd>Ctrl+↵</kbd></button>
+              <button class="btn btn-sm btn-ghost" id="btn-stress-test" title="Sinh test ngẫu nhiên bằng gen.py và so sánh với ref.cpp">Stress test</button>
               <button class="btn btn-sm btn-primary" id="btn-submit" title="Phím tắt: Ctrl + Shift + Enter">Nộp bài <kbd>Ctrl+⇧+↵</kbd></button>
             </div>
           </div>
@@ -402,6 +423,39 @@
         </div>
       </div>
     </section>
+
+    <!-- VIEW 2.5: VISUALIZER -->
+    <section id="view-visualizer" class="view">
+      <div class="surface viz-container">
+        <div class="viz-header">
+          <div>
+            <div class="eyebrow">Học qua hình ảnh từng bước · Phạm vi Lec 1 → Lec 10</div>
+            <h2>Trình trực quan hóa Thuật toán (Algorithm Visualizer)</h2>
+          </div>
+          <div class="track-pills">
+            <button class="filter-pill viz-topic-pill active" data-viz="backtracking">Quay lui &amp; Nhánh cận</button>
+            <button class="filter-pill viz-topic-pill" data-viz="dp-table">Bảng QHĐ (Đổi tiền)</button>
+            <button class="filter-pill viz-topic-pill" data-viz="lis">LIS (O(n²) vs O(n log n))</button>
+            <button class="filter-pill viz-topic-pill" data-viz="tsp-bitmask">TSP Bitmask DP</button>
+            <button class="filter-pill viz-topic-pill" data-viz="prefix-window">Prefix Sum &amp; 2 Con trỏ</button>
+          </div>
+        </div>
+
+        <div class="viz-toolbar">
+          <div id="viz-params" class="viz-params"></div>
+          <div class="viz-controls">
+            <button class="btn btn-sm btn-ghost" id="viz-prev-btn">◀ Lùi</button>
+            <button class="btn btn-sm btn-primary" id="viz-play-btn">Tự chạy</button>
+            <button class="btn btn-sm btn-ghost" id="viz-next-btn">Tiếp ▶</button>
+            <button class="btn btn-sm btn-ghost" id="viz-reset-btn">Đặt lại</button>
+            <span class="muted small" id="viz-step-counter">Bước 0 / 0</span>
+          </div>
+        </div>
+
+        <div class="callout callout-info" id="viz-step-desc" style="margin-bottom:14px;">Chọn chủ đề để bắt đầu trực quan hóa.</div>
+        <div id="viz-stage" class="viz-stage"></div>
+      </div>
+    </section>
   </main>
 
   <script src="vendor/codemirror.min.js"></script>
@@ -410,6 +464,7 @@
   <script src="vendor/closebrackets.min.js"></script>
   <script src="cpp-autocomplete.js"></script>
   <script src="cpp-debugger.js"></script>
+  <script src="visualizer.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

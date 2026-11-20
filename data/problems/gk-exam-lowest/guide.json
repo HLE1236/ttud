@@ -1,0 +1,12 @@
+{
+  "pattern": "fast-io-array",
+  "recognize": "Đề cho dãy `n <= 1000` số nguyên và yêu cầu tìm giá trị nhỏ nhất → Duyệt tuyến tính `O(n)` một vòng `for`.",
+  "idea": "Khởi tạo `mn = INT_MAX`, lặp `n` lần đọc từng số `x` và cập nhật `mn = min(mn, x)`.",
+  "pseudocode": "Đọc n\nmn = +vô_cùng\nLặp i từ 1 đến n:\n    Đọc x\n    mn = min(mn, x)\nIn mn",
+  "skeleton_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int n;\n    cin >> n;\n    int mn = INT_MAX;\n    for (int i = 0; i < n; i++) {\n        int x;\n        cin >> x;\n        // TODO: Cập nhật mn bằng min(mn, x)\n    }\n    cout << mn << \"\\n\";\n    return 0;\n}\n",
+  "walkthrough": "Với `n = 5`, dãy `[3, 2, 0, 8, 4]`:\n- `mn` lần lượt cập nhật: `3 -> 2 -> 0 -> 0 -> 0`.\n- Kết quả là `0`.",
+  "annotated_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int n;\n    cin >> n;\n    int mn = INT_MAX; // Khởi tạo cực đại để mọi x đều nhỏ hơn\n    for (int i = 0; i < n; i++) {\n        int x;\n        cin >> x;\n        mn = min(mn, x); // Cập nhật điểm thấp nhất\n    }\n    cout << mn << \"\\n\";\n    return 0;\n}\n",
+  "pitfalls": [
+    "Tránh khởi tạo `mn = 0` vì nếu mọi điểm đều `> 0` thì kết quả bị sai thành `0`!"
+  ]
+}

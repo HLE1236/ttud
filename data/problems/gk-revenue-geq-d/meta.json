@@ -1,0 +1,37 @@
+{
+  "id": "gk-revenue-geq-d",
+  "title": "Đếm đoạn ngày có tổng doanh thu >= D",
+  "track": "midterm",
+  "exam_tags": [
+    "GK 20241"
+  ],
+  "topic": "two-pointers",
+  "theory_chapter": "chap2",
+  "difficulty": "Cơ bản",
+  "elo": 1000,
+  "day": 2,
+  "time_limit_ms": 1000,
+  "memory_limit_mb": 256,
+  "has_official_tests": true,
+  "has_checker": false,
+  "test_count": 8,
+  "tc_source": "Official Zip (GK 20241)",
+  "statement": "Doanh thu của một cửa hàng vào ngày thứ `i` là `a[i]` (`i = 1, 2, ..., n`).\n\nCho ngưỡng `D` (số nguyên dương), hãy tính số lượng `Q` các đoạn ngày **liên tiếp** (độ dài bất kỳ `>= 1`) có tổng doanh thu **lớn hơn hoặc bằng `D`**.",
+  "input_spec": "- Dòng 1: hai số nguyên dương `n` và `D` (`1 <= n <= 1000`, `1 <= D <= 1000`).\n- Dòng 2: `n` số nguyên `a[1], a[2], ..., a[n]` (`1 <= a[i] <= 100`).",
+  "output_spec": "Ghi ra giá trị `Q` tìm được.",
+  "samples": [
+    {
+      "input": "5 12\n1 6 4 2 9",
+      "output": "5",
+      "explanation": "Có 5 đoạn liên tiếp có tổng >= 12: [1,6,4,2] (13), [1,6,4,2,9] (22), [6,4,2] (12), [6,4,2,9] (21), [4,2,9] (15)."
+    }
+  ],
+  "mindset": "Có 2 cách giải:\n- **Cách 1 (Dễ nhất, `O(n^2)`):** Vì `n <= 1000`, duyệt mọi điểm đầu `i = 0..n-1`, cộng dồn `S += a[j]` khi `j` chạy từ `i` đến `n-1`, hễ `S >= D` thì `ans++`.\n- **Cách 2 (Tối ưu, `O(n)` Hai con trỏ):** Vì mọi `a[i] >= 1` (số dương), khi giữ `L` và tăng `R` đến khi `sum(L..R) >= D`, thì mọi đoạn `[L..R], [L..R+1], ..., [L..n-1]` đều có tổng `>= D` (cộng thêm `n - R` đoạn), rồi tăng `L`.",
+  "hints": [
+    "Với `n <= 1000`, 2 vòng `for` cộng dồn `S` từ `i` đến `j` là đủ AC nhanh gọn.",
+    "Muốn tối ưu `O(n)`, dùng Two Pointers vì các phần tử đều dương (`a[i] >= 1`)."
+  ],
+  "complexity": "Time: O(n) | Space: O(n)",
+  "starter_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    // Viet code cua ban o day\n\n    return 0;\n}\n",
+  "reference_cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int n;\n    long long D;\n    if (!(cin >> n >> D)) return 0;\n    vector<long long> a(n);\n    for (int i = 0; i < n; i++) cin >> a[i];\n\n    long long ans = 0, sum = 0;\n    int L = 0;\n    for (int R = 0; R < n; R++) {\n        sum += a[R];\n        while (sum >= D) {\n            ans += (n - R);\n            sum -= a[L];\n            L++;\n        }\n    }\n    cout << ans << \"\\n\";\n    return 0;\n}\n"
+}

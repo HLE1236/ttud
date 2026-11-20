@@ -20,8 +20,23 @@ DATA_DIR = os.path.join(BASE_DIR, "data")
 PROBLEMS_DIR = os.path.join(DATA_DIR, "problems")
 STATIC_DIR = os.path.join(BASE_DIR, "static")
 DB_PATH = os.path.join(DATA_DIR, "ttud.db")
-LECTURE_PDF_DIR = os.environ.get("LECTURE_PDF_DIR", r"D:\2026.1\TTUD\pdf-shared")
+LECTURE_PDF_DIR = (
+    os.environ.get("LECTURE_PDF_DIR")
+    or (
+        os.path.join(os.path.dirname(BASE_DIR), "pdf-shared")
+        if os.path.isdir(os.path.join(os.path.dirname(BASE_DIR), "pdf-shared"))
+        else r"D:\2026.1\TTUD\pdf-shared"
+    )
+)
 COMPAT_INC_DIR = os.path.join(BASE_DIR, "compat")
+
+if os.name == "nt":
+    try:
+        import ctypes
+        # SEM_FAILCRITICALERRORS | SEM_NOGPFAULTERRORBOX: prevent Windows Error Reporting from hanging crashed C++ child processes
+        ctypes.windll.kernel32.SetErrorMode(0x0001 | 0x0002)
+    except Exception:
+        pass
 
 MINGW_BIN = r"C:\msys64\ucrt64\bin"
 
@@ -148,6 +163,17 @@ def init_db():
             created_at TEXT NOT NULL
         )
     """)
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS mistakes (
+            problem_id TEXT PRIMARY KEY,
+            last_verdict TEXT NOT NULL DEFAULT '',
+            tag TEXT NOT NULL DEFAULT '',
+            note TEXT NOT NULL DEFAULT '',
+            fail_count INTEGER NOT NULL DEFAULT 1,
+            resolved INTEGER NOT NULL DEFAULT 0,
+            updated_at TEXT NOT NULL
+        )
+    """)
     conn.commit()
     conn.close()
 
@@ -170,11 +196,22 @@ def load_all_problem_summaries():
         if os.path.isfile(meta_path):
             with open(meta_path, "r", encoding="utf-8") as f:
                 m = json.load(f)
+            pattern = ""
+            guide_path = os.path.join(PROBLEMS_DIR, pid, "guide.json")
+            if os.path.isfile(guide_path):
+                try:
+                    with open(guide_path, "r", encoding="utf-8") as gf:
+                        pattern = json.load(gf).get("pattern", "")
+                except Exception:
+                    pass
+            has_gen = os.path.isfile(os.path.join(PROBLEMS_DIR, pid, "gen.py"))
             items.append({
                 "id": m["id"],
                 "title": m["title"],
                 "track": m["track"],
                 "topic": m["topic"],
+                "pattern": pattern,
+                "has_gen": has_gen,
                 "difficulty": m["difficulty"],
                 "elo": m.get("elo", 1200),
                 "exam_tags": m.get("exam_tags", []),
@@ -201,9 +238,9 @@ def preview_text(s, limit=600):
     return s[:limit] + f"\n... (cắt bớt, tổng {len(s)} ký tự)"
 
 
-def compile_cpp(code, tmpdir):
-    src_path = os.path.join(tmpdir, "main.cpp")
-    exe_name = "main.exe" if os.name == "nt" else "main"
+def compile_cpp(code, tmpdir, name="main"):
+    src_path = os.path.join(tmpdir, f"{name}.cpp")
+    exe_name = f"{name}.exe" if os.name == "nt" else name
     exe_path = os.path.join(tmpdir, exe_name)
     with open(src_path, "w", encoding="utf-8") as f:
         f.write(code)
@@ -483,11 +520,32 @@ def judge_submit(pid, code):
         """,
         (pid, new_solved, prev_attempts + 1, new_best, verdict, ts),
     )
+    if verdict != "AC":
+        cur.execute(
+            """
+            INSERT INTO mistakes (problem_id, last_verdict, tag, note, fail_count, resolved, updated_at)
+            VALUES (?, ?, '', '', 1, 0, ?)
+            ON CONFLICT(problem_id) DO UPDATE SET
+                last_verdict = excluded.last_verdict,
+                fail_count = mistakes.fail_count + 1,
+                resolved = 0,
+                updated_at = excluded.updated_at
+            """,
+            (pid, verdict, ts),
+        )
+    else:
+        cur.execute(
+            "UPDATE mistakes SET resolved = 1, updated_at = ? WHERE problem_id = ?",
+            (ts, pid),
+        )
     conn.commit()
 
     # Recompute stats + recent history
     cur.execute("SELECT * FROM problem_status")
     status_map = {r["problem_id"]: dict(r) for r in cur.fetchall()}
+    cur.execute("SELECT * FROM mistakes WHERE problem_id = ?", (pid,))
+    mrow = cur.fetchone()
+    mistake_rec = dict(mrow) if mrow else None
     problems = load_all_problem_summaries()
     stats = compute_stats(problems, status_map)
     conn.close()
@@ -503,8 +561,117 @@ def judge_submit(pid, code):
         "details": details,
         "created_at": ts,
         "problem_status": status_map.get(pid),
+        "mistake": mistake_rec,
         "stats": stats,
     }, 200
+
+
+def judge_stress_test(pid, code, max_iters=60):
+    pdir = safe_pid(pid)
+    if not pdir:
+        return {"error": "Không tìm thấy bài tập"}, 404
+    gen_path = os.path.join(pdir, "gen.py")
+    ref_path = os.path.join(pdir, "ref.cpp")
+    if not os.path.isfile(gen_path) or not os.path.isfile(ref_path):
+        return {"error": "Bài này chưa có bộ sinh test ngẫu nhiên (gen.py) hoặc ref.cpp."}, 400
+    checker_path = os.path.join(pdir, "checker.py")
+    has_checker = os.path.isfile(checker_path)
+    with open(os.path.join(pdir, "meta.json"), "r", encoding="utf-8") as f:
+        meta = json.load(f)
+    tl_sec = max(0.5, meta.get("time_limit_ms", 1000) / 1000.0)
+    with open(ref_path, "r", encoding="utf-8", errors="replace") as rf:
+        ref_code = rf.read()
+
+    max_iters = max(1, min(int(max_iters or 60), 150))
+    with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as tmpdir:
+        user_exe, cerr = compile_cpp(code, tmpdir, "user")
+        if not user_exe:
+            return {"status": "CE", "compile_error": cerr}, 200
+        ref_exe, rerr = compile_cpp(ref_code, tmpdir, "ref")
+        if not ref_exe:
+            return {"error": f"Lỗi biên dịch ref.cpp: {rerr}"}, 500
+
+        env = get_judge_env()
+        gen_dir = os.path.join(tmpdir, "gen_tests")
+        os.makedirs(gen_dir, exist_ok=True)
+        try:
+            g_res = subprocess.run(
+                [sys.executable, gen_path, gen_dir],
+                capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=15,
+            )
+        except Exception as e:
+            return {"error": f"Lỗi chạy gen.py: {e}"}, 500
+        if g_res.returncode != 0:
+            return {"error": f"gen.py lỗi: {g_res.stderr or g_res.stdout}"}, 500
+
+        in_files = sorted(glob.glob(os.path.join(gen_dir, "*.in")))
+        if not in_files:
+            return {"error": "gen.py không sinh ra file .in nào."}, 500
+
+        t_start = time.perf_counter()
+        tested = 0
+        for it, inf in enumerate(in_files[:max_iters], 1):
+            if time.perf_counter() - t_start > 15.0:
+                return {"status": "PASSED", "iters": tested, "note": "Dừng do đạt ngưỡng thời gian 15s."}, 200
+            inp_data = open(inf, "r", encoding="utf-8", errors="replace").read()
+
+            try:
+                r_res = subprocess.run(
+                    [ref_exe], input=inp_data, env=env,
+                    capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=max(2.0, tl_sec),
+                )
+            except Exception as e:
+                return {"error": f"ref.cpp lỗi ở test #{it}: {e}"}, 500
+            exp_data = r_res.stdout
+
+            try:
+                u_res = subprocess.run(
+                    [user_exe], input=inp_data, env=env,
+                    capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=tl_sec,
+                )
+            except subprocess.TimeoutExpired:
+                return {
+                    "status": "FOUND", "iter": it, "seed": os.path.basename(inf), "verdict": "TLE",
+                    "input_preview": preview_text(inp_data, 800),
+                    "expected_preview": preview_text(exp_data, 800),
+                    "actual_preview": f"Quá thời gian ({int(tl_sec * 1000)} ms)",
+                }, 200
+
+            if u_res.returncode != 0:
+                return {
+                    "status": "FOUND", "iter": it, "seed": os.path.basename(inf), "verdict": "RE",
+                    "input_preview": preview_text(inp_data, 800),
+                    "expected_preview": preview_text(exp_data, 800),
+                    "actual_preview": preview_text(u_res.stderr or f"Exit code {u_res.returncode}", 800),
+                }, 200
+
+            ok = False
+            checker_msg = ""
+            if has_checker:
+                exp_p = os.path.join(tmpdir, "st.exp")
+                act_p = os.path.join(tmpdir, "st.act")
+                open(exp_p, "w", encoding="utf-8").write(exp_data)
+                open(act_p, "w", encoding="utf-8").write(u_res.stdout)
+                chk = subprocess.run(
+                    [sys.executable, checker_path, inf, exp_p, act_p],
+                    capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=10,
+                )
+                ok = (chk.returncode == 0)
+                checker_msg = (chk.stdout or chk.stderr or "").strip()
+            else:
+                ok = (normalize_output(u_res.stdout) == normalize_output(exp_data))
+
+            if not ok:
+                return {
+                    "status": "FOUND", "iter": it, "seed": os.path.basename(inf), "verdict": "WA",
+                    "checker_msg": checker_msg,
+                    "input_preview": preview_text(inp_data, 800),
+                    "expected_preview": preview_text(exp_data, 800),
+                    "actual_preview": preview_text(u_res.stdout, 800),
+                }, 200
+            tested = it
+
+    return {"status": "PASSED", "iters": tested}, 200
 
 
 class TTUDHandler(BaseHTTPRequestHandler):
@@ -555,6 +722,11 @@ class TTUDHandler(BaseHTTPRequestHandler):
             if os.path.isfile(mock_exams_path):
                 with open(mock_exams_path, "r", encoding="utf-8") as f:
                     mock_exams = json.load(f)
+            practice_path = os.path.join(DATA_DIR, "practice_8days.json")
+            practice_8days = {}
+            if os.path.isfile(practice_path):
+                with open(practice_path, "r", encoding="utf-8") as f:
+                    practice_8days = json.load(f)
             problems = load_all_problem_summaries()
             for p in problems:
                 p["has_guide"] = os.path.isfile(os.path.join(PROBLEMS_DIR, p["id"], "guide.json"))
@@ -565,6 +737,8 @@ class TTUDHandler(BaseHTTPRequestHandler):
             status_map = {r["problem_id"]: dict(r) for r in cur.fetchall()}
             cur.execute("SELECT day, checked FROM roadmap_checked")
             roadmap_checked = {str(r["day"]): r["checked"] for r in cur.fetchall()}
+            cur.execute("SELECT * FROM mistakes")
+            mistakes_map = {r["problem_id"]: dict(r) for r in cur.fetchall()}
             cur.execute("SELECT key, value FROM settings")
             settings = {r["key"]: r["value"] for r in cur.fetchall()}
             cur.execute("SELECT * FROM exam_history ORDER BY id DESC LIMIT 30")
@@ -584,11 +758,13 @@ class TTUDHandler(BaseHTTPRequestHandler):
                 })
             return self.send_json({
                 "roadmap": roadmap,
+                "practice_8days": practice_8days,
                 "theory": theory,
                 "mock_exams": mock_exams,
                 "exam_history": exam_history,
                 "problems": problems,
                 "roadmap_checked": roadmap_checked,
+                "mistakes": mistakes_map,
                 "settings": settings,
                 "stats": compute_stats(problems, status_map),
                 "gxx_path": GXX_PATH,
@@ -730,6 +906,42 @@ class TTUDHandler(BaseHTTPRequestHandler):
             )
             return self.send_json(res, code)
 
+        if path == "/api/stress-test":
+            res, code = judge_stress_test(
+                body.get("problem_id", ""),
+                body.get("code", ""),
+                body.get("max_iters", 60),
+            )
+            return self.send_json(res, code)
+
+        if path == "/api/mistake":
+            pid = body.get("problem_id", "")
+            if not safe_pid(pid):
+                return self.send_json({"error": "Invalid problem"}, 400)
+            tag = str(body.get("tag", ""))[:80]
+            note = str(body.get("note", ""))[:1000]
+            resolved = 1 if body.get("resolved") else 0
+            ts = now_iso()
+            conn = get_db()
+            conn.execute(
+                """
+                INSERT INTO mistakes (problem_id, last_verdict, tag, note, fail_count, resolved, updated_at)
+                VALUES (?, '', ?, ?, 1, ?, ?)
+                ON CONFLICT(problem_id) DO UPDATE SET
+                    tag = excluded.tag,
+                    note = excluded.note,
+                    resolved = excluded.resolved,
+                    updated_at = excluded.updated_at
+                """,
+                (pid, tag, note, resolved, ts),
+            )
+            conn.commit()
+            cur = conn.cursor()
+            cur.execute("SELECT * FROM mistakes WHERE problem_id = ?", (pid,))
+            rec = dict(cur.fetchone())
+            conn.close()
+            return self.send_json({"ok": True, "mistake": rec})
+
         if path == "/api/notes":
             pid = body.get("problem_id", "")
             if not safe_pid(pid):
@@ -763,7 +975,10 @@ class TTUDHandler(BaseHTTPRequestHandler):
             return self.send_json({"ok": True})
 
         if path == "/api/roadmap/toggle":
-            day = int(body.get("day", 0))
+            try:
+                day = int(body.get("day", 0))
+            except (ValueError, TypeError):
+                return self.send_json({"error": "Invalid day"}, 400)
             checked = 1 if body.get("checked") else 0
             conn = get_db()
             conn.execute(
@@ -798,8 +1013,11 @@ class TTUDHandler(BaseHTTPRequestHandler):
             exam_id = str(body.get("exam_id", "custom"))
             title = str(body.get("title", "Đề thi thử"))
             track = str(body.get("track", "midterm"))
-            total_score = float(body.get("total_score", 0.0))
-            duration_used_sec = int(body.get("duration_used_sec", 0))
+            try:
+                total_score = float(body.get("total_score", 0.0))
+                duration_used_sec = int(body.get("duration_used_sec", 0))
+            except (ValueError, TypeError):
+                return self.send_json({"error": "Invalid numeric score or duration"}, 400)
             problems = body.get("problems", [])
             feedback = str(body.get("feedback", ""))
             ts = now_iso()
